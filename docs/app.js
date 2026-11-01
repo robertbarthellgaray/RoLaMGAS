@@ -4,7 +4,7 @@ const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractio
 const colors = ['#79d8f1', '#ffd08a', '#8ae3bd', '#b4aeff', '#ff9f9a', '#9ed2ff'];
 const catalog = [];
 const cache = new Map();
-let destination = 'All', selected = null, requestVersion = 0, playing = false, lastTick = 0, fraction = 0;
+let destination = 'All', smallBodyTarget = 'All', selected = null, requestVersion = 0, playing = false, lastTick = 0, fraction = 0;
 let yaw = -.35, pitch = .65, zoom = 1, view = '3d', framePending = false;
 const canvas = $('orbit'), ctx = canvas.getContext('2d');
 const bodyColors = {Earth:'#6ea9ff', Venus:'#e3c387', Mercury:'#a7a4a0', Mars:'#e7997e', Jupiter:'#dcc3a6', Saturn:'#f0d28d', Uranus:'#87dfed', Neptune:'#729bff'};
@@ -20,6 +20,8 @@ function makeDestinations() {
     const n = catalog.filter(c => targetMatches(c, t)).length;
     return `<button type="button" data-target="${t}" aria-pressed="${t === destination}">${t}<span>${n}</span></button>`;
   }).join('');
+  $('small-body-options').hidden = destination !== 'Small bodies';
+  $('small-body-options').innerHTML = ['All','Pluto','Eris','2026 ED138'].map(t => `<button type="button" data-small-body="${t}" aria-pressed="${smallBodyTarget===t}">${t==='All'?'All small bodies':t}</button>`).join('');
 }
 function targetMatches(c, t = destination) {
   return t === 'All' || (t === 'Small bodies' ? !Object.keys(bodyColors).includes(c.target) : c.target === t);
@@ -29,11 +31,11 @@ function maximum(id) {
   return value === '' ? Infinity : Math.max(0, Number(value));
 }
 function renderList() {
-  const search = $('search').value.trim().toLowerCase();
-  const rows = catalog.filter(c => targetMatches(c) && `${c.title} ${c.sequence} ${c.bodies.join(' ')}`.toLowerCase().includes(search)
+  const search = $('search').value.trim().toLowerCase().replace(/\s+/g,'');
+  const rows = catalog.filter(c => targetMatches(c) && (destination!=='Small bodies'||smallBodyTarget==='All'||c.target===smallBodyTarget) && `${c.title} ${c.sequence} ${c.bodies.join(' ')}`.toLowerCase().replace(/\s+/g,'').includes(search)
     && c.c3 <= maximum('max-c3') && c.vinf <= maximum('max-vinf') && c.burns_mps <= maximum('max-burns'));
   const sort = $('sort').value;
-  rows.sort((a,b) => sort === 'recommended' ? Number(b.spotlight) - Number(a.spotlight) || a.c3 - b.c3 : a[sort] - b[sort]);
+  rows.sort((a,b) => sort === 'recommended' ? Number(b.spotlight) - Number(a.spotlight) : a[sort] - b[sort]);
   $('result-count').textContent = `${rows.length} ${rows.length === 1 ? 'trajectory' : 'trajectories'}`;
   $('candidate-list').innerHTML = rows.length ? rows.map(c => `<button type="button" class="candidate-card" data-id="${c.id}" aria-pressed="${c.id === selected?.id}" aria-label="Inspect ${escapeHtml(c.title)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}">
     <div class="card-preview"><img loading="lazy" src="images/${c.id}.svg" width="320" height="220" alt="${escapeHtml(c.sequence)} heliocentric trajectory preview"><span class="card-badge">${c.spotlight ? 'Integrated concept' : 'Lambert candidate'}</span></div>
@@ -89,8 +91,15 @@ async function selectCandidate(id) {
       return `<tr><td><i class="event-dot ${e.burn?'burn-dot':''}"></i>${escapeHtml(e.burn ? e.kind : e.body)}</td><td>${escapeHtml(e.date.replace('T',' ').replace(/\.[0-9]+(?= TDB)/,'').replace(' TDB',''))}</td><td>${e.jd.toFixed(6)}</td><td>${escapeHtml(detail)}</td></tr>`;
     }).join('');
     $('model-note').textContent = c.note;
-    const labels = {source:'Data source', coordinates:'Coordinates', time_scale:'Time scale', plot_units:'Preview units', candidate_id:'Candidate', speed_tolerance_mps:'Speed tolerance (m/s)', sha256:'XYZV SHA-256', export_units:'Export columns', ephemerides:'Ephemerides', planet_arcs:'Planet context'};
+    const labels = {source:'Data source', coordinates:'Coordinates', time_scale:'Time scale', plot_units:'Preview units', candidate_id:'Candidate', speed_tolerance_mps:'Saved speed tolerance (m/s)', sha256:'XYZV SHA-256', export_units:'Export columns', ephemerides:'Ephemerides', planet_arcs:'Planet context',target_horizons_id:'Horizons target ID',target_ephemeris:'Target representation'};
     $('provenance').innerHTML = Object.entries(labels).filter(([key]) => c.provenance[key] != null).map(([key,label]) => `<dt>${label}</dt><dd>${escapeHtml(c.provenance[key])}</dd>`).join('');
+    if(c.validation) {
+      const v=c.validation;
+      $('provenance').innerHTML += `<dt>Gallery admission</dt><dd>${v.passed?'Passed independent vector and coast checks':'Not admitted'}</dd><dt>Worst |ΔV∞|</dt><dd>${fmt(v.max_vinf_mismatch_mps,6)} m/s (limit 1 m/s)</dd><dt>Largest DSM</dt><dd>${fmt(v.max_single_dsm_mps,3)} m/s (limit 700 m/s)</dd><dt>Coast endpoint error</dt><dd>${fmt(v.max_coast_endpoint_error_km*1000,3)} m maximum</dd>`;
+    }
+    if(c.integration_validation) {
+      $('provenance').innerHTML += `<dt>JPL clearance audit</dt><dd>Passed · Sun and eight planetary surfaces</dd><dt>Audit scope</dt><dd>${escapeHtml(c.integration_validation.scope)}</dd>`;
+    }
     const xyzv = $('download-xyzv'); xyzv.hidden = !c.download;
     if (c.download) xyzv.href = c.download; else xyzv.removeAttribute('href');
     document.querySelectorAll('.candidate-card').forEach(b => b.setAttribute('aria-pressed', b.dataset.id === c.id));
@@ -192,8 +201,9 @@ function draw() {
 
 $('destinations').addEventListener('click', e => {
   const b = e.target.closest('[data-target]'); if (!b) return;
-  destination = b.dataset.target; makeDestinations(); renderList();
+  destination = b.dataset.target; smallBodyTarget='All'; makeDestinations(); renderList();
 });
+$('small-body-options').addEventListener('click',e=>{const b=e.target.closest('[data-small-body]');if(!b)return;smallBodyTarget=b.dataset.smallBody;makeDestinations();renderList();});
 $('candidate-list').addEventListener('click', e => { const b=e.target.closest('[data-id]'); if (b) selectCandidate(b.dataset.id); });
 for (const id of ['search','max-c3','max-vinf','max-burns']) $(id).addEventListener('input', renderList);
 $('sort').addEventListener('change', renderList);

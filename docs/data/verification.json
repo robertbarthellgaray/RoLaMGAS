@@ -1,13 +1,47 @@
 {
   "initial": {
-    "count": 52,
+    "count": 91,
     "title": "CLAUDIUS / UOP · 2045 arrival",
     "canvas": 1027,
     "bodyWidth": 1425,
     "width": 1440
   },
-  "all_candidates_loaded": 52,
+  "all_candidates_loaded": 91,
   "destination_filters": 8,
+  "routes": {
+    "Pluto": [
+      "EJP",
+      "EVEEJP",
+      "EdvEJP"
+    ],
+    "Eris": [
+      "EJEr",
+      "EVEEJEr",
+      "EdvEJEr"
+    ],
+    "2026 ED138": [
+      "EJSX",
+      "EJX",
+      "ESX",
+      "EVEEJX",
+      "EdvEJX"
+    ],
+    "Saturn": [
+      "EJS",
+      "EVEEJS",
+      "EdvEJS",
+      "EdvES"
+    ],
+    "Neptune": [
+      "EJN",
+      "EVEEJN",
+      "EdvEJN"
+    ]
+  },
+  "admission": {
+    "worst_mismatch_mps": 0.19445269231255224,
+    "largest_dsm_mps": 699.9999861992796
+  },
   "downloads": [
     "JSON",
     "PNG",

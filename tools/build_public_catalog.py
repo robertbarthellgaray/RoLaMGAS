@@ -1,7 +1,7 @@
 """Curate saved search results into a static, path-free public catalog.
 
 Run against a private trajectory_optimization tree, never against the public
-repository: python tools/build_public_catalog.py --project PATH --app-data PATH
+repository: python tools/build_public_catalog.py --project PATH --app-data PATH --validation-cache PATH
 Only selected numeric results and explicit public fields are published.
 """
 import argparse
@@ -17,6 +17,8 @@ import sys
 P = argparse.ArgumentParser()
 P.add_argument('--project', type=Path, required=True)
 P.add_argument('--app-data', type=Path)
+P.add_argument('--extra-runs', type=Path, action='append', default=[], help='Additional private runs with prepared card JSON')
+P.add_argument('--validation-cache', type=Path, required=True, help='Independent JPL baseline and custom-target cache for event-state cross-checks')
 P.add_argument('--output', type=Path, default=Path(__file__).resolve().parents[1] / 'docs')
 A = P.parse_args()
 EXPLORER = A.project / 'mission_designer/explorer'
@@ -25,8 +27,10 @@ os.environ.setdefault('NUMBA_CACHE_DIR', str(Path(os.environ.get('TEMP', '/tmp')
 import bootstrap  # noqa: E402
 import numpy as np  # noqa: E402
 from dynamics import Model, kepler  # noqa: E402
-from ephemeris import AU, DAY, Ephemerides  # noqa: E402
+from ephemeris import AU, DAY, Ephemerides, BODIES  # noqa: E402
 from mission_search import normalize, routes_for, get_ephemerides  # noqa: E402
+from catalog_validation import audit_candidate, POLICY  # noqa: E402
+from horizons_targets import register_target  # noqa: E402
 
 OUT = A.output
 for name in ('data/cases', 'images', 'downloads'):
@@ -80,6 +84,51 @@ def from_candidate(q, card):
                 provenance=dict(candidate_id=q['id'], coordinates='Heliocentric Ecliptic J2000', time_scale='TDB', plot_units='AU',
                                 ephemerides='JPL Horizons geometric vectors', source='Saved RoLaMGAS result'))
 
+def display_target(name):
+    if 'ED138' in name.replace(' ',''):return '2026 ED138'
+    if 'Eris' in name:return 'Eris'
+    if 'Pluto' in name:return 'Pluto'
+    return name
+
+def check_arcs(q):
+    worst_r=0.;worst_v=0.;min_radius=float('inf')
+    for i,s in enumerate(q['segments']):
+        r0=np.array(s['r']);v0=np.array(s['v']);dt=(s['end_jd']-s['start_jd'])*DAY
+        if not dt>0:raise ValueError('Nonpositive coast duration')
+        r,v=kepler(r0,v0,dt)
+        event=next((e for e in q['events'] if abs(e['julian_date_tdb']-s['end_jd'])<1e-7),None)
+        expected=np.array(event['planet_state_km_kms'][:3]) if event else np.array(q['segments'][i+1]['r'])
+        worst_r=max(worst_r,float(np.linalg.norm(r-expected)))
+        if event:
+            j=q['events'].index(event)-1
+            worst_v=max(worst_v,float(np.linalg.norm(v-np.array(q['arrival_velocities_kms'][j]))*1000))
+        # Evaluate an analytic perihelion only if it lies inside this coast;
+        # outbound legs must not be rejected for a fictitious pre-launch perihelion.
+        h=np.cross(r0,v0);energy=np.dot(v0,v0)/2-132712440041.27942/np.linalg.norm(r0)
+        eccentricity=np.linalg.norm(np.cross(v0,h)/132712440041.27942-r0/np.linalg.norm(r0))
+        rp=np.dot(h,h)/132712440041.27942/(1+eccentricity)
+        full_period=(2*np.pi*np.sqrt((-132712440041.27942/(2*energy))**3/132712440041.27942)) if energy<0 else float('inf')
+        if dt>=full_period or (np.dot(r0,v0)<=0 and np.dot(r,v)>=0):min_radius=min(min_radius,float(rp))
+        else:min_radius=min(min_radius,float(np.linalg.norm(r0)),float(np.linalg.norm(r)))
+    if worst_r>1. or worst_v>.01:raise ValueError(f'Coast endpoint discrepancy: {worst_r:g} km, {worst_v:g} m/s')
+    if min_radius<=695700.:raise ValueError('Solar impact on a propagated coast')
+    return dict(max_coast_endpoint_error_km=worst_r,max_coast_velocity_error_mps=worst_v,minimum_solar_radius_km=min_radius)
+
+reference_ephemerides={}
+def check_ephemerides(q,cfg):
+    if not A.validation_cache:return {}
+    if cfg.get('target_object'):register_target(cfg['target_object'])
+    key=tuple(sorted(set(q['bodies'])))
+    if key not in reference_ephemerides:
+        reference_ephemerides[key]=Ephemerides(A.validation_cache,key,2461406.5,2488069.5,1.)
+    ep=reference_ephemerides[key];worst_r=0.;worst_v=0.
+    for e in q['events']:
+        actual=ep.state(e['body'],e['julian_date_tdb']);saved=np.array(e['planet_state_km_kms'])
+        worst_r=max(worst_r,float(np.linalg.norm(actual[:3]-saved[:3])))
+        worst_v=max(worst_v,float(np.linalg.norm(actual[3:]-saved[3:])*1000))
+    if worst_r>.1 or worst_v>.001:raise ValueError(f'JPL event-state cross-check failed: {worst_r:g} km, {worst_v:g} m/s')
+    return dict(max_reference_ephemeris_position_error_km=worst_r,max_reference_ephemeris_velocity_error_mps=worst_v)
+
 def thumbnail(c):
     points = np.concatenate([np.asarray(s['points']) for s in c['paths']])
     extent = max(float(np.max(np.abs(points[:, :2]))), .5) * 1.13
@@ -104,44 +153,87 @@ def thumbnail(c):
 roots = [EXPLORER / 'runs']
 if A.app_data:
     roots.append(A.app_data / 'runs')
+roots.extend(A.extra_runs)
 groups = collections.defaultdict(list)
 seen = set()
 targets = ['Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
+rejected=collections.Counter()
 for root in roots:
     if not root.is_dir(): continue
     for run in sorted(root.iterdir()):
         result = run / 'results.json'
         if not result.exists(): continue
+        cfg=load(run/'run_manifest.json')['config']
         for q in load(result).get('candidates', []):
-            target = q['bodies'][-1]
-            if target not in targets and 'Ceres' not in target and 'Hektor' not in target: continue
+            target = display_target(q['bodies'][-1])
+            if target not in targets+['Pluto','Eris','2026 ED138']: continue
             if not '2027' <= q['launch_date'][:4] <= '2056': continue
-            if q['id'] in seen or q.get('periapsis_violation'): continue
-            if any(not f.get('passes_turn_screen', False) and not f.get('passes_powered_geometry', False) for f in q['flybys']): continue
+            if q['id'] in seen: continue
+            audit=audit_candidate(q,cfg,BODIES)
+            if not audit['passed']:
+                rejected.update(audit['reasons']);continue
             card = run / 'candidates' / (q['id'] + '.card.json')
             if not card.exists(): continue
-            seen.add(q['id']); groups[target].append((q, card, run))
+            try:audit.update(check_ephemerides(q,cfg))
+            except (ValueError,RuntimeError,AssertionError) as e:rejected.update([str(e)]);continue
+            seen.add(q['id']); groups[target].append((q, card, run, audit))
 
 cases = []
 for target, rows in groups.items():
+    # Independent searches can rediscover the same cruise with a new ID.
+    # Keep distinct physical solutions, rather than filling slots with copies.
+    unique=[]
+    for row in sorted(rows,key=lambda r:r[0]['launch_c3_km2_s2']):
+        q=row[0]
+        def same(previous):
+            p=previous[0]
+            return (q['sequence']==p['sequence'] and q['branches']==p['branches']
+                    and len(q['dates_jd_tdb'])==len(p['dates_jd_tdb'])
+                    and max(abs(a-b) for a,b in zip(q['dates_jd_tdb'],p['dates_jd_tdb']))<3
+                    and len(q['dsms'])==len(p['dsms'])
+                    and all(abs(a['julian_date_tdb']-b['julian_date_tdb'])<3
+                            and np.linalg.norm(np.array(a['delta_v_ecliptic_j2000_kms'])-np.array(b['delta_v_ecliptic_j2000_kms']))<.01
+                            for a,b in zip(q['dsms'],p['dsms'])))
+        if not any(same(p) for p in unique):unique.append(row)
+    rows=unique
     chosen = []
     def choose(row):
         if row not in chosen: chosen.append(row)
-    for key in ('launch_c3_km2_s2', 'total_dsm_kms', 'duration_years', 'arrival_vinf_kms'):
-        choose(min(rows, key=lambda r: r[0][key]))
-    for seq in sorted({r[0]['sequence'] for r in rows}):
-        choose(min((r for r in rows if r[0]['sequence'] == seq), key=lambda r: r[0]['launch_c3_km2_s2']))
+    sequences=sorted({r[0]['sequence'] for r in rows})
+    limit=12 if target in ['Saturn','Neptune','Pluto','Eris','2026 ED138'] else 7
+    # Reserve room for each assist sequence before filling metric tradeoffs.
+    for key in ('launch_c3_km2_s2','arrival_vinf_kms','duration_years','total_dsm_kms'):
+        for seq in sequences:
+            if len(chosen)>=limit:break
+            choose(min((r for r in rows if r[0]['sequence']==seq),key=lambda r:r[0][key]))
     for row in sorted(rows, key=lambda r: r[0]['launch_c3_km2_s2']):
         if all(abs(row[0]['dates_jd_tdb'][0] - r[0]['dates_jd_tdb'][0]) > 60 for r in chosen): choose(row)
-        if len(chosen) >= 7: break
+        if len(chosen) >= limit: break
     for row in sorted(rows, key=lambda r: r[0]['launch_c3_km2_s2']):
-        if len(chosen) >= 7: break
+        if len(chosen) >= limit: break
         choose(row)
-    for q, card, run in chosen[:7 if target in targets else 2]:
-        c = from_candidate(q, load(card))
+    for q, card, run, audit in chosen[:limit]:
         cfg = load(run / 'run_manifest.json')['config']
+        try:
+            audit.update(check_arcs(q))
+        except (ValueError,RuntimeError,AssertionError) as e:rejected.update([str(e)]);continue
+        c = from_candidate(q, load(card))
         c['provenance']['speed_tolerance_mps'] = cfg.get('vinf_tolerance_mps', 20)
         c['provenance']['saved_limits'] = {k: cfg.get(k) for k in ('max_c3', 'max_dsm_kms', 'max_arrival_vinf_kms', 'minimum_altitude_km')}
+        c['validation']=audit
+        if target in ['Pluto','Eris','2026 ED138']:
+            original=c['target'];suffix={'Pluto':'P','Eris':'Er','2026 ED138':'X'}[target]
+            c['target']=target;c['sequence']=c['sequence'][:-1]+suffix if c['sequence'].endswith('X') else c['sequence']
+            c['title']=c['sequence']+' · '+target
+            c['bodies']=[target if b==original else b for b in c['bodies']]
+            for event in c['events']:
+                if event['body']==original:event['body']=target
+            for orbit in c['planet_paths']:
+                if orbit['body']==original:orbit['body']=target
+            descriptor=cfg.get('target_object') or {}
+            c['provenance'].update(target_horizons_id=descriptor.get('id'),target_ephemeris=descriptor.get('representation','JPL geometric object vectors'))
+            if target=='Eris':c['note']+=' Eris is represented by the Eris–Dysnomia system barycenter; JPL’s primary-body table does not cover these future arrivals.'
+        c['note']+=' Independent gallery admission: all unpowered joins ≤1 m/s mismatch, individual DSMs ≤700 m/s, and inferred flyby periapses above their stated floors.'
         cases.append(c)
 
 # Fill the one missing planetary destination entirely offline from the baseline.
@@ -168,6 +260,8 @@ for q in selected:
     q['id'] = 'mars-' + hashlib.sha256(json.dumps(q['dates_jd_tdb']).encode()).hexdigest()[:10]
     case = from_candidate(q, card_data(q, ep))
     case['provenance'].update(source='Offline baseline scan for the static catalog', speed_tolerance_mps=20)
+    case['validation']=audit_candidate(q,c,BODIES);case['validation'].update(check_arcs(q))
+    case['validation'].update(check_ephemerides(q,c))
     cases.append(case)
 
 def integrated(id, title, sequence, source, events, burns, c3, vinf, cost, note):
@@ -248,7 +342,14 @@ for c in cases:
     index.append({k: c[k] for k in ('id', 'title', 'target', 'sequence', 'bodies', 'model', 'spotlight', 'start', 'end', 'launch_date', 'arrival_date', 'years', 'c3', 'vinf', 'burns_mps')})
 save(OUT / 'data/index.json', dict(version=1, updated='2026-11-01', cases=index,
                                  coordinates='Heliocentric Ecliptic J2000', time_scale='TDB',
-                                 generation='Curated saved candidates plus an offline Earth–Mars baseline scan; no browser-side solver.'))
+                                 generation='Curated and independently screened Lambert candidates, with original integrated mission concepts; no browser-side solver.',admission_policy=POLICY))
+lambert_cases=[c for c in cases if not c['spotlight']]
+save(OUT/'data/catalog_audit.json',dict(policy=POLICY,lambert_candidates=len(lambert_cases),integrated_concepts=2,
+    all_published_lambert_candidates_pass=all(c['validation']['passed'] for c in lambert_cases),
+    largest_unpowered_mismatch_mps=max(c['validation']['max_vinf_mismatch_mps'] for c in lambert_cases),
+    largest_individual_dsm_mps=max(c['validation']['max_single_dsm_mps'] for c in lambert_cases),
+    largest_coast_endpoint_error_km=max(c['validation']['max_coast_endpoint_error_km'] for c in lambert_cases),
+    excluded_reason_counts=dict(rejected),routes_by_target={t:sorted({c['sequence'] for c in cases if c['target']==t}) for t in sorted({c['target'] for c in cases})}))
 # Remove retired catalog artifacts, retaining the original project artwork.
 ids = {c['id'] for c in cases}
 for file in (OUT / 'data/cases').glob('*.json'):
