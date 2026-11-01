@@ -1,0 +1,3436 @@
+{
+  "schema_version": 1,
+  "notation": {
+    "E": "Earth",
+    "V": "Venus",
+    "M": "Mars",
+    "Me": "Mercury",
+    "J": "Jupiter",
+    "S": "Saturn",
+    "U": "Uranus",
+    "N": "Neptune"
+  },
+  "references": [
+    {
+      "mission": "Juno",
+      "sequence": "EdvEJ",
+      "sources": [
+        "https://www.jpl.nasa.gov/news/press_kits/juno/facts/",
+        "https://science.nasa.gov/mission/juno/juno-orbits/",
+        "https://www.nasa.gov/history/10-years-ago-juno-launched-to-observe-jupiter/"
+      ],
+      "events": [
+        [
+          "Earth",
+          "2011-08-05"
+        ],
+        [
+          "DSM",
+          "2012-08-30"
+        ],
+        [
+          "DSM",
+          "2012-09-14"
+        ],
+        [
+          "Earth",
+          "2013-10-09"
+        ],
+        [
+          "Jupiter",
+          "2016-07-05"
+        ]
+      ],
+      "note": "Two real DSMs are represented by one designed impulse in the search template. Jupiter arrival is July 5 UTC (July 4 in US mission reporting).",
+      "planet_leg_days": [
+        {
+          "departure": "Earth",
+          "arrival": "Earth",
+          "days": 796
+        },
+        {
+          "departure": "Earth",
+          "arrival": "Jupiter",
+          "days": 1000
+        }
+      ]
+    },
+    {
+      "mission": "Galileo",
+      "sequence": "EVEEJ",
+      "sources": [
+        "https://www.nasa.gov/history/35-years-ago-sts-34-sends-galileo-on-its-way-to-jupiter/",
+        "https://www.jpl.nasa.gov/missions/galileo/"
+      ],
+      "events": [
+        [
+          "Earth",
+          "1989-10-18"
+        ],
+        [
+          "Venus",
+          "1990-02-10"
+        ],
+        [
+          "Earth",
+          "1990-12-08"
+        ],
+        [
+          "Earth",
+          "1992-12-08"
+        ],
+        [
+          "Jupiter",
+          "1995-12-07"
+        ]
+      ],
+      "note": "Planet encounters only; this list is not the complete maneuver history.",
+      "planet_leg_days": [
+        {
+          "departure": "Earth",
+          "arrival": "Venus",
+          "days": 115
+        },
+        {
+          "departure": "Venus",
+          "arrival": "Earth",
+          "days": 301
+        },
+        {
+          "departure": "Earth",
+          "arrival": "Earth",
+          "days": 731
+        },
+        {
+          "departure": "Earth",
+          "arrival": "Jupiter",
+          "days": 1094
+        }
+      ]
+    },
+    {
+      "mission": "Cassini",
+      "sequence": "EVdvVEJS",
+      "sources": [
+        "https://ntrs.nasa.gov/search.jsp?R=20000074241",
+        "https://solarsystem.nasa.gov/system/downloadable_items/1946_trajectory.pdf",
+        "https://www.nasa.gov/wp-content/uploads/2015/01/59910main_cassini.pdf"
+      ],
+      "events": [
+        [
+          "Earth",
+          "1997-10-15"
+        ],
+        [
+          "Venus",
+          "1998-04-26"
+        ],
+        [
+          "DSM",
+          "1998-12-03"
+        ],
+        [
+          "Venus",
+          "1999-06-24"
+        ],
+        [
+          "Earth",
+          "1999-08-18"
+        ],
+        [
+          "Jupiter",
+          "2000-12-30"
+        ],
+        [
+          "Saturn",
+          "2004-07-01"
+        ]
+      ],
+      "note": "The Venus-return DSM is explicit. Search ranges are not exact mission reconstruction constraints.",
+      "planet_leg_days": [
+        {
+          "departure": "Earth",
+          "arrival": "Venus",
+          "days": 193
+        },
+        {
+          "departure": "Venus",
+          "arrival": "Venus",
+          "days": 424
+        },
+        {
+          "departure": "Venus",
+          "arrival": "Earth",
+          "days": 55
+        },
+        {
+          "departure": "Earth",
+          "arrival": "Jupiter",
+          "days": 500
+        },
+        {
+          "departure": "Jupiter",
+          "arrival": "Saturn",
+          "days": 1279
+        }
+      ]
+    },
+    {
+      "mission": "MESSENGER",
+      "sequence": "EEVVMeMeMeMe",
+      "sources": [
+        "https://science.nasa.gov/mission/messenger/",
+        "https://www.nasa.gov/wp-content/uploads/2015/04/525164main_mercurymoi_pk.pdf"
+      ],
+      "events": [
+        [
+          "Earth",
+          "2004-08-03"
+        ],
+        [
+          "Earth",
+          "2005-08-02"
+        ],
+        [
+          "Venus",
+          "2006-10-24"
+        ],
+        [
+          "Venus",
+          "2007-06-05"
+        ],
+        [
+          "Mercury",
+          "2008-01-14"
+        ],
+        [
+          "Mercury",
+          "2008-10-06"
+        ],
+        [
+          "Mercury",
+          "2009-09-29"
+        ],
+        [
+          "Mercury",
+          "2011-03-18"
+        ]
+      ],
+      "note": "Actual MESSENGER used several DSMs. The planet-only route is a screening template; a DSM variant is also supplied.",
+      "planet_leg_days": [
+        {
+          "departure": "Earth",
+          "arrival": "Earth",
+          "days": 364
+        },
+        {
+          "departure": "Earth",
+          "arrival": "Venus",
+          "days": 448
+        },
+        {
+          "departure": "Venus",
+          "arrival": "Venus",
+          "days": 224
+        },
+        {
+          "departure": "Venus",
+          "arrival": "Mercury",
+          "days": 223
+        },
+        {
+          "departure": "Mercury",
+          "arrival": "Mercury",
+          "days": 266
+        },
+        {
+          "departure": "Mercury",
+          "arrival": "Mercury",
+          "days": 358
+        },
+        {
+          "departure": "Mercury",
+          "arrival": "Mercury",
+          "days": 535
+        }
+      ]
+    }
+  ],
+  "pair_days": {
+    "Earth-Venus": [
+      90,
+      500
+    ],
+    "Venus-Earth": [
+      45,
+      500
+    ],
+    "Venus-Venus": [
+      180,
+      650
+    ],
+    "Earth-Earth": [
+      300,
+      1200
+    ],
+    "Earth-Jupiter": [
+      500,
+      1800
+    ],
+    "Jupiter-Saturn": [
+      700,
+      2200
+    ],
+    "Earth-Saturn": [
+      900,
+      3000
+    ],
+    "Jupiter-Uranus": [
+      1800,
+      5000
+    ],
+    "Earth-Uranus": [
+      3000,
+      7500
+    ],
+    "Jupiter-Neptune": [
+      2500,
+      6500
+    ],
+    "Earth-Neptune": [
+      4000,
+      10000
+    ],
+    "Saturn-Uranus": [
+      1200,
+      4500
+    ],
+    "Saturn-Neptune": [
+      2000,
+      6000
+    ],
+    "Earth-Mars": [
+      100,
+      600
+    ],
+    "Mars-Earth": [
+      100,
+      700
+    ],
+    "Venus-Mars": [
+      120,
+      700
+    ],
+    "Earth-Mercury": [
+      80,
+      500
+    ],
+    "Venus-Mercury": [
+      80,
+      500
+    ],
+    "Mercury-Mercury": [
+      80,
+      750
+    ],
+    "Mercury-Venus": [
+      80,
+      500
+    ]
+  },
+  "conventions": {
+    "time": "TDB",
+    "M": "Mars",
+    "Me": "Mercury",
+    "dv": "one optimized in-leg impulse",
+    "timing": "Broad analyst-selected search bounds informed by flown leg durations.",
+    "branches": "Prograde Lambert M/low-path choices; higher M can be added in JSON.",
+    "status": "Sequence templates, not a precomputed feasibility catalog."
+  },
+  "sequences": [
+    {
+      "id": "EV",
+      "bodies": [
+        "Earth",
+        "Venus"
+      ],
+      "target": "Venus",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EM",
+      "bodies": [
+        "Earth",
+        "Mars"
+      ],
+      "target": "Mars",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          100,
+          600
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVM",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Mars"
+      ],
+      "target": "Mars",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          120,
+          700
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EMe",
+      "bodies": [
+        "Earth",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          80,
+          500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVMe",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          80,
+          500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVVMe",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          80,
+          500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVMeMe",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Mercury",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          80,
+          500
+        ],
+        [
+          80,
+          750
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVMeMeMe",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Mercury",
+        "Mercury",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          80,
+          500
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVVMeMeMeMe",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          80,
+          500
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EEVVMeMeMeMeMeMeMe",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Venus",
+        "Venus",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          300,
+          1200
+        ],
+        [
+          90,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          80,
+          500
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EEVVMeMeMeMe",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Venus",
+        "Venus",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          300,
+          1200
+        ],
+        [
+          90,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          80,
+          500
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Flown architecture"
+    },
+    {
+      "id": "EdvEVdvVdvMedvMedvMedvMe",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Venus",
+        "Venus",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "leg_days": [
+        [
+          500,
+          1200
+        ],
+        [
+          90,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          80,
+          500
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EJ",
+      "bodies": [
+        "Earth",
+        "Jupiter"
+      ],
+      "target": "Jupiter",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          500,
+          1800
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EdvEJ",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "target": "Jupiter",
+      "dsm_legs": [
+        0
+      ],
+      "leg_days": [
+        [
+          500,
+          1200
+        ],
+        [
+          500,
+          1800
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Flown architecture"
+    },
+    {
+      "id": "EVEEJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "target": "Jupiter",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          300,
+          1200
+        ],
+        [
+          500,
+          1800
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Flown architecture"
+    },
+    {
+      "id": "EVdvEEJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "target": "Jupiter",
+      "dsm_legs": [
+        1
+      ],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          300,
+          1200
+        ],
+        [
+          500,
+          1800
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVVEJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Earth",
+        "Jupiter"
+      ],
+      "target": "Jupiter",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          500,
+          1800
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVdvVEJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Earth",
+        "Jupiter"
+      ],
+      "target": "Jupiter",
+      "dsm_legs": [
+        1
+      ],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          500,
+          1800
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EMEJ",
+      "bodies": [
+        "Earth",
+        "Mars",
+        "Earth",
+        "Jupiter"
+      ],
+      "target": "Jupiter",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          100,
+          600
+        ],
+        [
+          100,
+          700
+        ],
+        [
+          500,
+          1800
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EEVEEJ",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "target": "Jupiter",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          300,
+          1200
+        ],
+        [
+          90,
+          500
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          300,
+          1200
+        ],
+        [
+          500,
+          1800
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "ES",
+      "bodies": [
+        "Earth",
+        "Saturn"
+      ],
+      "target": "Saturn",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          900,
+          3000
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EdvES",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Saturn"
+      ],
+      "target": "Saturn",
+      "dsm_legs": [
+        0
+      ],
+      "leg_days": [
+        [
+          500,
+          1200
+        ],
+        [
+          900,
+          3000
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EEJS",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Saturn"
+      ],
+      "target": "Saturn",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          300,
+          1200
+        ],
+        [
+          500,
+          1800
+        ],
+        [
+          700,
+          2200
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVEEJS",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Saturn"
+      ],
+      "target": "Saturn",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          300,
+          1200
+        ],
+        [
+          500,
+          1800
+        ],
+        [
+          700,
+          2200
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVdvVEJS",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Earth",
+        "Jupiter",
+        "Saturn"
+      ],
+      "target": "Saturn",
+      "dsm_legs": [
+        1
+      ],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          500,
+          1800
+        ],
+        [
+          700,
+          2200
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Flown architecture"
+    },
+    {
+      "id": "EdvEJS",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Saturn"
+      ],
+      "target": "Saturn",
+      "dsm_legs": [
+        0
+      ],
+      "leg_days": [
+        [
+          500,
+          1200
+        ],
+        [
+          500,
+          1800
+        ],
+        [
+          700,
+          2200
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EU",
+      "bodies": [
+        "Earth",
+        "Uranus"
+      ],
+      "target": "Uranus",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          3000,
+          7500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EJU",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "target": "Uranus",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          500,
+          1800
+        ],
+        [
+          1800,
+          5000
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EdvEJU",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "target": "Uranus",
+      "dsm_legs": [
+        0
+      ],
+      "leg_days": [
+        [
+          500,
+          1200
+        ],
+        [
+          500,
+          1800
+        ],
+        [
+          1800,
+          5000
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVEEJU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "target": "Uranus",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          300,
+          1200
+        ],
+        [
+          500,
+          1800
+        ],
+        [
+          1800,
+          5000
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVdvVEJU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "target": "Uranus",
+      "dsm_legs": [
+        1
+      ],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          500,
+          1800
+        ],
+        [
+          1800,
+          5000
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "ESU",
+      "bodies": [
+        "Earth",
+        "Saturn",
+        "Uranus"
+      ],
+      "target": "Uranus",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          900,
+          3000
+        ],
+        [
+          1200,
+          4500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EN",
+      "bodies": [
+        "Earth",
+        "Neptune"
+      ],
+      "target": "Neptune",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          4000,
+          10000
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EJN",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "Neptune"
+      ],
+      "target": "Neptune",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          500,
+          1800
+        ],
+        [
+          2500,
+          6500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EdvEJN",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Neptune"
+      ],
+      "target": "Neptune",
+      "dsm_legs": [
+        0
+      ],
+      "leg_days": [
+        [
+          500,
+          1200
+        ],
+        [
+          500,
+          1800
+        ],
+        [
+          2500,
+          6500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVEEJN",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Neptune"
+      ],
+      "target": "Neptune",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          300,
+          1200
+        ],
+        [
+          500,
+          1800
+        ],
+        [
+          2500,
+          6500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVdvVEJN",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Earth",
+        "Jupiter",
+        "Neptune"
+      ],
+      "target": "Neptune",
+      "dsm_legs": [
+        1
+      ],
+      "leg_days": [
+        [
+          90,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          500,
+          1800
+        ],
+        [
+          2500,
+          6500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "ESN",
+      "bodies": [
+        "Earth",
+        "Saturn",
+        "Neptune"
+      ],
+      "target": "Neptune",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          900,
+          3000
+        ],
+        [
+          2000,
+          6000
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Analyst template; future feasibility must be searched"
+    }
+  ]
+}

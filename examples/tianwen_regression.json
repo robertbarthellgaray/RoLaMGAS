@@ -1,0 +1,37 @@
+{
+  "target": "Uranus",
+  "sequences": ["EVEEJU"],
+  "launch_start": "2029-09-01",
+  "launch_end": "2029-09-30T23:59:59",
+  "event_windows": [
+    ["2029-09-01", "2029-09-30T23:59:59"],
+    ["2030-04-01", "2030-04-30T23:59:59"],
+    ["2031-02-01", "2031-02-28T23:59:59"],
+    ["2033-05-01", "2033-05-31T23:59:59"],
+    ["2035-12-01", "2035-12-31T23:59:59"],
+    ["2045-03-01", "2045-03-31T23:59:59"]
+  ],
+  "route_overrides": {
+    "EVEEJU": {
+      "branch_options": [
+        [[0, true]], [[0, true], [1, true], [1, false]],
+        [[0, true], [1, true], [1, false], [2, true], [2, false]],
+        [[0, true]], [[0, true]]
+      ]
+    }
+  },
+  "vinf_tolerance_mps": 1,
+  "max_c3": 60,
+  "max_arrival_vinf_kms": 10,
+  "max_dsm_kms": 1.5,
+  "max_years": 20,
+  "minimum_altitude_km": {"Earth": 300, "Venus": 300, "Jupiter": 10000},
+  "samples_per_sequence": 1200,
+  "refinements_per_sequence": 45,
+  "max_nfev": 200,
+  "branch_families": 15,
+  "workers": 2,
+  "seed": 502,
+  "keep": 50,
+  "cache": "../cache"
+}

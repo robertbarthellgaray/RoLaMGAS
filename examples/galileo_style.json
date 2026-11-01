@@ -1,0 +1,75 @@
+{
+  "target": "Jupiter",
+  "launch_start": "2030-01-01",
+  "launch_end": "2035-01-01",
+  "sequences": [
+    "EVEEJ"
+  ],
+  "vinf_tolerance_mps": 20,
+  "max_c3": 100,
+  "max_arrival_vinf_kms": 15,
+  "max_dsm_kms": 1.5,
+  "max_years": 15,
+  "minimum_altitude_km": {
+    "Earth": 200,
+    "Venus": 300,
+    "Mars": 200
+  },
+  "samples_per_sequence": 2400,
+  "refinements_per_sequence": 36,
+  "max_nfev": 300,
+  "branch_families": 12,
+  "workers": 2,
+  "batches": 1,
+  "seed": 502,
+  "keep": 50,
+  "cache": "../cache",
+  "route_overrides": {
+    "EVEEJ": {
+      "leg_days": [
+        [
+          90,
+          250
+        ],
+        [
+          240,
+          400
+        ],
+        [
+          650,
+          900
+        ],
+        [
+          850,
+          1300
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            1,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ]
+    }
+  }
+}

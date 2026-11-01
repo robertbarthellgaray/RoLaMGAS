@@ -1,0 +1,23 @@
+{
+  "initial": {
+    "count": 52,
+    "title": "CLAUDIUS / UOP · 2045 arrival",
+    "canvas": 1027,
+    "bodyWidth": 1425,
+    "width": 1440
+  },
+  "all_candidates_loaded": 52,
+  "destination_filters": 8,
+  "downloads": [
+    "JSON",
+    "PNG",
+    "XYZV"
+  ],
+  "mobile": {
+    "bodyWidth": 390,
+    "width": 390,
+    "canvasWidth": 360
+  },
+  "exceptions": [],
+  "network_failures": []
+}

@@ -1,0 +1,19 @@
+{
+  "target": "Saturn",
+  "launch_start": "2027-01-01",
+  "launch_end": "2041-12-31",
+  "sequences": ["ES", "EdvES", "EEJS", "EVEEJS", "EVdvVEJS", "EdvEJS"],
+  "vinf_tolerance_mps": 20,
+  "max_c3": 80,
+  "max_arrival_vinf_kms": 12,
+  "max_dsm_kms": 1.5,
+  "max_years": 20,
+  "samples_per_sequence": 6000,
+  "refinements_per_sequence": 72,
+  "branch_families": 16,
+  "workers": 4,
+  "batches": 1,
+  "seed": 502,
+  "keep": 100,
+  "cache": "../cache"
+}
