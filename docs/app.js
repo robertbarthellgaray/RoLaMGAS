@@ -69,6 +69,8 @@ async function selectCandidate(id) {
   const token = ++requestVersion;
   setPlaying(false);
   $('mission-view').setAttribute('aria-busy', 'true');
+  for (const name of ['download-csv','download-xyzv','download-state-readme']) { $(name).hidden=true; $(name).removeAttribute('href'); }
+  $('trajectory-download-note').textContent='';
   $('plot-message').hidden = false; $('plot-message').textContent = 'Loading saved flight…';
   try {
     let c = cache.get(id);
@@ -100,8 +102,13 @@ async function selectCandidate(id) {
     if(c.integration_validation) {
       $('provenance').innerHTML += `<dt>JPL clearance audit</dt><dd>Passed · Sun and eight planetary surfaces</dd><dt>Audit scope</dt><dd>${escapeHtml(c.integration_validation.scope)}</dd>`;
     }
-    const xyzv = $('download-xyzv'); xyzv.hidden = !c.download;
-    if (c.download) xyzv.href = c.download; else xyzv.removeAttribute('href');
+    const files = c.trajectory_files;
+    for (const [name,key] of [['download-csv','csv'],['download-xyzv','xyzv'],['download-state-readme','readme']]) {
+      const link=$(name); link.hidden=!files?.[key];
+      if(files?.[key]) link.href=files[key];
+    }
+    if(files) $('trajectory-download-note').textContent=`${files.rows.toLocaleString()} saved position/velocity states · ${files.units} · ${files.coordinates}. ${files.note}`;
+    else if(c.download) { $('download-xyzv').href=c.download; $('download-xyzv').hidden=false; }
     document.querySelectorAll('.candidate-card').forEach(b => b.setAttribute('aria-pressed', b.dataset.id === c.id));
     canvas.setAttribute('aria-label', `${c.title} heliocentric trajectory in AU. Drag to rotate, scroll to zoom; arrow keys rotate and plus or minus zoom.`);
     $('plot-message').hidden = true;

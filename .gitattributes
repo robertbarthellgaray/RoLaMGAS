@@ -9,3 +9,7 @@
 *.zip binary
 *.png binary
 *.glb binary
+
+# Keep published numeric download checksums stable on every platform.
+docs/downloads/*.csv text eol=lf
+docs/downloads/*-README.txt text eol=lf

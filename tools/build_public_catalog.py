@@ -79,7 +79,7 @@ def from_candidate(q, card):
                 launch_date=q['launch_date'][:10], arrival_date=q['arrival_date'][:10],
                 years=q['duration_years'], c3=q['launch_c3_km2_s2'], vinf=q['arrival_vinf_kms'],
                 burns_mps=q['total_dsm_kms'] * 1000, events=events, burns=burns, flybys=flybys,
-                paths=paths, planet_paths=[dict(body=p['body'], points=finite_round(p['points'])) for p in card['planet_paths']],
+                paths=paths, coasts=q['segments'], planet_paths=[dict(body=p['body'], points=finite_round(p['points'])) for p in card['planet_paths']],
                 note='Solar Lambert/Kepler arcs joined at planet centers. Flyby altitude is inferred from asymptotic turn geometry, not a resolved closest approach. Saved speed and turn screens passed; capture and finite-radius patch corrections are excluded.',
                 provenance=dict(candidate_id=q['id'], coordinates='Heliocentric Ecliptic J2000', time_scale='TDB', plot_units='AU',
                                 ephemerides='JPL Horizons geometric vectors', source='Saved RoLaMGAS result'))
@@ -333,6 +333,15 @@ integrated('tianwen4-concept', 'Tianwen-4 · Uranus flyby branch', 'EVEEJU', sou
            t['launch_c3_km2_s2'], float(np.sqrt(t['actual_encounters'][-1]['local_osculating_c3_km2_s2'])),
            t['total_post_launch_delta_v_mps'],
            'Reconstructed mission concept, not an official Tianwen-4 trajectory. Forward n-body flight with ideal targeting corrections, prescribed JPL ephemerides and heliocentric indirect terms. This file follows the Uranus flyby branch after Jupiter; it does not include the Jovian orbiter. Navigation uncertainty is not modeled. The curve continues to April 2045 after the March Uranus flyby.')
+
+# Keep the portfolio's explicit deep links stable when refreshing route samples.
+for pinned_id in ('45a45fc7816a','3ee87f3d91eb','4fed974cbffb'):
+    previous=OUT/'data/cases'/(pinned_id+'.json')
+    if previous.exists() and not any(c['id']==pinned_id for c in cases):
+        pinned=load(previous)
+        if not pinned.get('validation',{}).get('passed'):
+            raise ValueError('Pinned portfolio candidate lacks admission: '+pinned_id)
+        cases.append(pinned)
 
 index = []
 for c in cases:

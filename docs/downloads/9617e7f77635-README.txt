@@ -1,0 +1,12 @@
+RoLaMGAS 9617e7f77635 / EVEEJP
+Saved full-precision solar coast initial conditions
+Solar Kepler coasts with planet-center joins; not a resolved planetary flyby. Velocities jump at ideal encounters/DSMs. Samples bracket joins one second apart. Do not use planet-center passages for flyby close-up renders; use a finite-radius desktop export and check its additional burns.
+
+Columns: JD(TDB), x, y, z, vx, vy, vz
+Origin: Sun. Frame: Ecliptic J2000. Position: km. Velocity: km/s.
+Time labels are TDB, not UTC.
+Rows: 1434
+CSV SHA256: f2bcec665cd2816506297ce1ba25d143c99113eed44338f53ebecf5dad10e20d
+XYZV SHA256: b489effe1a84269dc5039931260592f92dcbd0f057f82145bd18ea5bab50dfb6
+
+Solar Lambert/Kepler arcs joined at planet centers. Flyby altitude is inferred from asymptotic turn geometry, not a resolved closest approach. Saved speed and turn screens passed; capture and finite-radius patch corrections are excluded. Independent gallery admission: all unpowered joins ≤1 m/s mismatch, individual DSMs ≤700 m/s, and inferred flyby periapses above their stated floors.

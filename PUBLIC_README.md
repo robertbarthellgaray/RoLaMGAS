@@ -8,7 +8,7 @@
 
 ## Browse before downloading
 
-The GitHub Pages site includes 91 precomputed examples: all seven planetary destinations, Pluto, Eris, 2026 ED138, and the integrated CLAUDIUS/UOP and reconstructed Tianwen-4 concepts. Filter by destination, assist sequence, launch C3, cruise burn budget or arrival speed. Rotate the saved paths, play the mission timeline, inspect TDB event dates, and download the candidate data or plot. The two integrated concepts also offer their original XYZV files.
+The GitHub Pages site includes 92 precomputed examples: all seven planetary destinations, Pluto, Eris, 2026 ED138, and the integrated CLAUDIUS/UOP and reconstructed Tianwen-4 concepts. Filter by destination, assist sequence, launch C3, cruise burn budget or arrival speed. Rotate the saved paths, play the mission timeline, inspect TDB event dates, and download the candidate data or plot. The two integrated concepts also offer their original XYZV files.
 
 Public Lambert admission independently recomputes flyby speeds and turning geometry: excess-speed mismatch ≤1 m/s, each DSM ≤700 m/s, and inferred periapses above their stated floors. Coast endpoints and event states are cross-checked against the independent JPL cache. Integrated concepts have a separate Sun/eight-planet clearance audit. See [`docs/data/catalog_audit.json`](docs/data/catalog_audit.json).
 
