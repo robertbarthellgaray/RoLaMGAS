@@ -89,8 +89,11 @@ the Windows executable is not a macOS/Linux executable.
 
 ## License and provenance
 
-Copyright © 2026 Robert Barthell Garay. RoLaMGAS is distributed under
+RoLaMGAS is distributed under
 **GNU GPL version 3 (GPL-3.0-only)**; see [LICENSE](LICENSE).
+
+You are free to make derivative works based on this code, or improve its functionality.
+
 Third-party libraries retain their own copyrights and licenses; see
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 The source release includes the code, build instructions, pinned dependencies,
