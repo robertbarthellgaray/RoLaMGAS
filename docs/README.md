@@ -50,3 +50,9 @@ cost includes junction and flyby speed-matching burns. It appears first among
 Mercury entries under Route variety; explicit numerical sort modes retain their
 chosen metric order. Original integrated and patched-conic exports keep their
 source XYZV bytes.
+
+
+The November 2026 branding uses Robert’s `RoLaMGASsquare.png` in the header
+and icon, and `RoLaMGASbloom.png` for the wide artwork. Both original PNGs are
+preserved in `images/`. Smaller WebP/PNG assets serve the page and browser
+icons; the JPEG social preview uses the same bloom artwork.
