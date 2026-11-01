@@ -35,10 +35,10 @@ function renderList() {
   const rows = catalog.filter(c => targetMatches(c) && (destination!=='Small bodies'||smallBodyTarget==='All'||c.target===smallBodyTarget) && `${c.title} ${c.sequence} ${c.bodies.join(' ')}`.toLowerCase().replace(/\s+/g,'').includes(search)
     && c.c3 <= maximum('max-c3') && c.vinf <= maximum('max-vinf') && c.burns_mps <= maximum('max-burns'));
   const sort = $('sort').value;
-  rows.sort((a,b) => sort === 'recommended' ? Number(b.spotlight) - Number(a.spotlight) : a[sort] - b[sort]);
+  rows.sort((a,b) => sort === 'recommended' ? Number(b.spotlight) - Number(a.spotlight) || (b.featured_priority || 0) - (a.featured_priority || 0) : a[sort] - b[sort]);
   $('result-count').textContent = `${rows.length} ${rows.length === 1 ? 'trajectory' : 'trajectories'}`;
   $('candidate-list').innerHTML = rows.length ? rows.map(c => `<button type="button" class="candidate-card" data-id="${c.id}" aria-pressed="${c.id === selected?.id}" aria-label="Inspect ${escapeHtml(c.title)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}">
-    <div class="card-preview"><img loading="lazy" src="images/${c.id}.svg" width="320" height="220" alt="${escapeHtml(c.sequence)} heliocentric trajectory preview"><span class="card-badge">${c.spotlight ? 'Integrated concept' : 'Lambert candidate'}</span></div>
+    <div class="card-preview"><img loading="lazy" src="images/${c.id}.svg" width="320" height="220" alt="${escapeHtml(c.sequence)} heliocentric trajectory preview"><span class="card-badge">${c.spotlight ? 'Integrated concept' : escapeHtml(c.model)}</span></div>
     <div class="card-title">${escapeHtml(c.sequence)}<b aria-hidden="true">↗</b></div><p class="card-subtitle">${escapeHtml(c.target)} · ${c.launch_date} → ${c.arrival_date}</p>
     <div class="card-metrics"><div><span>C3 · km²/s²</span>${fmt(c.c3,1)}</div><div><span>Δv · m/s</span>${fmt(c.burns_mps,0)}</div><div><span>FLIGHT · yr</span>${fmt(c.years,1)}</div></div></button>`).join('')
     : '<p class="empty">No saved examples match these filters. Try raising a limit or choosing another destination.</p>';

@@ -335,11 +335,11 @@ integrated('tianwen4-concept', 'Tianwen-4 · Uranus flyby branch', 'EVEEJU', sou
            'Reconstructed mission concept, not an official Tianwen-4 trajectory. Forward n-body flight with ideal targeting corrections, prescribed JPL ephemerides and heliocentric indirect terms. This file follows the Uranus flyby branch after Jupiter; it does not include the Jovian orbiter. Navigation uncertainty is not modeled. The curve continues to April 2045 after the March Uranus flyby.')
 
 # Keep the portfolio's explicit deep links stable when refreshing route samples.
-for pinned_id in ('45a45fc7816a','3ee87f3d91eb','4fed974cbffb'):
+for pinned_id in ('45a45fc7816a','3ee87f3d91eb','4fed974cbffb','ba36e139b812'):
     previous=OUT/'data/cases'/(pinned_id+'.json')
     if previous.exists() and not any(c['id']==pinned_id for c in cases):
         pinned=load(previous)
-        if not pinned.get('validation',{}).get('passed'):
+        if not (pinned.get('validation',{}).get('passed') or pinned.get('integration_validation',{}).get('passed')):
             raise ValueError('Pinned portfolio candidate lacks admission: '+pinned_id)
         cases.append(pinned)
 
@@ -349,11 +349,14 @@ for c in cases:
     save(OUT / 'data/cases' / (c['id'] + '.json'), c)
     thumbnail(c)
     index.append({k: c[k] for k in ('id', 'title', 'target', 'sequence', 'bodies', 'model', 'spotlight', 'start', 'end', 'launch_date', 'arrival_date', 'years', 'c3', 'vinf', 'burns_mps')})
+for row,case in zip(index,cases):
+    if case.get('featured_priority'):row['featured_priority']=case['featured_priority']
 save(OUT / 'data/index.json', dict(version=1, updated='2026-11-01', cases=index,
                                  coordinates='Heliocentric Ecliptic J2000', time_scale='TDB',
                                  generation='Curated and independently screened Lambert candidates, with original integrated mission concepts; no browser-side solver.',admission_policy=POLICY))
-lambert_cases=[c for c in cases if not c['spotlight']]
+lambert_cases=[c for c in cases if c['model']=='Lambert candidate']
 save(OUT/'data/catalog_audit.json',dict(policy=POLICY,lambert_candidates=len(lambert_cases),integrated_concepts=2,
+    patched_conic_exports=sum(c['model']=='Patched-conic export' for c in cases),
     all_published_lambert_candidates_pass=all(c['validation']['passed'] for c in lambert_cases),
     largest_unpowered_mismatch_mps=max(c['validation']['max_vinf_mismatch_mps'] for c in lambert_cases),
     largest_individual_dsm_mps=max(c['validation']['max_single_dsm_mps'] for c in lambert_cases),

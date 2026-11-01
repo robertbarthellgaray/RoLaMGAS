@@ -43,3 +43,10 @@ from the public `coasts` initial states. `--runs-root PATH` can instead supply
 full-precision original candidate records. No JPL query or mission search is
 performed. The portfolio's three selected candidates are retained on catalog
 rebuilds while their existing admission records pass.
+
+The requested featured Mercury case `ba36e139b812` uses its existing finite-radius
+export, not its rejected unpowered Lambert seed. Its 899.724 m/s displayed cruise
+cost includes junction and flyby speed-matching burns. It appears first among
+Mercury entries under Route variety; explicit numerical sort modes retain their
+chosen metric order. Original integrated and patched-conic exports keep their
+source XYZV bytes.

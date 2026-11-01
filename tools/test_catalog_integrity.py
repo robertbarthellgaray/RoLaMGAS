@@ -38,6 +38,15 @@ class PublicCatalogTests(unittest.TestCase):
             clearances=c['integration_validation']['planet_clearances'];self.assertEqual(len(clearances),9)
             self.assertTrue(all(v['altitude_km']>0 for v in clearances.values()))
             self.assertEqual(hashlib.sha256((DOCS/c['download']).read_bytes()).hexdigest(),c['provenance']['sha256'])
+    def test_featured_mercury_export_accounts_for_all_correction_burns(self):
+        c=next(c for c in self.cases if c['id']=='ba36e139b812')
+        self.assertEqual(c['model'],'Patched-conic export')
+        self.assertGreater(c['export_budget']['raw_candidate_max_vinf_mismatch_mps'],1.)
+        self.assertAlmostEqual(sum(b['magnitude_mps'] for b in c['burns']),c['burns_mps'],places=6)
+        self.assertAlmostEqual(c['burns_mps'],899.723666079215,places=6)
+        self.assertTrue(c['integration_validation']['passed'])
+        featured=next(c for c in self.index if c['id']=='ba36e139b812')
+        self.assertGreater(featured['featured_priority'],max(c.get('featured_priority',0) for c in self.index if c['target']=='Mercury' and c['id']!='ba36e139b812'))
     def test_catalog_files_match_index_without_retired_case_files(self):
         ids={c['id'] for c in self.index};self.assertEqual(len(ids),len(self.index))
         self.assertEqual(ids,{p.stem for p in (DOCS/'data/cases').glob('*.json')})
