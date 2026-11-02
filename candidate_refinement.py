@@ -23,13 +23,19 @@ def neighborhood_request(config,route,candidate,parent_run,days=30.):
         a,b=t-half,t+half
         if i==0:
             a=max(a,config['launch_jd'][0]);b=min(b,config['launch_jd'][1])
-        if b<=a:raise ValueError('No room for nearby dates within the saved launch window')
+        if i==len(dates)-1 and config.get('arrival_window_jd'):
+            a=max(a,config['arrival_window_jd'][0]);b=min(b,config['arrival_window_jd'][1])
+        if config.get('event_windows_jd'):
+            old_a,old_b=config['event_windows_jd'][i];a=max(a,old_a);b=min(b,old_b)
+        if b<a:raise ValueError('No room for nearby dates within the saved encounter windows')
         windows.append([a,b])
     iso=lambda t:(EPOCH+timedelta(days=float(t)-JD0)).isoformat(timespec='microseconds')
-    request.update(sequences=[route['id']],search_objective='c3',
+    objective=config.get('search_objective','c3')
+    if objective=='feasibility':objective='c3'
+    request.update(sequences=[route['id']],search_objective=objective,
                    event_windows=[[iso(a),iso(b)] for a,b in windows],
                    launch_start=iso(windows[0][0]),launch_end=iso(windows[0][1]),
-                   max_c3=min(config['max_c3'],float(candidate['launch_c3_km2_s2'])+1e-7),
+                   max_c3=max(config.get('min_c3',0.),min(config['max_c3'],float(candidate['launch_c3_km2_s2'])+1e-7)) if objective=='c3' else config['max_c3'],
                    seed=int(config.get('seed',502))+1)
     # Preserve historical searches whose limits predate individual burn caps.
     for key in ('max_single_dsm_kms','max_powered_flyby_kms'):
@@ -38,7 +44,7 @@ def neighborhood_request(config,route,candidate,parent_run,days=30.):
     for options,branch in zip(request['route_overrides'][route['id']]['branch_options'],candidate['branches']):
         if list(branch) not in options:options.insert(0,list(branch))
     seed_x=list(candidate['x'])
-    seed_x[:len(dates)]=[(t-a)/(b-a) for t,(a,b) in zip(dates,windows)]
+    seed_x[:len(dates)]=[(t-a)/(b-a) if b>a else .5 for t,(a,b) in zip(dates,windows)]
     request['local_refinement']=dict(parent_run=parent_run,parent_candidate=candidate['id'],
         sequence=route['id'],date_variation_days=days,reference_c3_km2_s2=float(candidate['launch_c3_km2_s2']),
         dates_jd_tdb=dates.tolist(),seed_x=seed_x,branches=deepcopy(candidate['branches']))

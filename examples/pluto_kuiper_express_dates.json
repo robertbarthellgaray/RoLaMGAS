@@ -1,0 +1,40 @@
+{
+  "target_object": {
+    "name": "Pluto",
+    "id": "999",
+    "command": "999",
+    "kind": "horizons_object",
+    "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27999%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2462502.5%27&STOP_TIME=%27JD2462505.5%27&STEP_SIZE=%271+d%27&REF_PLANE=%27ECLIPTIC%27&OUT_UNITS=%27KM-S%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+    "query": "SPK=999",
+    "lookup_source": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=999",
+    "object_type": "planet"
+  },
+  "sequences": [
+    "EJX"
+  ],
+  "launch_start": "2004-12-01",
+  "launch_end": "2004-12-31",
+  "min_c3": 160.0,
+  "max_c3": 170.0,
+  "max_years": 10.0,
+  "max_arrival_vinf_kms": 30.0,
+  "max_dsm_kms": 0.0,
+  "event_windows": [
+    [
+      "2004-12-01",
+      "2004-12-31"
+    ],
+    [
+      "2006-03-01",
+      "2006-03-31"
+    ],
+    [
+      "2012-12-01",
+      "2012-12-31"
+    ]
+  ],
+  "arrival_date": "2012-12-15",
+  "arrival_tolerance_days": 15.0,
+  "search_objective": "time",
+  "mission_profile": "flyby"
+}

@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import re
 import urllib.parse
-import urllib.request
+from network import request_json
 
 TARGETS = {}
 
@@ -53,14 +53,58 @@ def identity(body):
     return TARGETS[body]
 
 
+def is_comet(descriptor):
+    """Recognize older cached comet descriptors as well as fresh lookup metadata."""
+    if descriptor.get('kind') != 'small_body':
+        return False
+    designation = str(descriptor.get('designation', '')).strip()
+    return bool(descriptor.get('is_comet') or descriptor.get('object_type', '').startswith('comet')
+                or re.match(r'^\d+[PDCX](?:-|$)', designation, re.I)
+                or re.match(r'^[PCDX]/', designation, re.I)
+                or re.match(r'^[PCDX]/', descriptor.get('name',''), re.I)
+                or 'comet' in str(descriptor.get('orbit_class', '')).lower())
+
+
+def command_for_epoch(body, start_jd):
+    """Pin a comet apparition once, including descriptors saved by older releases.
+
+    Horizons DES=1P; returns thirty records rather than vectors. CAP<JD selects
+    the last solution before the requested epoch, without unstable record IDs.
+    Keeping this in the registered identity also keeps chunked downloads on the
+    same apparition. New resolutions already carry a launch-epoch selection.
+    """
+    from math import isfinite
+    descriptor = identity(body)
+    if not is_comet(descriptor):
+        return descriptor['command']
+    before = descriptor.get('comet_apparition_before_jd')
+    if before is None:
+        before = float(start_jd)
+    if not isfinite(float(before)):
+        raise ValueError('A finite epoch is required to select the comet apparition')
+    designation = str(descriptor.get('designation', '')).strip()
+    if not designation:
+        raise ValueError('Resolve this comet again to obtain its primary designation before downloading vectors')
+    descriptor = dict(descriptor, command=f'DES={designation};CAP<{float(before):.9f};',
+                      is_comet=True, comet_apparition_before_jd=float(before),
+                      comet_apparition_policy='last apparition before requested launch/cache epoch')
+    register_target(descriptor)
+    return descriptor['command']
+
+
+def target_for_epoch(descriptor, start_jd):
+    """Normalize a saved target identity for a new mission's launch epoch."""
+    normalized = dict(descriptor)
+    if is_comet(normalized):
+        normalized.pop('comet_apparition_before_jd', None)
+    register_target(normalized)
+    command_for_epoch(normalized['name'], start_jd)
+    return dict(identity(normalized['name']))
+
+
 def cache_stem(body):
     from ephemeris import BODIES
     return body if body in BODIES else 'object_'+str(identity(body)['id']).replace('-','minus')
-
-
-def request_json(url):
-    with urllib.request.urlopen(url,timeout=90) as response:
-        return json.load(response)
 
 
 def resolve(query,epoch='2030-01-01'):
@@ -98,18 +142,34 @@ def resolve(query,epoch='2030-01-01'):
     sb_url = None
     if small_body:
         sb_url = 'https://ssd-api.jpl.nasa.gov/sbdb.api?'+urllib.parse.urlencode(
-            {'sstr':match_object.get('pdes') or match_object['spkid'],'phys-par':'1'})
+            {'spk':match_object['spkid'],'phys-par':'1','full-prec':'1'})
         sb = request_json(sb_url)
     obj = sb.get('object')
     if obj:
+        if str(obj['spkid']) != str(match_object['spkid']):
+            raise ValueError('SBDB identity differs from the selected Horizons lookup identity; no target was selected')
         command=str(int(obj['des']))+';' if obj['des'].isdigit() else 'DES='+obj['des']+';'
         descriptor = dict(name=obj['fullname'],id=str(obj['spkid']),command=command,
                           designation=obj['des'],kind='small_body',orbit_class=obj.get('orbit_class',{}).get('name'),
-                          source=sb_url,orbit_solution=sb.get('orbit',{}).get('orbit_id'),query=query)
+                          source=sb_url,orbit_solution=sb.get('orbit',{}).get('orbit_id'),query=query,
+                          object_type=object_type,is_comet=object_type.startswith('comet'))
         elements = {e['name']:e['value'] for e in sb.get('orbit',{}).get('elements',[])}
-        descriptor['semimajor_axis_au'] = float(elements['a']) if 'a' in elements else None
-        descriptor['perihelion_au'] = float(elements['q']) if 'q' in elements else None
+        for field, key in [('semimajor_axis_au','a'), ('perihelion_au','q'),
+                           ('inclination_deg','i'), ('eccentricity','e'),
+                           ('aphelion_au','ad'), ('period_days','per')]:
+            value = elements.get(key)
+            descriptor[field] = float(value) if value is not None else None
+        descriptor['retrograde'] = (descriptor['inclination_deg'] is not None and descriptor['inclination_deg'] > 90)
+        physical = {p['name']:p for p in sb.get('phys_par',[])}
+        diameter = physical.get('diameter',{})
+        if diameter.get('value') is not None and diameter.get('units') == 'km':
+            descriptor['effective_radius_km'] = float(diameter['value'])/2
+            descriptor['radius_source'] = diameter.get('ref')
+            descriptor['radius_note'] = 'Half the SBDB effective diameter; not a shape or surface-clearance model.'
         register_target(descriptor)
+        if descriptor['is_comet']:
+            command_for_epoch(descriptor['name'], jd(epoch))
+            descriptor = identity(descriptor['name'])
         return descriptor
     if small_body:
         raise ValueError('Horizons found the small body, but SBDB did not return a unique orbit. Try again later.')

@@ -89,14 +89,15 @@ def resolve_route(sequence, db, target_object=None, custom_leg_days=None):
 
 def normalize(config, config_dir=HERE):
     c = dict(target='Jupiter', launch_start='2027-01-01', launch_end='2036-12-31',
-             max_years=20., vinf_tolerance_mps=20., max_c3=100., max_arrival_vinf_kms=30.,
+             max_years=20., vinf_tolerance_mps=20., min_c3=0., max_c3=100., max_arrival_vinf_kms=30.,
              max_dsm_kms=1.5,max_single_dsm_kms=.7,max_powered_flyby_kms=.2,dsm_velocity_box_kms=6., minimum_altitude_km={},
              samples_per_sequence=3000, refinements_per_sequence=36, max_nfev=250,
              branch_families=16, workers=max(1,min(4,(os.cpu_count() or 2)-1)), batches=1,
              seed=502, keep=100, cache='cache', max_ephemeris_step_days=1., sequences=[],
              route_overrides={},target_object=None,custom_leg_days=[180,8000],search_objective='feasibility',cost_refinements=3,powered_flybys=False,
-             local_refinement=None,mercury_resonant_seeds=True,append_flyby=None)
-    unknown = set(config)-set(c)-{'event_windows','launch_jd','event_windows_jd'}
+             local_refinement=None,mercury_resonant_seeds=True,append_flyby=None,
+             arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom')
+    unknown = set(config)-set(c)-{'event_windows','launch_jd','event_windows_jd','arrival_window_jd'}
     if unknown:
         raise ValueError(f'Unknown configuration keys: {sorted(unknown)}')
     c.update(config)
@@ -108,8 +109,12 @@ def normalize(config, config_dir=HERE):
             raise ValueError('Local refinement needs one sequence and explicit date windows')
         if not all(math.isfinite(float(v)) and 0<=v<=1 for v in local.get('seed_x',[])):
             raise ValueError('Local refinement seed must be finite and within bounds')
-    if c['search_objective'] not in ('feasibility','balanced','c3','dsm','arrival'):
-        raise ValueError('Search objective must be feasibility, balanced, c3, dsm or arrival')
+    if c['search_objective'] not in ('feasibility','balanced','c3','dsm','arrival','time'):
+        raise ValueError('Search objective must be feasibility, balanced, c3, dsm, arrival or time')
+    if c['mission_profile'] not in ('custom','orbiter','flyby'):
+        raise ValueError('Mission profile must be custom, orbiter or flyby')
+    if c['transfer_direction'] not in ('prograde','retrograde','both'):
+        raise ValueError('Transfer direction must be prograde, retrograde or both')
     if c['target_object']:
         register_target(c['target_object'])
         notice = moon_model_notice(c['target_object'])
@@ -122,11 +127,13 @@ def normalize(config, config_dir=HERE):
         raise ValueError('Choose Mercury, Venus, Mars, Jupiter, Saturn, Uranus, or Neptune')
     if not isinstance(c['sequences'],list) or not isinstance(c['minimum_altitude_km'],dict):
         raise ValueError('sequences must be a list and minimum_altitude_km a dictionary')
-    for name in ('max_years','vinf_tolerance_mps','max_c3','max_arrival_vinf_kms','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms',
+    for name in ('max_years','vinf_tolerance_mps','min_c3','arrival_tolerance_days','max_c3','max_arrival_vinf_kms','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms',
                  'dsm_velocity_box_kms','max_ephemeris_step_days'):
         c[name] = float(c[name])
-        if not math.isfinite(c[name]) or c[name] < 0 or (c[name] == 0 and name not in ('max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms')):
+        if not math.isfinite(c[name]) or c[name] < 0 or (c[name] == 0 and name not in ('min_c3','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms')):
             raise ValueError(f'{name} must be positive and finite')
+    if c['min_c3'] > c['max_c3']:
+        raise ValueError('Minimum launch C3 cannot exceed maximum launch C3')
     for name in ('samples_per_sequence','refinements_per_sequence','max_nfev','branch_families',
                  'workers','batches','keep','cost_refinements'):
         if isinstance(c[name],bool) or int(c[name]) != c[name] or c[name] < 1:
@@ -146,15 +153,29 @@ def normalize(config, config_dir=HERE):
             raise ValueError('Altitude floors must be nonnegative finite values for known planets')
         c['minimum_altitude_km'][body] = float(altitude)
     c['launch_jd'] = [jd(c['launch_start']),jd(c['launch_end'])]
-    if c['launch_jd'][0] >= c['launch_jd'][1]:
-        raise ValueError('launch_end must follow launch_start')
+    if c['launch_jd'][0] > c['launch_jd'][1]:
+        raise ValueError('launch_end cannot precede launch_start')
     if c.get('event_windows'):
         if len(c['sequences']) != 1:
             raise ValueError('Explicit event_windows require exactly one sequence')
         c['event_windows_jd'] = [[jd(a),jd(b)] for a,b in c['event_windows']]
-        if any(a >= b for a,b in c['event_windows_jd']):
-            raise ValueError('Each event window must have positive width')
+        if any(not all(math.isfinite(t) for t in (a,b)) or a > b for a,b in c['event_windows_jd']):
+            raise ValueError('Each event window must have ordered, finite dates')
         c['launch_jd'] = c['event_windows_jd'][0]
+    c.pop('arrival_window_jd',None)
+    if c['arrival_date']:
+        center=jd(str(c['arrival_date']));width=c['arrival_tolerance_days']
+        c['arrival_window_jd']=[center-width,center+width]
+        if c['arrival_window_jd'][1] <= c['launch_jd'][0]:
+            raise ValueError('Requested arrival must follow the launch window start')
+        if c.get('event_windows_jd'):
+            a,b=c['event_windows_jd'][-1];lo,hi=c['arrival_window_jd']
+            if max(a,lo)>min(b,hi):
+                raise ValueError('Arrival date does not overlap the final encounter date window')
+            c['event_windows_jd'][-1]=[max(a,lo),min(b,hi)]
+    if c['target_object']:
+        from horizons_targets import target_for_epoch
+        c['target_object']=target_for_epoch(c['target_object'],c['launch_jd'][0])
     cache = Path(c['cache'])
     c['cache'] = str((config_dir/cache).resolve() if not cache.is_absolute() else cache.resolve())
     return c
@@ -179,9 +200,16 @@ def routes_for(c):
             raise ValueError('One timing range and branch-options list per leg required')
         if any(not (math.isfinite(a) and math.isfinite(b) and 0 < a < b) for a,b in r['leg_days']):
             raise ValueError('Leg durations require 0 < minimum < maximum')
-        for options in r['branch_options']:
-            if not options or any(len(v) != 2 or int(v[0]) != v[0] or v[0] < 0 or not isinstance(v[1],bool) for v in options):
-                raise ValueError('Branches must be nonnegative integer M and boolean low-path')
+        for i,options in enumerate(r['branch_options']):
+            if not options or any(len(v) not in (2,3) or int(v[0]) != v[0] or v[0] < 0 or not isinstance(v[1],bool)
+                                  or (len(v)==3 and not isinstance(v[2],bool)) for v in options):
+                raise ValueError('Branches need nonnegative integer M, boolean low-path and optional boolean prograde')
+            if c.get('append_flyby') and i<c['append_flyby']['prefix_count']-1:continue
+            if c['transfer_direction']=='retrograde':
+                r['branch_options'][i]=[list(v) for v in dict.fromkeys(tuple(v[:2])+ (False,) for v in options)]
+            elif c['transfer_direction']=='both':
+                r['branch_options'][i]=[list(v[:2])+[direction] for v in options for direction in (True,False)]
+                r['branch_options'][i]=[list(v) for v in dict.fromkeys(tuple(v) for v in r['branch_options'][i])]
         if c.get('event_windows_jd') and len(c['event_windows_jd']) != n+1:
             raise ValueError('One explicit event window per body required')
     return routes
@@ -195,6 +223,7 @@ def coverage(c, routes):
         return dates[0]-2,dates[-1]+sum(b for a,b in routes[0]['leg_days'][e['prefix_count']-1:])+2
     # Cover every sampled epoch, including samples rejected for excessive duration.
     end = c['launch_jd'][1]+max(sum(b for a,b in r['leg_days']) for r in routes)
+    if c.get('arrival_window_jd'):end=c['arrival_window_jd'][1]
     return c['launch_jd'][0]-2, end+2
 
 
@@ -276,6 +305,8 @@ def candidate_key(q):
 def objective_key(c):
     if c.get('search_objective')=='c3':return lambda q:q['launch_c3_km2_s2']
     if c.get('search_objective')=='arrival':return lambda q:q['arrival_vinf_kms']
+    if c.get('search_objective')=='time':return lambda q:q['duration_years']
+    if c.get('search_objective')=='dsm':return lambda q:q['total_dsm_kms']
     return candidate_key
 
 
@@ -600,6 +631,7 @@ def wizard():
     config = dict(target=target,launch_start=start,launch_end=end,
                   sequences=[] if names.lower() == 'all' else [s.strip() for s in names.split(',')],
                   vinf_tolerance_mps=float(ask('Maximum flyby excess-speed mismatch (m/s)',20)),
+                  min_c3=float(ask('Minimum launch C3 (km^2/s^2)',0)),
                   max_c3=float(ask('Maximum launch C3 (km^2/s^2)',100)),
                   max_arrival_vinf_kms=float(ask('Maximum arrival V-infinity (km/s)',15)),
                   max_dsm_kms=float(ask('Maximum total designed DSM delta-v (km/s)',1.5)),
@@ -612,7 +644,7 @@ def wizard():
         raise ValueError('Choose quick, standard or deep')
     samples,starts,nfev = {'quick':(1200,24,200),'standard':(6000,72,350),'deep':(25000,240,500)}[effort]
     config.update(samples_per_sequence=samples,refinements_per_sequence=starts,max_nfev=nfev)
-    config['search_objective']=ask('Refinement objective: balanced / c3 / dsm / feasibility','balanced').lower()
+    config['search_objective']=ask('Refinement objective: balanced / c3 / dsm / arrival / time / feasibility','balanced').lower()
     config['batches'] = int(ask('Independent batches (more batches explore more starts)',1))
     output = HERE/'runs'/datetime.now().strftime('%Y%m%d_%H%M%S')
     config['cache'] = str(HERE/'cache')

@@ -145,10 +145,11 @@ def solar_piece(start,end,r0,r1,reference,low=True):
     if end<=start:
         raise ValueError('Finite flyby patches overlap a DSM or the next encounter')
     m = revolutions(reference)
+    prograde=bool(np.cross(np.asarray(reference['r']),np.asarray(reference['v']))[2]>=0)
     choices = []
     for path in ([low,not low] if m else [True]):
         try:
-            va,vb = lambert(np.asarray(r0),np.asarray(r1),end-start,(m,path))
+            va,vb = lambert(np.asarray(r0),np.asarray(r1),end-start,(m,path,prograde))
             choices.append((np.linalg.norm(va-np.asarray(reference['v'])),va,vb))
         except (ValueError,RuntimeError,AssertionError):
             pass
@@ -293,6 +294,11 @@ def requirement_violations(q,c):
                              ('duration_years','max_years','Duration (years)')]:
         if q[field]>c[limit]+1e-8:
             failures.append(f'{label}: {q[field]:.8g} exceeds requested {c[limit]:.8g}')
+    if q['launch_c3_km2_s2']<c.get('min_c3',0)-1e-8:
+        failures.append(f"Launch C3 is below requested minimum {c['min_c3']:.8g}")
+    window=c.get('arrival_window_jd')
+    if window and not window[0]-1e-8<=q['dates_jd_tdb'][-1]<=window[1]+1e-8:
+        failures.append('Arrival epoch is outside the requested arrival-date window')
     for f in q['flybys']:
         if f.get('powered_flyby',{}).get('magnitude_kms',0.)>c['max_powered_flyby_kms']+1e-9:
             failures.append(f"{f['body']} powered flyby exceeds individual cap {c['max_powered_flyby_kms']*1000:.8g} m/s")
@@ -304,6 +310,19 @@ def requirement_violations(q,c):
     if any(b['magnitude_kms']>c['max_single_dsm_kms']+1e-9 for b in q.get('dsms',[])):
         failures.append(f"A DSM exceeds individual cap {c['max_single_dsm_kms']*1000:.8g} m/s")
     return failures
+
+
+def small_body_node(body,date,ep,incoming_vinf,distance_km=10000.):
+    """Geometric center-distance targeting; no invented target GM or radius."""
+    distance_km=float(distance_km)
+    if not math.isfinite(distance_km) or distance_km<=0:
+        raise ValueError('Target-center encounter distance must be positive and finite')
+    direction=unit(incoming_vinf)
+    target_state=ep.state(body,date).copy()
+    h=plane_axis(target_state[:3],direction)
+    target_state[:3]+=distance_km*unit(np.cross(direction,h))
+    return dict(pieces=[],body=body,date=date,target_state=target_state,rp=None,
+                altitude=None,center_distance_km=distance_km)
 
 
 def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.):
@@ -323,7 +342,6 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
         arrival_altitude_km=float(arrival_altitude_km)
         if not math.isfinite(arrival_altitude_km) or arrival_altitude_km<=0:
             raise ValueError('Arrival altitude must be positive and finite')
-        if q['events'][-1]['body'] not in BODIES:raise ValueError('Arrival altitude currently requires a supported planet target')
     ep=get_ephemerides(c,routes_for(c))
     if post_flyby_months>0:extend_planet_ephemerides(ep,c,q['events'][0]['julian_date_tdb']-2,extended_end+2,status)
     if powered_flybys is not None or c.get('powered_flybys'):
@@ -350,13 +368,8 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
             if f and node['altitude']<floor-1e-6:
                 violations.append(f"{body} integrated flyby altitude {node['altitude']:.8g} km is below requested {floor:.8g} km")
         else:
-            # No fabricated small-body GM, radius or capture orbit. The exported
-            # arrival is a 10,000 km geometric miss, gravity neglected there.
-            direction=unit(q['arrival_vinf_vector_kms'])
-            planet=ep.state(body,date)
-            h=plane_axis(planet[:3],direction)
-            target=planet.copy();target[:3]+=10000*unit(np.cross(direction,h))
-            node=dict(pieces=[],body=body,date=date,target_state=target,rp=None,altitude=None)
+            node=small_body_node(body,date,ep,q['arrival_vinf_vector_kms'],
+                                 10000. if arrival_altitude_km is None else arrival_altitude_km)
         nodes.append(node)
     pieces=list(nodes[0]['pieces'])
     segment_index=0
@@ -440,6 +453,16 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
                            reference_radius_km=BODIES[last['body']][2],gm_km3_s2=BODIES[last['body']][1],
                            altitude_km=float(np.linalg.norm(relative[:3])-BODIES[last['body']][2]),
                            note='Incoming state at periapsis. No insertion burn or captured orbit has been applied. Transform the frame and time scale as needed before using FreeFlyer.')
+    else:
+        y=next(p for p in reversed(pieces) if p['start']<=last['date']<=p['end'])['state'](last['date'])
+        target=ep.state(last['body'],last['date']);relative=y-target
+        arrival_state=dict(body=last['body'],epoch_jd_tdb=last['date'],epoch=calendar(last['date']),
+            frame='Target-centered Ecliptic J2000; geometric, km and km/s; epoch TDB',
+            position_km=relative[:3].tolist(),velocity_kms=relative[3:].tolist(),
+            heliocentric_state_km_kms=y.tolist(),target_state_km_kms=target.tolist(),
+            center_distance_km=float(np.linalg.norm(relative[:3])),
+            note='Geometric encounter state; no target gravity, surface radius, collision clearance or capture is modeled.')
+    if arrival_state is not None:
         atomic_json(output/'arrival_state.json',arrival_state)
         with (output/'arrival_state.csv').open('w',newline='',encoding='utf-8') as stream:
             writer=csv.writer(stream);writer.writerow(['julian_date_tdb','x_km','y_km','z_km','vx_kms','vy_kms','vz_kms'])
@@ -463,7 +486,7 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
                 powered_flyby_burns=[dict(body=f['body'],event_index=f['event_index'],julian_date_tdb=f['julian_date_tdb'],**f['powered_flyby']) for f in q['flybys'] if f.get('powered_flyby')],
                 candidate_passes_requested_limits=not violations and q['status'].startswith('passes'),
                 requirement_violations=violations,
-                requested_limits={key:c[key] for key in ('max_c3','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','max_years','vinf_tolerance_mps','minimum_altitude_km')},
+                requested_limits={key:c[key] for key in ('min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','max_years','vinf_tolerance_mps','minimum_altitude_km')},
                 source_candidate_sha256=hashlib.sha256(Path(candidate).read_bytes()).hexdigest(),
                 ephemeris_sources=ep.manifest,
                 numerical_validation_passed=max_error<1 and max(jumps,default=0)<1,
@@ -475,7 +498,8 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
                 no_sample_bracketed_planet_or_sun_impacts=all(r['altitude_km']>0 for r in clearance_rows),
                 planets_checked=checked,continuous_nbody_validated=False,
                 sampling='Adaptive Hermite midpoint position residual below 0.1 km; maximum solar step 2 days, flyby step 2 hours; impulse epochs separated by 0.02 s.',
-                small_body_arrival='10,000 km geometric miss; no target gravity, radius or capture modeled.' if c['target_object'] else None,
+                small_body_arrival=(f"{last['center_distance_km']:.12g} km from target center at the requested encounter epoch; target gravity, surface radius and capture are not modeled." if 'center_distance_km' in last else None),
+                small_body_encounter_distance_km=last.get('center_distance_km'),
                 limitations=['Boundary velocities are retargeted; every resulting impulse is explicit in burns.csv.',
                              'Clearance minima are sample-bracketed with continuous refinement, not exhaustive polynomial root isolation.',
                              'Moon perturbations, planetary rings and thermal constraints are not included.',

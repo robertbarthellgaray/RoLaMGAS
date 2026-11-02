@@ -1,0 +1,140 @@
+name: Build native downloads
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Package version (manual runs create downloadable Actions artifacts only)
+        default: '0.2.0'
+        required: true
+        type: string
+  push:
+    tags:
+      - 'v[0-9]*'
+      - 'rolamgas-v[0-9]*'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: windows-amd64
+            runner: windows-2022
+          - name: macos-arm64
+            runner: macos-15
+          - name: macos-amd64
+            runner: macos-15-intel
+          - name: linux-amd64
+            runner: ubuntu-22.04
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install scientific and packaging dependencies
+        run: python -m pip install -r requirements-build.txt
+      - name: Test source and packaging contracts
+        run: python -m unittest discover -p "test_*.py"
+      - name: Build source and native download
+        env:
+          MANUAL_VERSION: ${{ inputs.version }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          IS_TAG: ${{ startsWith(github.ref, 'refs/tags/') }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os, subprocess, sys
+          from build_release import validate_version
+          version = os.environ['MANUAL_VERSION'] or '0.2.0'
+          if os.environ['IS_TAG'] == 'true':
+              tag = os.environ['RELEASE_TAG']
+              version = tag.removeprefix('rolamgas-').removeprefix('v')
+          validate_version(version)
+          subprocess.run([sys.executable, 'build_release.py', '--native', '--version', version], check=True)
+          PY
+      - name: Smoke-test the frozen application
+        env:
+          ROLAMGAS_DATA_DIR: ${{ runner.temp }}/rolamgas-smoke
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, subprocess, sys
+          if sys.platform == 'win32': app = pathlib.Path('releases/RoLaMGAS.exe')
+          elif sys.platform == 'darwin': app = pathlib.Path('releases/RoLaMGAS.app/Contents/MacOS/RoLaMGAS')
+          else: app = pathlib.Path('releases/RoLaMGAS/RoLaMGAS')
+          output = pathlib.Path(os.environ['ROLAMGAS_DATA_DIR']) / 'self-check.json'
+          output.parent.mkdir(parents=True, exist_ok=True)
+          subprocess.run([str(app.resolve()), '--self-check-file', str(output)], check=True, timeout=180)
+          result = json.loads(output.read_text())
+          assert result['name'] == 'RoLaMGAS', result
+          assert result['scientific_self_check']['endpoint_error_km'] < 1, result
+          assert result['scientific_self_check']['numba_kernels_compiled'], result
+          assert result['baseline_planets'] == 8, result
+          assert result['certificate_verification'] is True, result
+          print(json.dumps(result, indent=2))
+          PY
+      - name: Name checksum manifest by platform
+        shell: bash
+        env:
+          PLATFORM_NAME: ${{ matrix.name }}
+        run: |
+          python - <<'PY'
+          import os, pathlib
+          source = pathlib.Path('releases/release_manifest.json')
+          source.rename(source.with_name('release_manifest-' + os.environ['PLATFORM_NAME'] + '.json'))
+          PY
+      - name: Upload native download
+        uses: actions/upload-artifact@v4
+        with:
+          name: rolamgas-${{ matrix.name }}
+          path: |
+            releases/*.exe
+            releases/*.dmg
+            releases/*.deb
+            releases/release_manifest-*.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload corresponding source
+        if: matrix.name == 'windows-amd64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rolamgas-source
+          path: releases/RoLaMGAS-source.zip
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log-${{ matrix.name }}
+          path: .build/executable_build.log
+          if-no-files-found: ignore
+
+  publish-tagged-release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rolamgas-*
+          path: release-assets
+          merge-multiple: true
+      - name: Publish downloads and matching GPL source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --verify-tag --generate-notes
+          gh release upload "$RELEASE_TAG" release-assets/* --clobber

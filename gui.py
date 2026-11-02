@@ -21,7 +21,7 @@ import webbrowser
 from ephemeris import BODIES,atomic_json
 from horizons_targets import resolve,register_target
 from mission_search import HERE,load_database,normalize,routes_for,get_ephemerides
-from app_paths import RESOURCE_ROOT,ensure_data,worker_command,worker_environment
+from app_paths import APP_VERSION,RESOURCE_ROOT,ensure_data,worker_command,worker_environment
 
 
 def read_json(path,default=None):
@@ -86,7 +86,7 @@ class App:
         for p in (RESOURCE_ROOT/'examples').glob('*.json'):
             c = read_json(p,{})
             presets.append(dict(id=p.stem,target=c.get('target'),name=p.stem.replace('_',' ').title()))
-        return dict(token=self.token,planets=[p for p in BODIES if p!='Earth'],
+        return dict(version=APP_VERSION,token=self.token,planets=[p for p in BODIES if p!='Earth'],
                     routes=[dict(id=r['id'],target=r['target'],bodies=r['bodies'],dsm_legs=r['dsm_legs']) for r in db['sequences']],
                     custom_routes=['EX','EdvEX','EVX','EVEX','EVEEX','EJX','EdvEJX','EVEEJX','ESX','EJSX'],
                     presets=presets,runs=self.catalog(),cpu_count=os.cpu_count() or 2,active=self.active)
@@ -209,7 +209,7 @@ class App:
         request=read_json(output/'request.json') or read_json(output/'run_manifest.json',{}).get('config',{})
         return dict(run=name,status=status or dict(state='finished'),live=live,log=logs,
                     heartbeat=read_json(output/'heartbeat.json'),
-                    limits={k:request.get(k) for k in ('target','max_c3','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years')},
+                    limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years')},
                     active=name==self.active and self.process is not None and self.process.poll() is None)
 
     def build_archive(self,name):
@@ -341,9 +341,10 @@ class App:
         folder=self.folder(name)/'exports'/identifier/'celestia_package'
         if not folder.is_dir():
             raise ValueError('Export a Celestia package first')
-        if os.name!='nt':
-            raise ValueError('Open this folder manually: '+str(folder))
-        os.startfile(str(folder))
+        if os.name=='nt':
+            os.startfile(str(folder))
+        else:
+            subprocess.Popen(['open' if sys.platform=='darwin' else 'xdg-open',str(folder)],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         return dict(opened=True)
 
 
@@ -369,7 +370,7 @@ class Handler(BaseHTTPRequestHandler):
             url = urllib.parse.urlparse(self.path)
             params = urllib.parse.parse_qs(url.query)
             if url.path=='/api/ping':
-                return self.json(dict(app='trajectory-explorer-gui',instance_id=self.server.instance_id))
+                return self.json(dict(app='trajectory-explorer-gui',version=APP_VERSION,instance_id=self.server.instance_id))
             if url.path=='/api/bootstrap':
                 return self.json(self.app.bootstrap())
             if url.path=='/api/cache':
@@ -398,6 +399,8 @@ class Handler(BaseHTTPRequestHandler):
                 path = (root/parts[3]).resolve()
                 if not path.is_relative_to(root) or path.suffix.lower() not in ('.json','.png','.tsv','.html','.md','.log','.csv','.xyzv','.ssc','.txt','.zip'):
                     raise ValueError('File is outside this run')
+            elif url.path=='/gui_assets/launch_mass_c3.png':
+                path=RESOURCE_ROOT/'gui_assets'/'launch_mass_c3.png'
             elif url.path in ('/','/gui.html','/gui.js','/gui.css'):
                 path = RESOURCE_ROOT/('gui.html' if url.path=='/' else url.path[1:])
             else:
@@ -476,7 +479,7 @@ def main():
         try:
             with urllib.request.urlopen(previous['url']+'api/ping',timeout=2) as response:
                 ping = json.load(response)
-            if ping.get('app')=='trajectory-explorer-gui' and ping.get('instance_id')==previous.get('instance_id'):
+            if ping.get('app')=='trajectory-explorer-gui' and ping.get('version')==APP_VERSION and ping.get('instance_id')==previous.get('instance_id'):
                 webbrowser.open(previous['url'])
                 return
         except (OSError,ValueError,KeyError):
@@ -486,7 +489,7 @@ def main():
     server.app = app
     server.instance_id = secrets.token_hex(12)
     url = f'http://127.0.0.1:{server.server_port}/'
-    atomic_json(instance_file,dict(url=url,instance_id=server.instance_id,pid=os.getpid()))
+    atomic_json(instance_file,dict(url=url,version=APP_VERSION,instance_id=server.instance_id,pid=os.getpid()))
     print('RoLaMGAS: '+url,flush=True)
     if not args.no_browser:
         webbrowser.open(url)

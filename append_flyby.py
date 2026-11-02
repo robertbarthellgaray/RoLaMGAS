@@ -22,7 +22,7 @@ def extension_request(config,route,candidate,parent_run,body=None,count=1,minimu
     if dsm:dsms+=list(range(n0-1,n-1))
     sequence=candidate['sequence']+('dv' if dsm else '')+codes[body]
     for _ in range(count-1):sequence+=('dv' if dsm else '')+codes[body]
-    branches=[[[int(b[0]),bool(b[1])]] for b in candidate['branches']]
+    branches=[[list(b)] for b in candidate['branches']]
     bodies=list(candidate['bodies'])+[body]*count
     for a,b in zip(bodies[n0-1:],bodies[n0:]):
         max_m=(4 if b=='Mercury' else 2) if a==b else (1 if a in ('Mercury','Venus') and b in ('Mercury','Venus','Earth') else 0)
@@ -31,7 +31,7 @@ def extension_request(config,route,candidate,parent_run,body=None,count=1,minimu
         leg_days=deepcopy(route['leg_days'])+[[minimum_days,maximum_days] for _ in range(count)],
         branch_options=branches,provenance='Appended encounters; selected earlier cruise and dates frozen')
     request=deepcopy(config)
-    for key in ('launch_jd','event_windows_jd','event_windows','local_refinement','append_flyby'):
+    for key in ('launch_jd','event_windows_jd','event_windows','local_refinement','append_flyby','arrival_date','arrival_window_jd','arrival_tolerance_days'):
         request.pop(key,None)
     seed=list(candidate['x'][:n0])+[.5]*count+list(candidate['x'][n0:])
     if dsm:seed += [.5,.5,.5,.5]*count

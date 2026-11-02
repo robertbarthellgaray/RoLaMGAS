@@ -7,12 +7,12 @@ import hashlib
 import json
 import re
 import urllib.parse
-import urllib.request
 import tempfile
 import time
 import numpy as np
 from scipy.interpolate import CubicHermiteSpline
-from horizons_targets import identity, cache_stem
+from horizons_targets import identity, cache_stem, command_for_epoch
+from network import request_json
 
 DAY = 86400.0
 AU = 149597870.7
@@ -163,7 +163,7 @@ class Ephemerides:
 
 
 def fetch(cache, body, start, end, step_days=1.):
-    params = dict(COMMAND=identity(body)['command'], EPHEM_TYPE='VECTORS', CENTER='500@10',
+    params = dict(COMMAND=command_for_epoch(body, start), EPHEM_TYPE='VECTORS', CENTER='500@10',
                   START_TIME='JD' + str(start), STOP_TIME='JD' + str(end),
                   STEP_SIZE=f'{int(round(step_days * DAY))} s', OUT_UNITS='KM-S', REF_PLANE='ECLIPTIC',
                   REF_SYSTEM='ICRF', VEC_CORR='NONE', VEC_TABLE='2', CSV_FORMAT='YES', TIME_TYPE='TDB')
@@ -172,8 +172,7 @@ def fetch(cache, body, start, end, step_days=1.):
     url = 'https://ssd.jpl.nasa.gov/api/horizons.api?' + urllib.parse.urlencode(
         {'format': 'json', **{k: "'" + v + "'" for k, v in params.items()}})
     print(f'Downloading {body}: {calendar(start)} to {calendar(end)}', flush=True)
-    with urllib.request.urlopen(url, timeout=180) as response:
-        result = json.load(response)
+    result = request_json(url, timeout=180)
     if result.get('error') or '$$SOE' not in result.get('result', ''):
         raise ValueError(f"Horizons: {result.get('error', result.get('result', 'No vectors'))}")
     return save_table(cache, body, result['result'], url)

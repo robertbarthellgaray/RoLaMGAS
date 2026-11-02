@@ -12,8 +12,8 @@ def launch_injection(c3):
 
 
 def refine(model,x,branches,objective='balanced',maxiter=160):
-    if objective not in ('balanced','c3','dsm','arrival'):
-        raise ValueError('Choose balanced, c3, dsm or arrival refinement')
+    if objective not in ('balanced','c3','dsm','arrival','time'):
+        raise ValueError('Choose balanced, c3, dsm, arrival or time refinement')
     c=model.config
     @lru_cache(maxsize=256)
     def evaluate(values):
@@ -27,6 +27,7 @@ def refine(model,x,branches,objective='balanced',maxiter=160):
         if objective=='c3':return q['launch_c3_km2_s2']/10+1e-5*q['total_dsm_kms']
         if objective=='dsm':return q['total_dsm_kms']+1e-5*injection
         if objective=='arrival':return q['arrival_vinf_kms']+1e-5*injection
+        if objective=='time':return q['duration_years']+1e-7*injection
         return injection+q['total_dsm_kms']
     def equality(values):
         q=q_at(values)
@@ -34,9 +35,10 @@ def refine(model,x,branches,objective='balanced',maxiter=160):
         return np.array([f['vinf_in_kms']-f['vinf_out_kms'] for f in q['flybys'] if not model.extension or f['event_index']>=model.prefix_count-1]) if q else np.full(count,1000.)
     def inequality(values):
         q=q_at(values)
-        if q is None:return np.full(model.n+4,-1000.)
+        if q is None:return np.full(model.n+5,-1000.)
         return np.array([((1. if f.get('passes_powered_geometry') else -1.) if c.get('powered_flybys') else (f['turn_margin_deg']-.02)/10) for f in q['flybys']]+
-                        [(c['max_c3']-q['launch_c3_km2_s2'])/10,
+                        [(q['launch_c3_km2_s2']-c.get('min_c3',0.))/10,
+                         (c['max_c3']-q['launch_c3_km2_s2'])/10,
                          c['max_dsm_kms']-q['total_dsm_kms'],
                          (max(c['max_arrival_vinf_kms'],model.extension['reference_arrival_vinf_kms']+.001) if model.extension else c['max_arrival_vinf_kms'])-q['arrival_vinf_kms'],
                          c['max_years']-q['duration_years'],

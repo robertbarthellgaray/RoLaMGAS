@@ -74,8 +74,10 @@ def kepler(r0, v0, dt, mu=MU_SUN):
 
 
 def lambert(r0, r1, days, branch):
-    m, low = branch
-    return izzo2015(MU_SUN, r0, r1, days*DAY, M=int(m), prograde=True,
+    # Legacy two-value branches keep their historical prograde meaning.
+    m, low = branch[:2]
+    prograde = bool(branch[2]) if len(branch)>2 else True
+    return izzo2015(MU_SUN, r0, r1, days*DAY, M=int(m), prograde=prograde,
                     low_path=bool(low), maxiter=60, atol=1e-10, rtol=1e-11)
 
 
@@ -131,6 +133,8 @@ class Model:
                     a,b=self.config['event_windows_jd'][i];dates.append(a+x[i]*(b-a))
                 else:
                     a,b=self.route['leg_days'][i-1];dates.append(dates[-1]+a+x[i]*(b-a))
+            if self.config.get('arrival_window_jd') and not self.config.get('event_windows_jd'):
+                a,b=self.config['arrival_window_jd'];dates[-1]=a+x[self.n-1]*(b-a)
             return dates
         launch = self.config['launch_jd']
         dates = [launch[0] + x[0]*(launch[1]-launch[0])]
@@ -140,6 +144,8 @@ class Model:
         else:
             for v, (a, b) in zip(x[1:self.n], self.route['leg_days']):
                 dates.append(dates[-1] + a + v*(b-a))
+            if self.config.get('arrival_window_jd'):
+                a,b=self.config['arrival_window_jd'];dates[-1]=a+x[self.n-1]*(b-a)
         return dates
 
     def evaluate(self, x, branches):
@@ -148,9 +154,9 @@ class Model:
             if [list(b) for b in branches[:self.prefix_count-1]]!=self.extension['prefix']['branches']:
                 raise ValueError('Original Lambert branches cannot change')
         dates = self.dates(x)
-        states = [self.ep.state(body, date) for body, date in zip(self.bodies, dates)]
         if min(np.diff(dates)) <= 1e-6:
             raise ValueError('Nonpositive time of flight')
+        states = [self.ep.state(body, date) for body, date in zip(self.bodies, dates)]
         segments, dep, arr, burns = [], [], [], []
         first_leg=0
         if self.extension:
@@ -170,7 +176,7 @@ class Model:
                 va = va + offset
                 dt = duration*fraction
                 rd, before = kepler(r0, va, dt*DAY)
-                after, vb = lambert(rd, r1, duration-dt, (0, True))
+                after, vb = lambert(rd, r1, duration-dt, (0, True, branches[i][2]) if len(branches[i])>2 else (0, True))
                 vector = after-before
                 burns.append(dict(leg_index=i, julian_date_tdb=dates[i]+dt,
                                   date=calendar(dates[i]+dt), magnitude_kms=float(np.linalg.norm(vector)),
@@ -203,6 +209,8 @@ class Model:
         launch = dep[0]-states[0][3:]
         terminal = arr[-1]-states[-1][3:]
         c3 = float(launch @ launch)
+        if not math.isfinite(c3) or not np.all(np.isfinite(terminal)):
+            raise ValueError('Nonfinite launch or arrival velocity')
         vinf = float(np.linalg.norm(terminal))
         total_dsm = sum(b['magnitude_kms'] for b in burns)
         cruise_dsm=total_dsm
@@ -221,6 +229,9 @@ class Model:
                     extension_source=extension_source,
                     dates_jd_tdb=dates, launch_date=calendar(dates[0]), arrival_date=calendar(dates[-1]),
                     duration_years=(dates[-1]-dates[0])/365.25, launch_c3_km2_s2=c3,
+                    launch_vinf_kms=float(np.sqrt(c3)),
+                    launch_c3_definition='Squared Sun-centered departure velocity relative to launch body; km^2/s^2',
+                    requested_arrival_window_jd=self.config.get('arrival_window_jd'),
                     arrival_vinf_kms=vinf, total_dsm_kms=total_dsm, cruise_dsm_kms=cruise_dsm,powered_flyby_delta_v_kms=powered_dv,
                     max_single_dsm_kms=max((burn['magnitude_kms'] for burn in burns),default=0.),
                     max_powered_flyby_kms=max((f.get('powered_flyby',{}).get('magnitude_kms',0.) for f in flybys),default=0.),
@@ -238,7 +249,7 @@ class Model:
 
     def residual(self, x, branches):
         # Fixed dimension, including constraints with zero residual when satisfied.
-        count = 2*(self.n-2)+6
+        count = 2*(self.n-2)+7
         try:
             q = self.evaluate(x, branches)
             # Balance speed and turn errors during global-to-local discovery.
@@ -253,7 +264,10 @@ class Model:
                     res.extend([(f['vinf_in_kms']-f['vinf_out_kms'])/speed_scale,min(f['turn_margin_deg']-.01, 0.)/5])
             # Tiny interior margins avoid converging infinitesimally outside a
             # hard bound and incorrectly publishing that near miss as accepted.
-            res.extend([max(q['launch_c3_km2_s2']-.999*self.config['max_c3'], 0.)/10,
+            min_c3=self.config.get('min_c3',0.);max_c3=self.config['max_c3']
+            margin=min(.001*max(max_c3,1.),max(0.,max_c3-min_c3)*.1)
+            res.extend([max(min_c3+margin-q['launch_c3_km2_s2'],0.)/10 if min_c3>0 else 0.,
+                        max(q['launch_c3_km2_s2']-(max_c3-margin), 0.)/10,
                         0. if self.extension else max(q['arrival_vinf_kms']-.999*self.config['max_arrival_vinf_kms'], 0.),
                         max(q['total_dsm_kms']-.999*self.config['max_dsm_kms'], 0.)/0.5,
                         max(q['duration_years']-.999*self.config['max_years'], 0.),
@@ -265,7 +279,9 @@ class Model:
 
     def accepted(self, q,allow_arrival_overrun=False):
         return (all(f.get('passes_powered_geometry',False) if self.config.get('powered_flybys') else f['passes_speed_tolerance'] and f['passes_turn_screen'] for f in q['flybys'])
-                and q['launch_c3_km2_s2'] <= self.config['max_c3']+1e-8
+                and self.config.get('min_c3',0.)-1e-8 <= q['launch_c3_km2_s2'] <= self.config['max_c3']+1e-8
+                and (not self.config.get('arrival_window_jd') or
+                     self.config['arrival_window_jd'][0]-1e-8 <= q['dates_jd_tdb'][-1] <= self.config['arrival_window_jd'][1]+1e-8)
                 and ((allow_arrival_overrun and self.extension) or q['arrival_vinf_kms'] <= self.config['max_arrival_vinf_kms']+1e-9)
                 and q['total_dsm_kms'] <= self.config['max_dsm_kms']+1e-9
                 and max((burn['magnitude_kms'] for burn in q.get('dsms',[])),default=0.)<=self.config.get('max_single_dsm_kms',float('inf'))+1e-9

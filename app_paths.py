@@ -2,6 +2,8 @@
 from pathlib import Path
 import os,sys,zipfile
 
+APP_VERSION='0.2.0'
+
 RESOURCE_ROOT=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parent))
 if os.environ.get('ROLAMGAS_DATA_DIR'):
     DATA_ROOT=Path(os.environ['ROLAMGAS_DATA_DIR']).expanduser().resolve()

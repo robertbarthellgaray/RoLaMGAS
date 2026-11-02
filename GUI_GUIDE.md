@@ -159,3 +159,73 @@ segments stayed fixed, C3 change, and the arrival-speed reduction. Existing
 finite-radius export/patching may still introduce explicit junction burns;
 inspect their separate report rather than assuming an unpowered point-conic
 screen is already an exact finite-radius solution.
+
+
+## Search profiles, energy ranges and historical dates
+
+**Mission profile** offers editable starting values. Orbiter uses C3 0–60,
+3 km/s total maneuver budget, arrival V∞ ≤8 km/s and a 30-year flight cap.
+Flyby probe uses C3 0–200, 1.5 km/s total maneuver budget, arrival V∞ ≤70 km/s
+and a 15-year cap. These are starting suggestions, not vehicle limits or
+capture designs. Every control remains editable. Custom retains your values.
+
+**Minimum C3** and **Maximum C3** constrain Earth-relative departure energy,
+C3 = |v_departure − v_Earth|², in km²/s². A small plotted difference does not
+mean equal departure velocity, encounter times or revolution count. The
+inspector lists the departure vector, speed and Lambert branches. Very small
+nonzero values use scientific notation instead of rounding to zero. Zero
+designed DSM does not account for an unsatisfied flyby mismatch; diagnostic
+red chains still require repair. Integrated patch burns are recorded separately.
+The expandable C3 explanation includes the supplied Uranus-study launch-mass
+chart; it is a reference image, not a current launch-performance database.
+
+**Minimize flight time within limits** is now a refinement objective. An
+energy-minimizing search will prefer low C3 unless you set a floor or constrain
+the arrival date. **Target arrival date** fixes 00:00 TDB with tolerance 0;
+a positive tolerance searches that many days either side. It replaces the final
+leg's duration range. Other duration, speed and flyby constraints still apply.
+
+For exact historical schedules, select one sequence and fill **Encounter date
+windows**, one line per body including launch and arrival. Each line is either
+one ISO date/time or two values separated by a comma. For your proposed
+Pluto–Kuiper Express study, resolve Pluto, select EJX only, set C3 160–170 and
+enter for example:
+
+```text
+2004-12-01, 2004-12-31
+2006-03-01, 2006-03-31
+2012-12-01, 2012-12-31
+```
+
+Clear the separate arrival-date box when using the whole December window, or
+set a day within it to narrow further. This is a search setup, not a claim that
+those dates and energy limits admit an unpowered Jupiter solution. No burn is
+invented to force a mismatch to pass. **I like this one** retains date bounds;
+**Add a flyby afterwards** starts a later arrival search with the earlier cruise
+locked and clears the old terminal date.
+
+**Transfer direction** can search prograde, retrograde, or both senses. This
+matters for high-inclination targets such as Halley. It does not imply a
+retrograde comet must be approached on a retrograde cruise: a prograde flyby
+may have high relative speed. Both directions share the selected branch budget.
+Halley's Horizons command now pins an apparition appropriate to the launch
+epoch instead of interpreting a list of historical apparitions as vector data.
+
+## Minor-body encounter distance
+
+In the export inspector, **Distance from target center at encounter** accepts
+positive fractional kilometers, e.g. 0.1 km. Blank preserves the old 10,000 km
+geometric distance. For major supported planets the same control remains an
+altitude above the reference surface. Small-body distances are from the center;
+there is no modeled surface radius, shape, target gravity or impact clearance.
+The actual target-relative encounter state is saved in arrival_state.json/CSV.
+
+## HTTPS certificate problems
+
+RoLaMGAS uses the operating system's certificate trust through truststore.
+A school/company proxy or antivirus may present its own certificate. If it is
+not trusted, the error explains how to install the administrator-provided root
+or set ROLAMGAS_CA_BUNDLE to a trusted PEM CA bundle before restarting. SSL_CERT_FILE
+is also accepted. Certificate verification stays enabled. The eight-planet
+baseline remains usable offline; new objects and historical epochs outside
+its coverage need a verified JPL connection. See SHARING.md for native builds.

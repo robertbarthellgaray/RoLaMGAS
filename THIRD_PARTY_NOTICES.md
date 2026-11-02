@@ -2,6 +2,7 @@
 
 The Windows preview bundles Python and scientific libraries. Their license texts are retained under `third_party_licenses/`. Build dependencies are also documented; listing a package does not imply every component is bundled.
 
+- truststore 0.10.5: third_party_licenses/truststore/LICENSE (MIT)
 - numpy 2.2.6: third_party_licenses/numpy/LICENSE.txt
 - scipy 1.15.1: third_party_licenses/scipy/LICENSE.txt
 - numba 0.61.2: third_party_licenses/numba/LICENSE, third_party_licenses/numba/LICENSES.third-party
