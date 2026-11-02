@@ -4,7 +4,7 @@
 
 ![RoLaMGAS orbital artwork](docs/images/RoLaMGAS.png)
 
-[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Windows download & releases](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-preview-v0.1) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
+[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.0) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
 
 ## Browse before downloading
 
@@ -20,9 +20,11 @@ found, refine nearby encounter dates, and export propagated trajectories for
 Celestia or other tools. All optimization runs on your own CPU; no AI service,
 API key or subscription is required.
 
-## Windows app
+## Desktop app
 
-Download `RoLaMGAS.exe` from a release and run it. It opens the local browser GUI.
+Download the v0.2.0 package for your platform: Windows EXE, Apple Silicon or
+Intel Mac DMG, or Debian/Ubuntu x64 DEB. They open the same local browser GUI.
+The Mac preview is unsigned/not notarized. See [platform instructions](SHARING.md).
 Python and the scientific dependencies are bundled. The eight-planet baseline
 is included, covering 2027–2100 at one-day cadence, with extra six-hour Mercury
 data. The first run installs those tables into your persistent cache.
@@ -85,9 +87,10 @@ See `GUI_GUIDE.md`, `SHARING.md` and the original JPL response metadata for deta
 
 `python -m unittest discover -p "test_*.py"`
 
-Install `requirements-build.txt` and run `python build_release.py --exe` on
-Windows to create a source ZIP and single executable. Build on the target OS;
-the Windows executable is not a macOS/Linux executable.
+Install `requirements-build.txt` and run
+`python build_release.py --native --version 0.2.0` on the target OS to build
+the native EXE, DMG or DEB plus matching GPL source. GitHub Actions can build all
+three platforms; see [SHARING.md](SHARING.md).
 
 ## License and provenance
 
