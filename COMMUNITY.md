@@ -2,7 +2,8 @@
 
 The public trajectory API is deployed at
 https://rolamgas-community.corigarayv.workers.dev. It was initialized with the 97
-sanitized public starter candidates on 2026-11-03. The website and source defaults
+sanitized public starter candidates on 2026-11-03, then expanded to 2,306 distinct
+historical passing trajectories from all recovered solver generations. The website and source defaults
 point at this API. Existing v0.2.1 executables can connect without a rebuild by
 setting this URL in their community API connection field.
 
@@ -37,7 +38,9 @@ a disconnected client or a full queue can drop submissions without stopping the
 solver. Already reused/downloaded solutions are not blindly rebroadcast. The
 server deduplicates identical trajectories and retains the first solve/receive
 times. The curated website catalog remains separate from this submitted library.
-The community section refreshes every 30 seconds (HTTP cache can add up to 60s).
+The unified interactive explorer checks the shared feed every 30 seconds while
+visible. New records enter the same destination filters, viewer and downloads
+as the curated examples, without rebuilding GitHub Pages.
 
 ## Hosting and cost
 
@@ -98,3 +101,39 @@ Regenerate the starter catalog explicitly from reviewed local history:
 Copy that sanitized file to docs/data/community_seed_catalog.json for the website
 fallback. The script never uploads raw requests or copies entire private run
 folders into the public catalog.
+
+## Historical passing archive
+
+`community_seed_catalog.json` and `docs/data/community_seed_catalog.json` contain
+the full recovered public archive. `docs/data/community_history_index.csv` lists
+departure/arrival dates, TDB Julian epochs, flight time and mission metrics.
+`docs/data/community_history_report.json` reports conversion totals without local
+paths or private run identifiers. The Choose your next world explorer combines this complete archive with curated
+examples and live submissions. It starts with 2,315 interactive entries after
+shared copies of curated examples are removed. An inclusive received-time cursor
+and keyset pagination retrieve every new submission, including new target IDs;
+the per-response API limit does not hide older historical passes. Filtering and
+sorting apply to the whole library before previews load.
+
+These classifications preserve the original run's limits and solver version;
+they are not a new certification under today's defaults. Legacy gallery exports
+without optimizer variables recover their DSM controls from saved heliocentric
+arcs and their original Lambert branches. Records lacking discovery timestamps
+use their file-save time, shown as solved / first saved. The production schema
+validator checks every public record and supplies its canonical deduplication ID.
+Private records, paths, requests and raw run folders are never copied publicly.
+
+To regenerate an archive independently, with Node.js and the Python requirements
+installed, run this from the repository root (repeat --root for older folders):
+
+    python tools/import_passing_history.py --root PATH_TO_RUNS --existing community_seed_catalog.json --output new_catalog.json --report import_report.json --private-report private_errors.json
+
+The importer writes files locally and never uploads automatically. Review any
+errors before replacing the public files. Keep private_errors.json private.
+
+The public archive records `received_through` for incremental synchronization and
+`curated_aliases` for legacy curated entries; neither contains user/run identities.
+Every shared trajectory supports rotation, playback, encounter/DSM dates, and
+browser-generated CSV/XYZV samples of its saved Sun-only coasts. These downloads
+retain planet-center joins; finite-radius flyby exports still require the desktop
+exporter. Curated integrated files remain the original saved exports.

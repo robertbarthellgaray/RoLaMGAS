@@ -1,9 +1,11 @@
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName} from './community.js';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
 const colors = ['#79d8f1', '#ffd08a', '#8ae3bd', '#b4aeff', '#ff9f9a', '#9ed2ff'];
 const catalog = [];
-const cache = new Map();
+const cache = new Map(), sharedRecords = new Map(), previewCache = new Map();
+let sharedEndpoint='', sharedSince='1970-01-01T00:00:00.000Z', sharedBusy=false, curatedAliases={}, visibleCount=48;
 let destination = 'All', smallBodyTarget = 'All', selected = null, requestVersion = 0, playing = false, lastTick = 0, fraction = 0;
 let yaw = -.35, pitch = .65, zoom = 1, view = '3d', framePending = false;
 const canvas = $('orbit'), ctx = canvas.getContext('2d');
@@ -15,13 +17,13 @@ async function fetchJson(path) {
   return r.json();
 }
 function makeDestinations() {
-  const targets = ['All', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Small bodies'];
+  const targets = ['All', 'Mercury', 'Venus', ...(catalog.some(c=>c.target==='Earth')?['Earth']:[]), 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Small bodies'];
   $('destinations').innerHTML = targets.map(t => {
     const n = catalog.filter(c => targetMatches(c, t)).length;
     return `<button type="button" data-target="${t}" aria-pressed="${t === destination}">${t}<span>${n}</span></button>`;
   }).join('');
   $('small-body-options').hidden = destination !== 'Small bodies';
-  $('small-body-options').innerHTML = ['All','Pluto','Eris','2026 ED138'].map(t => `<button type="button" data-small-body="${t}" aria-pressed="${smallBodyTarget===t}">${t==='All'?'All small bodies':t}</button>`).join('');
+  $('small-body-options').innerHTML = ['All',...new Set(catalog.filter(c=>targetMatches(c,'Small bodies')).map(c=>c.target))].map(t => `<button type="button" data-small-body="${escapeHtml(t)}" aria-pressed="${smallBodyTarget===t}">${t==='All'?'All small bodies':escapeHtml(t)}</button>`).join('');
 }
 function targetMatches(c, t = destination) {
   return t === 'All' || (t === 'Small bodies' ? !Object.keys(bodyColors).includes(c.target) : c.target === t);
@@ -32,13 +34,15 @@ function maximum(id) {
 }
 function renderList() {
   const search = $('search').value.trim().toLowerCase().replace(/\s+/g,'');
-  const rows = catalog.filter(c => targetMatches(c) && (destination!=='Small bodies'||smallBodyTarget==='All'||c.target===smallBodyTarget) && `${c.title} ${c.sequence} ${c.bodies.join(' ')}`.toLowerCase().replace(/\s+/g,'').includes(search)
-    && c.c3 <= maximum('max-c3') && c.vinf <= maximum('max-vinf') && c.burns_mps <= maximum('max-burns'));
+  const rows = catalog.filter(c => targetMatches(c) && (destination!=='Small bodies'||smallBodyTarget==='All'||c.target===smallBodyTarget) && `${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
+    && (!c.community||c.classification!=='yellow'||$('include-yellow').checked) && c.c3 <= maximum('max-c3') && c.vinf <= maximum('max-vinf') && c.burns_mps <= maximum('max-burns'));
   const sort = $('sort').value;
-  rows.sort((a,b) => sort === 'recommended' ? Number(b.spotlight) - Number(a.spotlight) || (b.featured_priority || 0) - (a.featured_priority || 0) : a[sort] - b[sort]);
+  rows.sort((a,b) => sort === 'recommended' ? Number(b.spotlight) - Number(a.spotlight) || (b.featured_priority || 0) - (a.featured_priority || 0) || Number(b.community||false)-Number(a.community||false) || (b.received||0)-(a.received||0) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
   $('result-count').textContent = `${rows.length} ${rows.length === 1 ? 'trajectory' : 'trajectories'}`;
-  $('candidate-list').innerHTML = rows.length ? rows.map(c => `<button type="button" class="candidate-card" data-id="${c.id}" aria-pressed="${c.id === selected?.id}" aria-label="Inspect ${escapeHtml(c.title)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}">
-    <div class="card-preview"><img loading="lazy" src="images/${c.id}.svg" width="320" height="220" alt="${escapeHtml(c.sequence)} heliocentric trajectory preview"><span class="card-badge">${c.spotlight ? 'Integrated concept' : escapeHtml(c.model)}</span></div>
+  $('candidate-more').hidden=visibleCount>=rows.length;
+  $('candidate-more').textContent=`Show ${Math.min(48,Math.max(0,rows.length-visibleCount))} more (${Math.min(visibleCount,rows.length)} of ${rows.length})`;
+  $('candidate-list').innerHTML = rows.length ? rows.slice(0,visibleCount).map(c => `<button type="button" class="candidate-card" data-id="${c.id}" aria-pressed="${c.id === selected?.id}" aria-label="Inspect ${escapeHtml(c.title)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}">
+    <div class="card-preview"><img loading="lazy" src="${c.community ? sharedPreview(c.id) : `images/${c.id}.svg`}" width="320" height="220" alt="${escapeHtml(c.sequence)} heliocentric trajectory preview"><span class="card-badge">${c.spotlight ? 'Integrated concept' : escapeHtml(c.model)}</span></div>
     <div class="card-title">${escapeHtml(c.sequence)}<b aria-hidden="true">↗</b></div><p class="card-subtitle">${escapeHtml(c.target)} · ${c.launch_date} → ${c.arrival_date}</p>
     <div class="card-metrics"><div><span>C3 · km²/s²</span>${fmt(c.c3,1)}</div><div><span>Δv · m/s</span>${fmt(c.burns_mps,0)}</div><div><span>FLIGHT · yr</span>${fmt(c.years,1)}</div></div></button>`).join('')
     : '<p class="empty">No saved examples match these filters. Try raising a limit or choosing another destination.</p>';
@@ -74,13 +78,13 @@ async function selectCandidate(id) {
   $('plot-message').hidden = false; $('plot-message').textContent = 'Loading saved flight…';
   try {
     let c = cache.get(id);
-    if (!c) { c = await fetchJson(`data/cases/${encodeURIComponent(id)}.json`); cache.set(id, c); }
+    if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json`); cache.set(id, c); }
     if (token !== requestVersion) return;
     selected = c; fraction = 0; zoom = 1; setView('3d');
     history.replaceState(null, '', `${location.pathname}${location.search}#mission=${encodeURIComponent(c.id)}`);
     $('model-label').textContent = c.model.toUpperCase();
     $('mission-title').textContent = c.title;
-    $('mission-dates').textContent = `${c.launch_date} → ${c.arrival_date} · ${c.bodies.join(' → ')}`;
+    $('mission-dates').textContent = `${c.launch_date} → ${c.arrival_date} (TDB) · ${fmt(c.years,3)} years / ${fmt(c.end-c.start,1)} days · ${c.bodies.join(' → ')}`;
     $('mission-id').textContent = c.id;
     const metrics = [ ['Launch C3', fmt(c.c3), 'km²/s²'], ['Cruise Δv', fmt(c.burns_mps,1), 'm/s'], ['Arrival V∞', fmt(c.vinf), 'km/s'], ['Flight time', fmt(c.years), 'years'] ];
     $('metrics').innerHTML = metrics.map(([label,value,unit]) => `<div class="metric"><p>${label}</p><strong>${value}</strong><small>${unit}</small></div>`).join('');
@@ -102,6 +106,8 @@ async function selectCandidate(id) {
     if(c.integration_validation) {
       $('provenance').innerHTML += `<dt>JPL clearance audit</dt><dd>Passed · Sun and eight planetary surfaces</dd><dt>Audit scope</dt><dd>${escapeHtml(c.integration_validation.scope)}</dd>`;
     }
+    $('planet-arcs').disabled=Boolean(c.community);
+    $('planet-arcs').title=c.community?'This shared record contains encounter markers, without full planet ephemeris arcs.':'';
     const files = c.trajectory_files;
     for (const [name,key] of [['download-csv','csv'],['download-xyzv','xyzv'],['download-state-readme','readme']]) {
       const link=$(name); link.hidden=!files?.[key];
@@ -109,6 +115,7 @@ async function selectCandidate(id) {
     }
     if(files) $('trajectory-download-note').textContent=`${files.rows.toLocaleString()} saved position/velocity states · ${files.units} · ${files.coordinates}. ${files.note}`;
     else if(c.download) { $('download-xyzv').href=c.download; $('download-xyzv').hidden=false; }
+    if(c.community_record){for(const id of ['download-csv','download-xyzv']){$(id).hidden=false;$(id).href='#export'}$('trajectory-download-note').textContent='Downloads sample the saved Sun-only Lambert coasts (JD TDB, km, km/s). Planet-center joins are not finite-radius flybys; use the desktop exporter for flyby rendering and validation.';}
     document.querySelectorAll('.candidate-card').forEach(b => b.setAttribute('aria-pressed', b.dataset.id === c.id));
     canvas.setAttribute('aria-label', `${c.title} heliocentric trajectory in AU. Drag to rotate, scroll to zoom; arrow keys rotate and plus or minus zoom.`);
     $('plot-message').hidden = true;
@@ -208,12 +215,15 @@ function draw() {
 
 $('destinations').addEventListener('click', e => {
   const b = e.target.closest('[data-target]'); if (!b) return;
-  destination = b.dataset.target; smallBodyTarget='All'; makeDestinations(); renderList();
+  destination = b.dataset.target; smallBodyTarget='All'; visibleCount=48; makeDestinations(); renderList();
 });
-$('small-body-options').addEventListener('click',e=>{const b=e.target.closest('[data-small-body]');if(!b)return;smallBodyTarget=b.dataset.smallBody;makeDestinations();renderList();});
+$('small-body-options').addEventListener('click',e=>{const b=e.target.closest('[data-small-body]');if(!b)return;smallBodyTarget=b.dataset.smallBody;visibleCount=48;makeDestinations();renderList();});
 $('candidate-list').addEventListener('click', e => { const b=e.target.closest('[data-id]'); if (b) selectCandidate(b.dataset.id); });
-for (const id of ['search','max-c3','max-vinf','max-burns']) $(id).addEventListener('input', renderList);
-$('sort').addEventListener('change', renderList);
+for (const id of ['search','max-c3','max-vinf','max-burns']) $(id).addEventListener('input', ()=>{visibleCount=48;renderList()});
+$('sort').addEventListener('change',()=>{visibleCount=48;renderList()});
+$('include-yellow').addEventListener('change',()=>{visibleCount=48;renderList()});
+$('candidate-more').onclick=()=>{const top=$('candidate-list').scrollTop;visibleCount+=48;renderList();$('candidate-list').scrollTop=top};
+$('community-refresh').onclick=()=>syncShared();
 $('clear-filters').addEventListener('click', () => { ['search','max-c3','max-vinf','max-burns'].forEach(id => $(id).value=''); renderList(); });
 document.querySelector('.projection').addEventListener('click', e => { if (e.target.dataset.view) setView(e.target.dataset.view); });
 $('reset-view').addEventListener('click', () => { zoom=1; setView('3d'); });
@@ -248,20 +258,39 @@ for (const name of ['itinerary','model']) {
 }
 $('tab-model').tabIndex=-1;
 function downloadBlob(blob, filename) {
-  const url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download=filename; a.click(); setTimeout(()=>URL.revokeObjectURL(url),2000);
+  const url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download=filename; a.hidden=true; document.body.append(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),30000);
 }
-$('download-json').addEventListener('click',()=>{ if(selected) downloadBlob(new Blob([JSON.stringify(selected,null,2)],{type:'application/json'}),`rolamgas-${selected.id}.json`); });
+$('download-json').addEventListener('click',()=>{ if(selected) downloadBlob(new Blob([JSON.stringify(selected.community_record||selected,null,2)],{type:'application/json'}),`rolamgas-${selected.id}.json`); });
 $('save-plot').addEventListener('click',()=>{ if(selected) { draw(); canvas.toBlob(blob=>{if(blob)downloadBlob(blob,`rolamgas-${selected.id}.png`);}); } });
 
+for(const [id,kind] of [['download-csv','csv'],['download-xyzv','xyzv']])$(id).addEventListener('click',e=>{
+ if(!selected?.community_record)return;e.preventDefault();
+ try{downloadBlob(new Blob([trajectoryText(selected.community_record,kind)],{type:kind==='csv'?'text/csv':'text/plain'}),`rolamgas-${selected.id}.${kind}`)}catch(error){$('trajectory-download-note').textContent='Export failed: '+error.message}
+});
+function sharedPreview(id){if(!previewCache.has(id))try{previewCache.set(id,thumbnailFor(sharedRecords.get(id)))}catch{previewCache.set(id,'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="320" height="220"><rect width="320" height="220" fill="#08121e"/></svg>'))}return previewCache.get(id)}
+function addShared(records){let added=0;for(const record of records)try{
+ if(sharedRecords.has(record.id))continue;
+ const summary=summaryFor(record);sharedRecords.set(record.id,record);
+ if(curatedAliases[record.id]&&catalog.some(c=>c.id===curatedAliases[record.id]))continue;
+ catalog.push(summary);added++;
+}catch{}return added}
+function updateCounts(){ $('total-count').textContent=catalog.length.toLocaleString('en-US');$('destination-count').textContent=new Set(catalog.map(c=>c.target)).size;makeDestinations() }
+async function syncShared(){
+ if(sharedBusy||!sharedEndpoint)return;sharedBusy=true;$('community-refresh').disabled=true;
+ try{const result=await fetchUpdates(sharedEndpoint,sharedSince);sharedSince=result.watermark;const added=addShared(result.records);
+  if(added){updateCounts();renderList()}
+  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · live shared library connected · checked ${new Date().toLocaleTimeString()}`;
+ }catch{$('community-status').textContent='Showing the complete saved archive. Live service unavailable; retrying automatically.'}
+ finally{sharedBusy=false;$('community-refresh').disabled=false}
+}
 try {
-  const data=await fetchJson('data/index.json'); catalog.push(...data.cases);
-  $('total-count').textContent=catalog.length; makeDestinations();
-  const hash=location.hash.match(/^#mission=([^&]+)/), initial=hash?decodeURIComponent(hash[1]):'claudius-uop-2045';
-  // Set the requested selection before applying list filtering, avoiding two
-  // concurrent initial loads and keeping deep links stable.
-  if(catalog.some(c=>c.id===initial)) await selectCandidate(initial);
-  renderList();
+ const [data,archive,settings]=await Promise.all([fetchJson('data/index.json'),fetchJson('data/community_seed_catalog.json').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({}))]);
+ catalog.push(...data.cases);curatedAliases=archive.curated_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
+ $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
+ const hash=location.hash.match(/^#mission=([^&]+)/),initial=hash?decodeURIComponent(hash[1]):'claudius-uop-2045';
+ if(hash&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))await syncShared();
+ if(catalog.some(c=>c.id===initial)||sharedRecords.has(initial))await selectCandidate(initial);
+ renderList();syncShared();setInterval(()=>{if(!document.hidden)syncShared()},30000);
 } catch(e) {
-  $('result-count').textContent='Catalog unavailable'; $('candidate-list').innerHTML=`<p class="empty">${escapeHtml(e.message)} Reload the page to retry.</p>`;
-  $('mission-view').setAttribute('aria-busy','false');
+ $('result-count').textContent='Catalog unavailable';$('candidate-list').innerHTML=`<p class="empty">${escapeHtml(e.message)} Reload the page to retry.</p>`;$('mission-view').setAttribute('aria-busy','false');
 }

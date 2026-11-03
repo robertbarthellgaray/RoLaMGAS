@@ -7,3 +7,4 @@ CREATE TABLE IF NOT EXISTS candidates (
 CREATE INDEX IF NOT EXISTS candidate_target_energy ON candidates(target,c3,launch_jd);
 CREATE INDEX IF NOT EXISTS candidate_target_time ON candidates(target,received_at DESC);
 CREATE TABLE IF NOT EXISTS daily_budget (day TEXT PRIMARY KEY, submissions INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS candidate_received ON candidates(received_at DESC,id);

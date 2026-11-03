@@ -19,3 +19,4 @@ gui_runtime*.log
 .wrangler/
 community_backend/.wrangler/
 community_settings.json
+private_errors.json

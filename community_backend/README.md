@@ -16,5 +16,10 @@ this service does not verify orbital dynamics. Desktop clients recompute them.
 API: https://rolamgas-community.corigarayv.workers.dev
 
 Health: `/v1/health`. Deployed 2026-11-03 with the `DB` binding and the
-97 public starter records. Worker observability and preview URLs are disabled.
+2,306 recovered historical passing records. Worker observability and preview URLs are disabled.
 The configured production D1 database is `rolamgas-community`.
+
+The unified website uses `target=all`, optional inclusive ISO-UTC `since`, and
+the returned opaque `next_cursor` (passed as `cursor`) to fetch the live feed.
+Each page contains up to 100 candidates. Existing single-target desktop queries
+continue to work. A `(received_at DESC,id)` index supports this incremental feed.

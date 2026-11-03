@@ -14,6 +14,8 @@ on:
 permissions:
   contents: read
 
+env:
+  ROLAMGAS_COMMUNITY_URL: ""  # Synthetic tests never contact the public library.
 jobs:
   build:
     name: ${{ matrix.name }}

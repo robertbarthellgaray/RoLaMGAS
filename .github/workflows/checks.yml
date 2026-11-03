@@ -1,5 +1,7 @@
 name: Check RoLaMGAS
 on: [push, pull_request, workflow_dispatch]
+env:
+  ROLAMGAS_COMMUNITY_URL: ""  # Synthetic tests never contact the public library.
 jobs:
   tests:
     runs-on: ubuntu-latest

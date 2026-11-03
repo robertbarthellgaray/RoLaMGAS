@@ -59,12 +59,25 @@ export default {async fetch(request,env){
    return response({accepted:records.length,ids:records.map(r=>r.id)},200,origin);
   }
   if(request.method==='GET'){
-   const p=url.searchParams,target=p.get('target')||'599';if(!/^-?\d{1,12}$/.test(target))throw Error('Invalid target ID');
+   const p=url.searchParams,target=p.get('target')||'599';if(target!=='all'&&!/^-?\d{1,12}$/.test(target))throw Error('Invalid target ID');
    const lo=number(Number(p.get('min_c3')??0),0,1e9),hi=number(Number(p.get('max_c3')??1e9),lo,1e9);
    const a=number(Number(p.get('launch_start')??2300000),2300000,2700000),b=number(Number(p.get('launch_end')??2700000),a,2700000);
    const count=Math.floor(number(Number(p.get('limit')??50),1,100));
-   const rows=await env.DB.prepare('SELECT payload,received_at FROM candidates WHERE target=?1 AND c3>=?2 AND c3<=?3 AND launch_jd>=?4 AND launch_jd<=?5 ORDER BY received_at DESC,id LIMIT ?6').bind(target,lo,hi,a,b,count).all();
-   return response({schema_version:1,verification:'Submitted classifications are unverified. Recompute locally before use.',candidates:rows.results.map(r=>({...JSON.parse(r.payload),received_at:r.received_at}))},200,origin,{'Cache-Control':'public, max-age=60'});
+   const since=p.get('since')||'1970-01-01T00:00:00.000Z';
+   const iso=value=>typeof value==='string'&&value.length===24&&Number.isFinite(Date.parse(value))&&new Date(value).toISOString()===value;
+   if(!iso(since))throw Error('Invalid since timestamp');
+   const values=[lo,hi,a,b,since],where=['c3>=?1','c3<=?2','launch_jd>=?3','launch_jd<=?4','received_at>=?5'];
+   if(target!=='all'){values.push(target);where.push('target=?'+values.length)}
+   if(p.has('cursor')){
+    const cursor=JSON.parse(p.get('cursor'));
+    if(!Array.isArray(cursor)||cursor.length!==2||!iso(cursor[0])||typeof cursor[1]!=='string'||!/^[a-f0-9]{64}$/.test(cursor[1]))throw Error('Invalid cursor');
+    values.push(cursor[0],cursor[1]);const t=values.length-1,i=values.length;
+    where.push(`(received_at<?${t} OR (received_at=?${t} AND id>?${i}))`);
+   }
+   values.push(count+1);
+   const rows=await env.DB.prepare('SELECT id,payload,received_at FROM candidates WHERE '+where.join(' AND ')+' ORDER BY received_at DESC,id LIMIT ?'+values.length).bind(...values).all();
+   const page=rows.results.slice(0,count),last=page.at(-1),next=rows.results.length>count?JSON.stringify([last.received_at,last.id]):null;
+   return response({schema_version:1,verification:'Submitted classifications are unverified. Recompute locally before use.',server_time:new Date().toISOString(),next_cursor:next,candidates:page.map(r=>({...JSON.parse(r.payload),received_at:r.received_at}))},200,origin,{'Cache-Control':'public, max-age=60'});
   }
   return response({error:'Method not allowed'},405,origin);
  }catch(error){return response({error:error.message==='Unknown record field'?'Only the documented public science fields are allowed':'Invalid request or temporarily unavailable library'},400,origin);}
