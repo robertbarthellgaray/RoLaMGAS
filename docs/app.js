@@ -1,4 +1,4 @@
-import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName} from './community.js';
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName} from './community.js?v=0.2.2';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
@@ -284,7 +284,7 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings]=await Promise.all([fetchJson('data/index.json'),fetchJson('data/community_seed_catalog.json').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({}))]);
+ const [data,archive,settings]=await Promise.all([fetchJson('data/index.json'),fetchJson('data/community_seed_catalog.json?v=0.2.2').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({}))]);
  catalog.push(...data.cases.filter(c=>c.c3<=250));curatedAliases=archive.curated_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
  const hash=location.hash.match(/^#mission=([^&]+)/),initial=hash?decodeURIComponent(hash[1]):'claudius-uop-2045';

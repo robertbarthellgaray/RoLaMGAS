@@ -12,8 +12,8 @@
   <title>RoLaMGAS — Explore the possibilities</title>
   <link rel="icon" type="image/png" sizes="64x64" href="images/rolamgas-icon-64.png">
   <link rel="apple-touch-icon" sizes="180x180" href="images/rolamgas-touch-180.png">
-  <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.js"></script>
+  <link rel="stylesheet" href="style.css?v=0.2.2">
+  <script type="module" src="app.js?v=0.2.2"></script>
 </head>
 <body>
   <a class="skip-link" href="#explorer">Skip to trajectory explorer</a>
@@ -32,7 +32,7 @@
       <div class="destination-tabs" id="destinations" role="group" aria-label="Filter by destination"></div>
       <div id="small-body-options" class="small-body-options" role="group" aria-label="Choose a small body" hidden></div>
       <details class="sequence-key"><summary>Read the assist sequences</summary><p>E = Earth · V = Venus · Me = Mercury · M = Mars · J = Jupiter · S = Saturn · U = Uranus · N = Neptune · P = Pluto · Er = Eris · X = a resolved Horizons object. <strong>dv</strong> marks a deep-space maneuver.</p></details>
-      <div class="shared-library-tools"><p id="community-status" role="status" class="quiet">Loading saved and shared trajectories…</p><label class="quiet"><input id="include-yellow" type="checkbox" checked> Include submitted yellow candidates</label><button id="community-refresh" type="button" class="subtle-button">Refresh shared library</button><a class="text-link small" href="data/community_seed_catalog.json" download="rolamgas-passing-history.json">Full archive JSON ↓</a><a class="text-link small" href="data/community_history_index.csv" download>Dates & metrics CSV ↓</a></div>
+      <div class="shared-library-tools"><p id="community-status" role="status" class="quiet">Loading saved and shared trajectories…</p><label class="quiet"><input id="include-yellow" type="checkbox" checked> Include submitted yellow candidates</label><button id="community-refresh" type="button" class="subtle-button">Refresh shared library</button><a class="text-link small" href="data/community_seed_catalog.json?v=0.2.2" download="rolamgas-passing-history.json">Full archive JSON ↓</a><a class="text-link small" href="data/community_history_index.csv?v=0.2.2" download>Dates & metrics CSV ↓</a></div>
       <div class="workbench">
         <aside class="library" aria-label="Candidate library">
           <div class="library-controls">
