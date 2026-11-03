@@ -1,7 +1,10 @@
 # Shared trajectory library
 
-This local candidate build prepares a public trajectory library. No production
-endpoint is configured yet and no candidate data has been uploaded by this work.
+The public trajectory API is deployed at
+https://rolamgas-community.corigarayv.workers.dev. It was initialized with the 97
+sanitized public starter candidates on 2026-11-03. The website and source defaults
+point at this API. Existing v0.2.1 executables can connect without a rebuild by
+setting this URL in their community API connection field.
 
 ## What is shared
 

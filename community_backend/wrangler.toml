@@ -1,7 +1,9 @@
 name = "rolamgas-community"
+account_id = "f4b3e7ed0ef21bc0e2e3753a70966b81"
 main = "worker.mjs"
 compatibility_date = "2026-11-01"
 workers_dev = true
+preview_urls = false
 
 [observability]
 enabled = false
@@ -13,5 +15,5 @@ MAX_DAILY_CANDIDATES = "5000"
 [[d1_databases]]
 binding = "DB"
 database_name = "rolamgas-community"
-# Replace with the ID from `npx wrangler d1 create rolamgas-community`.
-database_id = "00000000-0000-0000-0000-000000000000"
+# Production community library database.
+database_id = "2c623324-5589-49af-98a6-02c4ef77821a"

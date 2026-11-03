@@ -16,3 +16,6 @@ numba_cache/
 logs/
 backups/
 gui_runtime*.log
+.wrangler/
+community_backend/.wrangler/
+community_settings.json
