@@ -33,7 +33,7 @@ The build script supports the host operating system:
 ```sh
 python -m pip install -r requirements-build.txt
 python -m unittest discover -p 'test_*.py'
-python build_release.py --native --version 0.2.0
+python build_release.py --native --version 0.2.1
 ```
 
 Outputs are written under `releases/`:
@@ -41,9 +41,9 @@ Outputs are written under `releases/`:
 | Host | Download | Install or launch |
 | --- | --- | --- |
 | Windows x64 | `RoLaMGAS.exe` | Open the executable; Python is bundled. |
-| Apple Silicon Mac | `RoLaMGAS-0.2.0-macos-arm64.dmg` | Open the DMG and drag the app to Applications. |
-| Intel Mac | `RoLaMGAS-0.2.0-macos-amd64.dmg` | Use the separate Intel build. |
-| Debian/Ubuntu x64 | `rolamgas_0.2.0_amd64.deb` | Open with the software installer, or run `sudo apt install ./rolamgas_0.2.0_amd64.deb`. |
+| Apple Silicon Mac | `RoLaMGAS-0.2.1-macos-arm64.dmg` | Open the DMG and drag the app to Applications. |
+| Intel Mac | `RoLaMGAS-0.2.1-macos-amd64.dmg` | Use the separate Intel build. |
+| Debian/Ubuntu x64 | `rolamgas_0.2.1_amd64.deb` | Open with the software installer, or run `sudo apt install ./rolamgas_0.2.1_amd64.deb`. |
 
 The Linux package installs a menu entry and the `rolamgas` command. It bundles
 Python and scientific dependencies, and uses the system browser. Building a
@@ -73,11 +73,11 @@ Intel and Linux x64 on separate native runners. Each build runs source tests
 and starts its frozen application in self-check mode. The workflow retains
 downloadable artifacts for 30 days; manual runs do **not** create a public release.
 
-To publish a version after reviewing those results, push a version tag such as
-`v0.2.0` or `rolamgas-v0.2.0`. A tagged run publishes the native files, matching
-GPLv3 source ZIP and per-platform SHA-256 manifests to that GitHub Release only
-after every native build succeeds. Use the repository's release page for public
-one-click downloads rather than committing executables to source control.
+Run the remote build workflow only after the owner has tried and approved a
+local candidate. Pushing a version tag does not automatically upload or publish
+new builds. Publish an approved release separately, including matching GPLv3
+source and checksums. Use the repository's release page for public downloads
+rather than committing executables to source control.
 The current Windows release remains unchanged until a new build is published.
 
 macOS/Linux packaging is prepared here; successful builds and use on those
@@ -109,3 +109,13 @@ service. A custom domain is optional. A browser-only solver could use WebAssembl
 and Web Workers, but the current Numba and process-pool design would need
 adaptation and performance testing. These native packages do not implement
 that browser port.
+
+
+## Try local builds before deployment
+
+New builds must be tested by the project owner locally before uploading or
+publishing. Prepare a candidate executable, share its local path, and wait for
+explicit approval after the trial. A previous release approval is not approval
+for a later build. Native builds are manual-dispatch only; pushing a version tag
+does not automatically upload or publish binaries. The Actions workflow retains
+approved build artifacts; release publication is a separate action.

@@ -1,0 +1,71 @@
+// Public science records only. No IP, account, cookie or device identifier is read or stored.
+const KEYS=['schema_version','engine_version','sequence','body_ids','dates_jd_tdb','branches','dsm_controls','classification','solved_at','metrics','segments','id'];
+const METRICS=['launch_c3_km2_s2','total_dsm_kms','arrival_vinf_kms','duration_years','max_vinf_mismatch_mps'];
+function number(value,min,max){if(typeof value!=='number'||!Number.isFinite(value)||value<min||value>max)throw Error('Invalid numeric field');return value;}
+function exact(value,keys){if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).some(k=>!keys.includes(k)))throw Error('Unknown record field');}
+function vector(v,limit){if(!Array.isArray(v)||v.length!==3)throw Error('Invalid vector');return v.map(n=>number(n,-limit,limit));}
+function canonical(v){if(Array.isArray(v))return v.map(canonical);if(v&&typeof v==='object')return Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])]));return v;}
+export async function validate(input){
+ exact(input,KEYS);
+ if(input.schema_version!==1||!['pass','yellow'].includes(input.classification))throw Error('Only pass/yellow science records are accepted');
+ if(!/^(?:Me|dv|dV|[EVMJSUNX]){2,30}$/.test(input.sequence))throw Error('Invalid sequence');
+ if(typeof input.engine_version!=='string'||!/^[0-9A-Za-z.+-]{1,32}$/.test(input.engine_version))throw Error('Invalid engine version');
+ const ids=input.body_ids,dates=input.dates_jd_tdb,branches=input.branches;
+ if(!Array.isArray(ids)||ids.length<2||ids.length>16||!ids.every(v=>typeof v==='string'&&/^-?\d{1,12}$/.test(v)))throw Error('Invalid body IDs');
+ if(!Array.isArray(dates)||dates.length!==ids.length)throw Error('Invalid epochs');
+ dates.forEach((n,i)=>{number(n,2300000,2700000);if(i&&n<=dates[i-1])throw Error('Unordered epochs');});
+ if(!Array.isArray(branches)||branches.length!==ids.length-1)throw Error('Invalid branches');
+ branches.forEach(b=>{if(!Array.isArray(b)||![2,3].includes(b.length)||!Number.isInteger(b[0])||b[0]<0||b[0]>16||typeof b[1]!=='boolean'||(b.length===3&&typeof b[2]!=='boolean'))throw Error('Invalid branch');});
+ if(!Array.isArray(input.dsm_controls)||input.dsm_controls.length>ids.length-1)throw Error('Invalid DSM controls');
+ let previous=-1;
+ const controls=input.dsm_controls.map(d=>{exact(d,['leg_index','fraction','departure_offset_kms']);if(!Number.isInteger(d.leg_index)||d.leg_index<=previous||d.leg_index>=ids.length-1)throw Error('Invalid DSM leg');previous=d.leg_index;return {leg_index:d.leg_index,fraction:number(d.fraction,.1,.9),departure_offset_kms:vector(d.departure_offset_kms,1000)};});
+ exact(input.metrics,METRICS);const metrics=Object.fromEntries(METRICS.map(k=>[k,number(input.metrics[k],0,1e9)]));
+ const time=Date.parse(input.solved_at);if(typeof input.solved_at!=='string'||input.solved_at.length>40||!Number.isFinite(time)||time<0||time>Date.now()+86400000)throw Error('Invalid solve time');
+ if(!Array.isArray(input.segments)||input.segments.length<1||input.segments.length>32)throw Error('Invalid segments');
+ const segments=input.segments.map(s=>{exact(s,['start_jd','end_jd','r','v']);number(s.start_jd,dates[0]-.001,dates.at(-1)+.001);number(s.end_jd,s.start_jd+1e-8,dates.at(-1)+.001);return {start_jd:s.start_jd,end_jd:s.end_jd,r:vector(s.r,1e13),v:vector(s.v,10000)};});
+ const key={sequence:input.sequence,body_ids:ids,dates_jd_tdb:dates,branches,dsm_controls:controls};
+ const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(canonical(key))));
+ const id=Array.from(new Uint8Array(digest),n=>n.toString(16).padStart(2,'0')).join('');
+ return {...key,schema_version:1,engine_version:input.engine_version,classification:input.classification,solved_at:new Date(time).toISOString(),metrics,segments,id};
+}
+function headers(origin){return {'Content-Type':'application/json; charset=utf-8','Access-Control-Allow-Origin':origin||'*','Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type','Vary':'Origin','X-Content-Type-Options':'nosniff'};}
+function response(value,status=200,origin='',extra={}){return new Response(JSON.stringify(value),{status,headers:{...headers(origin),...extra}});}
+export default {async fetch(request,env){
+ const origin=request.headers.get('Origin')||'';
+ const allowed=(env.ALLOWED_ORIGINS||'').split(',').map(s=>s.trim());
+ const local=/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(origin);
+ if(origin&&!allowed.includes(origin)&&!local)return response({error:'Origin not allowed'},403);
+ if(request.method==='OPTIONS')return new Response(null,{status:204,headers:headers(origin)});
+ const url=new URL(request.url);
+ try {
+  if(url.pathname==='/v1/health')return response({service:'RoLaMGAS community library',schema_version:1,stores_identity:false},200,origin);
+  if(url.pathname!=='/v1/candidates')return response({error:'Not found'},404,origin);
+  if(request.method==='POST'){
+   if(!request.headers.get('Content-Type')?.startsWith('application/json'))return response({error:'JSON required'},415,origin);
+   const declared=Number(request.headers.get('Content-Length')||0);if(declared>256000)return response({error:'Batch too large'},413,origin);
+   // Bound streaming input too; a missing Content-Length cannot bypass the cap.
+   const reader=request.body?.getReader();if(!reader)return response({error:'Empty body'},400,origin);
+   const chunks=[];let size=0;
+   for(;;){const {value,done}=await reader.read();if(done)break;size+=value.byteLength;if(size>256000){await reader.cancel();return response({error:'Batch too large'},413,origin);}chunks.push(value);}
+   const bytes=new Uint8Array(size);let offset=0;for(const b of chunks){bytes.set(b,offset);offset+=b.length;}
+   const body=JSON.parse(new TextDecoder().decode(bytes));exact(body,['candidates']);
+   if(!Array.isArray(body.candidates)||!body.candidates.length||body.candidates.length>10)throw Error('Submit 1 to 10 candidates');
+   const records=await Promise.all(body.candidates.map(validate));
+   const now=new Date().toISOString(),day=now.slice(0,10),limit=Math.min(5000,Math.max(1,Number(env.MAX_DAILY_CANDIDATES)||5000));
+   if(records.length>limit)return response({error:'Daily submission budget reached; try tomorrow'},429,origin);
+   const budget=await env.DB.prepare('INSERT INTO daily_budget(day,submissions) VALUES(?1,?2) ON CONFLICT(day) DO UPDATE SET submissions=submissions+excluded.submissions WHERE submissions+excluded.submissions<=?3 RETURNING submissions').bind(day,records.length,limit).first();
+   if(!budget)return response({error:'Daily submission budget reached; try tomorrow'},429,origin);
+   for(const r of records)await env.DB.prepare('INSERT OR IGNORE INTO candidates(id,target,sequence,launch_jd,arrival_jd,c3,classification,solved_at,received_at,payload) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10)').bind(r.id,r.body_ids.at(-1),r.sequence,r.dates_jd_tdb[0],r.dates_jd_tdb.at(-1),r.metrics.launch_c3_km2_s2,r.classification,r.solved_at,now,JSON.stringify(r)).run();
+   return response({accepted:records.length,ids:records.map(r=>r.id)},200,origin);
+  }
+  if(request.method==='GET'){
+   const p=url.searchParams,target=p.get('target')||'599';if(!/^-?\d{1,12}$/.test(target))throw Error('Invalid target ID');
+   const lo=number(Number(p.get('min_c3')??0),0,1e9),hi=number(Number(p.get('max_c3')??1e9),lo,1e9);
+   const a=number(Number(p.get('launch_start')??2300000),2300000,2700000),b=number(Number(p.get('launch_end')??2700000),a,2700000);
+   const count=Math.floor(number(Number(p.get('limit')??50),1,100));
+   const rows=await env.DB.prepare('SELECT payload,received_at FROM candidates WHERE target=?1 AND c3>=?2 AND c3<=?3 AND launch_jd>=?4 AND launch_jd<=?5 ORDER BY received_at DESC,id LIMIT ?6').bind(target,lo,hi,a,b,count).all();
+   return response({schema_version:1,verification:'Submitted classifications are unverified. Recompute locally before use.',candidates:rows.results.map(r=>({...JSON.parse(r.payload),received_at:r.received_at}))},200,origin,{'Cache-Control':'public, max-age=60'});
+  }
+  return response({error:'Method not allowed'},405,origin);
+ }catch(error){return response({error:error.message==='Unknown record field'?'Only the documented public science fields are allowed':'Invalid request or temporarily unavailable library'},400,origin);}
+}};

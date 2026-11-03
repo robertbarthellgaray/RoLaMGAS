@@ -60,10 +60,14 @@ def hyperbolic_state(mu,r,v,t):
     return np.r_[position,velocity]
 
 
+def two_body_rhs(t,state,mu):
+    """One point-mass acceleration only, expressed in that body's inertial axes."""
+    return np.r_[state[3:],-mu*state[:3]/np.linalg.norm(state[:3])**3]
+
+
 def integrate_relative(mu,r,v,t0,t1):
     initial = hyperbolic_state(mu,r,v,t0)
-    def rhs(t,y):
-        return np.r_[y[3:],-mu*y[:3]/np.linalg.norm(y[:3])**3]
+    def rhs(t,y):return two_body_rhs(t,y,mu)
     fit = solve_ivp(rhs,(t0,t1),initial,method='DOP853',rtol=2.5e-13,
                     atol=np.r_[np.full(3,1e-8),np.full(3,1e-12)],dense_output=True)
     if not fit.success:
@@ -121,7 +125,8 @@ def planet_pieces(body,date,ep,uin=None,uout=None,altitude=200.,departure=False,
         def state(j,solution=solution,date=date,body=body):
             return ep.state(body,j)+solution((j-date)*DAY)
         pieces.append(dict(start=date+begin/DAY,end=date+end/DAY,state=state,
-                           label=body+' hyperbola',kind='planet',body=body,numerical_error_km=error))
+                           label=body+' hyperbola',kind='planet',body=body,numerical_error_km=error,
+                           force_center=body,gm_km3_s2=mu,soi_radius_km=float(soi)))
     return dict(pieces=pieces,rp=rp,altitude=rp-radius,body=body,date=date,soi=soi,
                 peri_position=relr,peri_in_velocity=vpin,peri_out_velocity=vpout)
 
@@ -141,23 +146,31 @@ def revolutions(segment):
     return max(0,int(np.floor((angles[-1]-angles[0])/(2*np.pi)+1e-8)))
 
 
-def solar_piece(start,end,r0,r1,reference,low=True):
+def solar_piece(start,end,r0,r1,reference,low=True,boundary_velocities=None):
     if end<=start:
         raise ValueError('Finite flyby patches overlap a DSM or the next encounter')
     m = revolutions(reference)
     prograde=bool(np.cross(np.asarray(reference['r']),np.asarray(reference['v']))[2]>=0)
+    # Compare velocities at the same epochs, not against the old planet-center
+    # departure state. For two boundary states choose the branch with least
+    # total explicit junction impulse; both choices keep the original M.
+    _,reference_departure=kepler(np.asarray(reference['r']),np.asarray(reference['v']),
+                                 (start-reference['start_jd'])*DAY)
     choices = []
     for path in ([low,not low] if m else [True]):
         try:
             va,vb = lambert(np.asarray(r0),np.asarray(r1),end-start,(m,path,prograde))
-            choices.append((np.linalg.norm(va-np.asarray(reference['v'])),va,vb))
+            if boundary_velocities is None:
+                score=np.linalg.norm(va-reference_departure)
+            else:
+                score=np.linalg.norm(va-np.asarray(boundary_velocities[0]))+np.linalg.norm(vb-np.asarray(boundary_velocities[1]))
+            choices.append((float(score),va,vb))
         except (ValueError,RuntimeError,AssertionError):
             pass
     if not choices:
         raise ValueError('No finite-boundary Lambert solution on the original revolution family. This candidate needs further targeting.')
-    _,va,vb = min(choices,key=lambda q:q[0])
-    def rhs(t,y):
-        return np.r_[y[3:],-MU_SUN*y[:3]/np.linalg.norm(y[:3])**3]
+    selection_cost,va,vb = min(choices,key=lambda q:q[0])
+    def rhs(t,y):return two_body_rhs(t,y,MU_SUN)
     duration = (end-start)*DAY
     fit = solve_ivp(rhs,(0,duration),np.r_[r0,va],method='DOP853',rtol=2.5e-13,
                     atol=np.r_[np.full(3,1e-6),np.full(3,1e-13)],dense_output=True)
@@ -167,7 +180,8 @@ def solar_piece(start,end,r0,r1,reference,low=True):
         return fit.sol((j-start)*DAY)
     error = float(np.linalg.norm(fit.y[:3,-1]-r1))
     return dict(start=start,end=end,state=state,label='Heliocentric coast',kind='solar',
-                numerical_error_km=error,revolutions=m)
+                numerical_error_km=error,revolutions=m,force_center='Sun',gm_km3_s2=MU_SUN,
+                boundary_selection_delta_v_kms=selection_cost if boundary_velocities is not None else None)
 
 
 MONTH_DAYS=365.25/12
@@ -179,13 +193,13 @@ def validate_post_flyby_months(value):
     return value
 
 
-def extend_planet_ephemerides(ep,c,start,end,status):
+def extend_planet_ephemerides(ep,c,start,end,status,bodies=None):
     """Load cached coverage first; download only a missing future interval."""
-    for body in list(ep.splines):
+    for body in (list(ep.splines) if bodies is None else bodies):
         if body not in BODIES:continue
         old_end=JD0+ep.splines[body].x[-1]/DAY
         if old_end>=end:continue
-        status('Checking post-flyby ephemeris coverage for '+body+'…')
+        status('Checking '+body+' position coverage for the SOI patch frame (not n-body gravity)…')
         step=min(c['max_ephemeris_step_days'],.25) if body=='Mercury' else c['max_ephemeris_step_days']
         try:extended=Ephemerides(c['cache'],[body],start,end,step)
         except ValueError:
@@ -203,13 +217,13 @@ def extend_planet_ephemerides(ep,c,start,end,status):
 def solar_continuation(start,end,initial):
     initial=np.array(initial,dtype=float);seconds=(end-start)*DAY
     expected,_=kepler(initial[:3],initial[3:],seconds)
-    def rhs(t,y):return np.r_[y[3:],-MU_SUN*y[:3]/np.linalg.norm(y[:3])**3]
+    def rhs(t,y):return two_body_rhs(t,y,MU_SUN)
     fit=solve_ivp(rhs,(0,seconds),initial,method='DOP853',rtol=2.5e-13,
                   atol=np.r_[np.full(3,1e-6),np.full(3,1e-13)],dense_output=True,max_step=2*DAY)
     if not fit.success:raise ValueError('Post-flyby heliocentric integration failed: '+fit.message)
     def state(date):return fit.sol((date-start)*DAY)
     return dict(start=start,end=end,state=state,label='Post-flyby heliocentric coast',kind='solar',
-                numerical_error_km=float(np.linalg.norm(fit.y[:3,-1]-expected)))
+                numerical_error_km=float(np.linalg.norm(fit.y[:3,-1]-expected)),force_center='Sun',gm_km3_s2=MU_SUN)
 
 
 def post_flyby_pieces(node,ep,end,initial):
@@ -225,7 +239,8 @@ def post_flyby_pieces(node,ep,end,initial):
     stop=min(end,boundary)
     solution,error=integrate_relative(mu,r,v,0,(stop-date)*DAY)
     def state(epoch):return ep.state(body,epoch)+solution((epoch-date)*DAY)
-    outgoing=dict(start=date,end=stop,state=state,label=body+' outbound flyby',kind='planet',body=body,numerical_error_km=error)
+    outgoing=dict(start=date,end=stop,state=state,label=body+' outbound flyby',kind='planet',body=body,numerical_error_km=error,
+                  force_center=body,gm_km3_s2=mu,soi_radius_km=float(node['soi']))
     result=[outgoing]
     if end>boundary:result.append(solar_continuation(boundary,end,state(boundary)))
     return result
@@ -294,8 +309,9 @@ def requirement_violations(q,c):
                              ('duration_years','max_years','Duration (years)')]:
         if q[field]>c[limit]+1e-8:
             failures.append(f'{label}: {q[field]:.8g} exceeds requested {c[limit]:.8g}')
-    if q['launch_c3_km2_s2']<c.get('min_c3',0)-1e-8:
-        failures.append(f"Launch C3 is below requested minimum {c['min_c3']:.8g}")
+    energy_floor=c.get('effective_min_c3',c.get('min_c3',0))
+    if q['launch_c3_km2_s2']<energy_floor-1e-8:
+        failures.append(f"Launch C3 is below the effective requested minimum {energy_floor:.8g}")
     window=c.get('arrival_window_jd')
     if window and not window[0]-1e-8<=q['dates_jd_tdb'][-1]<=window[1]+1e-8:
         failures.append('Arrival epoch is outside the requested arrival-date window')
@@ -309,7 +325,32 @@ def requirement_violations(q,c):
             failures.append(f"{f['body']} turn angle exceeds the limit at the requested minimum altitude")
     if any(b['magnitude_kms']>c['max_single_dsm_kms']+1e-9 for b in q.get('dsms',[])):
         failures.append(f"A DSM exceeds individual cap {c['max_single_dsm_kms']*1000:.8g} m/s")
+    if any(b['magnitude_kms']>c['max_single_dsm_kms']+1e-9 for b in q.get('event_burns',[])):
+        failures.append(f"A target-turnaround burn exceeds the individual DSM cap {c['max_single_dsm_kms']*1000:.8g} m/s")
     return failures
+
+
+def export_budget_breakdown(candidate,burns):
+    """Do not mistake a scalar V-infinity residual for a feasible vector burn."""
+    unresolved=[f for f in candidate.get('flybys',[]) if not f.get('passes_powered_geometry',False)
+                and (not f.get('speed_matched_to_1_mm_s',f.get('speed_mismatch_mps',0.)<=.001)
+                     or not f.get('passes_turn_screen',True))]
+    def total(kinds):return float(sum(b['magnitude_kms'] for b in burns if b['kind'] in kinds))
+    return dict(candidate_cruise_dsm_kms=float(candidate.get('cruise_dsm_kms',sum(b['magnitude_kms'] for b in candidate.get('dsms',[])))),
+        candidate_modeled_flyby_burns_kms=float(candidate.get('powered_flyby_delta_v_kms',0.)),
+        candidate_modeled_target_turnaround_kms=float(candidate.get('turnaround_delta_v_kms',sum(b['magnitude_kms'] for b in candidate.get('event_burns',[]) if b.get('kind')=='target_turnaround'))),
+        candidate_modeled_maneuver_total_kms=float(candidate.get('total_dsm_kms',0.)),
+        candidate_maneuver_budget_complete=bool(candidate.get('maneuver_budget_complete',not unresolved)),
+        unresolved_flyby_count=int(candidate.get('unresolved_flyby_count',len(unresolved))),
+        unresolved_speed_mismatch_total_mps=float(candidate.get('unresolved_speed_mismatch_total_mps',sum(f.get('speed_mismatch_mps',0.) for f in unresolved))),
+        unresolved_speed_mismatch_is_delta_v=False,
+        exported_cruise_dsm_kms=total({'retargeted_DSM'}),
+        exported_target_turnaround_kms=total({'target_turnaround'}),
+        exported_modeled_powered_flyby_kms=total({'powered_flyby'}),
+        exported_additional_periapsis_speed_match_kms=total({'flyby_speed_match_burn'}),
+        exported_finite_soi_boundary_junction_kms=total({'finite_patch_junction'}),
+        exported_total_onboard_kms=float(sum(b['magnitude_kms'] for b in burns if not b['kind'].startswith('launch'))),
+        note='The candidate modeled total excludes unresolved joins. Exported periapsis impulses and finite SOI-boundary retargeting impulses are explicit vector burns; no scalar V-infinity residual is silently substituted for either.')
 
 
 def small_body_node(body,date,ep,incoming_vinf,distance_km=10000.):
@@ -323,6 +364,30 @@ def small_body_node(body,date,ep,incoming_vinf,distance_km=10000.):
     target_state[:3]+=distance_km*unit(np.cross(direction,h))
     return dict(pieces=[],body=body,date=date,target_state=target_state,rp=None,
                 altitude=None,center_distance_km=distance_km)
+
+
+def minor_body_event_node(candidate,index,ep,distance_km=10000.):
+    """A finite geometric visit; its incoming/outgoing velocity change is a burn."""
+    event=candidate['events'][index];body=event['body'];date=event['julian_date_tdb']
+    incoming=np.asarray(candidate['arrival_velocities_kms'][index-1],dtype=float)
+    target=np.asarray(event['planet_state_km_kms'],dtype=float)
+    node=small_body_node(body,date,ep,incoming-target[3:],distance_km)
+    node['incoming_heliocentric_velocity_kms']=incoming
+    if index<len(candidate['events'])-1:
+        node['outgoing_heliocentric_velocity_kms']=np.asarray(candidate['departure_velocities_kms'][index],dtype=float)
+    return node
+
+
+def node_coast_boundary(node,outgoing):
+    """Connect a solar coast to a hyperbola or a zero-GM geometric visit."""
+    if node['pieces']:
+        piece=node['pieces'][-1] if outgoing else node['pieces'][0]
+        date=piece['end'] if outgoing else piece['start']
+        return date,piece['state'](date)
+    state=np.asarray(node['target_state'],dtype=float).copy()
+    key='outgoing_heliocentric_velocity_kms' if outgoing else 'incoming_heliocentric_velocity_kms'
+    if key in node:state[3:]=node[key]
+    return node['date'],state
 
 
 def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.):
@@ -343,11 +408,15 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
         if not math.isfinite(arrival_altitude_km) or arrival_altitude_km<=0:
             raise ValueError('Arrival altitude must be positive and finite')
     ep=get_ephemerides(c,routes_for(c))
-    if post_flyby_months>0:extend_planet_ephemerides(ep,c,q['events'][0]['julian_date_tdb']-2,extended_end+2,status)
+    if post_flyby_months>0:
+        # Only the final encounter's center is needed by the post-flyby force
+        # patch. Other cached planet vectors are optional clearance inputs.
+        extend_planet_ephemerides(ep,c,q['events'][0]['julian_date_tdb']-2,extended_end+2,status,
+                                  bodies=[q['events'][-1]['body']])
     if powered_flybys is not None or c.get('powered_flybys'):
         from dynamics import Model
         model=Model(next(r for r in routes_for(c) if r['id']==q['sequence']),c,ep)
-        updated=model.evaluate(q['x'],q['branches']);updated['id']=q['id']
+        updated=model.evaluate(q['x'],q['branches'],enforce_c3=False);updated['id']=q['id']
         updated['status']='passes_configured_patched_conic_screen' if model.accepted(updated) else 'near_miss_not_accepted'
         q=updated
     violations=requirement_violations(q,c)
@@ -359,7 +428,9 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
             node=planet_pieces(body,date,ep,uout=np.array(q['launch_vinf_vector_kms']),altitude=200.,departure=True)
         elif body in BODIES:
             floor=c['minimum_altitude_km'].get(body,BODIES[body][3])
-            f=q['flybys'][i-1] if i<len(q['events'])-1 else None
+            f=next((f for f in q['flybys'] if f.get('event_index')==i),None) if i<len(q['events'])-1 else None
+            if i<len(q['events'])-1 and f is None:
+                raise ValueError(f'Missing planetary flyby geometry for event {i}: {body}')
             if f is None and arrival_altitude_km is not None:floor=arrival_altitude_km
             node=planet_pieces(body,date,ep,uin=np.array(f['incoming_vinf_vector_kms'] if f else q['arrival_vinf_vector_kms']),
                                uout=np.array(f['outgoing_vinf_vector_kms']) if f else None,
@@ -368,17 +439,15 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
             if f and node['altitude']<floor-1e-6:
                 violations.append(f"{body} integrated flyby altitude {node['altitude']:.8g} km is below requested {floor:.8g} km")
         else:
-            node=small_body_node(body,date,ep,q['arrival_vinf_vector_kms'],
-                                 10000. if arrival_altitude_km is None else arrival_altitude_km)
+            distance=arrival_altitude_km if i==len(q['events'])-1 and arrival_altitude_km is not None else 10000.
+            node=minor_body_event_node(q,i,ep,distance)
         nodes.append(node)
     pieces=list(nodes[0]['pieces'])
     segment_index=0
     for i in range(len(nodes)-1):
         left,right=nodes[i],nodes[i+1]
-        begin=left['pieces'][-1]['end']
-        y0=left['pieces'][-1]['state'](begin)
-        end=right['pieces'][0]['start'] if right['pieces'] else right['date']
-        y1=right['pieces'][0]['state'](end) if right['pieces'] else right['target_state']
+        begin,y0=node_coast_boundary(left,True)
+        end,y1=node_coast_boundary(right,False)
         burn=next((b for b in q['dsms'] if b['leg_index']==i),None)
         reference=q['segments'][segment_index]
         if burn:
@@ -387,7 +456,8 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
             pieces.append(solar_piece(mid,end,point,y1[:3],q['segments'][segment_index+1],True))
             segment_index+=2
         else:
-            pieces.append(solar_piece(begin,end,y0[:3],y1[:3],reference,q['branches'][i][1]))
+            pieces.append(solar_piece(begin,end,y0[:3],y1[:3],reference,q['branches'][i][1],
+                                      boundary_velocities=(y0[3:],y1[3:])))
             segment_index+=1
         pieces.extend(right['pieces'])
     if post_flyby_months>0:
@@ -406,12 +476,18 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
         t=b['start'];ya,yb=a['state'](t),b['state'](t)
         jumps.append(float(np.linalg.norm(ya[:3]-yb[:3])))
         dv=yb[3:]-ya[3:]
-        if a['kind']=='solar' and b['kind']=='solar':kind='retargeted_DSM'
+        event_burn=next((burn for burn in q.get('event_burns',[]) if burn.get('kind')=='target_turnaround' and abs(burn['julian_date_tdb']-t)<1e-8),None)
+        if event_burn is not None and a['kind']=='solar' and b['kind']=='solar':kind='target_turnaround'
+        elif a['kind']=='solar' and b['kind']=='solar':kind='retargeted_DSM'
         elif a['kind']=='planet' and b['kind']=='planet':kind='powered_flyby' if c.get('powered_flybys') else 'flyby_speed_match_burn'
         else:kind='finite_patch_junction'
         if np.linalg.norm(dv)>1e-8:
-            burns.append(dict(kind=kind,julian_date_tdb=t,magnitude_kms=float(np.linalg.norm(dv)),
-                              dx_kms=dv[0],dy_kms=dv[1],dz_kms=dv[2]))
+            record=dict(kind=kind,julian_date_tdb=t,magnitude_kms=float(np.linalg.norm(dv)),
+                        dx_kms=dv[0],dy_kms=dv[1],dz_kms=dv[2])
+            if event_burn is not None:
+                record.update(body=event_burn['body'],event_index=event_burn['event_index'],
+                              candidate_modeled_magnitude_kms=event_burn['magnitude_kms'])
+            burns.append(record)
     status('Sampling integrated arcs and checking planetary clearances…')
     samples=[sample_piece(p,i<len(pieces)-1) for i,p in enumerate(pieces)]
     start,end=pieces[0]['start'],pieces[-1]['end']
@@ -420,8 +496,16 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
         clearance_rows=clearances(pieces,samples,all_ep)
         checked=list(BODIES)
     except ValueError:
-        clearance_rows=clearances(pieces,samples,ep)
-        checked=[b for b in BODIES if b in ep.splines]
+        # Do not download unrelated planets solely for a clearance check.
+        # Exclude cached tables that do not cover an extended trajectory.
+        class CoveredEphemerides:
+            def __init__(self):
+                a=(start-JD0)*DAY;b=(end-JD0)*DAY
+                self.splines={body:curve for body,curve in ep.splines.items() if curve.x[0]<=a and curve.x[-1]>=b}
+            def state(self,body,date):return ep.state(body,date)
+        clearance_ep=CoveredEphemerides()
+        clearance_rows=clearances(pieces,samples,clearance_ep)
+        checked=[b for b in BODIES if b in clearance_ep.splines]
     flattened=[(t,y) for group in samples for t,y in group]
     for burn in burns:
         burn['date']=calendar(burn['julian_date_tdb'])
@@ -437,10 +521,12 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
                 stream.write(separator.join([f'{t:.12f}']+[f'{v:.6f}' for v in y[:3]]+[f'{v:.10f}' for v in y[3:]])+'\n')
         temporary.replace(output/('trajectory.'+extension))
     for name,rows in [('burns',burns),('encounters',[dict(body=n['body'],julian_date_tdb=n['date'],
-                           date=calendar(n['date']),periapsis_radius_km=n['rp'],altitude_km=n['altitude']) for n in nodes]),
+                           date=calendar(n['date']),periapsis_radius_km=n['rp'],altitude_km=n['altitude'],
+                           target_center_distance_km=n.get('center_distance_km')) for n in nodes]),
                       ('planet_clearances',clearance_rows)]:
         with (output/(name+'.csv')).open('w',newline='',encoding='utf-8') as stream:
-            writer=csv.DictWriter(stream,fieldnames=list(rows[0]));writer.writeheader();writer.writerows(rows)
+            fields=list(dict.fromkeys(key for row in rows for key in row))
+            writer=csv.DictWriter(stream,fieldnames=fields);writer.writeheader();writer.writerows(rows)
     max_error=max(p['numerical_error_km'] for p in pieces)
     last=nodes[-1]
     arrival_state=None
@@ -469,11 +555,22 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
             writer.writerow([last['date'],*relative.tolist()])
     patch_dv=sum(b['magnitude_kms'] for b in burns if b['kind']=='finite_patch_junction')
     onboard=sum(b['magnitude_kms'] for b in burns if not b['kind'].startswith('launch'))
-    actual_dsm_peak=max((b['magnitude_kms'] for b in burns if b['kind'] in ('retargeted_DSM','finite_patch_junction')),default=0.)
+    actual_dsm_peak=max((b['magnitude_kms'] for b in burns if b['kind'] in ('retargeted_DSM','finite_patch_junction','target_turnaround')),default=0.)
     actual_power_peak=max((b['magnitude_kms'] for b in burns if b['kind'] in ('powered_flyby','flyby_speed_match_burn')),default=0.)
     individual_pass=actual_dsm_peak<=c['max_single_dsm_kms']+1e-9 and actual_power_peak<=c['max_powered_flyby_kms']+1e-9
     if not individual_pass:violations.append('An integrated DSM/patch correction or flyby impulse exceeds its individual burn cap; see burns.csv')
-    report=dict(model='Numerically integrated Sun-only coasts and planet-centered hyperbolas, translated using JPL planet states',
+    budget=export_budget_breakdown(q,burns)
+    report=dict(model='Two-body patched conics: Sun-only coasts and one-planet-only SOI hyperbolas, translated using JPL planet states',
+                propagation_model='two_body_patched_conics',nbody_propagation=False,
+                force_model=dict(heliocentric_coasts='Sun point mass only, outside planned encounter SOIs',
+                    planetary_patches='Encounter-planet point mass only in planet-relative coordinates, inside its Laplace SOI',
+                    simultaneous_multiple_gravity_sources=False,solar_tides_inside_planet_patch=False,
+                    other_planet_perturbations_outside_soi=False,
+                    planet_ephemerides_usage='Geometric planet positions/velocities translate patch frames and support clearance checks; they are not perturbing force inputs.',
+                    unplanned_encounters_automatically_patched=False),
+                force_segments=[dict(start_jd_tdb=p['start'],end_jd_tdb=p['end'],center=p.get('force_center',p.get('body','Sun')),
+                    gm_km3_s2=p.get('gm_km3_s2',MU_SUN),soi_radius_km=p.get('soi_radius_km')) for p in pieces],
+                maneuver_budget_breakdown=budget,candidate_maneuver_budget_complete=budget['candidate_maneuver_budget_complete'],
                 frame='Sun-centered Ecliptic J2000; km, km/s; Julian dates TDB',candidate_id=q['id'],
                 arrival_altitude_option_km=arrival_altitude_km,arrival_state=arrival_state,
                 post_flyby_months=post_flyby_months,month_length_days=MONTH_DAYS,
@@ -482,11 +579,14 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
                 maximum_integrated_flyby_burn_kms=actual_power_peak,
                 source_candidate_status=original_status,export_evaluation_status=q['status'],powered_flybys_active=c.get('powered_flybys',False),
                 candidate_powered_flyby_delta_v_kms=q.get('powered_flyby_delta_v_kms',0.),
-                candidate_cruise_dsm_kms=q.get('cruise_dsm_kms',q['total_dsm_kms']-q.get('powered_flyby_delta_v_kms',0.)),
+                candidate_cruise_dsm_kms=q.get('cruise_dsm_kms',q['total_dsm_kms']-q.get('powered_flyby_delta_v_kms',0.)-q.get('turnaround_delta_v_kms',0.)),
+                candidate_target_turnaround_delta_v_kms=q.get('turnaround_delta_v_kms',0.),
+                candidate_event_burns=q.get('event_burns',[]),
+                exported_target_turnaround_burns=[burn for burn in burns if burn['kind']=='target_turnaround'],
                 powered_flyby_burns=[dict(body=f['body'],event_index=f['event_index'],julian_date_tdb=f['julian_date_tdb'],**f['powered_flyby']) for f in q['flybys'] if f.get('powered_flyby')],
                 candidate_passes_requested_limits=not violations and q['status'].startswith('passes'),
                 requirement_violations=violations,
-                requested_limits={key:c[key] for key in ('min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','max_years','vinf_tolerance_mps','minimum_altitude_km')},
+                requested_limits={key:c.get(key) for key in ('effective_min_c3','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','max_years','vinf_tolerance_mps','minimum_altitude_km')},
                 source_candidate_sha256=hashlib.sha256(Path(candidate).read_bytes()).hexdigest(),
                 ephemeris_sources=ep.manifest,
                 numerical_validation_passed=max_error<1 and max(jumps,default=0)<1,
@@ -496,11 +596,15 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
                 passes_original_onboard_budget=onboard<=c['max_dsm_kms'],rows=len(flattened),
                 start_jd_tdb=start,end_jd_tdb=end,planet_clearances=clearance_rows,
                 no_sample_bracketed_planet_or_sun_impacts=all(r['altitude_km']>0 for r in clearance_rows),
-                planets_checked=checked,continuous_nbody_validated=False,
+                clearance_checks_cover_all_eight_planets=len(checked)==len(BODIES),
+                planets_checked=checked,planets_omitted_from_clearance_check=[body for body in BODIES if body not in checked],
+                clearance_ephemerides_policy='Use existing complete-span cached vectors only for other planets; no extra downloads or perturbing gravity are added for this check.',
+                continuous_nbody_validated=False,
                 sampling='Adaptive Hermite midpoint position residual below 0.1 km; maximum solar step 2 days, flyby step 2 hours; impulse epochs separated by 0.02 s.',
                 small_body_arrival=(f"{last['center_distance_km']:.12g} km from target center at the requested encounter epoch; target gravity, surface radius and capture are not modeled." if 'center_distance_km' in last else None),
                 small_body_encounter_distance_km=last.get('center_distance_km'),
-                limitations=['Boundary velocities are retargeted; every resulting impulse is explicit in burns.csv.',
+                limitations=['Finite SOI-boundary positions and times are retargeted from the planet-center Lambert design; every velocity gap is an explicit junction impulse, not an n-body correction.',
+                             'Inside each planned SOI only that planet is propagated; outside planned SOIs only the Sun is propagated. Unplanned encounters are not automatically patched.',
                              'Clearance minima are sample-bracketed with continuous refinement, not exhaustive polynomial root isolation.',
                              'Moon perturbations, planetary rings and thermal constraints are not included.',
                              'Numerical validation does not establish an optimized or budget-compliant mission.'])
@@ -518,7 +622,7 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
 }}
 '''
     (output/'trajectory.ssc').write_text(ssc,encoding='utf-8')
-    (output/'README.txt').write_text('CSV and XYZV contain the same integrated Sun-centered Ecliptic J2000 states, km and km/s, JD TDB.\nFor Celestia put trajectory.ssc in an addon folder and trajectory.xyzv in its data subfolder.\nAll maneuvers, including finite-patch junction corrections, are in burns.csv. Check integration_report.json before using its fuel budget.\n',encoding='utf-8')
+    (output/'README.txt').write_text('Force model: two-body patched conics, never n-body. Sun only outside planned SOIs; the encounter planet only inside its SOI. JPL planet vectors translate reference frames and check clearances.\nCSV and XYZV contain the same integrated Sun-centered Ecliptic J2000 states, km and km/s, JD TDB.\nFor Celestia put trajectory.ssc in an addon folder and trajectory.xyzv in its data subfolder.\nAll maneuvers, including finite-patch junction corrections, are in burns.csv. Check integration_report.json before using its fuel budget.\n',encoding='utf-8')
     atomic_json(output/'integration_status.json',dict(state='finished',message='Integrated trajectory and both export formats saved.'))
     return report
 

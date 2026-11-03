@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS candidates (
+ id TEXT PRIMARY KEY, target TEXT NOT NULL, sequence TEXT NOT NULL,
+ launch_jd REAL NOT NULL, arrival_jd REAL NOT NULL, c3 REAL NOT NULL,
+ classification TEXT NOT NULL CHECK(classification IN ('pass','yellow')),
+ solved_at TEXT NOT NULL, received_at TEXT NOT NULL, payload TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS candidate_target_energy ON candidates(target,c3,launch_jd);
+CREATE INDEX IF NOT EXISTS candidate_target_time ON candidates(target,received_at DESC);
+CREATE TABLE IF NOT EXISTS daily_budget (day TEXT PRIMARY KEY, submissions INTEGER NOT NULL);

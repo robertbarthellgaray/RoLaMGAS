@@ -1,4 +1,4 @@
-"""Append planetary encounters while keeping the selected cruise exactly fixed."""
+"""Append encounters while preserving the selected cruise; point-target turns are explicit burns."""
 import bootstrap  # noqa: F401
 from copy import deepcopy
 import math
@@ -6,13 +6,45 @@ import numpy as np
 from ephemeris import BODIES
 
 
-def extension_request(config,route,candidate,parent_run,body=None,count=1,minimum_days=80.,maximum_days=750.,dsm=False):
+def original_target_descriptors(config):
+    """Resolved identities for all nonplanet encounters already in the cruise."""
+    extension=config.get('append_flyby') or {}
+    values=list(extension.get('original_target_objects') or [])
+    values.extend([extension.get('original_target_object'),config.get('target_object')])
+    result={}
+    for value in values:
+        if value is None:continue
+        if not isinstance(value,dict) or not value.get('name') or not value.get('id'):
+            raise ValueError('The original resolved Horizons target identity is incomplete')
+        name=value['name']
+        if name in result and str(result[name]['id'])!=str(value['id']):
+            raise ValueError('Conflicting original Horizons identities for '+name)
+        result[name]=deepcopy(value)
+    return list(result.values())
+
+
+def extension_request(config,route,candidate,parent_run,body=None,count=1,minimum_days=80.,maximum_days=750.,dsm=False,target_object=None):
     if not isinstance(dsm,bool):raise ValueError('New-leg DSM option must be boolean')
     if isinstance(count,bool) or int(count)!=count or not 1<=count<=3:
         raise ValueError('Add one to three encounters at a time')
-    count=int(count);body=str(body or candidate['bodies'][-1]).strip().title()
-    if body not in BODIES or candidate['bodies'][-1] not in BODIES:
-        raise ValueError('Appended assists currently require supported planets')
+    count=int(count)
+    if target_object is not None:
+        from horizons_targets import register_target,moon_model_notice
+        register_target(target_object)
+        notice=moon_model_notice(target_object)
+        if notice:raise ValueError(notice)
+        body=target_object['name']
+    else:
+        body=str(body or candidate['bodies'][-1]).strip().title()
+        if body not in BODIES:
+            raise ValueError('Resolve a Horizons object or choose a supported planet for the next encounter')
+    descriptors=original_target_descriptors(config)
+    prefix_names={b for b in candidate['bodies'] if b not in BODIES}
+    originals=[d for d in descriptors if d['name'] in prefix_names]
+    if {d['name'] for d in originals}!=prefix_names:
+        raise ValueError('A follow-on from a minor body requires a confirmed original Horizons identity for every frozen target')
+    point_turn=candidate['bodies'][-1] not in BODIES
+    original_target=next((d for d in originals if d['name']==candidate['bodies'][-1]),originals[0] if originals else None)
     minimum_days,maximum_days=float(minimum_days),float(maximum_days)
     if not all(math.isfinite(v) for v in (minimum_days,maximum_days)) or not 0<minimum_days<maximum_days<=10000:
         raise ValueError('New leg timing requires 0 < minimum < maximum <= 10000 days')
@@ -20,8 +52,8 @@ def extension_request(config,route,candidate,parent_run,body=None,count=1,minimu
     n0=len(candidate['bodies']);n=n0+count
     dsms=list(route.get('dsm_legs',[]))
     if dsm:dsms+=list(range(n0-1,n-1))
-    sequence=candidate['sequence']+('dv' if dsm else '')+codes[body]
-    for _ in range(count-1):sequence+=('dv' if dsm else '')+codes[body]
+    sequence=candidate['sequence']+('dv' if dsm else '')+codes.get(body,'X')
+    for _ in range(count-1):sequence+=('dv' if dsm else '')+codes.get(body,'X')
     branches=[[list(b)] for b in candidate['branches']]
     bodies=list(candidate['bodies'])+[body]*count
     for a,b in zip(bodies[n0-1:],bodies[n0:]):
@@ -38,13 +70,14 @@ def extension_request(config,route,candidate,parent_run,body=None,count=1,minimu
     if len(seed)!=n+4*len(dsms):raise ValueError('Saved candidate DSM controls differ from its route')
     for key in ('max_single_dsm_kms','max_powered_flyby_kms'):
         request.setdefault(key,config['max_dsm_kms'])
-    request.update(target=body,target_object=None,sequences=[sequence],route_overrides={},search_objective='arrival',
+    request.update(target=body,target_object=deepcopy(target_object),sequences=[sequence],route_overrides={},search_objective='dsm' if point_turn else 'arrival',
                    seed=int(config.get('seed',502))+1,mercury_resonant_seeds=True)
     # A full snapshot preserves even a tolerated original v-infinity mismatch;
     # no hidden rewrite of earlier Lambert legs or DSM vectors is permitted.
     request['append_flyby']=dict(parent_run=parent_run,parent_candidate=candidate['id'],
         prefix=deepcopy(candidate),prefix_count=n0,route=new_route,seed_x=seed,
         new_body=body,added_encounters=count,new_leg_dsm=dsm,
+        original_target_object=original_target,original_target_objects=originals,point_target_turnaround=point_turn,
         reference_arrival_vinf_kms=candidate['arrival_vinf_kms'])
     return request
 
@@ -55,8 +88,21 @@ def validate_extension(value,config):
     n0=len(prefix.get('bodies',[]));n=len(route.get('bodies',[]))
     if n0<2 or not 1<=n-n0<=3 or value.get('prefix_count')!=n0:
         raise ValueError('Invalid frozen prefix size')
-    if route['bodies'][:n0]!=prefix['bodies'] or any(b not in BODIES for b in route['bodies']):
-        raise ValueError('Appended route changes the original bodies')
+    next_object=config.get('target_object')
+    allowed_new=set(BODIES)|({next_object['name']} if next_object else set())
+    if route['bodies'][:n0]!=prefix['bodies'] or any(b not in allowed_new for b in route['bodies'][n0:]):
+        raise ValueError('Appended route changes the original bodies or adds an unsupported target')
+    unsupported={b for b in route['bodies'][:n0] if b not in BODIES}
+    originals=original_target_descriptors(config)
+    by_name={d['name']:d for d in originals}
+    if not unsupported.issubset(by_name):
+        raise ValueError('The frozen nonplanet encounters need their original resolved Horizons identities')
+    from horizons_targets import register_target,moon_model_notice
+    for body in unsupported:
+        descriptor=by_name[body]
+        notice=moon_model_notice(descriptor)
+        if notice:raise ValueError(notice)
+        register_target(descriptor)
     if config['sequences']!=[route['id']] or route['target']!=config['target']:
         raise ValueError('Appended route and destination differ')
     dates=prefix.get('dates_jd_tdb',[])
@@ -72,6 +118,8 @@ def validate_extension(value,config):
 def return_root_seeds(model,branches):
     """Bracket narrow one-leg speed matches that ordinary random starts miss."""
     if not model.extension:return []
+    # A zero-GM point encounter has no natural speed-matching flyby resonance.
+    if model.bodies[model.prefix_count-1] not in BODIES:return []
     if len(model.free_indices)!=1:
         # A zero-DSM resonant return is also a useful starting point for the
         # optional burn search. Put the burn late enough that its remaining

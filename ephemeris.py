@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import csv
 import hashlib
 import json
+import math
 import re
 import urllib.parse
 import tempfile
@@ -163,15 +164,26 @@ class Ephemerides:
 
 
 def fetch(cache, body, start, end, step_days=1.):
+    if not all(math.isfinite(v) for v in (start,end,step_days)) or not start < end or step_days < 1/1440:
+        raise ValueError('Horizons download needs an ordered finite window and at least one-minute cadence')
+    # Horizons samples START+n*STEP and omits an unaligned STOP. Bracket the
+    # required interval on an integral-minute grid, with one guard sample on
+    # each side for printed timestamp rounding. Short windows still need at
+    # least four records for the cache parser. Never extrapolate cached states.
+    step_minutes=max(1,int(math.floor(step_days*1440+1e-9)))
+    first=math.floor((start-JD0)*1440/step_minutes)-1
+    last=max(first+3,math.ceil((end-JD0)*1440/step_minutes)+1)
+    download_start=JD0+first*step_minutes/1440
+    download_end=JD0+last*step_minutes/1440
+    # Preserve the requested epoch for comet apparition selection; padding is
+    # only a vector-table sampling detail, not a different mission epoch.
     params = dict(COMMAND=command_for_epoch(body, start), EPHEM_TYPE='VECTORS', CENTER='500@10',
-                  START_TIME='JD' + str(start), STOP_TIME='JD' + str(end),
-                  STEP_SIZE=f'{int(round(step_days * DAY))} s', OUT_UNITS='KM-S', REF_PLANE='ECLIPTIC',
+                  START_TIME=f'JD{download_start:.10f}', STOP_TIME=f'JD{download_end:.10f}',
+                  STEP_SIZE=f'{step_minutes} m', OUT_UNITS='KM-S', REF_PLANE='ECLIPTIC',
                   REF_SYSTEM='ICRF', VEC_CORR='NONE', VEC_TABLE='2', CSV_FORMAT='YES', TIME_TYPE='TDB')
-    # Horizons step sizes use minutes, hours or days; integral minutes permit fractional-day caches.
-    params['STEP_SIZE'] = f'{int(round(step_days * 1440))} m'
     url = 'https://ssd.jpl.nasa.gov/api/horizons.api?' + urllib.parse.urlencode(
         {'format': 'json', **{k: "'" + v + "'" for k, v in params.items()}})
-    print(f'Downloading {body}: {calendar(start)} to {calendar(end)}', flush=True)
+    print(f'Downloading {body}: {calendar(download_start)} to {calendar(download_end)} (bracketed coverage)', flush=True)
     result = request_json(url, timeout=180)
     if result.get('error') or '$$SOE' not in result.get('result', ''):
         raise ValueError(f"Horizons: {result.get('error', result.get('result', 'No vectors'))}")

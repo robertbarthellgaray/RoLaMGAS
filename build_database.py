@@ -33,6 +33,7 @@ REFERENCES = [
                  ['Venus','2007-06-05'], ['Mercury','2008-01-14'], ['Mercury','2008-10-06'],
                  ['Mercury','2009-09-29'], ['Mercury','2011-03-18']],
          note='Actual MESSENGER used several DSMs. The planet-only route is a screening template; a DSM variant is also supplied.'),
+    {'mission': 'New Horizons', 'sequence': 'EJX', 'sources': ['https://science.nasa.gov/mission/new-horizons/'], 'events': [['Earth', '2006-01-19'], ['Jupiter', '2007-02-28'], ['Pluto', '2015-07-14']], 'note': 'Fast Earth-Jupiter flight: about 405 days. Included to avoid excluding high-energy Jupiter-assist launches from default timing ranges. Pluto is a resolved custom terminal target.'},
 ]
 
 
@@ -46,7 +47,7 @@ def build():
     # to admit different geometry. They do not predict feasible future windows.
     pair_days = {
         'Earth-Venus':[90,500], 'Venus-Earth':[45,500], 'Venus-Venus':[180,650],
-        'Earth-Earth':[300,1200], 'Earth-Jupiter':[500,1800],
+        'Earth-Earth':[300,1200], 'Earth-Jupiter':[300,1800],
         'Jupiter-Saturn':[700,2200], 'Earth-Saturn':[900,3000],
         'Jupiter-Uranus':[1800,5000], 'Earth-Uranus':[3000,7500],
         'Jupiter-Neptune':[2500,6500], 'Earth-Neptune':[4000,10000],

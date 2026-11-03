@@ -1,3 +1,5 @@
+# Uploads require the user to have tried and approved a local build first.
+# Manual dispatch only; tags do not upload or publish builds automatically.
 name: Build native downloads
 
 on:
@@ -5,13 +7,9 @@ on:
     inputs:
       version:
         description: Package version (manual runs create downloadable Actions artifacts only)
-        default: '0.2.0'
+        default: '0.2.1'
         required: true
         type: string
-  push:
-    tags:
-      - 'v[0-9]*'
-      - 'rolamgas-v[0-9]*'
 
 permissions:
   contents: read
@@ -38,10 +36,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - name: Install scientific and packaging dependencies
         run: python -m pip install -r requirements-build.txt
       - name: Test source and packaging contracts
         run: python -m unittest discover -p "test_*.py"
+      - name: Test community API and browser contracts
+        run: node --test tools/test_gui_min_c3.mjs community_backend/worker.test.mjs community_backend/preview.test.mjs
       - name: Build source and native download
         env:
           MANUAL_VERSION: ${{ inputs.version }}
@@ -52,7 +55,7 @@ jobs:
           python - <<'PY'
           import os, subprocess, sys
           from build_release import validate_version
-          version = os.environ['MANUAL_VERSION'] or '0.2.0'
+          version = os.environ['MANUAL_VERSION'] or '0.2.1'
           if os.environ['IS_TAG'] == 'true':
               tag = os.environ['RELEASE_TAG']
               version = tag.removeprefix('rolamgas-').removeprefix('v')
@@ -79,6 +82,7 @@ jobs:
           assert result['baseline_planets'] == 8, result
           assert result['certificate_verification'] is True, result
           print(json.dumps(result, indent=2))
+          subprocess.run([sys.executable, 'tools/smoke_frozen_seeded.py', '--app', str(app.resolve()), '--directory', str(output.parent / 'seeded')], check=True, timeout=240)
           PY
       - name: Name checksum manifest by platform
         shell: bash
@@ -116,25 +120,3 @@ jobs:
           name: build-log-${{ matrix.name }}
           path: .build/executable_build.log
           if-no-files-found: ignore
-
-  publish-tagged-release:
-    if: startsWith(github.ref, 'refs/tags/')
-    needs: build
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: rolamgas-*
-          path: release-assets
-          merge-multiple: true
-      - name: Publish downloads and matching GPL source
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
-        shell: bash
-        run: |
-          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --verify-tag --generate-notes
-          gh release upload "$RELEASE_TAG" release-assets/* --clobber

@@ -163,9 +163,9 @@ screen is already an exact finite-radius solution.
 
 ## Search profiles, energy ranges and historical dates
 
-**Mission profile** offers editable starting values. Orbiter uses C3 0–60,
+**Mission profile** offers editable starting values. Orbiter uses C3 6.25–60,
 3 km/s total maneuver budget, arrival V∞ ≤8 km/s and a 30-year flight cap.
-Flyby probe uses C3 0–200, 1.5 km/s total maneuver budget, arrival V∞ ≤70 km/s
+Flyby probe uses C3 6.25–200, 1.5 km/s total maneuver budget, arrival V∞ ≤70 km/s
 and a 15-year cap. These are starting suggestions, not vehicle limits or
 capture designs. Every control remains editable. Custom retains your values.
 
@@ -229,3 +229,120 @@ or set ROLAMGAS_CA_BUNDLE to a trusted PEM CA bundle before restarting. SSL_CERT
 is also accepted. Certificate verification stays enabled. The eight-planet
 baseline remains usable offline; new objects and historical epochs outside
 its coverage need a verified JPL connection. See SHARING.md for native builds.
+
+
+The gallery respects the saved run's **Minimum C3**, including when diagnostic
+colors are enabled. There is no below-minimum override. New searches discard
+out-of-range chains; older saved diagnostics below the minimum remain on disk
+but are excluded from the gallery. The displayed floor identifies the active
+run's limits. **Include yellow (tighten boundaries)** shows warning candidates;
+**Include red (may be physically impossible)** shows failed geometry/burn-cap
+candidates. These filters do not change solver acceptance.
+
+
+## Hard launch-energy search and portable settings
+
+New searches use an application floor of C3=6.25 km²/s². This is derived from
+the JUICE daytime-launch design reference V∞=2.5 km/s, not a universal physical
+minimum. BepiColombo's specified V∞=3.475 km/s corresponds to C3=12.075625.
+Sources: [JUICE design, section2.2](https://doi.org/10.1007/s11214-024-01093-y),
+[BepiColombo flight team](https://www.issfd.org/ISSFD_2019/ISSFD_2019_AIAC18_Budnik-Frank.pdf).
+A legacy request below6.25 uses6.25 as its effective search minimum.
+Choose **C3 starting boundary** to initialize at the user's minimum or maximum.
+Only the first leg is evaluated to reject out-of-range trials; later legs and
+flyby calculations are skipped. New out-of-range chains are not stored as
+trajectory candidates or diagnostics. Legacy files remain readable.
+
+**Unresolved** is displayed only when an unmodeled flyby speed mismatch exceeds100m/s. At100m/s or below, the numeric modeled maneuver total is displayed.
+The displayed numeric budget only includes actual designed DSM vectors and
+constructed powered-flyby impulses. A speed mismatch is not itself the required
+periapsis burn; enable **Allow powered flyby burns** to construct and budget it.
+This display threshold does not change the configured screening tolerance or burn budgets. Smaller residuals remain visible in the inspector.
+
+**Export options** saves current form settings as portable JSON. **Export saved
+search options** saves the selected run's settings. **Import options** loads that
+file on another client without starting a search or accessing the network.
+The file includes dates, sequences, C3/burn limits, target identity and search
+settings. It excludes local cache paths and trajectory vectors. A custom target
+may need **Resolve with JPL** on the receiving client before starting. Local
+worker count is retained by the receiving client. An appended frozen cruise
+exports as options for a fresh whole-route search, with an explicit notice.
+
+The export force model uses Sun-only gravity outside SOI and one encounter
+planet's gravity inside SOI. Planet vectors position these patches and support
+clearance checks; downloading those vectors does not enable n-body propagation.
+Boundary-retargeting correction burns remain explicit in the export report.
+
+
+## Search a return to Earth
+
+Open a candidate and expand **Return to Earth after this flyby**. Set return-leg
+minimum/maximum days and optionally allow another mid-leg DSM, then click
+**Search return to Earth**. Earlier dates, arcs, burns and C3 remain fixed.
+For a major planet, the existing flyby model applies. For a minor body, no target
+gravity is assumed: any outgoing velocity change is a physical turnaround burn
+charged to the total and individual DSM budgets. A low-mass target does not
+supply the energy to reverse course. The existing whole-mission flight-time cap
+and Earth-arrival speed limit still apply; a return is not guaranteed feasible.
+Exports retain separate turnaround and SOI-boundary correction burns. Atmospheric
+entry and Earth capture are not added automatically.
+
+Portable option files contain search settings, not a locked spacecraft state.
+A frozen minor-body return cannot be reconstructed from options alone; its
+settings export gives a clear message to share the outbound options and
+candidate/trajectory files separately. It never silently drops the minor-body visit.
+
+Default Earth–Jupiter timing now admits 300–1800 days, including the roughly
+405-day New Horizons leg and the proposed December2004→March2006 leg.
+An explicit timing override continues to take precedence.
+
+Candidate cards show flight duration beside the launch/arrival range, using the stored full-epoch duration in365.25-day years, displayed to four decimal places. Hover over the duration for days.
+
+
+## Profile defaults and follow-on destinations
+
+Selecting **Flyby probe** defaults C3 initialization to **maximum**; **Orbiter**
+defaults to **minimum**. An explicit manual boundary setting remains editable.
+**Target arrival date** and its tolerance are always visible; only the optional
+historical per-encounter windows remain expandable.
+
+In a candidate inspector, open **Target another body after this encounter**.
+Choose a planet, or select **Horizons object**, enter e.g. **Arrokoth**, and
+resolve it. If JPL returns multiple matches, choose a specific named ID. The
+integrated asteroid match for Arrokoth is SPK20486958; this avoids silently
+selecting a different ephemeris record. Set the next leg's day range, optionally
+allow a mid-leg DSM, then select **Search follow-on target**. Object mode suggests
+180–3000days so a multiyear Pluto-to-Arrokoth leg is not excluded by default.
+The earlier cruise stays fixed. At a minor body the required velocity change is
+an explicit budgeted retargeting burn. Existing C3, maneuver and total-flight
+limits still apply. Later extensions retain all confirmed target identities.
+
+The minimum-altitude notes distinguish Earth/Venus atmosphere constraints from
+Jupiter radiation exposure. The model contains neither atmospheric drag/heating
+nor a radiation-dose calculation. Context: [NASA atmospheric encounters](https://science.nasa.gov/learn/basics-of-space-flight/chapter16-2/),
+[JUICE radiation-belt strategy](https://pds.nasa.gov/ds-view/pds/viewContext.jsp?identifier=urn%3Aesa%3Apsa%3Acontext%3Ainstrument_host%3Aspacecraft.juice&version=1.0).
+
+
+## Comparing a sequence alone with a broader search
+
+Each sequence uses the user seed independently. With the same per-sequence
+settings, adding or reordering other sequences preserves its branch choices,
+starting guesses and refinement budget. Increasing the number of sequences
+increases total work; it does not divide the search budget between them.
+Additional independent batches use different starts. The solver samples and
+refines candidates rather than proving that every feasible route was found.
+
+
+## Keeping known solutions when changing limits
+
+Before a fresh search, RoLaMGAS rechecks compatible passing candidates from local
+saved searches using current ephemerides and every current limit. Known valid
+solutions appear immediately while the new search explores additional starts.
+C3 is checked on the first leg before later arcs are computed. Candidates that
+fail the new C3, flyby, altitude, arrival, time or burn limits are excluded.
+The console reports how many saved candidates were revalidated; candidate JSON
+records its source run. The reused set is frozen and hashed with each run for
+reproducible resume. Reuse requires matching date and DSM parameterization and
+target identity; different date windows and frozen cruise searches are skipped.
+Changing bounds changes the nonlinear optimizer's search path. A fresh search
+alone is not proof that no feasible trajectory exists within those bounds.

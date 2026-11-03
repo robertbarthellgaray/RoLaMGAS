@@ -50,6 +50,6 @@ def neighborhood_request(config,route,candidate,parent_run,days=30.):
         dates_jd_tdb=dates.tolist(),seed_x=seed_x,branches=deepcopy(candidate['branches']))
     request['cost_refinements']=max(8,int(config.get('cost_refinements',3)))
     if request.get('append_flyby'):
-        request['search_objective']='arrival'
+        request['search_objective']='dsm' if config['append_flyby'].get('point_target_turnaround') else 'arrival'
         request['append_flyby']['route']=deepcopy(route)
     return request

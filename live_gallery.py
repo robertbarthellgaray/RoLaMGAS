@@ -57,6 +57,14 @@ def thumbnail(card,path):
     temporary.replace(path)
 
 
+def summary_fields(q,keys):
+    fields={k:q.get(k) for k in keys}
+    flybys=q.get('flybys')
+    if isinstance(flybys,list):
+        fields['max_unresolved_vinf_mismatch_mps']=max((f.get('speed_mismatch_mps',0.) for f in flybys if not f.get('passes_powered_geometry',False)),default=0.)
+    return fields
+
+
 class LiveGallery:
     def __init__(self,output,ep):
         self.output,self.ep = Path(output),ep
@@ -71,11 +79,12 @@ class LiveGallery:
                 'launch_c3_km2_s2','arrival_vinf_kms','total_dsm_kms','max_vinf_mismatch_mps',
                 'min_turn_margin_deg','screening_residual_norm','pareto_front','discovered_unix',
                 'periapsis_violation','powered_geometry_valid','powered_flyby_delta_v_kms','cruise_dsm_kms',
-                'max_single_dsm_kms','max_powered_flyby_kms')
+                'max_single_dsm_kms','max_powered_flyby_kms','requested_min_c3','effective_min_c3',
+                'unresolved_flyby_count','maneuver_budget_complete','budget_complete','modeled_maneuver_total_kms','turnaround_delta_v_kms')
         if final:
             # Publish every retained candidate before potentially lengthy image
             # rendering, so archive recovery does not hide the expanded list.
-            initial=[{k:q.get(k) for k in keys}|dict(image_ready=(self.folder/(q['id']+'.png')).is_file(),render_error=None) for q in ordered]
+            initial=[summary_fields(q,keys)|dict(image_ready=(self.folder/(q['id']+'.png')).is_file(),render_error=None) for q in ordered]
             atomic_json(self.output/'live.json',dict(revision=time.time(),progress=progress,candidates=initial,
                         distinct_accepted=summary['distinct_accepted'],raw_accepted=summary['raw_accepted'],
                         model=summary['model'],nbody_validated=False))
@@ -97,7 +106,7 @@ class LiveGallery:
                 new_images += 1
             import json
             error=json.loads(error_path.read_text()).get('message') if error_path.exists() else None
-            rows.append({k:q.get(k) for k in keys}|dict(image_ready=image_path.exists(),render_error=error))
+            rows.append(summary_fields(q,keys)|dict(image_ready=image_path.exists(),render_error=error))
         atomic_json(self.output/'live.json',dict(revision=time.time(),progress=progress,candidates=rows,
                     distinct_accepted=summary['distinct_accepted'],raw_accepted=summary['raw_accepted'],
                     model=summary['model'],nbody_validated=False))

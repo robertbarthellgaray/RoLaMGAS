@@ -20,7 +20,8 @@ import urllib.request
 import webbrowser
 from ephemeris import BODIES,atomic_json
 from horizons_targets import resolve,register_target
-from mission_search import HERE,load_database,normalize,routes_for,get_ephemerides
+from community import settings as community_settings,save_settings as save_community_settings
+from mission_search import DEFAULT_MIN_C3,HERE,load_database,normalize,routes_for,get_ephemerides
 from app_paths import APP_VERSION,RESOURCE_ROOT,ensure_data,worker_command,worker_environment
 
 
@@ -86,7 +87,7 @@ class App:
         for p in (RESOURCE_ROOT/'examples').glob('*.json'):
             c = read_json(p,{})
             presets.append(dict(id=p.stem,target=c.get('target'),name=p.stem.replace('_',' ').title()))
-        return dict(version=APP_VERSION,token=self.token,planets=[p for p in BODIES if p!='Earth'],
+        return dict(version=APP_VERSION,community=community_settings(),minimum_c3_floor=DEFAULT_MIN_C3,token=self.token,planets=[p for p in BODIES if p!='Earth'],
                     routes=[dict(id=r['id'],target=r['target'],bodies=r['bodies'],dsm_legs=r['dsm_legs']) for r in db['sequences']],
                     custom_routes=['EX','EdvEX','EVX','EVEX','EVEEX','EJX','EdvEJX','EVEEJX','ESX','EJSX'],
                     presets=presets,runs=self.catalog(),cpu_count=os.cpu_count() or 2,active=self.active)
@@ -103,6 +104,57 @@ class App:
                 self.targets[key] = result
                 atomic_json(self.targets_path,self.targets)
             return result
+
+    def export_search_options(self,config=None,run=None):
+        from search_options import export_options
+        if (config is None)==(run is None):
+            raise ValueError('Export either the current config or one saved run')
+        if run is not None:
+            root=self.folder(run)
+            config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{}).get('config')
+            if not config:raise ValueError('Saved search settings not found')
+        return export_options(config)
+
+    def import_search_options(self,document):
+        from search_options import import_options
+        result=import_options(document)
+        obj=result['config'].get('target_object')
+        if obj:
+            confirmed=next((d for d in self.targets.values() if str(d['id'])==str(obj['id']) and d['name']==obj['name']),None)
+            result['requires_target_resolution']=confirmed is None
+            # Never treat a descriptor in an imported file as a trusted local one.
+            if confirmed:
+                result['config']['target_object']=dict(confirmed)
+                result['notes']=[n for n in result['notes'] if not n.startswith('Confirm this Horizons target')]
+                result['notes'].append('This target matches a resolved identity already cached by this client; no network lookup was made.')
+        return result
+
+    def confirmed_source_config(self,config,bodies):
+        from copy import deepcopy
+        from append_flyby import original_target_descriptors
+        from horizons_targets import moon_model_notice
+        descriptors=original_target_descriptors(config)
+        minor={b for b in bodies if b not in BODIES}
+        if not minor.issubset({d['name'] for d in descriptors}):
+            raise ValueError('This candidate needs its original resolved Horizons target identities before adding a follow-on leg')
+        confirmed={}
+        for descriptor in descriptors:
+            cached=next((d for d in self.targets.values() if str(d['id'])==str(descriptor['id']) and d['name']==descriptor['name']),None)
+            if cached is None:
+                raise ValueError('Resolve and confirm the original Horizons target before starting this follow-on search')
+            notice=moon_model_notice(cached)
+            if notice:raise ValueError(notice)
+            confirmed[cached['name']]=dict(cached)
+            register_target(cached)
+        clean=deepcopy(config)
+        if clean.get('target_object'):
+            clean['target_object']=confirmed[clean['target_object']['name']]
+        if clean.get('append_flyby'):
+            extension=clean['append_flyby']
+            extension['original_target_objects']=[confirmed[name] for name in sorted(minor)]
+            old=extension.get('original_target_object')
+            if old:extension['original_target_object']=confirmed[old['name']]
+        return clean
 
     def start(self,request,recover_from=None):
         with self.lock:
@@ -123,6 +175,9 @@ class App:
                 if not confirmed:
                     raise ValueError('Resolve and confirm this Horizons target first')
                 request['target_object'] = confirmed
+            extension=request.get('append_flyby')
+            if extension:
+                request=self.confirmed_source_config(request,extension.get('prefix',{}).get('bodies',[]))
             c = normalize(request,HERE)
             routes_for(c)
             name = datetime.now().strftime('%Y%m%d_%H%M%S')+'_'+secrets.token_hex(3)
@@ -163,7 +218,7 @@ class App:
         request=neighborhood_request(config,route,candidate,name,days)
         return self.start(request)
 
-    def append_candidate(self,name,identifier,body=None,count=1,minimum_days=80.,maximum_days=750.,dsm=False):
+    def append_candidate(self,name,identifier,body=None,count=1,minimum_days=80.,maximum_days=750.,dsm=False,target_object=None):
         from append_flyby import extension_request
         if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
         root=self.folder(name);candidate=read_json(root/'candidates'/(identifier+'.json'))
@@ -172,7 +227,17 @@ class App:
         config=manifest.get('config') or normalize(read_json(root/'request.json'),HERE)
         route=next((r for r in manifest.get('routes',[]) if r['id']==candidate['sequence']),None)
         if route is None:route=next(r for r in routes_for(normalize(config,HERE)) if r['id']==candidate['sequence'])
+        config=self.confirmed_source_config(config,candidate['bodies'])
+        if target_object is not None:
+            if not isinstance(target_object,dict):raise ValueError('Resolve and confirm the follow-on Horizons target first')
+            confirmed=next((d for d in self.targets.values() if str(d['id'])==str(target_object.get('id')) and d['name']==target_object.get('name')),None)
+            if confirmed is None:raise ValueError('Resolve and confirm the follow-on Horizons target first')
+            return self.start(extension_request(config,route,candidate,name,body,count,minimum_days,maximum_days,dsm,target_object=dict(confirmed)))
         return self.start(extension_request(config,route,candidate,name,body,count,minimum_days,maximum_days,dsm))
+
+    def return_to_earth(self,name,identifier,minimum_days=80.,maximum_days=750.,dsm=False):
+        return self.append_candidate(name,identifier,body='Earth',count=1,
+            minimum_days=minimum_days,maximum_days=maximum_days,dsm=dsm)
 
     def stop(self,name):
         with self.lock:
@@ -207,9 +272,11 @@ class App:
                 stream.seek(max(0,(output/'console.log').stat().st_size-12000))
                 logs = stream.read().decode('utf-8',errors='replace')
         request=read_json(output/'request.json') or read_json(output/'run_manifest.json',{}).get('config',{})
+        limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years')}
+        limits['effective_min_c3']=max(float(request.get('min_c3') if request.get('min_c3') is not None else DEFAULT_MIN_C3),DEFAULT_MIN_C3)
         return dict(run=name,status=status or dict(state='finished'),live=live,log=logs,
                     heartbeat=read_json(output/'heartbeat.json'),
-                    limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years')},
+                    limits=limits,
                     active=name==self.active and self.process is not None and self.process.poll() is None)
 
     def build_archive(self,name):
@@ -429,9 +496,16 @@ class Handler(BaseHTTPRequestHandler):
             if self.headers.get('X-Explorer-Token')!=self.app.token or (origin and origin not in allowed):
                 return self.json(dict(error='Invalid local application session'),403)
             size = int(self.headers.get('Content-Length','0'))
-            if not 0<size<=200000:
+            maximum=1024*1024 if self.path in ('/api/options/export','/api/options/import') else 200000
+            if not 0<size<=maximum:
                 raise ValueError('Invalid request size')
             value = json.loads(self.rfile.read(size))
+            if self.path=='/api/community-settings':
+                return self.json(save_community_settings(value))
+            if self.path=='/api/options/export':
+                return self.json(self.app.export_search_options(value.get('config'),value.get('run')))
+            if self.path=='/api/options/import':
+                return self.json(self.app.import_search_options(value.get('document')))
             if self.path=='/api/resolve':
                 return self.json(self.app.lookup(value['query'],value.get('epoch','2030-01-01'),value.get('refresh',False)))
             if self.path=='/api/start':
@@ -440,9 +514,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.recover(value['run']))
             if self.path=='/api/refine':
                 return self.json(self.app.refine_candidate(value['run'],value['candidate'],value.get('days',30.)))
+            if self.path=='/api/return-earth':
+                return self.json(self.app.return_to_earth(value['run'],value['candidate'],value.get('minimum_days',80.),value.get('maximum_days',750.),value.get('dsm',False)))
             if self.path=='/api/append-flyby':
                 return self.json(self.app.append_candidate(value['run'],value['candidate'],value.get('body'),value.get('count',1),
-                    value.get('minimum_days',80.),value.get('maximum_days',750.),value.get('dsm',False)))
+                    value.get('minimum_days',80.),value.get('maximum_days',750.),value.get('dsm',False),value.get('target_object')))
             if self.path=='/api/stop':
                 return self.json(self.app.stop(value['run']))
             if self.path=='/api/integrate':

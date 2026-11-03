@@ -7,3 +7,7 @@ td.warning,tr.warning td:last-child{color:#ffd27b}tr.failure td:last-child{color
 td.failure{color:#ff9fad}
 
 .info-box{padding:10px;border:1px solid var(--border);border-radius:7px;background:#0c1827}.info-box p{font-size:12px;color:var(--muted);line-height:1.65;margin:10px 0}.info-box img{display:block;width:100%;height:auto;border-radius:5px;margin:12px 0}.info-box pre{font:12px/1.6 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}textarea{font:12px/1.6 Consolas,monospace;color:var(--text);background:#0b1524;border:1px solid var(--border);border-radius:6px;padding:9px;width:100%;resize:vertical;min-width:0}#arrivalDate{color-scheme:dark}
+
+.option-actions{display:flex;gap:8px;margin-top:10px}.option-actions button{flex:1;font-size:12px}
+
+.card-date{display:flex;align-items:baseline;gap:3px;flex-wrap:wrap}.card-date>span{white-space:nowrap}.flight-duration{color:#b8cce2}

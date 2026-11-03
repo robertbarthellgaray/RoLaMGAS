@@ -38,7 +38,7 @@ class NativeReleaseTests(unittest.TestCase):
                 'sequence_database.json','requirements.txt','requirements-build.txt',
                 'Launch RoLaMGAS.cmd','Launch Mission Search.cmd','Launch GUI.ps1',
                 'Launch Command Line.cmd','Setup Python.cmd','.gitignore','.gitattributes',
-                'PUBLIC_README.md','baseline_ephemerides.zip')
+                'PUBLIC_README.md','baseline_ephemerides.zip','community_config.json','community_seed_catalog.json')
             for name in required:(root/name).write_text('fixture',encoding='utf-8')
             for name in ('gui_assets/chart.png','model_assets/spacecraft.3ds','runs/private.json',
                          'cache/private.json','.github/workflows/native-builds.yml'):
@@ -47,7 +47,7 @@ class NativeReleaseTests(unittest.TestCase):
                 output=build.source_release(root/'baseline_ephemerides.zip')
             with zipfile.ZipFile(output) as archive:
                 names=archive.namelist()
-                for name in ('network.py','requirements-build.txt','baseline_ephemerides.zip',
+                for name in ('network.py','requirements-build.txt','baseline_ephemerides.zip','community_config.json','community_seed_catalog.json',
                              'gui_assets/chart.png','model_assets/spacecraft.3ds',
                              '.github/workflows/native-builds.yml'):
                     self.assertIn('RoLaMGAS/'+name,names)

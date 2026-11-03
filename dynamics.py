@@ -103,6 +103,16 @@ def flyby(body, incoming, outgoing, floor, tolerance):
                 passes_turn_screen=dmax >= angle - 1e-10)
 
 
+DEFAULT_MIN_C3=6.25  # JUICE published day-launch design V-infinity 2.5 km/s squared.
+
+
+class C3BoundsError(ValueError):
+    """Rejected after the first-leg energy calculation, before a chain is solved."""
+    def __init__(self,c3,minimum,maximum):
+        self.c3,self.minimum,self.maximum=float(c3),float(minimum),float(maximum)
+        super().__init__(f'Launch C3 {c3:.12g} is outside [{minimum:.12g}, {maximum:.12g}] km²/s²')
+
+
 class Model:
     def __init__(self, route, config, ephemerides):
         self.route, self.config, self.ep = route, config, ephemerides
@@ -113,6 +123,9 @@ class Model:
         self.extension=config.get('append_flyby')
         self.prefix_count=self.extension['prefix_count'] if self.extension else 1
         self.free_indices=np.arange(self.dimension)
+        self._launch_cache={}
+        self.c3_preflight_evaluations=0
+        self.c3_pruned_evaluations=0
         if self.extension:
             n0=self.prefix_count
             new_dsms=[i for i,leg in enumerate(self.dsm_legs) if leg>=n0-1]
@@ -148,7 +161,38 @@ class Model:
                 a,b=self.config['arrival_window_jd'];dates[-1]=a+x[self.n-1]*(b-a)
         return dates
 
-    def evaluate(self, x, branches):
+    @property
+    def c3_minimum(self):return max(DEFAULT_MIN_C3,float(self.config.get('effective_min_c3',self.config.get('min_c3',DEFAULT_MIN_C3))))
+
+    def c3_in_bounds(self,energy):
+        return (math.isfinite(energy) and self.c3_minimum-1e-8<=energy<=self.config['max_c3']+1e-8)
+
+    def launch_solution(self,x,branches):
+        """Only the launch leg; no later ephemerides, DSM shooting or flyby work."""
+        if self.extension:
+            p=self.extension['prefix']
+            return dict(c3=float(p['launch_c3_km2_s2']))
+        dates=self.dates(x)
+        if dates[1]-dates[0]<=1e-6:raise ValueError('Nonpositive first-leg time of flight')
+        offset=np.zeros(3)
+        if 0 in self.dsm_legs:
+            k=self.n+4*self.dsm_legs.index(0)
+            offset=(np.asarray(x[k+1:k+4])*2-1)*self.config['dsm_velocity_box_kms']
+        key=(dates[0],dates[1],*branches[0],*offset)
+        if key in self._launch_cache:return self._launch_cache[key]
+        a,b=(self.ep.state(body,date) for body,date in zip(self.bodies[:2],dates[:2]))
+        va,vb=lambert(a[:3],b[:3],dates[1]-dates[0],branches[0])
+        velocity=va+offset-a[3:];energy=float(velocity@velocity)
+        if not math.isfinite(energy):raise ValueError('Nonfinite launch energy')
+        result=dict(c3=energy,states=(a,b),va=va,vb=vb)
+        self.c3_preflight_evaluations+=1
+        if len(self._launch_cache)>=256:self._launch_cache.pop(next(iter(self._launch_cache)))
+        self._launch_cache[key]=result
+        return result
+
+    def launch_c3(self,x,branches):return self.launch_solution(x,branches)['c3']
+
+    def evaluate(self, x, branches,enforce_c3=True):
         if self.extension:
             x=self.expand_variables(self.active_variables(x))
             if [list(b) for b in branches[:self.prefix_count-1]]!=self.extension['prefix']['branches']:
@@ -156,7 +200,14 @@ class Model:
         dates = self.dates(x)
         if min(np.diff(dates)) <= 1e-6:
             raise ValueError('Nonpositive time of flight')
-        states = [self.ep.state(body, date) for body, date in zip(self.bodies, dates)]
+        launch_preflight=self.launch_solution(x,branches)
+        if enforce_c3 and not self.c3_in_bounds(launch_preflight['c3']):
+            self.c3_pruned_evaluations+=1
+            raise C3BoundsError(launch_preflight['c3'],self.c3_minimum,self.config['max_c3'])
+        if self.extension:
+            states=[self.ep.state(body,date) for body,date in zip(self.bodies,dates)]
+        else:
+            states=list(launch_preflight['states'])+[self.ep.state(body,date) for body,date in zip(self.bodies[2:],dates[2:])]
         segments, dep, arr, burns = [], [], [], []
         first_leg=0
         if self.extension:
@@ -168,7 +219,7 @@ class Model:
         for i in range(first_leg,self.n-1):
             r0, r1 = states[i][:3], states[i+1][:3]
             duration = dates[i+1]-dates[i]
-            va, vb = lambert(r0, r1, duration, branches[i])
+            va,vb=(launch_preflight['va'],launch_preflight['vb']) if i==0 else lambert(r0,r1,duration,branches[i])
             if i in self.dsm_legs:
                 k = self.n + 4*self.dsm_legs.index(i)
                 fraction = 0.1 + 0.8*x[k]
@@ -188,8 +239,17 @@ class Model:
             dep.append(va)
             arr.append(vb)
         flybys = deepcopy(self.extension['prefix']['flybys']) if self.extension else []
+        event_burns=deepcopy(self.extension['prefix'].get('event_burns',[])) if self.extension else []
         for i in range(max(1,first_leg), self.n-1):
             body = self.bodies[i]
+            if body not in BODIES:
+                vector=dep[i]-arr[i-1]
+                event_burns.append(dict(kind='target_turnaround',body=body,event_index=i,
+                    julian_date_tdb=dates[i],date=calendar(dates[i]),position_km=states[i][:3].tolist(),
+                    magnitude_kms=float(np.linalg.norm(vector)),delta_v_ecliptic_j2000_kms=vector.tolist(),
+                    incoming_heliocentric_velocity_kms=arr[i-1].tolist(),outgoing_heliocentric_velocity_kms=dep[i].tolist(),
+                    model='Explicit heliocentric velocity-change impulse at a zero-GM point encounter; no target gravity or free assist is assumed.'))
+                continue
             floor = self.config['minimum_altitude_km'].get(body, BODIES[body][3])
             f = flyby(body, arr[i-1]-states[i][3:], dep[i]-states[i][3:], floor,
                       self.config['vinf_tolerance_mps'])
@@ -205,6 +265,7 @@ class Model:
                     f['passes_powered_geometry']=True
                 except ValueError as exc:
                     f['passes_powered_geometry']=False;f['powered_geometry_error']=str(exc)
+            f['maneuver_status']='powered' if f.get('passes_powered_geometry') else ('unpowered_exact_speed_match' if f['speed_matched_to_1_mm_s'] and f['passes_turn_screen'] else ('unpowered_within_tolerance' if f['passes_speed_tolerance'] and f['passes_turn_screen'] else 'unresolved'))
             flybys.append(f)
         launch = dep[0]-states[0][3:]
         terminal = arr[-1]-states[-1][3:]
@@ -214,8 +275,11 @@ class Model:
         vinf = float(np.linalg.norm(terminal))
         total_dsm = sum(b['magnitude_kms'] for b in burns)
         cruise_dsm=total_dsm
+        turnaround_dv=sum(b['magnitude_kms'] for b in event_burns)
+        total_dsm+=turnaround_dv
         powered_dv=sum(f.get('powered_flyby',{}).get('magnitude_kms',0.) for f in flybys)
         total_dsm+=powered_dv
+        unresolved=[f for f in flybys if not f.get('passes_powered_geometry') and not (f['speed_matched_to_1_mm_s'] and f['passes_turn_screen'])]
         extension_source=None
         if self.extension:
             p=self.extension['prefix']
@@ -229,15 +293,19 @@ class Model:
                     extension_source=extension_source,
                     dates_jd_tdb=dates, launch_date=calendar(dates[0]), arrival_date=calendar(dates[-1]),
                     duration_years=(dates[-1]-dates[0])/365.25, launch_c3_km2_s2=c3,
-                    launch_vinf_kms=float(np.sqrt(c3)),
+                    launch_vinf_kms=float(np.sqrt(c3)),requested_min_c3=self.config.get('min_c3',DEFAULT_MIN_C3),effective_min_c3=self.c3_minimum,
                     launch_c3_definition='Squared Sun-centered departure velocity relative to launch body; km^2/s^2',
                     requested_arrival_window_jd=self.config.get('arrival_window_jd'),
                     arrival_vinf_kms=vinf, total_dsm_kms=total_dsm, cruise_dsm_kms=cruise_dsm,powered_flyby_delta_v_kms=powered_dv,
-                    max_single_dsm_kms=max((burn['magnitude_kms'] for burn in burns),default=0.),
+                    modeled_maneuver_total_kms=total_dsm,maneuver_budget_complete=not unresolved,budget_complete=not unresolved,
+                    unresolved_flyby_count=len(unresolved),
+                    unresolved_speed_mismatch_total_mps=sum(f['speed_mismatch_mps'] for f in unresolved),
+                    maneuver_budget_note=('Explicit designed DSM, target-turnaround impulses and full powered-periapsis vector burns only; unresolved flybys require physical retargeting or a powered-flyby construction, not a scalar mismatch sum.'),
+                    max_single_dsm_kms=max((burn['magnitude_kms'] for burn in burns+event_burns),default=0.),
                     max_powered_flyby_kms=max((f.get('powered_flyby',{}).get('magnitude_kms',0.) for f in flybys),default=0.),
                     periapsis_violation=any(not f['passes_turn_screen'] and not f.get('passes_powered_geometry',False) for f in flybys),
                     powered_geometry_valid=all(f.get('passes_powered_geometry',False) for f in flybys) if self.config.get('powered_flybys') else None,
-                    flybys=flybys, dsms=burns,
+                    flybys=flybys, dsms=burns,event_burns=event_burns,turnaround_delta_v_kms=turnaround_dv,
                     mercury_returns=__import__('mercury_returns').return_diagnostics(self.bodies,dates,branches),
                     max_vinf_mismatch_mps=max([f['speed_mismatch_mps'] for f in flybys], default=0.),
                     min_turn_margin_deg=min([f['turn_margin_deg'] for f in flybys], default=180.),
@@ -249,7 +317,7 @@ class Model:
 
     def residual(self, x, branches):
         # Fixed dimension, including constraints with zero residual when satisfied.
-        count = 2*(self.n-2)+7
+        count = 2*sum(body in BODIES for body in self.bodies[1:-1])+7
         try:
             q = self.evaluate(x, branches)
             # Balance speed and turn errors during global-to-local discovery.
@@ -264,7 +332,7 @@ class Model:
                     res.extend([(f['vinf_in_kms']-f['vinf_out_kms'])/speed_scale,min(f['turn_margin_deg']-.01, 0.)/5])
             # Tiny interior margins avoid converging infinitesimally outside a
             # hard bound and incorrectly publishing that near miss as accepted.
-            min_c3=self.config.get('min_c3',0.);max_c3=self.config['max_c3']
+            min_c3=self.c3_minimum;max_c3=self.config['max_c3']
             margin=min(.001*max(max_c3,1.),max(0.,max_c3-min_c3)*.1)
             res.extend([max(min_c3+margin-q['launch_c3_km2_s2'],0.)/10 if min_c3>0 else 0.,
                         max(q['launch_c3_km2_s2']-(max_c3-margin), 0.)/10,
@@ -274,16 +342,22 @@ class Model:
                         max(q['max_single_dsm_kms']-self.config.get('max_single_dsm_kms',float('inf')),0.)/.1,
                         max(q['max_powered_flyby_kms']-self.config.get('max_powered_flyby_kms',float('inf')),0.)/.1])
             return np.asarray(res)
+        except C3BoundsError as exc:
+            # Preserve an energy gradient without evaluating a forbidden chain.
+            res=np.zeros(count)
+            res[-7]=max(exc.minimum-exc.c3,0.)/10
+            res[-6]=max(exc.c3-exc.maximum,0.)/10
+            return res
         except (ValueError, RuntimeError, AssertionError, ZeroDivisionError, OverflowError, FloatingPointError):
             return np.full(count, 1e6)
 
     def accepted(self, q,allow_arrival_overrun=False):
         return (all(f.get('passes_powered_geometry',False) if self.config.get('powered_flybys') else f['passes_speed_tolerance'] and f['passes_turn_screen'] for f in q['flybys'])
-                and self.config.get('min_c3',0.)-1e-8 <= q['launch_c3_km2_s2'] <= self.config['max_c3']+1e-8
+                and self.c3_minimum-1e-8 <= q['launch_c3_km2_s2'] <= self.config['max_c3']+1e-8
                 and (not self.config.get('arrival_window_jd') or
                      self.config['arrival_window_jd'][0]-1e-8 <= q['dates_jd_tdb'][-1] <= self.config['arrival_window_jd'][1]+1e-8)
                 and ((allow_arrival_overrun and self.extension) or q['arrival_vinf_kms'] <= self.config['max_arrival_vinf_kms']+1e-9)
                 and q['total_dsm_kms'] <= self.config['max_dsm_kms']+1e-9
-                and max((burn['magnitude_kms'] for burn in q.get('dsms',[])),default=0.)<=self.config.get('max_single_dsm_kms',float('inf'))+1e-9
+                and max((burn['magnitude_kms'] for burn in q.get('dsms',[])+q.get('event_burns',[])),default=0.)<=self.config.get('max_single_dsm_kms',float('inf'))+1e-9
                 and max((f.get('powered_flyby',{}).get('magnitude_kms',0.) for f in q['flybys']),default=0.)<=self.config.get('max_powered_flyby_kms',float('inf'))+1e-9
                 and q['duration_years'] <= self.config['max_years']+1e-9)

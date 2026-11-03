@@ -1,0 +1,17 @@
+name = "rolamgas-community"
+main = "worker.mjs"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[observability]
+enabled = false
+
+[vars]
+ALLOWED_ORIGINS = "https://robertbarthellgaray.github.io"
+MAX_DAILY_CANDIDATES = "5000"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "rolamgas-community"
+# Replace with the ID from `npx wrangler d1 create rolamgas-community`.
+database_id = "00000000-0000-0000-0000-000000000000"

@@ -18,7 +18,7 @@ import time
 import webbrowser
 import numpy as np
 from scipy.optimize import least_squares
-from dynamics import Model, lambert
+from dynamics import Model, lambert, DEFAULT_MIN_C3, C3BoundsError
 from ephemeris import BODIES, DAY, JD0, Ephemerides, atomic_json, calendar, fetch, jd, save_table
 from horizons_targets import register_target, moon_model_notice
 
@@ -89,18 +89,19 @@ def resolve_route(sequence, db, target_object=None, custom_leg_days=None):
 
 def normalize(config, config_dir=HERE):
     c = dict(target='Jupiter', launch_start='2027-01-01', launch_end='2036-12-31',
-             max_years=20., vinf_tolerance_mps=20., min_c3=0., max_c3=100., max_arrival_vinf_kms=30.,
+             max_years=20., vinf_tolerance_mps=20., min_c3=DEFAULT_MIN_C3, max_c3=100., max_arrival_vinf_kms=30.,
              max_dsm_kms=1.5,max_single_dsm_kms=.7,max_powered_flyby_kms=.2,dsm_velocity_box_kms=6., minimum_altitude_km={},
              samples_per_sequence=3000, refinements_per_sequence=36, max_nfev=250,
              branch_families=16, workers=max(1,min(4,(os.cpu_count() or 2)-1)), batches=1,
              seed=502, keep=100, cache='cache', max_ephemeris_step_days=1., sequences=[],
              route_overrides={},target_object=None,custom_leg_days=[180,8000],search_objective='feasibility',cost_refinements=3,powered_flybys=False,
              local_refinement=None,mercury_resonant_seeds=True,append_flyby=None,
-             arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom')
-    unknown = set(config)-set(c)-{'event_windows','launch_jd','event_windows_jd','arrival_window_jd'}
+             arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom',c3_seed_boundary='minimum')
+    unknown = set(config)-set(c)-{'event_windows','launch_jd','event_windows_jd','arrival_window_jd','effective_min_c3'}
     if unknown:
         raise ValueError(f'Unknown configuration keys: {sorted(unknown)}')
     c.update(config)
+    if 'c3_seed_boundary' not in config:c['c3_seed_boundary']='maximum' if c['mission_profile']=='flyby' else 'minimum'
     if not isinstance(c['powered_flybys'],bool):raise ValueError('powered_flybys must be boolean')
     if not isinstance(c['mercury_resonant_seeds'],bool):raise ValueError('mercury_resonant_seeds must be boolean')
     local=c.get('local_refinement')
@@ -132,6 +133,9 @@ def normalize(config, config_dir=HERE):
         c[name] = float(c[name])
         if not math.isfinite(c[name]) or c[name] < 0 or (c[name] == 0 and name not in ('min_c3','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms')):
             raise ValueError(f'{name} must be positive and finite')
+    c['effective_min_c3']=max(DEFAULT_MIN_C3,c['min_c3'])
+    if c['c3_seed_boundary'] not in ('minimum','maximum'):raise ValueError('C3 seed boundary must be minimum or maximum')
+    if c['effective_min_c3']>c['max_c3']:raise ValueError(f'Maximum C3 must be at least the supported search floor {DEFAULT_MIN_C3:g} km²/s²')
     if c['min_c3'] > c['max_c3']:
         raise ValueError('Minimum launch C3 cannot exceed maximum launch C3')
     for name in ('samples_per_sequence','refinements_per_sequence','max_nfev','branch_families',
@@ -143,6 +147,9 @@ def normalize(config, config_dir=HERE):
     if c.get('append_flyby'):
         from append_flyby import validate_extension
         validate_extension(c['append_flyby'],c)
+        frozen_energy=float(c['append_flyby']['prefix']['launch_c3_km2_s2'])
+        if not c['effective_min_c3']-1e-8<=frozen_energy<=c['max_c3']+1e-8:
+            raise ValueError('Frozen earlier cruise has launch C3 outside the requested range; change the launch search instead of appending a flyby')
     if (len(c['custom_leg_days']) != 2 or not all(math.isfinite(float(v)) for v in c['custom_leg_days'])
             or not 0 < float(c['custom_leg_days'][0]) < float(c['custom_leg_days'][1])):
         raise ValueError('Custom target leg duration requires 0 < minimum < maximum days')
@@ -229,6 +236,8 @@ def coverage(c, routes):
 
 def get_ephemerides(c, routes):
     register_target(c.get('target_object'))
+    from append_flyby import original_target_descriptors
+    for descriptor in original_target_descriptors(c):register_target(descriptor)
     start,end = coverage(c,routes)
     return Ephemerides(c['cache'],[b for r in routes for b in r['bodies']],start,end,
                        c['max_ephemeris_step_days'])
@@ -318,7 +327,8 @@ def worker_initialize(progress_queue=None):
 
 def job_search(job):
     """One branch family in one process, with no network calls."""
-    route,c,branch,seed,nsamples,nstarts,identifier = job
+    route,c,branch,seed,nsamples,nstarts,identifier = job[:7]
+    supplied=job[7] if len(job)>7 else []
     start = time.monotonic()
     global _WORKER_EP
     if _WORKER_EP is None:
@@ -341,9 +351,17 @@ def job_search(job):
         samples[:nsamples//2,offset:offset+3] = np.clip(rng.normal(.5,.06,(nsamples//2,3)),.001,.999)
     if model.extension:
         samples=np.array([model.expand_variables(model.active_variables(x)) for x in samples])
+    from cost_refinement import boundary_seed,feasibility_refine
     ranked, accepted, near = [], [], []
+    boundary_seeds=[]
+    if model.extension and not model.c3_in_bounds(model.launch_c3(samples[0],branch)):
+        raise ValueError('Frozen earlier cruise has launch C3 outside the configured range; its launch cannot change in an appended-flyby search')
+    for sample in samples[:min(len(samples),max(1,min(nstarts,16)))]:
+        projected=boundary_seed(model,sample,branch)
+        if projected is not None and all(np.linalg.norm(projected[:model.n]-previous[:model.n])>.01 for previous in boundary_seeds):
+            boundary_seeds.append(projected)
 
-    def record(x,cost_refinement=None):
+    def record(x,cost_refinement=None,known_source=None):
         try:
             q = model.evaluate(x,branch)
         except (ValueError,RuntimeError,AssertionError,ZeroDivisionError,OverflowError,FloatingPointError):
@@ -351,6 +369,7 @@ def job_search(job):
         score = float(np.linalg.norm(model.residual(x,branch)))
         q['screening_residual_norm'] = score
         if cost_refinement is not None:q['cost_refinement']=cost_refinement
+        if known_source:q.update(known_source)
         q['discovered_unix'] = time.time()
         if local:
             q['refinement_source']=dict(parent_run=local['parent_run'],parent_candidate=local['parent_candidate'],
@@ -369,14 +388,24 @@ def job_search(job):
                 pass  # Final checkpoint still includes every retained result.
         return q
 
+    warm_starts=[]
+    for known in supplied:
+        q=record(known['x'],known_source={k:known[k] for k in ('reused_from','community_source') if k in known})
+        if q is not None:warm_starts.append(np.asarray(q['x']))
     root_seeds=[]
     if model.extension:
         from append_flyby import return_root_seeds
         root_seeds=return_root_seeds(model,branch)
         for x in root_seeds:record(x)
     if local:record(local['seed_x'])
+    for x in boundary_seeds:record(x)
     valid = 0
     for x in samples:
+        try:energy=model.launch_c3(x,branch)
+        except (ValueError,RuntimeError,AssertionError,OverflowError,ZeroDivisionError,FloatingPointError):continue
+        if not model.c3_in_bounds(energy):
+            model.c3_pruned_evaluations+=1
+            continue
         res = model.residual(x,branch)
         if np.max(np.abs(res)) < 1e5:
             valid += 1
@@ -385,18 +414,18 @@ def job_search(job):
                 record(x)
     ranked.sort(key=lambda row:row[0])
     # Spread refinements across the good random starts, avoid identical basins.
-    starts = [np.asarray(local['seed_x'])] if local else [np.asarray(x) for x in root_seeds[:nstarts]]
+    starts = [np.asarray(local['seed_x'])] if local and model.c3_in_bounds(model.launch_c3(local['seed_x'],branch)) else []
+    for x in boundary_seeds+root_seeds:
+        if len(starts)<nstarts and all(np.linalg.norm(x[:model.n]-p[:model.n])>.01 for p in starts):starts.append(np.asarray(x))
     for score,x in ranked:
         if len(starts)>=nstarts:break
         if all(np.linalg.norm(x[:model.n]-p[:model.n]) > .08 for p in starts):
             starts.append(x)
         if len(starts) >= nstarts:
             break
-    for x in starts:
-        fit = least_squares(lambda z:model.residual(model.expand_variables(z),branch),np.clip(model.active_variables(x),1e-8,1-1e-8),
-                            bounds=(np.zeros(len(model.free_indices)),np.ones(len(model.free_indices))),max_nfev=c['max_nfev'],
-                            ftol=1e-9,xtol=1e-9,gtol=1e-8,diff_step=2e-6)
-        record(model.expand_variables(fit.x))
+    for x in warm_starts+starts:
+        refined=feasibility_refine(model,x,branch,maxiter=c['max_nfev'])
+        if refined is not None:record(refined['x'])
     if c['search_objective']!='feasibility':
         from cost_refinement import refine
         pool=accepted+[q for q in near if model.extension and model.accepted(q,allow_arrival_overrun=True)]
@@ -411,13 +440,20 @@ def job_search(job):
                 if polished['cost_refinement']['objective_after']<=polished['cost_refinement']['objective_before']:
                     record(polished['x'],polished['cost_refinement'])
     return dict(job_id=identifier,sequence=route['id'],branch=branch,seed=seed,
-                random_evaluations=nsamples,valid_random_evaluations=valid,refinements=len(starts),mercury_resonant_seed_rows=resonant_rows,
+                random_evaluations=nsamples,valid_random_evaluations=valid,refinements=len(starts)+len(warm_starts),known_seed_refinements=len(warm_starts),mercury_resonant_seed_rows=resonant_rows,
                 appended_return_roots=len(root_seeds),
+                c3_seed_boundary=c.get('c3_seed_boundary','minimum'),c3_boundary_seed_count=len(boundary_seeds),
+                effective_min_c3=model.c3_minimum,c3_preflight_evaluations=model.c3_preflight_evaluations,
+                c3_pruned_evaluations=model.c3_pruned_evaluations,
                 elapsed_seconds=time.monotonic()-start,accepted=accepted,near_misses=near)
 
 
-def summarize(jobs, c):
-    found = [q for job in jobs for q in job['accepted']]
+def summarize(jobs, c, reused=None, reused_near=None):
+    completed_jobs=len(jobs)
+    if reused or reused_near:jobs=[*jobs,dict(accepted=reused or [],near_misses=reused_near or [])]
+    floor=max(DEFAULT_MIN_C3,c.get('effective_min_c3',c.get('min_c3',DEFAULT_MIN_C3)));ceiling=c.get('max_c3',float('inf'))
+    in_energy_range=lambda q:'launch_c3_km2_s2' not in q or floor-1e-8<=q['launch_c3_km2_s2']<=ceiling+1e-8
+    found = [q for job in jobs for q in job['accepted'] if in_energy_range(q)]
     rank=objective_key(c)
     found.sort(key=rank)
     unique = []
@@ -439,7 +475,7 @@ def summarize(jobs, c):
         if not any(q is p for p in chosen):
             chosen.append(q)
     chosen = chosen[:c['keep']]
-    near = sorted([q for job in jobs for q in job['near_misses']],key=lambda q:q['screening_residual_norm'])
+    near = sorted([q for job in jobs for q in job['near_misses'] if in_energy_range(q)],key=lambda q:q['screening_residual_norm'])
     seen=set();diagnostics=[]
     for q in near:
         key=json.dumps([q['sequence'],q['branches'],q['dates_jd_tdb'],q['x']],sort_keys=True)
@@ -451,9 +487,27 @@ def summarize(jobs, c):
     return dict(model='Sun-only Lambert/Kepler arcs, instantaneous asymptotic flyby joins',
                 frame='Sun-centered Ecliptic J2000; km, km/s; JD TDB', nbody_validated=False,
                 arrival_mode='Hyperbolic arrival; capture and terminal rendezvous burns excluded',
-                mismatch_note='Accepted means below the user tolerance, not an exactly continuous unpowered flyby. No correction burn is inferred from a speed residual.',
-                completed_jobs=len(jobs), raw_accepted=len(found), distinct_accepted=len(unique),
+                mismatch_note='Accepted unpowered joins are below the user tolerance, not an exactly continuous trajectory. Explicit powered periapsis vector burns are charged when enabled; unresolved scalar speed residuals are never silently treated as free or as complete burn constructions.',
+                requested_min_c3=c.get('min_c3',DEFAULT_MIN_C3),effective_min_c3=floor,max_c3=ceiling,
+                completed_jobs=completed_jobs, reused_candidates=len(reused or []), raw_accepted=len(found), distinct_accepted=len(unique),
                 candidates=chosen,near_misses=near)
+
+
+def planned_jobs(c, routes):
+    """Give each sequence the same trials alone, grouped or reordered.
+
+    The user seed belongs to each sequence independently. Route-list indexes
+    only name checkpoint files; they must not affect branch choices or dates.
+    This also preserves successful seeds from existing standalone searches.
+    """
+    for batch in range(c['batches']):
+        for ri,route in enumerate(routes):
+            families = branch_families(route,c['branch_families'],c['seed'],preferred=(c.get('local_refinement') or {}).get('branches'))
+            nsamples = max(8,math.ceil(c['samples_per_sequence']/len(families)))
+            nstarts = max(1,math.ceil(c['refinements_per_sequence']/len(families)))
+            for bi,branch in enumerate(families):
+                identifier = f'b{batch:03d}_r{ri:02d}_f{bi:03d}'
+                yield route,c,branch,c['seed']+batch*100000+bi,nsamples,nstarts,identifier
 
 
 def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoint_seed=None):
@@ -465,15 +519,31 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
         raise ValueError(f'{output} is not empty. Choose another output or use --resume.')
     output.mkdir(parents=True,exist_ok=True)
     ep = get_ephemerides(c,routes)
+    # Freeze the reused set per run so resume does not change when other
+    # searches finish. Fresh searches revalidate historical pass candidates.
+    archive_path=output/'reused_candidates.json'
+    if not archive_path.exists():
+        from candidate_archive import collect_candidates
+        archive=collect_candidates(c,routes,ep,HERE/'runs',exclude=output)
+        from community import download_candidates
+        online=download_candidates(c,routes,ep)
+        archive['accepted'].extend(online['accepted']);archive['near_misses']=online['near_misses']
+        atomic_json(archive_path,archive)
+    else:
+        archive=json.loads(archive_path.read_text(encoding='utf-8'))
+    reused=archive['accepted']
+    reused_near=archive.get('near_misses',[])
+    archive_hash=hashlib.sha256(archive_path.read_bytes()).hexdigest()
+    if reused:print(f'Revalidated {len(reused)} compatible saved candidates against all current limits.',flush=True)
     engine_hashes = {name:hashlib.sha256((RESOURCE_ROOT/name).read_bytes()).hexdigest()
-                     for name in ('mission_search.py','dynamics.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py')}
-    signature = hashlib.sha256(json.dumps([c,routes,ep.manifest,engine_hashes],sort_keys=True).encode()).hexdigest()
+                     for name in ('mission_search.py','dynamics.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py')}
+    signature = hashlib.sha256(json.dumps([c,routes,ep.manifest,engine_hashes,archive_hash],sort_keys=True).encode()).hexdigest()
     manifest_path = output/'run_manifest.json'
     if resume:
         if not manifest_path.exists() or json.loads(manifest_path.read_text())['signature'] != signature:
             raise ValueError('Resume requires the same configuration, route definitions, engine code and ephemeris source hashes')
     atomic_json(manifest_path,dict(signature=signature,config=c,routes=routes,ephemerides=ep.manifest,
-                                  engine_hashes=engine_hashes,executable=sys.executable,created_local=datetime.now().isoformat()))
+                                  engine_hashes=engine_hashes,reused_candidates_sha256=archive_hash,reused_candidates=len(reused),executable=sys.executable,created_local=datetime.now().isoformat()))
     checkpoint = output/'checkpoints'
     checkpoint.mkdir(exist_ok=True)
     if checkpoint_seed:
@@ -506,22 +576,21 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
             atomic_json(output/'previous_results.json',json.loads((source/'results.json').read_text(encoding='utf-8')))
         print(f'Recovered and revalidated {recovered} completed branch checkpoints.',flush=True)
     jobs, done = [], []
-    for batch in range(c['batches']):
-        for ri,route in enumerate(routes):
-            families = branch_families(route,c['branch_families'],c['seed']+ri,preferred=(c.get('local_refinement') or {}).get('branches'))
-            nsamples = max(8,math.ceil(c['samples_per_sequence']/len(families)))
-            nstarts = max(1,math.ceil(c['refinements_per_sequence']/len(families)))
-            for bi,branch in enumerate(families):
-                identifier = f'b{batch:03d}_r{ri:02d}_f{bi:03d}'
-                p = checkpoint/(identifier+'.json')
-                if p.exists():
-                    done.append(json.loads(p.read_text(encoding='utf-8')))
-                else:
-                    jobs.append((route,c,branch,c['seed']+batch*100000+ri*1000+bi,nsamples,nstarts,identifier))
+    canonical=lambda branch:tuple(tuple(b[:2])+(bool(b[2]) if len(b)>2 else True,) for b in branch)
+    for job in planned_jobs(c,routes):
+        bank=[q for q in reused+reused_near if q['sequence']==job[0]['id'] and canonical(q['branches'])==canonical(job[2])]
+        if bank:job=(*job,bank)
+        # Slot 6 is always the job ID; slot 7 optionally holds saved seeds.
+        p = checkpoint/(job[6]+'.json')
+        if p.exists():
+            done.append(json.loads(p.read_text(encoding='utf-8')))
+        else:
+            jobs.append(job)
     total = len(jobs)+len(done)
+    if c['min_c3']<c['effective_min_c3']:print(f"Requested minimum C3 {c['min_c3']:g}; applying supported search floor {c['effective_min_c3']:g} km²/s².",flush=True)
     print(f'{len(routes)} routes; {total} branch jobs; {c["workers"]} CPU workers; {len(done)} completed checkpoints.',flush=True)
     print('Preparing Lambert JIT compiler. The first job can take longer. Ctrl+C preserves completed jobs.',flush=True)
-    initial = summarize(done,c)
+    initial = summarize(done,c,reused,reused_near)
     atomic_json(output/'results.json',initial)
     publish(output,initial,ep)
     live = LiveGallery(output,ep)
@@ -537,12 +606,14 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     progress_queue = progress_manager.Queue(maxsize=256)
     pool = ProcessPoolExecutor(max_workers=c['workers'],mp_context=context,
                                initializer=worker_initialize,initargs=(progress_queue,))
+    from community import CommunitySync
+    sharing=CommunitySync(c,routes)
     pending_live = {}
     futures = {}
     stopped = False
     dirty = False
     try:
-        futures = {pool.submit(job_search,job):job[-1] for job in jobs}
+        futures = {pool.submit(job_search,job):job[6] for job in jobs}
         while futures:
             from concurrent.futures import wait, FIRST_COMPLETED
             if stop_file and Path(stop_file).exists():
@@ -557,6 +628,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
                     continue
                 bucket = pending_live.setdefault(packet['job_id'],dict(accepted=[],near_misses=[]))
                 q = packet['candidate']
+                sharing.offer(q)
                 if q['status'].startswith('passes'):
                     bucket['accepted'].append(q)
                 else:
@@ -566,10 +638,11 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
             for future in ready:
                 identifier = futures.pop(future)
                 result = future.result()
+                for q in result['accepted']+result['near_misses']:sharing.offer(q)
                 pending_live.pop(identifier,None)
                 atomic_json(checkpoint/(identifier+'.json'),result)
                 done.append(result)
-                summary = summarize(done,c)
+                summary = summarize(done,c,reused,reused_near)
                 atomic_json(output/'results.json',summary)
                 dirty = True
                 if time.monotonic()-last_gallery > 30:
@@ -579,7 +652,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
                       f'{result["valid_random_evaluations"]}/{result["random_evaluations"]} valid samples; '
                       f'{summary["distinct_accepted"]} distinct overall; {result["elapsed_seconds"]:.1f}s.',flush=True)
             if time.monotonic()-last_live > 2 and (dirty or time.monotonic()-last_live > 15):
-                preview = summarize(done+list(pending_live.values()),c)
+                preview = summarize(done+list(pending_live.values()),c,reused,reused_near)
                 preview['completed_jobs'] = len(done)
                 progress.update(completed_jobs=len(done),elapsed_seconds=time.monotonic()-started)
                 live.update(preview,progress)
@@ -606,7 +679,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
         pool.shutdown(wait=True,cancel_futures=True)
         # Preserve candidates already reported by interrupted jobs, separately
         # from completed checkpoints. Resuming reruns those unfinished jobs.
-        summary = summarize(done+list(pending_live.values()),c)
+        summary = summarize(done+list(pending_live.values()),c,reused,reused_near)
         summary['completed_jobs'] = len(done)
         atomic_json(output/'results.json',summary)
         progress.update(state='failed' if (output/'run_error.json').exists() else 'stopped' if stopped else 'finished',completed_jobs=len(done),
@@ -614,6 +687,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
         live.update(summary,progress,final=True)
         publish(output,summary,ep)
         progress_manager.shutdown()
+        sharing.close()
     print(f'Saved {len(summary["candidates"])} accepted candidates and {len(summary["near_misses"])} diagnostics to {output}',flush=True)
     if not summary['candidates']:
         print('No passing candidate found in this search. Inspect the diagnostics, add starts or broaden bounds.',flush=True)
@@ -631,7 +705,7 @@ def wizard():
     config = dict(target=target,launch_start=start,launch_end=end,
                   sequences=[] if names.lower() == 'all' else [s.strip() for s in names.split(',')],
                   vinf_tolerance_mps=float(ask('Maximum flyby excess-speed mismatch (m/s)',20)),
-                  min_c3=float(ask('Minimum launch C3 (km^2/s^2)',0)),
+                  min_c3=float(ask('Minimum launch C3 (km^2/s^2)',DEFAULT_MIN_C3)),
                   max_c3=float(ask('Maximum launch C3 (km^2/s^2)',100)),
                   max_arrival_vinf_kms=float(ask('Maximum arrival V-infinity (km/s)',15)),
                   max_dsm_kms=float(ask('Maximum total designed DSM delta-v (km/s)',1.5)),

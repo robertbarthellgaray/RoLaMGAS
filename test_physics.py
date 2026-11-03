@@ -72,7 +72,7 @@ class PhysicsTests(unittest.TestCase):
                 a = .5 + omega*t
                 return np.array([radius*np.cos(a),radius*np.sin(a),0.,
                                  -radius*omega*np.sin(a),radius*omega*np.cos(a),0.])
-        c = normalize(dict(target='Mars',launch_start='2030-01-01',launch_end='2030-02-01',sequences=['EdvM']))
+        c = normalize(dict(target='Mars',launch_start='2030-01-01',launch_end='2030-02-01',sequences=['EdvM'],max_c3=1e5))
         route = resolve_route('EdvM',load_database())
         model = Model(route,c,Synthetic())
         q = model.evaluate(np.array([.5,.4,.5,.51,.49,.5]),[(0,True)])
