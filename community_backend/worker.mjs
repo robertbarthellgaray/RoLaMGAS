@@ -20,6 +20,7 @@ export async function validate(input){
  let previous=-1;
  const controls=input.dsm_controls.map(d=>{exact(d,['leg_index','fraction','departure_offset_kms']);if(!Number.isInteger(d.leg_index)||d.leg_index<=previous||d.leg_index>=ids.length-1)throw Error('Invalid DSM leg');previous=d.leg_index;return {leg_index:d.leg_index,fraction:number(d.fraction,.1,.9),departure_offset_kms:vector(d.departure_offset_kms,1000)};});
  exact(input.metrics,METRICS);const metrics=Object.fromEntries(METRICS.map(k=>[k,number(input.metrics[k],0,1e9)]));
+ if(metrics.launch_c3_km2_s2>250)throw Error('Public library C3 exceeds 250 km2/s2');
  const time=Date.parse(input.solved_at);if(typeof input.solved_at!=='string'||input.solved_at.length>40||!Number.isFinite(time)||time<0||time>Date.now()+86400000)throw Error('Invalid solve time');
  if(!Array.isArray(input.segments)||input.segments.length<1||input.segments.length>32)throw Error('Invalid segments');
  const segments=input.segments.map(s=>{exact(s,['start_jd','end_jd','r','v']);number(s.start_jd,dates[0]-.001,dates.at(-1)+.001);number(s.end_jd,s.start_jd+1e-8,dates.at(-1)+.001);return {start_jd:s.start_jd,end_jd:s.end_jd,r:vector(s.r,1e13),v:vector(s.v,10000)};});

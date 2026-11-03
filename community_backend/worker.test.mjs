@@ -19,3 +19,5 @@ test('all-target incremental feed paginates without gaps or duplicate records',a
  assert.equal((await(await get(env,'target=all&since=2099-01-01T00%3A00%3A00.000Z')).json()).candidates.length,0);
  assert.equal((await get(env,'target=all&cursor=garbage')).status,400);env.database.close();
 });
+
+test('public C3 ceiling retains exactly 250 and rejects anything higher',async()=>{const env=localEnv();const a=record();a.metrics.launch_c3_km2_s2=250;assert.equal((await post(env,[a])).status,200);a.metrics.launch_c3_km2_s2=250.000001;assert.equal((await post(env,[a])).status,400);assert.equal(env.database.prepare('SELECT COUNT(*) AS n FROM candidates').get().n,1);env.database.close()});

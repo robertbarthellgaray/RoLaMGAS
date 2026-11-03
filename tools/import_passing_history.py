@@ -115,6 +115,8 @@ def build(entries,output,report,existing=None,private_report=None):
             failures.append(dict(source=source,candidate=q.get('id'),error=str(error)))
     previous=read(existing) if existing else {}
     projected+=previous.get('candidates',[])
+    excluded=sum(r['metrics']['launch_c3_km2_s2']>250 for r in projected)
+    projected=[r for r in projected if r['metrics']['launch_c3_km2_s2']<=250]
     validated=canonical_records(projected)
     records={}
     for record in validated['valid']:
@@ -122,11 +124,12 @@ def build(entries,output,report,existing=None,private_report=None):
         if prior is None or record['solved_at']<prior['solved_at']:records[record['id']]=record
     candidates=sorted(records.values(),key=lambda r:(r['body_ids'][-1],r['solved_at'],r['id']))
     doc=dict(schema_version=1,description='All recovered historical passing searches, deduplicated by physical encounter controls. Original search limits and solver versions differ; classifications are submitted and must be revalidated before reuse. Legacy solve timestamps fall back to file save time.',candidates=candidates)
+    doc['maximum_public_c3_km2_s2']=250
     if previous.get('curated_aliases'):doc['curated_aliases']={k:v for k,v in previous['curated_aliases'].items() if k in records}
     if previous.get('received_through'):doc['received_through']=previous['received_through']
     Path(output).parent.mkdir(parents=True,exist_ok=True)
     Path(output).write_text(json.dumps(doc,indent=2,allow_nan=False)+'\n',encoding='utf-8')
-    summary=dict(passing_occurrences=count,distinct_saved_parameterizations=len(seen),published_candidates=len(candidates),resolved_summary_references=resolved_summaries,projection_failures=len(failures),schema_failures=len(validated['invalid']),by_target=dict(Counter(r['body_ids'][-1] for r in candidates)),archive_bytes=Path(output).stat().st_size)
+    summary=dict(passing_occurrences=count,distinct_saved_parameterizations=len(seen),published_candidates=len(candidates),excluded_above_public_c3_limit=excluded,maximum_public_c3_km2_s2=250,resolved_summary_references=resolved_summaries,projection_failures=len(failures),schema_failures=len(validated['invalid']),by_target=dict(Counter(r['body_ids'][-1] for r in candidates)),archive_bytes=Path(output).stat().st_size)
     Path(report).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8')
     if private_report:Path(private_report).write_text(json.dumps(dict(projection_failures=failures,schema_failures=validated['invalid']),indent=2)+'\n',encoding='utf-8')
     print(json.dumps(summary),flush=True)

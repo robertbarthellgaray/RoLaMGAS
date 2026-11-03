@@ -162,7 +162,7 @@ class CommunitySync:
         self.c=c;self.routes={r['id']:r for r in routes};self.queue=queue.Queue(maxsize=1000);self.seen=set();self.stop=threading.Event();self.last_error=0.
         self.thread=threading.Thread(target=self._work,daemon=True);self.thread.start()
     def offer(self,q):
-        if q.get('reused_from') or q.get('community_source'):return
+        if q.get('reused_from') or q.get('community_source') or q.get('launch_c3_km2_s2',0)>250:return
         pref=settings()
         if not pref['share_candidates'] or not pref['endpoint']:return
         try:

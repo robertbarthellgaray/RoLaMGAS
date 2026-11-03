@@ -285,7 +285,7 @@ async function syncShared(){
 }
 try {
  const [data,archive,settings]=await Promise.all([fetchJson('data/index.json'),fetchJson('data/community_seed_catalog.json').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({}))]);
- catalog.push(...data.cases);curatedAliases=archive.curated_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
+ catalog.push(...data.cases.filter(c=>c.c3<=250));curatedAliases=archive.curated_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
  const hash=location.hash.match(/^#mission=([^&]+)/),initial=hash?decodeURIComponent(hash[1]):'claudius-uop-2045';
  if(hash&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))await syncShared();

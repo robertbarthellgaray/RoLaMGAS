@@ -2,7 +2,7 @@
 
 The public trajectory API is deployed at
 https://rolamgas-community.corigarayv.workers.dev. It was initialized with the 97
-sanitized public starter candidates on 2026-11-03, then expanded to 2,306 distinct
+sanitized public starter candidates on 2026-11-03, then expanded to 2,281 distinct
 historical passing trajectories from all recovered solver generations. The website and source defaults
 point at this API. Existing v0.2.1 executables can connect without a rebuild by
 setting this URL in their community API connection field.
@@ -109,7 +109,7 @@ the full recovered public archive. `docs/data/community_history_index.csv` lists
 departure/arrival dates, TDB Julian epochs, flight time and mission metrics.
 `docs/data/community_history_report.json` reports conversion totals without local
 paths or private run identifiers. The Choose your next world explorer combines this complete archive with curated
-examples and live submissions. It starts with 2,315 interactive entries after
+examples and live submissions. It starts with 2,290 interactive entries after
 shared copies of curated examples are removed. An inclusive received-time cursor
 and keyset pagination retrieve every new submission, including new target IDs;
 the per-response API limit does not hide older historical passes. Filtering and
@@ -137,3 +137,7 @@ Every shared trajectory supports rotation, playback, encounter/DSM dates, and
 browser-generated CSV/XYZV samples of its saved Sun-only coasts. These downloads
 retain planet-center joins; finite-radius flyby exports still require the desktop
 exporter. Curated integrated files remain the original saved exports.
+
+Public library policy: C3 must be at most 250 km²/s². On 2026-11-03,
+25 historical trajectories above that ceiling were purged from the public archive
+and production database. New submissions and history imports enforce the same ceiling.

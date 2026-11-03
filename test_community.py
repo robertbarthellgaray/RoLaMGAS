@@ -20,6 +20,11 @@ class CommunityTests(unittest.TestCase):
         self.assertNotIn('PRIVATE',raw);self.assertNotIn('username',raw);self.assertNotIn('local_path',raw);self.assertNotIn('query',raw)
         self.assertEqual(record['body_ids'],['399','599']);self.assertIn('solved_at',record)
         q['id']='different device irrelevant';self.assertEqual(record['id'],lib.public_record(q,c,r)['id'])
+    def test_public_c3_ceiling_does_not_change_local_search_metrics(self):
+        c,r,ep,q=self.parent();q['launch_c3_km2_s2']=250.000001
+        with patch.object(lib,'settings',return_value=dict(share_candidates=True,use_candidates=True,endpoint='https://example.test')),patch.object(lib,'exchange') as network:
+            sync=lib.CommunitySync(c,[r]);sync.offer(q);sync.close();network.assert_not_called()
+        self.assertEqual(q['launch_c3_km2_s2'],250.000001)
     def test_red_candidates_are_not_shared(self):
         c,r,ep,q=self.parent();q['periapsis_violation']=True;self.assertIsNone(lib.public_record(q,c,r))
     def test_physical_dates_and_dsm_controls_remap_without_changing_arc(self):

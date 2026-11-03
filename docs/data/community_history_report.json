@@ -1,20 +1,19 @@
 {
   "passing_occurrences": 2334,
   "distinct_saved_parameterizations": 2311,
-  "published_candidates": 2306,
+  "published_candidates": 2281,
   "resolved_summary_references": 23,
   "projection_failures": 0,
   "schema_failures": 0,
   "by_target": {
     "199": 23,
-    "20000001": 17,
+    "20000001": 5,
     "20000624": 12,
     "20013579": 11,
     "20136199": 30,
     "20420356": 161,
     "20486958": 13,
     "299": 258,
-    "499": 13,
     "50666516": 376,
     "54667839": 403,
     "599": 164,
@@ -23,5 +22,7 @@
     "899": 175,
     "999": 115
   },
-  "archive_bytes": 4219989
+  "archive_bytes": 4198204,
+  "purged_above_c3_250": 25,
+  "maximum_public_c3_km2_s2": 250
 }
