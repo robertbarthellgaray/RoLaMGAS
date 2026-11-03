@@ -16,7 +16,7 @@ this service does not verify orbital dynamics. Desktop clients recompute them.
 API: https://rolamgas-community.corigarayv.workers.dev
 
 Health: `/v1/health`. Deployed 2026-11-03 with the `DB` binding and the
-2,281 recovered historical passing records. Worker observability and preview URLs are disabled.
+2,047 recovered historical passing records. Worker observability and preview URLs are disabled.
 The configured production D1 database is `rolamgas-community`.
 
 The unified website uses `target=all`, optional inclusive ISO-UTC `since`, and
@@ -27,3 +27,7 @@ continue to work. A `(received_at DESC,id)` index supports this incremental feed
 Public library policy: C3 must be at most 250 km²/s². On 2026-11-03,
 25 historical trajectories above that ceiling were purged from the public archive
 and production database. New submissions and history imports enforce the same ceiling.
+
+Public small-body flights must be shorter than 60 Julian years (365.25 days each),
+measured from their actual encounter epochs. Another 234 historical records at
+or above that duration were purged on 2026-11-03. Eight-planet targets are exempt.

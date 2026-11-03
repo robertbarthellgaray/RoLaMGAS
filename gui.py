@@ -246,6 +246,15 @@ class App:
             (self.folder(name)/'stop.request').write_text('Stop requested by GUI\n',encoding='utf-8')
             return dict(stopping=True)
 
+    def database_decision(self,name,run_local):
+        if not isinstance(run_local,bool):raise ValueError('Choose whether to run the local search')
+        with self.lock:
+            if name!=self.active or self.process is None or self.process.poll() is not None:raise ValueError('This run is not awaiting a decision')
+            root=self.folder(name)
+            if read_json(root/'gui_status.json',{}).get('state')!='awaiting_database_decision':raise ValueError('This run is not awaiting a database decision')
+            atomic_json(root/'database_decision.json',dict(run_local=run_local))
+        return dict(run=name,run_local=run_local)
+
     def snapshot(self,name):
         output = self.folder(name)
         if not output.exists():
@@ -254,7 +263,7 @@ class App:
         error=read_json(output/'run_error.json')
         if error:
             status=dict(status,state='failed',message=error['type']+': '+error['message'])
-        if name==self.active and self.process is not None and self.process.poll() is not None and status.get('state') in ('starting','preparing','running'):
+        if name==self.active and self.process is not None and self.process.poll() is not None and status.get('state') in ('starting','preparing','checking_database','awaiting_database_decision','running'):
             status = dict(state='failed',message=f'Search process exited ({self.process.returncode}). See console log.')
             atomic_json(output/'gui_status.json',status)
         live = read_json(output/'live.json')
@@ -275,7 +284,7 @@ class App:
         limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years')}
         limits['effective_min_c3']=max(float(request.get('min_c3') if request.get('min_c3') is not None else DEFAULT_MIN_C3),DEFAULT_MIN_C3)
         return dict(run=name,status=status or dict(state='finished'),live=live,log=logs,
-                    heartbeat=read_json(output/'heartbeat.json'),
+                    heartbeat=read_json(output/'heartbeat.json'),database=read_json(output/'database_first.json',{}),
                     limits=limits,
                     active=name==self.active and self.process is not None and self.process.poll() is None)
 
@@ -519,6 +528,8 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/api/append-flyby':
                 return self.json(self.app.append_candidate(value['run'],value['candidate'],value.get('body'),value.get('count',1),
                     value.get('minimum_days',80.),value.get('maximum_days',750.),value.get('dsm',False),value.get('target_object')))
+            if self.path=='/api/database-decision':
+                return self.json(self.app.database_decision(value['run'],value.get('run_local')))
             if self.path=='/api/stop':
                 return self.json(self.app.stop(value['run']))
             if self.path=='/api/integrate':

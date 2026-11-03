@@ -14,6 +14,7 @@ export async function validate(input){
  if(!Array.isArray(ids)||ids.length<2||ids.length>16||!ids.every(v=>typeof v==='string'&&/^-?\d{1,12}$/.test(v)))throw Error('Invalid body IDs');
  if(!Array.isArray(dates)||dates.length!==ids.length)throw Error('Invalid epochs');
  dates.forEach((n,i)=>{number(n,2300000,2700000);if(i&&n<=dates[i-1])throw Error('Unordered epochs');});
+ const target=Number(ids.at(-1));if((target===999||target>=1000)&&(dates.at(-1)-dates[0])/365.25>=60)throw Error('Small-body flight time must be below 60 years');
  if(!Array.isArray(branches)||branches.length!==ids.length-1)throw Error('Invalid branches');
  branches.forEach(b=>{if(!Array.isArray(b)||![2,3].includes(b.length)||!Number.isInteger(b[0])||b[0]<0||b[0]>16||typeof b[1]!=='boolean'||(b.length===3&&typeof b[2]!=='boolean'))throw Error('Invalid branch');});
  if(!Array.isArray(input.dsm_controls)||input.dsm_controls.length>ids.length-1)throw Error('Invalid DSM controls');

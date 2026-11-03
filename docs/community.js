@@ -11,6 +11,7 @@ export function missionTiming(record){const dates=record.dates_jd_tdb;if(!Array.
 export function mergeLibrary(archive,live,target,min=0,max=1e9){const records=new Map();for(const r of [...archive,...live])if(r?.id&&r.body_ids?.at(-1)===target&&r.metrics?.launch_c3_km2_s2>=min&&r.metrics.launch_c3_km2_s2<=max)records.set(r.id,r);return [...records.values()]}
 export function summaryFor(record){
  if(record.metrics.launch_c3_km2_s2>250)throw Error('Public library C3 exceeds 250 km2/s2');
+ const targetId=Number(record.body_ids.at(-1));if((targetId===999||targetId>=1000)&&missionTiming(record).years>=60)throw Error('Small-body flight time must be below 60 years');
  const t=missionTiming(record),m=record.metrics,bodies=record.body_ids.map(bodyName),target=bodies.at(-1);
  return {id:record.id,title:record.sequence+' · '+target,target,sequence:record.sequence,bodies,model:'Shared '+record.classification,community:true,classification:record.classification,spotlight:false,start:record.dates_jd_tdb[0],end:record.dates_jd_tdb.at(-1),launch_date:t.departure,arrival_date:t.arrival,years:t.years,c3:m.launch_c3_km2_s2,vinf:m.arrival_vinf_kms,burns_mps:m.total_dsm_kms*1000,received:Date.parse(record.received_at||record.solved_at)};
 }

@@ -33,7 +33,7 @@ def main():
     atomic_json(prior/'run_manifest.json',dict(config=c,routes=routes));atomic_json(prior/'results.json',dict(candidates=[q]))
     output=root/'runs/seeded';output.mkdir(parents=True,exist_ok=True);atomic_json(output/'request.json',config)
     with (output/'console.log').open('w',encoding='utf-8') as log:
-        process=subprocess.run([str(Path(args.app).resolve()),'--rolamgas-module','gui_worker','--output',str(output)],
+        process=subprocess.run([str(Path(args.app).resolve()),'--rolamgas-module','gui_worker','--output',str(output),'--local-search'],
                                env=dict(os.environ,ROLAMGAS_DATA_DIR=str(root),ROLAMGAS_COMMUNITY_URL=''),stdout=log,stderr=subprocess.STDOUT,timeout=200)
     text=(output/'console.log').read_text(encoding='utf-8',errors='replace')
     assert process.returncode==0,text[-6000:]

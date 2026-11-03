@@ -11,3 +11,5 @@ td.failure{color:#ff9fad}
 .option-actions{display:flex;gap:8px;margin-top:10px}.option-actions button{flex:1;font-size:12px}
 
 .card-date{display:flex;align-items:baseline;gap:3px;flex-wrap:wrap}.card-date>span{white-space:nowrap}.flight-duration{color:#b8cce2}
+
+.database-decision{border-color:#7ee2b8}.database-decision .actions{display:flex;gap:12px;flex-wrap:wrap}.database-decision p{line-height:1.6}

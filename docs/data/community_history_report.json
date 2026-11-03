@@ -1,7 +1,7 @@
 {
   "passing_occurrences": 2334,
   "distinct_saved_parameterizations": 2311,
-  "published_candidates": 2281,
+  "published_candidates": 2047,
   "resolved_summary_references": 23,
   "projection_failures": 0,
   "schema_failures": 0,
@@ -11,10 +11,10 @@
     "20000624": 12,
     "20013579": 11,
     "20136199": 30,
-    "20420356": 161,
+    "20420356": 160,
     "20486958": 13,
     "299": 258,
-    "50666516": 376,
+    "50666516": 143,
     "54667839": 403,
     "599": 164,
     "699": 421,
@@ -22,7 +22,9 @@
     "899": 175,
     "999": 115
   },
-  "archive_bytes": 4198204,
+  "archive_bytes": 3886266,
   "purged_above_c3_250": 25,
-  "maximum_public_c3_km2_s2": 250
+  "maximum_public_c3_km2_s2": 250,
+  "purged_small_body_60plus_years": 234,
+  "small_body_max_flight_years_exclusive": 60
 }

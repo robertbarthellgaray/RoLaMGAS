@@ -27,7 +27,7 @@ def settings():
     except (OSError,ValueError):base={}
     try:saved=json.loads(SETTINGS.read_text(encoding='utf-8'))
     except (OSError,ValueError):saved={}
-    endpoint=endpoint_url(os.environ.get('ROLAMGAS_COMMUNITY_URL',saved.get('endpoint',base.get('endpoint',''))))
+    endpoint=endpoint_url(os.environ.get('ROLAMGAS_COMMUNITY_URL',(saved.get('endpoint') or base.get('endpoint',''))))
     return dict(share_candidates=saved.get('share_candidates',True) is True,
                 use_candidates=saved.get('use_candidates',True) is True,endpoint=endpoint,
                 configured=bool(endpoint))
@@ -124,22 +124,38 @@ def record_variables(record,model):
     return x,branches
 
 
-def download_candidates(c,routes,ep):
+def download_candidates(c,routes,ep,stop_file=None):
     from dynamics import Model
     pref=settings();accepted=[];near=[]
-    if not pref['use_candidates'] or c.get('append_flyby'):return dict(accepted=accepted,near_misses=near)
-    try:records=json.loads((RESOURCE_ROOT/'community_seed_catalog.json').read_text(encoding='utf-8')).get('candidates',[])
-    except (OSError,ValueError):records=[]
-    records=[dict(record,seed_source='bundled') for record in records]
+    info=dict(online_status='disabled' if not pref['use_candidates'] else 'not_configured',downloaded_records=0)
+    if not pref['use_candidates'] or c.get('append_flyby'):return dict(accepted=accepted,near_misses=near,**info)
+    records=[]
     if pref['endpoint']:
         target=str((c.get('target_object') or {}).get('id') or BODIES[c['target']][0])
-        query=urllib.parse.urlencode(dict(target=target,min_c3=c['effective_min_c3'],max_c3=c['max_c3'],launch_start=c['launch_jd'][0],launch_end=c['launch_jd'][1],limit=40))
+        params=dict(target=target,min_c3=c['effective_min_c3'],max_c3=c['max_c3'],launch_start=c['launch_jd'][0],launch_end=c['launch_jd'][1],max_arrival_vinf=c['max_arrival_vinf_kms'],max_years=c['max_years'],limit=100)
+        cursors=set()
         try:
-            result=exchange(pref['endpoint']+'/v1/candidates?'+query)
-            records.extend(dict(record,seed_source='online') for record in result.get('candidates',[])[:40])
-        except Exception as exc:print(f'Community library unavailable; continuing from bundled/local data ({type(exc).__name__}).',flush=True)
+            while True:
+                if stop_file and Path(stop_file).exists():raise InterruptedError('Stopped while checking shared database')
+                result=exchange(pref['endpoint']+'/v1/candidates?'+urllib.parse.urlencode(params))
+                page=result.get('candidates',[])
+                if not isinstance(page,list):raise ValueError('Invalid database response')
+                records.extend(dict(record,seed_source='online') for record in page)
+                cursor=result.get('next_cursor')
+                if not cursor:break
+                if cursor in cursors or len(cursors)>=1000:raise ValueError('Invalid database pagination')
+                cursors.add(cursor);params['cursor']=cursor
+            info.update(online_status='available',downloaded_records=len(records))
+        except InterruptedError:raise
+        except Exception as exc:
+            info.update(online_status='unavailable',downloaded_records=len(records))
+            print(f'Community database unavailable; continuing from bundled/local data ({type(exc).__name__}).',flush=True)
+    try:bundled=json.loads((RESOURCE_ROOT/'community_seed_catalog.json').read_text(encoding='utf-8')).get('candidates',[])
+    except (OSError,ValueError):bundled=[]
+    records.extend(dict(record,seed_source='bundled') for record in bundled)
     models={r['id']:Model(r,c,ep) for r in routes};seen=set()
     for record in records:
+        if stop_file and Path(stop_file).exists():raise InterruptedError('Stopped while verifying database matches')
         try:
             if record.get('id') in seen:continue
             model=models.get(record.get('sequence'))
@@ -153,7 +169,7 @@ def download_candidates(c,routes,ep):
             (accepted if model.accepted(q) else near).append(q);seen.add(record.get('id'))
         except (ValueError,KeyError,TypeError,RuntimeError,AssertionError,OverflowError,ZeroDivisionError):continue
     if accepted or near:print(f'Bundled/community library: {len(accepted)} passing and {len(near)} yellow candidates revalidated locally.',flush=True)
-    return dict(accepted=accepted,near_misses=near)
+    return dict(accepted=accepted,near_misses=near,**info)
 
 
 class CommunitySync:
@@ -168,6 +184,8 @@ class CommunitySync:
         try:
             record=public_record(q,self.c,self.routes[q['sequence']])
             if record is None or record['id'] in self.seen:return
+            target=int(record['body_ids'][-1]);years=(record['dates_jd_tdb'][-1]-record['dates_jd_tdb'][0])/365.25
+            if (target==999 or target>=1000) and years>=60:return
             self.queue.put_nowait(record);self.seen.add(record['id'])
         except (ValueError,KeyError,TypeError,queue.Full):pass
     def _work(self):

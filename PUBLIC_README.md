@@ -4,13 +4,15 @@
 
 ![RoLaMGAS orbital artwork](docs/images/RoLaMGAS.png)
 
-[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.1) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
+[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.2) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
 
 ## Browse before downloading
 
-The GitHub Pages site includes 93 precomputed examples: all seven planetary destinations, Pluto, Eris, 2026 ED138, and the integrated CLAUDIUS/UOP and reconstructed Tianwen-4 concepts. Filter by destination, assist sequence, launch C3, cruise burn budget or arrival speed. Rotate the saved paths, play the mission timeline, inspect TDB event dates, and download the candidate data or plot. The two integrated concepts also offer their original XYZV files.
+The live GitHub Pages explorer combines 2,047 recovered historical passes with curated mission examples: 2,056 interactive entries after deduplication. New shared submissions join the same destination filters, playback, mission dates and downloads automatically. All seven planetary destinations and nine small-body targets are represented.
 
-Public Lambert admission independently recomputes flyby speeds and turning geometry: excess-speed mismatch ≤1 m/s, each DSM ≤700 m/s, and inferred periapses above their stated floors. Coast endpoints and event states are cross-checked against the independent JPL cache. Integrated concepts have a separate Sun/eight-planet clearance audit. See [`docs/data/catalog_audit.json`](docs/data/catalog_audit.json).
+Curated Lambert admission independently recomputes flyby speeds and turning geometry: excess-speed mismatch ≤1 m/s, each DSM ≤700 m/s, and inferred periapses above their stated floors. Coast endpoints and event states are cross-checked against the independent JPL cache. Integrated concepts have a separate Sun/eight-planet clearance audit. See [`docs/data/catalog_audit.json`](docs/data/catalog_audit.json).
+
+Shared pass/yellow labels preserve the original submitting limits and are not independent validation. The desktop app recomputes their science before reuse.
 
 The website is static HTML/CSS/JavaScript under `docs/`. It runs no optimizer and requires no Python server, account or API key. Interactive playback interpolates saved points. The desktop application below performs new searches on the user’s hardware.
 
@@ -22,7 +24,7 @@ API key or subscription is required.
 
 ## Desktop app
 
-Download the v0.2.1 package for your platform: Windows EXE, Apple Silicon or
+Download the v0.2.2 package for your platform: Windows EXE, Apple Silicon or
 Intel Mac DMG, or Debian/Ubuntu x64 DEB. They open the same local browser GUI.
 The Mac preview is unsigned/not notarized. See [platform instructions](SHARING.md).
 Python and the scientific dependencies are bundled. The eight-planet baseline
@@ -34,17 +36,20 @@ Searches, exports and extra Horizons downloads are stored in
 preserves your work. An internet connection is needed for targets or epochs not
 already cached. `ROLAMGAS_DATA_DIR` can select another data directory.
 
-## New in v0.2.1
+## New in v0.2.2
 
-Hard C3 bounds, consistent per-sequence search seeds, retained and revalidated
-saved solutions, follow-on Horizons targets, portable search settings, and
-complete timestamp coverage when downloading ephemerides.
+Search the shared trajectory database before allocating optimizer workers.
+Every compatible candidate is revalidated against the current ephemerides and
+all your search constraints. Zero, one or two verified matches start local
+optimization automatically. Three or more show a choice: use the database
+results, or search locally too. Bundled records work offline; service failures
+fall back to the local solver.
 
-The app includes 97 sanitized passing trajectories as offline starting points.
-Community sharing is enabled by default with a visible opt-out control. The
-community API is not connected in this release, so no automatic uploads occur;
-the website displays the starter library until the Cloudflare service is
-configured. See [community data and hosting details](COMMUNITY.md).
+The app includes 2,047 sanitized passing trajectories, connects to the live
+community API by default, and defaults to showing yellow candidates while
+hiding red candidates. Sharing has a visible opt-out control. The public
+library excludes C3 above 250 km²/s² and small-body flights of 60 years or more;
+local search limits remain configurable. See [community data details](COMMUNITY.md).
 
 ## Run from source
 
@@ -100,7 +105,7 @@ See `GUI_GUIDE.md`, `SHARING.md` and the original JPL response metadata for deta
 `python -m unittest discover -p "test_*.py"`
 
 Install `requirements-build.txt` and run
-`python build_release.py --native --version 0.2.1` on the target OS to build
+`python build_release.py --native --version 0.2.2` on the target OS to build
 the native EXE, DMG or DEB plus matching GPL source. GitHub Actions can build all
 three platforms; see [SHARING.md](SHARING.md).
 

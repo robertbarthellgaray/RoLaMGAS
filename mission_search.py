@@ -510,7 +510,7 @@ def planned_jobs(c, routes):
                 yield route,c,branch,c['seed']+batch*100000+bi,nsamples,nstarts,identifier
 
 
-def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoint_seed=None):
+def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoint_seed=None, database_gate=None):
     from presentation import publish
     from live_gallery import LiveGallery
     output = Path(output).resolve()
@@ -523,11 +523,12 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     # searches finish. Fresh searches revalidate historical pass candidates.
     archive_path=output/'reused_candidates.json'
     if not archive_path.exists():
+        from community import download_candidates
+        online=download_candidates(c,routes,ep,stop_file=stop_file)
         from candidate_archive import collect_candidates
         archive=collect_candidates(c,routes,ep,HERE/'runs',exclude=output)
-        from community import download_candidates
-        online=download_candidates(c,routes,ep)
         archive['accepted'].extend(online['accepted']);archive['near_misses']=online['near_misses']
+        archive['database_status']=online.get('online_status','unknown');archive['downloaded_records']=online.get('downloaded_records',0)
         atomic_json(archive_path,archive)
     else:
         archive=json.loads(archive_path.read_text(encoding='utf-8'))
@@ -589,7 +590,6 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     total = len(jobs)+len(done)
     if c['min_c3']<c['effective_min_c3']:print(f"Requested minimum C3 {c['min_c3']:g}; applying supported search floor {c['effective_min_c3']:g} km²/s².",flush=True)
     print(f'{len(routes)} routes; {total} branch jobs; {c["workers"]} CPU workers; {len(done)} completed checkpoints.',flush=True)
-    print('Preparing Lambert JIT compiler. The first job can take longer. Ctrl+C preserves completed jobs.',flush=True)
     initial = summarize(done,c,reused,reused_near)
     atomic_json(output/'results.json',initial)
     publish(output,initial,ep)
@@ -597,6 +597,21 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     started = time.monotonic()
     progress = dict(state='running',completed_jobs=len(done),total_jobs=total,elapsed_seconds=0)
     live.update(initial,progress)
+    if database_gate is not None:
+        library=[q for q in reused if q.get('community_source')]
+        library_summary=summarize([],dict(c,keep=max(c['keep'],3)),library)
+        matches=library_summary['candidates']
+        report=dict(passing_matches=library_summary['distinct_accepted'],online_matches=sum(q['community_source'].get('library')=='online' for q in matches),bundled_matches=sum(q['community_source'].get('library')=='bundled' for q in matches),online_status=archive.get('database_status','unknown'),downloaded_records=archive.get('downloaded_records',0),all_user_limits_revalidated=True)
+        atomic_json(output/'database_first.json',report)
+        proceed=database_gate(report)
+        report['cpu_search_started']=bool(proceed);atomic_json(output/'database_first.json',report)
+        if not proceed:
+            initial['database_first']=report;atomic_json(output/'results.json',initial)
+            progress.update(state='finished',total_jobs=0,completed_jobs=0,elapsed_seconds=time.monotonic()-started,local_search_skipped=True)
+            live.update(initial,progress,final=True);publish(output,initial,ep)
+            print(f"Using {report['passing_matches']} verified database matches; local optimization skipped.",flush=True)
+            return output/'index.html'
+    print('Preparing local optimizer workers. Ctrl+C preserves completed jobs.',flush=True)
     last_gallery = time.monotonic()
     last_live = 0.
     context = multiprocessing.get_context('spawn')
@@ -694,6 +709,18 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     return output/'index.html'
 
 
+def console_database_decision(report):
+    count=report['passing_matches']
+    if count<3:
+        print(f'Database check found {count} verified matches; starting local optimization automatically.',flush=True)
+        return True
+    if not sys.stdin.isatty():
+        print(f'{count} verified database matches saved. Use --local-search to additionally optimize in a noninteractive run.',flush=True)
+        return False
+    answer=input(f'{count} database trajectories satisfy all limits. Run a local CPU search too? [y/N]: ')
+    return answer.strip().lower() in ('y','yes')
+
+
 def wizard():
     def ask(label,default):
         return input(f'{label} [{default}]: ').strip() or str(default)
@@ -729,7 +756,7 @@ def wizard():
     print(f'Your editable request: {config_path}',flush=True)
     print('Checking local JPL cache; only missing coverage will be downloaded.',flush=True)
     prepare(c,routes)
-    page = run(c,routes,output)
+    page = run(c,routes,output,database_gate=console_database_decision)
     webbrowser.open(page.as_uri())
 
 
@@ -751,6 +778,7 @@ def main():
             p.add_argument('--output',required=True)
             p.add_argument('--resume',action='store_true')
             p.add_argument('--open',action='store_true')
+            p.add_argument('--local-search',action='store_true',help='Also optimize locally without the database-first confirmation')
     validate = sub.add_parser('validate',help='Independently integrate a saved candidate with DOP853')
     validate.add_argument('--candidate',required=True)
     validate.add_argument('--output',required=True)
@@ -779,7 +807,7 @@ def main():
         if args.command == 'prepare':
             prepare(c,routes,args.local_folder)
         else:
-            page = run(c,routes,args.output,args.resume)
+            page = run(c,routes,args.output,args.resume,database_gate=None if args.resume or args.local_search else console_database_decision)
             if args.open:
                 webbrowser.open(page.as_uri())
 

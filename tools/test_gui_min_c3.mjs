@@ -82,3 +82,5 @@ test('obsolete below-minimum toggle is absent and arrival-date controls are not 
  const prefix=html.slice(0,html.indexOf('id="arrivalDate"'));
  assert.equal((prefix.match(/<details\b/g)||[]).length,(prefix.match(/<\/details>/g)||[]).length);
 });
+
+test('gallery defaults include yellow and exclude red',()=>{const html=fs.readFileSync(new URL('../gui.html',import.meta.url),'utf8');assert.match(html,/<input[^>]*id="showYellow"[^>]*checked/);assert.doesNotMatch(html,/<input[^>]*id="showRed"[^>]*checked/)});

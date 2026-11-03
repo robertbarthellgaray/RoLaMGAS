@@ -346,3 +346,26 @@ reproducible resume. Reuse requires matching date and DSM parameterization and
 target identity; different date windows and frozen cruise searches are skipped.
 Changing bounds changes the nonlinear optimizer's search path. A fresh search
 alone is not proof that no feasible trajectory exists within those bounds.
+
+## v0.2.2: database first
+
+Starting a search first queries all matching pages from the live shared database
+and revalidates their physical controls against the current ephemerides and every
+configured limit. Bundled records are also available offline. Merely downloading
+a record or trusting its submitted pass label is not enough to count as a match.
+
+No matches or one/two matches start local optimization automatically, retaining
+any matches in the gallery. Three or more distinct verified library matches show
+a choice above the gallery: **Use these database results** (no optimizer workers
+start), or **Search locally too** (the matches seed and accompany the CPU search).
+The clock and heartbeat continue while waiting; Stop still works. An unavailable
+service falls back to bundled data and, if necessary, the local solver. Disabling
+community solutions skips this lookup. Recovery explicitly resumes local work.
+
+The command-line wizard offers the same choice. Noninteractive `search` saves
+three or more verified matches without optimizing; pass `--local-search` to run
+the CPU solver explicitly. Existing searches and trajectory exports remain local.
+
+Gallery defaults include yellow candidates and hide red candidates. You can
+change either checkbox manually. Public small-body submissions must be shorter
+than 60 years; local optimization remains available under your chosen limits.
