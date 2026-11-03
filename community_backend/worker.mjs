@@ -68,6 +68,9 @@ export default {async fetch(request,env){
    const iso=value=>typeof value==='string'&&value.length===24&&Number.isFinite(Date.parse(value))&&new Date(value).toISOString()===value;
    if(!iso(since))throw Error('Invalid since timestamp');
    const values=[lo,hi,a,b,since],where=['c3>=?1','c3<=?2','launch_jd>=?3','launch_jd<=?4','received_at>=?5'];
+   const vinf=number(Number(p.get('max_arrival_vinf')??1e9),0,1e9),years=number(Number(p.get('max_years')??1e9),0,1e9);
+   values.push(vinf);where.push("json_extract(payload,'$.metrics.arrival_vinf_kms')<=?"+values.length);
+   values.push(years);where.push("json_extract(payload,'$.metrics.duration_years')<=?"+values.length);
    if(target!=='all'){values.push(target);where.push('target=?'+values.length)}
    if(p.has('cursor')){
     const cursor=JSON.parse(p.get('cursor'));
