@@ -43,6 +43,8 @@ class App:
         self.process = None
         self.building = set()
         self.archive_errors = {}
+        self.quality_cache = {}
+        self.quality_seed = None
         self.integrations = {}
         self.moon_process = None
         self.moon_run = None
@@ -283,6 +285,15 @@ class App:
         request=read_json(output/'request.json') or read_json(output/'run_manifest.json',{}).get('config',{})
         limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years')}
         limits['effective_min_c3']=max(float(request.get('min_c3') if request.get('min_c3') is not None else DEFAULT_MIN_C3),DEFAULT_MIN_C3)
+        if live and live.get('candidates'):
+            from quality import assess_candidates
+            key=(name,live.get('revision'))
+            if key not in self.quality_cache:
+                if self.quality_seed is None:
+                    self.quality_seed=read_json(RESOURCE_ROOT/'community_seed_catalog.json',{}).get('candidates',[])
+                target=(request.get('target_object') or {}).get('id') or request.get('target')
+                self.quality_cache={key:assess_candidates(live['candidates'],self.quality_seed,target)}
+            live=dict(live,candidates=[dict(q,quality=self.quality_cache[key].get(q.get('id'),{})) for q in live['candidates']])
         return dict(run=name,status=status or dict(state='finished'),live=live,log=logs,
                     heartbeat=read_json(output/'heartbeat.json'),database=read_json(output/'database_first.json',{}),
                     limits=limits,
@@ -342,8 +353,10 @@ class App:
         result.update(state='stopped',message='Screening stopped; completed rows are preserved.');atomic_json(output,result)
         return dict(stopped=True)
 
-    def integrate(self,name,identifier,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.):
+    def integrate(self,name,identifier,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None):
         from integrate_export import validate_post_flyby_months
+        from arrival_geometry import validate_inclination
+        arrival_inclination_deg=validate_inclination(arrival_inclination_deg)
         post_flyby_months=validate_post_flyby_months(post_flyby_months)
         if powered_flybys is not None and not isinstance(powered_flybys,bool):raise ValueError('Powered flyby option must be boolean')
         if arrival_altitude_km is not None:
@@ -372,7 +385,7 @@ class App:
             flags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0
             with (output/'integration.log').open('w',encoding='utf-8') as log:
                 self.integrations[(name,identifier)]=subprocess.Popen(worker_command('integrate_export',
-                       '--candidate',str(candidate),'--config',str(config),'--output',str(output),'--post-flyby-months',str(post_flyby_months))+(['--arrival-altitude-km',str(arrival_altitude_km)] if arrival_altitude_km is not None else [])+(['--powered-flybys' if powered_flybys else '--no-powered-flybys'] if powered_flybys is not None else []),
+                       '--candidate',str(candidate),'--config',str(config),'--output',str(output),'--post-flyby-months',str(post_flyby_months))+(['--arrival-altitude-km',str(arrival_altitude_km)] if arrival_altitude_km is not None else [])+(['--powered-flybys' if powered_flybys else '--no-powered-flybys'] if powered_flybys is not None else [])+(['--arrival-inclination-deg',str(arrival_inclination_deg)] if arrival_inclination_deg is not None else []),
                        cwd=HERE,stdout=log,stderr=subprocess.STDOUT,creationflags=flags,env=worker_environment(output/'integration.log'))
             return dict(started=True)
 
@@ -389,8 +402,10 @@ class App:
             status['report']=read_json(output/'integration_report.json',{})
         return status
 
-    def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.):
+    def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None):
         from integrate_export import validate_post_flyby_months
+        from arrival_geometry import validate_inclination
+        arrival_inclination_deg=validate_inclination(arrival_inclination_deg)
         post_flyby_months=validate_post_flyby_months(post_flyby_months)
         if model not in ('auto','Panels','RTG'):
             raise ValueError('Invalid model choice')
@@ -398,12 +413,13 @@ class App:
         requested_altitude=float(arrival_altitude_km) if arrival_altitude_km is not None else None
         if status['state']=='finished' and (status.get('report',{}).get('arrival_altitude_option_km')!=requested_altitude or
             (powered_flybys is not None and status.get('report',{}).get('powered_flybys_active',False)!=powered_flybys) or
-            status.get('report',{}).get('post_flyby_months',0.)!=post_flyby_months):
-            self.integrate(name,identifier,arrival_altitude_km,powered_flybys,post_flyby_months)
+            status.get('report',{}).get('post_flyby_months',0.)!=post_flyby_months or
+            status.get('report',{}).get('arrival_inclination_option_deg')!=arrival_inclination_deg):
+            self.integrate(name,identifier,arrival_altitude_km,powered_flybys,post_flyby_months,arrival_inclination_deg)
             return dict(state='integrating',message='Updating trajectory export options; the previous export is preserved.')
         if status['state']!='finished':
             if status['state']!='running':
-                self.integrate(name,identifier,arrival_altitude_km,powered_flybys,post_flyby_months)
+                self.integrate(name,identifier,arrival_altitude_km,powered_flybys,post_flyby_months,arrival_inclination_deg)
             return dict(state='integrating',message='Integrating the trajectory before packaging.')
         from celestia_package import build_package
         root=self.folder(name)
@@ -475,8 +491,8 @@ class Handler(BaseHTTPRequestHandler):
                 path = (root/parts[3]).resolve()
                 if not path.is_relative_to(root) or path.suffix.lower() not in ('.json','.png','.tsv','.html','.md','.log','.csv','.xyzv','.ssc','.txt','.zip'):
                     raise ValueError('File is outside this run')
-            elif url.path=='/gui_assets/launch_mass_c3.png':
-                path=RESOURCE_ROOT/'gui_assets'/'launch_mass_c3.png'
+            elif url.path in ('/gui_assets/launch_mass_c3.png','/gui_assets/rolamgas-icon.png'):
+                path=RESOURCE_ROOT/'gui_assets'/url.path.rsplit('/',1)[-1]
             elif url.path in ('/','/gui.html','/gui.js','/gui.css'):
                 path = RESOURCE_ROOT/('gui.html' if url.path=='/' else url.path[1:])
             else:
@@ -533,13 +549,13 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/api/stop':
                 return self.json(self.app.stop(value['run']))
             if self.path=='/api/integrate':
-                return self.json(self.app.integrate(value['run'],value['candidate'],value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.)))
+                return self.json(self.app.integrate(value['run'],value['candidate'],value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg')))
             if self.path=='/api/moon-screen':
                 return self.json(self.app.start_moon_screen(value['run'],value.get('count',10),value.get('altitude',10000),value.get('clocks',12)))
             if self.path=='/api/stop-moon-screen':
                 return self.json(self.app.stop_moon_screen(value['run']))
             if self.path=='/api/package':
-                return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.)))
+                return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg')))
             if self.path=='/api/open-package-folder':
                 return self.json(self.app.open_package_folder(value['run'],value['candidate']))
             if self.path=='/api/shutdown':

@@ -75,7 +75,7 @@ class LiveGallery:
         rows = []
         new_images = 0
         ordered = sorted(summary['candidates']+summary['near_misses'],key=lambda q:q.get('discovered_unix',0),reverse=True)
-        keys = ('id','sequence','status','launch_date','arrival_date','duration_years',
+        keys = ('id','sequence','status','launch_date','arrival_date','duration_years','dates_jd_tdb','bodies',
                 'launch_c3_km2_s2','arrival_vinf_kms','total_dsm_kms','max_vinf_mismatch_mps',
                 'min_turn_margin_deg','screening_residual_norm','pareto_front','discovered_unix',
                 'periapsis_violation','powered_geometry_valid','powered_flyby_delta_v_kms','cruise_dsm_kms',

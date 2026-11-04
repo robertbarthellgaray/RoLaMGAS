@@ -5,6 +5,10 @@ function number(value,min,max){if(typeof value!=='number'||!Number.isFinite(valu
 function exact(value,keys){if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).some(k=>!keys.includes(k)))throw Error('Unknown record field');}
 function vector(v,limit){if(!Array.isArray(v)||v.length!==3)throw Error('Invalid vector');return v.map(n=>number(n,-limit,limit));}
 function canonical(v){if(Array.isArray(v))return v.map(canonical);if(v&&typeof v==='object')return Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])]));return v;}
+// The public slot groups encounter calendar days, independent of Lambert branches
+// or sub-day optimizer noise. Keep exact science IDs in payloads for old clients.
+export function encounterKey(record){return record.body_ids.join('/')+'@'+record.dates_jd_tdb.map(jd=>Math.floor(jd+.5)).join('/');}
+export function selectionScore(record){const m=record.metrics,d=record.dates_jd_tdb;return m.launch_c3_km2_s2/100+m.total_dsm_kms+m.arrival_vinf_kms/20+(d.at(-1)-d[0])/365.25/100;}
 export async function validate(input){
  exact(input,KEYS);
  if(input.schema_version!==1||!['pass','yellow'].includes(input.classification))throw Error('Only pass/yellow science records are accepted');
@@ -57,7 +61,21 @@ export default {async fetch(request,env){
    if(records.length>limit)return response({error:'Daily submission budget reached; try tomorrow'},429,origin);
    const budget=await env.DB.prepare('INSERT INTO daily_budget(day,submissions) VALUES(?1,?2) ON CONFLICT(day) DO UPDATE SET submissions=submissions+excluded.submissions WHERE submissions+excluded.submissions<=?3 RETURNING submissions').bind(day,records.length,limit).first();
    if(!budget)return response({error:'Daily submission budget reached; try tomorrow'},429,origin);
-   for(const r of records)await env.DB.prepare('INSERT OR IGNORE INTO candidates(id,target,sequence,launch_jd,arrival_jd,c3,classification,solved_at,received_at,payload) VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10)').bind(r.id,r.body_ids.at(-1),r.sequence,r.dates_jd_tdb[0],r.dates_jd_tdb.at(-1),r.metrics.launch_c3_km2_s2,r.classification,r.solved_at,now,JSON.stringify(r)).run();
+   // A unique encounter slot makes concurrent old/new client submissions safe.
+   // A better representative atomically replaces the previous one and refreshes
+   // received_at so incremental website readers can update the same-day slot.
+   const sql=`INSERT INTO candidates(id,target,sequence,launch_jd,arrival_jd,c3,classification,solved_at,received_at,payload,encounter_key,selection_score)
+    VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12)
+    ON CONFLICT(encounter_key) DO UPDATE SET
+     id=excluded.id,target=excluded.target,sequence=excluded.sequence,launch_jd=excluded.launch_jd,
+     arrival_jd=excluded.arrival_jd,c3=excluded.c3,classification=excluded.classification,
+     solved_at=excluded.solved_at,received_at=excluded.received_at,payload=excluded.payload,
+     selection_score=excluded.selection_score
+    WHERE (excluded.classification='pass' AND candidates.classification='yellow')
+     OR (excluded.classification=candidates.classification AND
+      (excluded.selection_score<candidates.selection_score OR
+       (excluded.selection_score=candidates.selection_score AND excluded.id<candidates.id)))`;
+   for(const r of records)await env.DB.prepare(sql).bind(r.id,r.body_ids.at(-1),r.sequence,r.dates_jd_tdb[0],r.dates_jd_tdb.at(-1),r.metrics.launch_c3_km2_s2,r.classification,r.solved_at,now,JSON.stringify(r),encounterKey(r),selectionScore(r)).run();
    return response({accepted:records.length,ids:records.map(r=>r.id)},200,origin);
   }
   if(request.method==='GET'){

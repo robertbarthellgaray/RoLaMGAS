@@ -1,10 +1,12 @@
-import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName} from './community.js?v=0.2.2';
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName} from './community.js?v=20261104';
+import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,rateCandidates,launchYear,sequenceColors,resolveAlias,filterStateFromHash,filterHash} from './library_analysis.js?v=20261104';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
 const colors = ['#79d8f1', '#ffd08a', '#8ae3bd', '#b4aeff', '#ff9f9a', '#9ed2ff'];
 const catalog = [];
-const cache = new Map(), sharedRecords = new Map(), previewCache = new Map();
+const cache = new Map(), sharedRecords = new Map(), previewCache = new Map(), encounterDays=new Map();
+let ratings=new Map(), duplicateAliases={}, displayAliases={}, pendingHashTarget=null;
 let sharedEndpoint='', sharedSince='1970-01-01T00:00:00.000Z', sharedBusy=false, curatedAliases={}, visibleCount=48;
 let destination = 'All', smallBodyTarget = 'All', selected = null, requestVersion = 0, playing = false, lastTick = 0, fraction = 0;
 let yaw = -.35, pitch = .65, zoom = 1, view = '3d', framePending = false;
@@ -16,38 +18,70 @@ async function fetchJson(path) {
   if (!r.ok) throw new Error(`Could not load saved data (${r.status}). Please retry.`);
   return r.json();
 }
+function category(c){return bodyCategory(c.target,c.target_id)}
 function makeDestinations() {
-  const targets = ['All', 'Mercury', 'Venus', ...(catalog.some(c=>c.target==='Earth')?['Earth']:[]), 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Small bodies'];
+  const targets = ['All', 'Mercury', 'Venus', ...(catalog.some(c=>c.target==='Earth')?['Earth']:[]), 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', ...CATEGORIES.filter(t=>t!=='Other bodies'||catalog.some(c=>category(c)===t))];
   $('destinations').innerHTML = targets.map(t => {
     const n = catalog.filter(c => targetMatches(c, t)).length;
-    return `<button type="button" data-target="${t}" aria-pressed="${t === destination}">${t}<span>${n}</span></button>`;
+    return `<button type="button" data-target="${escapeHtml(t)}" aria-pressed="${t === destination}">${escapeHtml(t)}<span>${n}</span></button>`;
   }).join('');
-  $('small-body-options').hidden = destination !== 'Small bodies';
-  $('small-body-options').innerHTML = ['All',...new Set(catalog.filter(c=>targetMatches(c,'Small bodies')).map(c=>c.target))].map(t => `<button type="button" data-small-body="${escapeHtml(t)}" aria-pressed="${smallBodyTarget===t}">${t==='All'?'All small bodies':escapeHtml(t)}</button>`).join('');
+  const grouped=CATEGORIES.includes(destination);
+  $('small-body-options').hidden = !grouped;
+  $('small-body-options').innerHTML = ['All',...new Set(catalog.filter(c=>targetMatches(c)).map(c=>c.target))].map(t => `<button type="button" data-small-body="${escapeHtml(t)}" aria-pressed="${smallBodyTarget===t}">${t==='All'?'All '+escapeHtml(destination.toLowerCase()):escapeHtml(t)}</button>`).join('');
 }
 function targetMatches(c, t = destination) {
-  return t === 'All' || (t === 'Small bodies' ? !Object.keys(bodyColors).includes(c.target) : c.target === t);
+  return t === 'All' || (CATEGORIES.includes(t) ? category(c)===t : c.target === t);
 }
 function maximum(id) {
   const value = $(id).value.trim();
   return value === '' ? Infinity : Math.max(0, Number(value));
 }
+function minimumYear(){return $('launch-year-min').value.trim()===''?-Infinity:Number($('launch-year-min').value)}
+function maximumYear(){return $('launch-year-max').value.trim()===''?Infinity:Number($('launch-year-max').value)}
+function targetRows(){return catalog.filter(c=>targetMatches(c)&&(!CATEGORIES.includes(destination)||smallBodyTarget==='All'||c.target===smallBodyTarget))}
+function visibleRows(){
+ const search=$('search').value.trim().toLowerCase().replace(/\s+/g,'');
+ return targetRows().filter(c=>`${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
+  &&(!c.community||c.classification!=='yellow'||$('include-yellow').checked)&&c.c3<=maximum('max-c3')&&c.vinf<=maximum('max-vinf')&&c.burns_mps<=maximum('max-burns')&&launchYear(c)>=minimumYear()&&launchYear(c)<=maximumYear());
+}
 function renderList() {
-  const search = $('search').value.trim().toLowerCase().replace(/\s+/g,'');
-  const rows = catalog.filter(c => targetMatches(c) && (destination!=='Small bodies'||smallBodyTarget==='All'||c.target===smallBodyTarget) && `${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
-    && (!c.community||c.classification!=='yellow'||$('include-yellow').checked) && c.c3 <= maximum('max-c3') && c.vinf <= maximum('max-vinf') && c.burns_mps <= maximum('max-burns'));
-  const sort = $('sort').value;
-  rows.sort((a,b) => sort === 'recommended' ? Number(b.spotlight) - Number(a.spotlight) || (b.featured_priority || 0) - (a.featured_priority || 0) || Number(b.community||false)-Number(a.community||false) || (b.received||0)-(a.received||0) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
+  const rows=visibleRows(),sort=$('sort').value;
+  rows.sort((a,b) => sort === 'recommended' ? Number(ratings.get(a.id)?.dominated)-Number(ratings.get(b.id)?.dominated)||Number(b.spotlight) - Number(a.spotlight) || (b.featured_priority || 0) - (a.featured_priority || 0) || (b.received||0)-(a.received||0) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
   $('result-count').textContent = `${rows.length} ${rows.length === 1 ? 'trajectory' : 'trajectories'}`;
   $('candidate-more').hidden=visibleCount>=rows.length;
   $('candidate-more').textContent=`Show ${Math.min(48,Math.max(0,rows.length-visibleCount))} more (${Math.min(visibleCount,rows.length)} of ${rows.length})`;
   $('candidate-list').innerHTML = rows.length ? rows.slice(0,visibleCount).map(c => `<button type="button" class="candidate-card" data-id="${c.id}" aria-pressed="${c.id === selected?.id}" aria-label="Inspect ${escapeHtml(c.title)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}">
     <div class="card-preview"><img loading="lazy" src="${c.community ? sharedPreview(c.id) : `images/${c.id}.svg`}" width="320" height="220" alt="${escapeHtml(c.sequence)} heliocentric trajectory preview"><span class="card-badge">${c.spotlight ? 'Integrated concept' : escapeHtml(c.model)}</span></div>
     <div class="card-title">${escapeHtml(c.sequence)}<b aria-hidden="true">↗</b></div><p class="card-subtitle">${escapeHtml(c.target)} · ${c.launch_date} → ${c.arrival_date}</p>
-    <div class="card-metrics"><div><span>C3 · km²/s²</span>${fmt(c.c3,1)}</div><div><span>Δv · m/s</span>${fmt(c.burns_mps,0)}</div><div><span>FLIGHT · yr</span>${fmt(c.years,1)}</div></div></button>`).join('')
-    : '<p class="empty">No saved examples match these filters. Try raising a limit or choosing another destination.</p>';
+    <div class="card-metrics"><div><span>C3 · km²/s²</span>${fmt(c.c3,1)}</div><div><span>Δv · m/s</span>${fmt(c.burns_mps,0)}</div><div><span>FLIGHT · yr</span>${fmt(c.years,1)}</div></div><span class="rating-label ${ratings.get(c.id)?.dominated?'dominated':''}">${escapeHtml(ratings.get(c.id)?.label||'Not compared')}</span></button>`).join('')
+    : '<p class="empty">No saved examples match these filters. Try raising a limit, changing launch years or choosing another destination.</p>';
+  drawTradeoff(rows);
   if (rows.length && !rows.some(c => c.id === selected?.id)) selectCandidate(rows[0].id);
 }
+function selectedTarget(){return CATEGORIES.includes(destination)?(smallBodyTarget==='All'?null:smallBodyTarget):destination==='All'?null:destination}
+function drawTradeoff(rows=visibleRows()){
+ const target=selectedTarget(),chart=$('tradeoff-chart');
+ if(!target){chart.hidden=true;$('tradeoff-status').textContent='Choose a planet or a named small body to compare its trajectories.';return}
+ chart.hidden=false;
+ if(!rows.length){$('tradeoff-svg').innerHTML='';$('tradeoff-legend').innerHTML='';$('tradeoff-status').textContent=minimumYear()>maximumYear()?'The first launch year must be at or before the last year.':'No trajectories match this target and launch-year range.';return}
+ const all=targetRows(),years=all.map(launchYear);for(const id of ['launch-year-min','launch-year-max']){$(id).min=Math.min(...years);$(id).max=Math.max(...years)}
+ const palette=sequenceColors(all),w=1000,h=340,left=74,right=22,top=22,bottom=56,maxX=Math.max(1,...rows.map(c=>c.c3))*1.06,maxY=Math.max(.1,...rows.map(c=>c.years))*1.08;
+ let svg='';
+ for(let i=0;i<=5;i++){const x=left+(w-left-right)*i/5,y=h-bottom-(h-top-bottom)*i/5;svg+=`<path d="M${x},${top}V${h-bottom}M${left},${y}H${w-right}" stroke="#26394a" stroke-width="1"/><text x="${x}" y="${h-bottom+22}" text-anchor="middle">${fmt(maxX*i/5,1)}</text><text x="${left-10}" y="${y+4}" text-anchor="end">${fmt(maxY*i/5,1)}</text>`}
+ svg+=`<text class="axis-label" x="${(left+w-right)/2}" y="${h-5}" text-anchor="middle">Launch C3 (km²/s²)</text><text class="axis-label" transform="translate(17 ${(top+h-bottom)/2}) rotate(-90)" text-anchor="middle">Flight time (years)</text>`;
+ svg+=rows.map(c=>`<circle class="tradeoff-point" data-candidate="${escapeHtml(c.id)}" tabindex="0" role="button" aria-pressed="${c.id===selected?.id}" aria-label="${escapeHtml(c.sequence)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}, ${fmt(c.years)} years; open trajectory and downloads" cx="${left+c.c3/maxX*(w-left-right)}" cy="${h-bottom-c.years/maxY*(h-top-bottom)}" r="5" fill="${palette.get(c.sequence)}"><title>${escapeHtml(c.sequence)} · launch ${c.launch_date} · C3 ${fmt(c.c3)} km²/s² · ${fmt(c.years,3)} years · ${escapeHtml(ratings.get(c.id)?.label||'')}</title></circle>`).join('');
+ $('tradeoff-svg').innerHTML=svg;
+ $('tradeoff-legend').innerHTML=[...palette].filter(([sequence])=>rows.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<span><i class="sequence-swatch" style="background:${color}"></i>${escapeHtml(sequence)}</span>`).join('');
+ $('tradeoff-status').textContent=`${target} · ${rows.length} trajectories · ${Math.min(...rows.map(launchYear))}–${Math.max(...rows.map(launchYear))} launches. Select a dot to inspect and download.`;
+}
+function showRating(id){
+ const r=ratings.get(id),element=$('candidate-rating');
+ element.textContent=r?(r.dominated?`${r.count} saved alternative${r.count===1?'':'s'} offer equal or better costs for this target within two years of launch.`:`${r.label} among saved alternatives for this target within two years of launch. This is a cost comparison.`):'';
+ if(r?.alternative){const b=document.createElement('button');b.type='button';b.className='subtle-button';b.textContent='Inspect a better alternative →';b.onclick=()=>selectCandidate(r.alternative);element.append(b)}
+}
+function canonicalId(id){return resolveAlias(id,{...duplicateAliases,...curatedAliases,...displayAliases})}
+function updateLocation(id){const hash=filterHash({target:selectedTarget()||destination,mission:id,launchMin:$('launch-year-min').value,launchMax:$('launch-year-max').value});history.replaceState(null,'',`${location.pathname}${location.search}${hash}`)}
+function applyTargetHash(target){if(!target)return false;if(CATEGORIES.includes(target)||target==='All'||Object.keys(bodyColors).includes(target)){destination=target;smallBodyTarget='All';return true}const row=catalog.find(c=>c.target===target);if(row){destination=category(row);smallBodyTarget=target;return true}return false}
 function setPlaying(value) {
   playing = value;
   $('play').textContent = value ? 'Ⅱ' : '▶';
@@ -70,6 +104,7 @@ function tick(now) {
   if (fraction >= 1) setPlaying(false); else requestAnimationFrame(tick);
 }
 async function selectCandidate(id) {
+  id=canonicalId(id);
   const token = ++requestVersion;
   setPlaying(false);
   $('mission-view').setAttribute('aria-busy', 'true');
@@ -81,7 +116,8 @@ async function selectCandidate(id) {
     if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json`); cache.set(id, c); }
     if (token !== requestVersion) return;
     selected = c; fraction = 0; zoom = 1; setView('3d');
-    history.replaceState(null, '', `${location.pathname}${location.search}#mission=${encodeURIComponent(c.id)}`);
+    updateLocation(c.id);showRating(c.id);
+    document.querySelectorAll('[data-candidate]').forEach(p=>p.setAttribute('aria-pressed',p.dataset.candidate===c.id));
     $('model-label').textContent = c.model.toUpperCase();
     $('mission-title').textContent = c.title;
     $('mission-dates').textContent = `${c.launch_date} → ${c.arrival_date} (TDB) · ${fmt(c.years,3)} years / ${fmt(c.end-c.start,1)} days · ${c.bodies.join(' → ')}`;
@@ -215,15 +251,18 @@ function draw() {
 
 $('destinations').addEventListener('click', e => {
   const b = e.target.closest('[data-target]'); if (!b) return;
-  destination = b.dataset.target; smallBodyTarget='All'; visibleCount=48; makeDestinations(); renderList();
+  pendingHashTarget=null;destination = b.dataset.target; smallBodyTarget='All'; visibleCount=48; makeDestinations(); renderList();if(selected)updateLocation(selected.id);
 });
-$('small-body-options').addEventListener('click',e=>{const b=e.target.closest('[data-small-body]');if(!b)return;smallBodyTarget=b.dataset.smallBody;visibleCount=48;makeDestinations();renderList();});
+$('small-body-options').addEventListener('click',e=>{const b=e.target.closest('[data-small-body]');if(!b)return;pendingHashTarget=null;smallBodyTarget=b.dataset.smallBody;visibleCount=48;makeDestinations();renderList();if(selected)updateLocation(selected.id);});
 $('candidate-list').addEventListener('click', e => { const b=e.target.closest('[data-id]'); if (b) selectCandidate(b.dataset.id); });
-for (const id of ['search','max-c3','max-vinf','max-burns']) $(id).addEventListener('input', ()=>{visibleCount=48;renderList()});
+for (const id of ['search','max-c3','max-vinf','max-burns','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
 $('sort').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('include-yellow').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('candidate-more').onclick=()=>{const top=$('candidate-list').scrollTop;visibleCount+=48;renderList();$('candidate-list').scrollTop=top};
 $('community-refresh').onclick=()=>syncShared();
+$('reset-years').onclick=()=>{$('launch-year-min').value='';$('launch-year-max').value='';visibleCount=48;renderList();if(selected)updateLocation(selected.id)};
+function selectPoint(e){const point=e.target.closest('[data-candidate]');if(!point)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();selectCandidate(point.dataset.candidate);$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
+$('tradeoff-svg').addEventListener('click',selectPoint);$('tradeoff-svg').addEventListener('keydown',selectPoint);
 $('clear-filters').addEventListener('click', () => { ['search','max-c3','max-vinf','max-burns'].forEach(id => $(id).value=''); renderList(); });
 document.querySelector('.projection').addEventListener('click', e => { if (e.target.dataset.view) setView(e.target.dataset.view); });
 $('reset-view').addEventListener('click', () => { zoom=1; setView('3d'); });
@@ -271,10 +310,15 @@ function sharedPreview(id){if(!previewCache.has(id))try{previewCache.set(id,thum
 function addShared(records){let added=0;for(const record of records)try{
  if(sharedRecords.has(record.id))continue;
  const summary=summaryFor(record);sharedRecords.set(record.id,record);
- if(curatedAliases[record.id]&&catalog.some(c=>c.id===curatedAliases[record.id]))continue;
- catalog.push(summary);added++;
+ const alias=curatedAliases[record.id],key=encounterDayKey(record),existing=encounterDays.get(key);
+ if(alias&&catalog.some(c=>c.id===alias)){encounterDays.set(key,{record,id:alias,curated:true});continue}
+ if(existing){
+  if(existing.curated||!betterDuplicate(record,existing.record)){displayAliases[record.id]=existing.id;continue}
+  const index=catalog.findIndex(c=>c.id===existing.id);if(index>=0)catalog.splice(index,1);displayAliases[existing.id]=record.id;
+ }
+ encounterDays.set(key,{record,id:record.id});catalog.push(summary);added++;
 }catch{}return added}
-function updateCounts(){ $('total-count').textContent=catalog.length.toLocaleString('en-US');$('destination-count').textContent=new Set(catalog.map(c=>c.target)).size;makeDestinations() }
+function updateCounts(){if(pendingHashTarget&&applyTargetHash(pendingHashTarget))pendingHashTarget=null;ratings=rateCandidates(catalog);$('total-count').textContent=catalog.length.toLocaleString('en-US');$('destination-count').textContent=new Set(catalog.map(c=>c.target)).size;makeDestinations();if(selected)showRating(selected.id)}
 async function syncShared(){
  if(sharedBusy||!sharedEndpoint)return;sharedBusy=true;$('community-refresh').disabled=true;
  try{const result=await fetchUpdates(sharedEndpoint,sharedSince);sharedSince=result.watermark;const added=addShared(result.records);
@@ -284,11 +328,14 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings]=await Promise.all([fetchJson('data/index.json'),fetchJson('data/community_seed_catalog.json?v=0.2.2').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({}))]);
- catalog.push(...data.cases.filter(c=>c.c3<=250));curatedAliases=archive.curated_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
+ const [data,archive,settings]=await Promise.all([fetchJson('data/index.json'),fetchJson('data/community_seed_catalog.json?v=20261104').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({}))]);
+ catalog.push(...data.cases.filter(c=>c.c3<=250));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
- const hash=location.hash.match(/^#mission=([^&]+)/),initial=hash?decodeURIComponent(hash[1]):'claudius-uop-2045';
- if(hash&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))await syncShared();
+ const filters=filterStateFromHash(location.hash),initial=canonicalId(filters.mission||'claudius-uop-2045');
+ $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;
+ if(filters.target){pendingHashTarget=filters.target;if(applyTargetHash(filters.target))pendingHashTarget=null;makeDestinations()}
+ if(filters.mission&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))await syncShared();
+ if(pendingHashTarget&&applyTargetHash(pendingHashTarget)){pendingHashTarget=null;makeDestinations()}
  if(catalog.some(c=>c.id===initial)||sharedRecords.has(initial))await selectCandidate(initial);
  renderList();syncShared();setInterval(()=>{if(!document.hidden)syncShared()},30000);
 } catch(e) {

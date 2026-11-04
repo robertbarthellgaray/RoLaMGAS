@@ -31,3 +31,37 @@ and production database. New submissions and history imports enforce the same ce
 Public small-body flights must be shorter than 60 Julian years (365.25 days each),
 measured from their actual encounter epochs. Another 234 historical records at
 or above that duration were purged on 2026-11-03. Eight-planet targets are exempt.
+
+## Same-day encounter deduplication
+
+The library retains one representative for each ordered list of bodies and TDB
+encounter calendar days, including launch and arrival. The day key uses
+`floor(JD + 0.5)` because Julian days begin at noon. Differences in branches,
+DSM notation or sub-day optimizer controls do not create extra public slots.
+Submitted pass precedes yellow; within that class the deterministic balanced
+selection cost is `C3/100 + cruise_delta_v_km_s + arrival_vinf_km_s/20 + flight_years/100`.
+This selects a representative, not a new physical validation or relative rating.
+A better subsequent submission atomically replaces its slot. A unique D1 index
+prevents concurrent clients, including v0.2.2, from creating duplicate slots.
+
+Existing deployments need the one-time migration
+`migrations/0001_same_day_encounters.sql` **before deploying the updated Worker**.
+First export the complete remote D1 database to a private backup outside the repo:
+
+```powershell
+npx wrangler d1 export rolamgas-community --remote --output "$env:TEMP/rolamgas-before-same-day-dedup.sql" --config community_backend/wrangler.toml
+npx wrangler d1 execute rolamgas-community --remote --file community_backend/migrations/0001_same_day_encounters.sql --config community_backend/wrangler.toml
+npx wrangler deploy --config community_backend/wrangler.toml
+```
+
+Use a new backup filename if one already exists. The migration is intentionally
+one-time: it adds columns, removes inferior duplicates with a SQL window rank,
+and installs the unique encounter index. A trigger briefly blocks old Worker
+writes between migration and deployment, so nullable slots cannot bypass the
+index; deploy the updated Worker immediately after the migration. New databases use `schema.sql` directly.
+The bundled archives preserve `duplicate_aliases` for historical website links.
+Private/full solver histories are untouched.
+
+Production migration applied on 2026-11-04 after verifying a complete private SQL backup.
+The live library went from 3,242 records to 2,867 unique encounter schedules (375 duplicates removed).
+The post-deployment audit found no duplicate slots, missing keys, C3 violations or 60-year small-body flights.

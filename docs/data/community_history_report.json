@@ -1,30 +1,37 @@
 {
   "passing_occurrences": 2334,
   "distinct_saved_parameterizations": 2311,
-  "published_candidates": 2047,
+  "published_candidates": 1934,
   "resolved_summary_references": 23,
   "projection_failures": 0,
   "schema_failures": 0,
   "by_target": {
-    "199": 23,
+    "199": 21,
     "20000001": 5,
     "20000624": 12,
     "20013579": 11,
-    "20136199": 30,
-    "20420356": 160,
+    "20136199": 29,
+    "20420356": 159,
     "20486958": 13,
-    "299": 258,
+    "299": 210,
     "50666516": 143,
-    "54667839": 403,
-    "599": 164,
-    "699": 421,
-    "799": 114,
-    "899": 175,
-    "999": 115
+    "54667839": 379,
+    "599": 152,
+    "699": 420,
+    "799": 103,
+    "899": 174,
+    "999": 103
   },
-  "archive_bytes": 3886266,
+  "archive_bytes": 3718453,
   "purged_above_c3_250": 25,
   "maximum_public_c3_km2_s2": 250,
   "purged_small_body_60plus_years": 234,
-  "small_body_max_flight_years_exclusive": 60
+  "small_body_max_flight_years_exclusive": 60,
+  "purged_same_day_duplicates": 113,
+  "deduplication": "ordered_body_ids_and_tdb_calendar_days",
+  "live_dedup_2026_11_04": {
+    "before": 3242,
+    "after": 2867,
+    "removed": 375
+  }
 }

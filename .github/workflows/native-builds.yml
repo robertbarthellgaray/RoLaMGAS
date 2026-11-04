@@ -46,7 +46,7 @@ jobs:
       - name: Test source and packaging contracts
         run: python -m unittest discover -p "test_*.py"
       - name: Test community API and browser contracts
-        run: node --test tools/test_gui_min_c3.mjs community_backend/worker.test.mjs community_backend/preview.test.mjs
+        run: node --test tools/test_gui_min_c3.mjs community_backend/worker.test.mjs community_backend/preview.test.mjs community_backend/library_analysis.test.mjs
       - name: Build source and native download
         env:
           MANUAL_VERSION: ${{ inputs.version }}

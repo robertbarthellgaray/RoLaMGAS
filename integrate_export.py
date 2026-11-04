@@ -11,6 +11,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.optimize import brentq
 from dynamics import kepler,lambert
+from arrival_geometry import planet_pole,target_plane_axis,capture_assessment,validate_inclination
 from ephemeris import AU,BODIES,DAY,JD0,MU_SUN,Ephemerides,atomic_json,calendar,fetch
 from mission_search import normalize,routes_for,get_ephemerides
 
@@ -77,8 +78,11 @@ def integrate_relative(mu,r,v,t0,t1):
     return fit.sol,error
 
 
-def planet_pieces(body,date,ep,uin=None,uout=None,altitude=200.,departure=False,terminal=False,powered=False):
+def planet_pieces(body,date,ep,uin=None,uout=None,altitude=200.,departure=False,terminal=False,powered=False,arrival_inclination_deg=None):
     _,mu,radius,_ = BODIES[body]
+    desired_inclination=validate_inclination(arrival_inclination_deg)
+    if desired_inclination is not None and (not terminal or departure):
+        raise ValueError("Arrival inclination targets apply only to the terminal planetary encounter")
     planet = ep.state(body,date)
     soi = np.linalg.norm(planet[:3])*(mu/MU_SUN)**.4
     if departure or terminal:
@@ -87,6 +91,8 @@ def planet_pieces(body,date,ep,uin=None,uout=None,altitude=200.,departure=False,
         alpha = float(np.arcsin(1/(1+rp*speed*speed/mu)))
         direction = unit(uout if departure else uin)
         h = plane_axis(planet[:3],direction)
+        if desired_inclination is not None:
+            h=target_plane_axis(direction,planet_pole(body,date),h,desired_inclination)
         tangent = rotate(direction,h,-alpha if departure else alpha)
         radial = np.cross(tangent,h)
         ni=no=speed
@@ -128,7 +134,8 @@ def planet_pieces(body,date,ep,uin=None,uout=None,altitude=200.,departure=False,
                            label=body+' hyperbola',kind='planet',body=body,numerical_error_km=error,
                            force_center=body,gm_km3_s2=mu,soi_radius_km=float(soi)))
     return dict(pieces=pieces,rp=rp,altitude=rp-radius,body=body,date=date,soi=soi,
-                peri_position=relr,peri_in_velocity=vpin,peri_out_velocity=vpout)
+                peri_position=relr,peri_in_velocity=vpin,peri_out_velocity=vpout,
+                capture_assessment=capture_assessment(body,date,mu,uin,relr,vpin,desired_inclination) if terminal else None)
 
 
 def revolutions(segment):
@@ -390,12 +397,15 @@ def node_coast_boundary(node,outgoing):
     return node['date'],state
 
 
-def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.):
+def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None):
     output=Path(output);output.mkdir(parents=True,exist_ok=True)
     def status(message):
         atomic_json(output/'integration_status.json',dict(state='running',message=message))
     q=json.loads(Path(candidate).read_text(encoding='utf-8'))
     original_status=q['status']
+    arrival_inclination_deg=validate_inclination(arrival_inclination_deg)
+    if arrival_inclination_deg is not None and q['events'][-1]['body'] not in BODIES:
+        raise ValueError('Arrival inclination targeting requires a supported planet with known pole and GM')
     config=dict(config)
     if powered_flybys is not None:config['powered_flybys']=powered_flybys
     c=normalize(config,Path(candidate).parent)
@@ -435,7 +445,8 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
             node=planet_pieces(body,date,ep,uin=np.array(f['incoming_vinf_vector_kms'] if f else q['arrival_vinf_vector_kms']),
                                uout=np.array(f['outgoing_vinf_vector_kms']) if f else None,
                                altitude=0. if f and not q['status'].startswith('passes') and not c.get('powered_flybys') else floor,
-                               terminal=i==len(q['events'])-1,powered=bool(f and c.get('powered_flybys')))
+                               terminal=i==len(q['events'])-1,powered=bool(f and c.get('powered_flybys')),
+                               arrival_inclination_deg=arrival_inclination_deg if i==len(q['events'])-1 else None)
             if f and node['altitude']<floor-1e-6:
                 violations.append(f"{body} integrated flyby altitude {node['altitude']:.8g} km is below requested {floor:.8g} km")
         else:
@@ -538,6 +549,7 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
                            heliocentric_state_km_kms=y.tolist(),planet_state_km_kms=ep.state(last['body'],last['date']).tolist(),
                            reference_radius_km=BODIES[last['body']][2],gm_km3_s2=BODIES[last['body']][1],
                            altitude_km=float(np.linalg.norm(relative[:3])-BODIES[last['body']][2]),
+                           capture_assessment=last['capture_assessment'],
                            note='Incoming state at periapsis. No insertion burn or captured orbit has been applied. Transform the frame and time scale as needed before using FreeFlyer.')
     else:
         y=next(p for p in reversed(pieces) if p['start']<=last['date']<=p['end'])['state'](last['date'])
@@ -572,7 +584,7 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
                     gm_km3_s2=p.get('gm_km3_s2',MU_SUN),soi_radius_km=p.get('soi_radius_km')) for p in pieces],
                 maneuver_budget_breakdown=budget,candidate_maneuver_budget_complete=budget['candidate_maneuver_budget_complete'],
                 frame='Sun-centered Ecliptic J2000; km, km/s; Julian dates TDB',candidate_id=q['id'],
-                arrival_altitude_option_km=arrival_altitude_km,arrival_state=arrival_state,
+                arrival_altitude_option_km=arrival_altitude_km,arrival_inclination_option_deg=arrival_inclination_deg,arrival_state=arrival_state,
                 post_flyby_months=post_flyby_months,month_length_days=MONTH_DAYS,
                 final_encounter_jd_tdb=encounter_date,post_flyby_end_date=calendar(end),
                 passes_individual_burn_limits=individual_pass,maximum_integrated_dsm_or_patch_kms=actual_dsm_peak,
@@ -628,10 +640,10 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--candidate',required=True);p.add_argument('--config',required=True);p.add_argument('--output',required=True);p.add_argument('--arrival-altitude-km',type=float);p.add_argument('--powered-flybys',action=argparse.BooleanOptionalAction,default=None);p.add_argument('--post-flyby-months',type=float,default=0.)
+    p=argparse.ArgumentParser();p.add_argument('--candidate',required=True);p.add_argument('--config',required=True);p.add_argument('--output',required=True);p.add_argument('--arrival-altitude-km',type=float);p.add_argument('--powered-flybys',action=argparse.BooleanOptionalAction,default=None);p.add_argument('--post-flyby-months',type=float,default=0.);p.add_argument('--arrival-inclination-deg',type=float)
     args=p.parse_args()
     try:
-        export(args.candidate,json.loads(Path(args.config).read_text(encoding='utf-8')),args.output,args.arrival_altitude_km,args.powered_flybys,args.post_flyby_months)
+        export(args.candidate,json.loads(Path(args.config).read_text(encoding='utf-8')),args.output,args.arrival_altitude_km,args.powered_flybys,args.post_flyby_months,args.arrival_inclination_deg)
     except Exception as exc:
         Path(args.output).mkdir(parents=True,exist_ok=True)
         atomic_json(Path(args.output)/'integration_status.json',dict(state='failed',message=str(exc)))

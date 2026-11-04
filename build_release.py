@@ -8,10 +8,10 @@ import argparse,hashlib,json,os,platform,re,shutil,subprocess,sys,tempfile,zipfi
 
 ROOT=Path(__file__).resolve().parent
 MODULES=['app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search','dynamics','ephemeris',
-         'horizons_targets','network','search_options','candidate_archive','community','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
+         'horizons_targets','network','search_options','candidate_archive','community','quality','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
          'presentation','live_gallery','integrate_export','celestia_package','moon_screen','baseline_cache',
          'build_database','build_release','restore_diagnostics']
-DOCS=['GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md']
+DOCS=['GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md']
 DATA_FILES=('community_seed_catalog.json','community_config.json','gui.html','gui.js','gui.css','gallery.html','sequence_database.json','examples','model_assets',
             'gui_assets','baseline_ephemerides.zip','LICENSE','THIRD_PARTY_NOTICES.md','third_party_licenses')
 
@@ -66,16 +66,21 @@ def source_release(baseline):
     return destination
 
 
-def pyinstaller_command(system=None):
+def pyinstaller_command(system=None,windows_folder=False):
     """Return arguments only; target selection follows the host, never emulation."""
     system=system or sys.platform
     if system not in ('win32','darwin','linux'):
         raise ValueError('Native releases support Windows, macOS and Linux')
-    mode=['--onefile','--windowed'] if system=='win32' else ['--onedir']
+    mode=['--onedir' if windows_folder else '--onefile','--windowed'] if system=='win32' else ['--onedir']
+    if windows_folder and system!='win32':raise ValueError('The folder preview option is Windows-only')
+    if system=='win32':
+        mode+=['--icon',str(ROOT/'gui_assets/rolamgas.ico'),'--version-file',str(ROOT/'gui_assets/windows_version.txt')]
+    elif system=='darwin':mode+=['--icon',str(ROOT/'gui_assets/rolamgas.icns')]
+    destination=ROOT/'releases/testing/windows-folder' if windows_folder else ROOT/'releases'
     if system=='darwin':
         mode+=['--windowed','--osx-bundle-identifier','io.github.robertbarthellgaray.rolamgas']
     command=[sys.executable,'-m','PyInstaller','--noconfirm',*mode,'--name','RoLaMGAS',
-             '--distpath',str(ROOT/'releases'),'--workpath',str(ROOT/'.build/pyinstaller'),
+             '--noupx','--distpath',str(destination),'--workpath',str(ROOT/'.build/pyinstaller'),
              '--specpath',str(ROOT/'.build'),'--collect-all','lamberthub','--collect-all','truststore']
     for name in ('tkinter','IPython','pytest','pandas','torch'):
         command+=['--exclude-module',name]
@@ -91,16 +96,16 @@ def pyinstaller_command(system=None):
     return command
 
 
-def executable(baseline):
+def executable(baseline,windows_folder=False):
     if baseline!=ROOT/'baseline_ephemerides.zip':
         raise ValueError('Expected the baseline archive in the project root')
-    command=pyinstaller_command()
+    command=pyinstaller_command(windows_folder=windows_folder)
     paths=[ROOT,ROOT/'.build_deps',ROOT.parents[1]/'deps']
     env=dict(os.environ,MPLBACKEND='Agg',PYTHONIOENCODING='utf-8',PYTHONPATH=os.pathsep.join(str(p) for p in reversed(paths) if p.exists()))
     (ROOT/'.build').mkdir(exist_ok=True)
     with (ROOT/'.build/executable_build.log').open('w',encoding='utf-8') as log:
         subprocess.run(command,cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
-    output=ROOT/'releases'/('RoLaMGAS.exe' if sys.platform=='win32' else 'RoLaMGAS.app' if sys.platform=='darwin' else 'RoLaMGAS')
+    output=(ROOT/'releases/testing/windows-folder/RoLaMGAS/RoLaMGAS.exe') if windows_folder else ROOT/'releases'/('RoLaMGAS.exe' if sys.platform=='win32' else 'RoLaMGAS.app' if sys.platform=='darwin' else 'RoLaMGAS')
     print('Native application:',output,flush=True)
     return output
 
@@ -162,7 +167,8 @@ def linux_deb(app,version):
         desktop=staging/'usr/share/applications/rolamgas.desktop';desktop.parent.mkdir(parents=True)
         desktop.write_text('[Desktop Entry]\nType=Application\nName=RoLaMGAS\n'
             'Comment=Robert\'s Lambert Multi Gravity Assist Solver\nExec=rolamgas\n'
-            'Terminal=false\nCategories=Education;Science;Astronomy;\n',encoding='utf-8')
+            'Terminal=false\nIcon=rolamgas\nCategories=Education;Science;Astronomy;\n',encoding='utf-8')
+        icon=staging/'usr/share/icons/hicolor/256x256/apps/rolamgas.png';icon.parent.mkdir(parents=True);shutil.copy2(ROOT/'gui_assets/rolamgas-icon.png',icon)
         legal=staging/'usr/share/doc/rolamgas';legal.mkdir(parents=True)
         shutil.copy2(ROOT/'LICENSE',legal/'copyright')
         for directory in (staging,*[p for p in staging.rglob('*') if p.is_dir()]):directory.chmod(0o755)

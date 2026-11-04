@@ -31,6 +31,25 @@ class NativeReleaseTests(unittest.TestCase):
                 self.assertTrue(any('model_assets' in x for x in command))
                 self.assertTrue(any('gui_assets' in x for x in command))
 
+    def test_windows_folder_preview_has_branding_and_keeps_release_separate(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)/'project';root.mkdir()
+            for name in build.DATA_FILES:
+                path=root/name
+                if name in ('examples','model_assets','gui_assets','third_party_licenses'):path.mkdir()
+                else:path.touch()
+            with patch.object(build,'ROOT',root):
+                command=build.pyinstaller_command('win32',windows_folder=True)
+                single=build.pyinstaller_command('win32')
+            self.assertIn('--onedir',command)
+            self.assertNotIn('--onefile',command)
+            self.assertIn('--noupx',command)
+            self.assertIn('--icon',command)
+            self.assertIn('--version-file',command)
+            self.assertEqual(Path(command[command.index('--distpath')+1]),root/'releases/testing/windows-folder')
+            self.assertEqual(Path(single[single.index('--distpath')+1]),root/'releases')
+            with self.assertRaises(ValueError):build.pyinstaller_command('linux',windows_folder=True)
+
     def test_clean_source_archive_has_rebuild_inputs_without_private_runs(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)/'project';root.mkdir()

@@ -13,3 +13,5 @@ td.failure{color:#ff9fad}
 .card-date{display:flex;align-items:baseline;gap:3px;flex-wrap:wrap}.card-date>span{white-space:nowrap}.flight-duration{color:#b8cce2}
 
 .database-decision{border-color:#7ee2b8}.database-decision .actions{display:flex;gap:12px;flex-wrap:wrap}.database-decision p{line-height:1.6}
+
+.quality-note{font-size:12px;line-height:1.5;margin:9px 0 0;color:#9eb5ca}.quality-note.less-efficient{color:#e5b974}.quality-note.efficient{color:#7ccebb}.quality-explainer{margin:12px 0}

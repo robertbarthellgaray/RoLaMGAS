@@ -17,6 +17,7 @@ import time
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
+from community import unique_encounters
 PLANETS=dict(Mercury='199',Venus='299',Earth='399',Mars='499',Jupiter='599',Saturn='699',Uranus='799',Neptune='899')
 METRICS=['launch_c3_km2_s2','total_dsm_kms','arrival_vinf_kms','duration_years','max_vinf_mismatch_mps']
 
@@ -126,15 +127,19 @@ def build(entries,output,report,existing=None,private_report=None):
     for record in validated['valid']:
         prior=records.get(record['id'])
         if prior is None or record['solved_at']<prior['solved_at']:records[record['id']]=record
-    candidates=sorted(records.values(),key=lambda r:(r['body_ids'][-1],r['solved_at'],r['id']))
-    doc=dict(schema_version=1,description='All recovered historical passing searches, deduplicated by physical encounter controls. Original search limits and solver versions differ; classifications are submitted and must be revalidated before reuse. Legacy solve timestamps fall back to file save time.',candidates=candidates)
+    unique,duplicates=unique_encounters(list(records.values()))
+    candidates=sorted(unique,key=lambda r:(r['body_ids'][-1],r['solved_at'],r['id']))
+    doc=dict(schema_version=1,description='All recovered historical passing searches, deduplicated by ordered bodies and TDB encounter calendar days. Original search limits and solver versions differ; classifications are submitted and must be revalidated before reuse. Legacy solve timestamps fall back to file save time.',candidates=candidates)
     doc['maximum_public_c3_km2_s2']=250
     doc['small_body_max_flight_years_exclusive']=60
-    if previous.get('curated_aliases'):doc['curated_aliases']={k:v for k,v in previous['curated_aliases'].items() if k in records}
+    if previous.get('curated_aliases'):doc['curated_aliases']=previous['curated_aliases']
+    aliases={**previous.get('duplicate_aliases',{}),**duplicates}
+    doc['duplicate_aliases']={old:duplicates.get(new,new) for old,new in aliases.items()}
+    doc['deduplication']='ordered_body_ids_and_tdb_calendar_days'
     if previous.get('received_through'):doc['received_through']=previous['received_through']
     Path(output).parent.mkdir(parents=True,exist_ok=True)
     Path(output).write_text(json.dumps(doc,indent=2,allow_nan=False)+'\n',encoding='utf-8')
-    summary=dict(passing_occurrences=count,distinct_saved_parameterizations=len(seen),published_candidates=len(candidates),excluded_above_public_c3_limit=excluded,excluded_long_small_body_flights=excluded_long,maximum_public_c3_km2_s2=250,resolved_summary_references=resolved_summaries,projection_failures=len(failures),schema_failures=len(validated['invalid']),by_target=dict(Counter(r['body_ids'][-1] for r in candidates)),archive_bytes=Path(output).stat().st_size)
+    summary=dict(passing_occurrences=count,distinct_saved_parameterizations=len(seen),published_candidates=len(candidates),excluded_same_day_duplicates=len(duplicates),excluded_above_public_c3_limit=excluded,excluded_long_small_body_flights=excluded_long,maximum_public_c3_km2_s2=250,resolved_summary_references=resolved_summaries,projection_failures=len(failures),schema_failures=len(validated['invalid']),by_target=dict(Counter(r['body_ids'][-1] for r in candidates)),archive_bytes=Path(output).stat().st_size)
     Path(report).write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8')
     if private_report:Path(private_report).write_text(json.dumps(dict(projection_failures=failures,schema_failures=validated['invalid']),indent=2)+'\n',encoding='utf-8')
     print(json.dumps(summary),flush=True)

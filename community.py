@@ -12,6 +12,44 @@ MAX_BYTES=512000
 SETTINGS=DATA_ROOT/'community_settings.json'
 
 
+def encounter_key(record):
+    """Same ordered bodies on the same TDB calendar days share one public slot.
+
+    Sub-day optimization controls remain in the winning record, not its identity.
+    Julian days start at noon, hence +0.5 before taking the calendar-day floor.
+    """
+    ids=record['body_ids'];dates=record['dates_jd_tdb']
+    if len(ids)!=len(dates) or not all(math.isfinite(v) for v in dates):
+        raise ValueError('Invalid encounter dates')
+    return '/'.join(map(str,ids))+'@'+'/'.join(str(math.floor(v+.5)) for v in dates)
+
+
+def record_rank(record):
+    """Deterministic representative selection, independent of solver parameters.
+
+    Submitted pass precedes yellow. Within a class use the documented balanced
+    cost C3/100 + cruise delta-v + arrival V-infinity/20 + flight-years/100.
+    This picks a representative; relative quality ratings are computed separately.
+    """
+    m=record['metrics'];dates=record['dates_jd_tdb']
+    score=(m['launch_c3_km2_s2']/100+m['total_dsm_kms']+
+           m['arrival_vinf_kms']/20+(dates[-1]-dates[0])/365.25/100)
+    return (0 if record['classification']=='pass' else 1,score,record.get('id',''))
+
+
+def unique_encounters(records):
+    """Choose one record per date string, retaining aliases for old deep links."""
+    winners={};aliases={}
+    for record in records:
+        key=encounter_key(record);prior=winners.get(key)
+        if prior is None or record_rank(record)<record_rank(prior):winners[key]=record
+    for record in records:
+        winner=winners[encounter_key(record)]
+        if record.get('id') and record['id']!=winner.get('id'):aliases[record['id']]=winner['id']
+    return list(winners.values()),aliases
+
+
+
 def endpoint_url(value):
     value=str(value or '').strip().rstrip('/')
     if not value:return ''
@@ -153,7 +191,7 @@ def download_candidates(c,routes,ep,stop_file=None):
     try:bundled=json.loads((RESOURCE_ROOT/'community_seed_catalog.json').read_text(encoding='utf-8')).get('candidates',[])
     except (OSError,ValueError):bundled=[]
     records.extend(dict(record,seed_source='bundled') for record in bundled)
-    models={r['id']:Model(r,c,ep) for r in routes};seen=set()
+    models={r['id']:Model(r,c,ep) for r in routes};seen=set();slots={}
     for record in records:
         if stop_file and Path(stop_file).exists():raise InterruptedError('Stopped while verifying database matches')
         try:
@@ -166,8 +204,12 @@ def download_candidates(c,routes,ep,stop_file=None):
                      screening_residual_norm=float(np.linalg.norm(model.residual(x,branches))),discovered_unix=time.time(),
                      community_source=dict(id=record.get('id'),library=record.get('seed_source'),revalidated=True,submitted_classification=record.get('classification')))
             if quality(q,c)=='red':continue
-            (accepted if model.accepted(q) else near).append(q);seen.add(record.get('id'))
+            key=encounter_key(record)
+            rank=record_rank(dict(metrics=q,dates_jd_tdb=q['dates_jd_tdb'],classification=quality(q,c),id=record.get('id','')))
+            if key not in slots or rank<slots[key][0]:slots[key]=(rank,q,model.accepted(q))
+            seen.add(record.get('id'))
         except (ValueError,KeyError,TypeError,RuntimeError,AssertionError,OverflowError,ZeroDivisionError):continue
+    accepted=[q for rank,q,passes in slots.values() if passes];near=[q for rank,q,passes in slots.values() if not passes]
     if accepted or near:print(f'Bundled/community library: {len(accepted)} passing and {len(near)} yellow candidates revalidated locally.',flush=True)
     return dict(accepted=accepted,near_misses=near,**info)
 
@@ -175,7 +217,7 @@ def download_candidates(c,routes,ep,stop_file=None):
 class CommunitySync:
     """Bounded background uploads cannot stall numerical workers or finalization."""
     def __init__(self,c,routes):
-        self.c=c;self.routes={r['id']:r for r in routes};self.queue=queue.Queue(maxsize=1000);self.seen=set();self.stop=threading.Event();self.last_error=0.
+        self.c=c;self.routes={r['id']:r for r in routes};self.queue=queue.Queue(maxsize=1000);self.seen={};self.stop=threading.Event();self.last_error=0.
         self.thread=threading.Thread(target=self._work,daemon=True);self.thread.start()
     def offer(self,q):
         if q.get('reused_from') or q.get('community_source') or q.get('launch_c3_km2_s2',0)>250:return
@@ -183,10 +225,12 @@ class CommunitySync:
         if not pref['share_candidates'] or not pref['endpoint']:return
         try:
             record=public_record(q,self.c,self.routes[q['sequence']])
-            if record is None or record['id'] in self.seen:return
+            if record is None:return
+            key=encounter_key(record);rank=record_rank(record)
+            if key in self.seen and self.seen[key]<=rank:return
             target=int(record['body_ids'][-1]);years=(record['dates_jd_tdb'][-1]-record['dates_jd_tdb'][0])/365.25
             if (target==999 or target>=1000) and years>=60:return
-            self.queue.put_nowait(record);self.seen.add(record['id'])
+            self.queue.put_nowait(record);self.seen[key]=rank
         except (ValueError,KeyError,TypeError,queue.Full):pass
     def _work(self):
         while not self.stop.is_set() or not self.queue.empty():
@@ -196,6 +240,7 @@ class CommunitySync:
             while len(batch)<10:
                 try:batch.append(self.queue.get_nowait())
                 except queue.Empty:break
+            batch,_=unique_encounters(batch)
             pref=settings()
             if not pref['share_candidates'] or not pref['endpoint']:continue
             try:exchange(pref['endpoint']+'/v1/candidates',dict(candidates=batch))

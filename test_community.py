@@ -53,6 +53,24 @@ class CommunityTests(unittest.TestCase):
             self.assertTrue(lib.settings()['share_candidates']);self.assertFalse(lib.settings()['configured'])
             self.assertFalse(lib.save_settings(dict(share_candidates=False))['share_candidates'])
             self.assertFalse(lib.settings()['share_candidates'])
+    def test_same_day_key_uses_tdb_calendar_midnight_and_preserves_body_order(self):
+        c,r,ep,q=self.parent();a=lib.public_record(q,c,r)
+        a['dates_jd_tdb']=[2460000.1,2461000.49]
+        b=dict(a,dates_jd_tdb=[2460000.2,2461000.4],branches=[[0,False]])
+        self.assertEqual(lib.encounter_key(a),lib.encounter_key(b))
+        self.assertNotEqual(lib.encounter_key(a),lib.encounter_key(dict(b,dates_jd_tdb=[2460000.2,2461000.51])))
+        self.assertNotEqual(lib.encounter_key(a),lib.encounter_key(dict(b,body_ids=['599','399'])))
+    def test_same_day_duplicate_selection_retains_better_record_and_link_alias(self):
+        c,r,ep,q=self.parent();a=lib.public_record(q,c,r)
+        a.update(id='a',dates_jd_tdb=[2460000.1,2461000.1]);b=dict(a,id='b',dates_jd_tdb=[2460000.2,2461000.2],metrics=dict(a['metrics'],launch_c3_km2_s2=1.))
+        winners,aliases=lib.unique_encounters([a,b]);self.assertEqual([v['id'] for v in winners],['b']);self.assertEqual(aliases,{'a':'b'})
+        yellow=dict(b,id='c',classification='yellow');self.assertEqual(lib.unique_encounters([yellow,a])[0][0]['id'],'a')
+    def test_repeat_sharing_is_bounded_by_encounter_days(self):
+        c,r,ep,q=self.parent();q['launch_c3_km2_s2']=10.
+        with patch.object(lib,'settings',return_value=dict(share_candidates=True,use_candidates=True,endpoint='https://example.test')),patch.object(lib,'exchange') as network:
+            sync=lib.CommunitySync(c,[r]);sync.offer(q);sync.offer(dict(q,branches=[[0,False]]));sync.close()
+            sent=[record for call in network.call_args_list for record in call.args[1]['candidates']]
+            self.assertEqual(len(sent),1)
     def test_endpoint_validation(self):
         for url in ('http://external.example','https://name:secret@example.test','https://example.test?key=secret'):
             with self.assertRaises(ValueError):lib.endpoint_url(url)
