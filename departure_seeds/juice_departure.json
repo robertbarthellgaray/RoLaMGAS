@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "spacecraft": "JUICE",
+  "horizons_id": "-28",
+  "frame": "Geometric Ecliptic J2000",
+  "time_scale": "TDB",
+  "units": "km and km/s",
+  "launch_reference_jd_tdb": 2460049.0105229747,
+  "launch_reference_note": "Approximate 12:14 UTC launch minute from Horizons mission header, converted with TDB-UTC approximately69.185s.",
+  "earth_launch_state_km_kms": [
+    -137082684.0828233,
+    -60961726.9647797,
+    4350.114450838417,
+    11.61123986718888,
+    -27.34018536735091,
+    0.001245408365539546
+  ],
+  "selected": {
+    "jd_tdb": 2460051.0,
+    "position_km": [
+      -546856.9221353233,
+      -37627.75832836925,
+      -15696.37296502802
+    ],
+    "velocity_kms": [
+      -2.756890475009438,
+      -0.3099441307535001,
+      -0.01363964991896692
+    ],
+    "c3_km2_s2": 6.242944169774687,
+    "vinf_kms": 2.4985884354520427,
+    "vinf_vector_kms": [
+      -2.4822917784840297,
+      -0.2847583976986273,
+      -0.009184290140831637
+    ],
+    "finite_speed_squared_km2_s2": 7.6966964954362185,
+    "distance_km": 548374.6142997453,
+    "eccentricity": 1.1050149987090854
+  },
+  "samples": [
+    {
+      "jd_tdb": 2460051.0,
+      "position_km": [
+        -546856.9221353233,
+        -37627.75832836925,
+        -15696.37296502802
+      ],
+      "velocity_kms": [
+        -2.756890475009438,
+        -0.3099441307535001,
+        -0.01363964991896692
+      ],
+      "c3_km2_s2": 6.242944169774687,
+      "vinf_kms": 2.4985884354520427,
+      "vinf_vector_kms": [
+        -2.4822917784840297,
+        -0.2847583976986273,
+        -0.009184290140831637
+      ],
+      "finite_speed_squared_km2_s2": 7.6966964954362185,
+      "distance_km": 548374.6142997453,
+      "eccentricity": 1.1050149987090854
+    },
+    {
+      "jd_tdb": 2460052.0,
+      "position_km": [
+        -781445.5412367582,
+        -64189.82623323011,
+        -16762.28454121781
+      ],
+      "velocity_kms": [
+        -2.683129318505463,
+        -0.3057360276756667,
+        -0.01137342835486387
+      ],
+      "c3_km2_s2": 6.276281688318923,
+      "vinf_kms": 2.505250823434437,
+      "vinf_vector_kms": [
+        -2.4887906897934884,
+        -0.286570603383504,
+        -0.008937560774045374
+      ],
+      "finite_speed_squared_km2_s2": 7.292786813315029,
+      "distance_km": 784256.6173732314,
+      "eccentricity": 1.108097432897679
+    },
+    {
+      "jd_tdb": 2460054.0,
+      "position_km": [
+        -1239383.179487556,
+        -117075.9941335509,
+        -18557.63774896781
+      ],
+      "velocity_kms": [
+        -2.628455033016143,
+        -0.3083475718680805,
+        -0.009714577307143951
+      ],
+      "c3_km2_s2": 6.363646475596724,
+      "vinf_kms": 2.522626899800429,
+      "vinf_vector_kms": [
+        -2.5052719077600005,
+        -0.2952719386253977,
+        -0.00858056208480696
+      ],
+      "finite_speed_squared_km2_s2": 7.00394845867709,
+      "distance_km": 1245038.8909258475,
+      "eccentricity": 1.1299534098909552
+    }
+  ],
+  "departure_direction_rtn": [
+    0.9540720917870228,
+    -0.29955436884720155,
+    -0.003691040190695688
+  ],
+  "first_earth_return_days": 494.40432291664183,
+  "source_urls": [
+    "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27-28%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TLIST=%272460051.0%0A2460052.0%0A2460054.0%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+    "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27399%27&CENTER=%27500%4010%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TLIST=%272460049.0105229747%0A2460051.0%0A2460052.0%0A2460054.0%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27"
+  ],
+  "mission_source_url": "https://www.esa.int/Science_Exploration/Space_Science/Juice",
+  "limitations": "Earth-only osculating asymptote estimate, not a definitive launch-injection reconstruction. Solar and lunar perturbations cause epoch dependence. Real JUICE uses a lunar-Earth assist; the Lambert solver omits the Moon. RTN rotation seeds later launches without copying the2023 inertial direction. User C3 bounds remain authoritative."
+}

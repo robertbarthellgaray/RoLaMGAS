@@ -1,0 +1,130 @@
+{
+  "launch_window": [
+    "2034-01-01",
+    "2039-01-01"
+  ],
+  "c3_window": [
+    6.25,
+    11.0
+  ],
+  "scope": "First Earth-return leg only; no full-sequence flyby feasibility claim",
+  "results": [
+    {
+      "branch": [
+        0,
+        true
+      ],
+      "baseline_valid": 0,
+      "baseline_min_c3": null,
+      "seed_c3": [
+        10.999998691581412,
+        10.999999095579783,
+        10.999999114350862,
+        10.999999140342144
+      ],
+      "statistics": {
+        "source": "JUICE Horizons -28 / Earth-RTN departure",
+        "attempted": 6,
+        "retained": 4,
+        "reference_c3_km2_s2": 6.242944169774687,
+        "minimum_departure_vector_error_kms": 1.1215904833456793
+      },
+      "elapsed_seconds": 0.046999999991385266
+    },
+    {
+      "branch": [
+        1,
+        true
+      ],
+      "baseline_valid": 1,
+      "baseline_min_c3": 6.975782598355535,
+      "seed_c3": [
+        6.250367459225787,
+        10.999998892454556,
+        10.999998902318517,
+        10.999998917009238,
+        10.999999202148274
+      ],
+      "statistics": {
+        "source": "JUICE Horizons -28 / Earth-RTN departure",
+        "attempted": 6,
+        "retained": 5,
+        "reference_c3_km2_s2": 6.242944169774687,
+        "minimum_departure_vector_error_kms": 0.7529068315335844
+      },
+      "elapsed_seconds": 0.062000000005355105
+    },
+    {
+      "branch": [
+        1,
+        false
+      ],
+      "baseline_valid": 0,
+      "baseline_min_c3": null,
+      "seed_c3": [
+        6.250000067630033,
+        6.250000349422571,
+        6.250004056012802,
+        6.2516692791035755,
+        6.253661933859745,
+        6.256087080205008
+      ],
+      "statistics": {
+        "source": "JUICE Horizons -28 / Earth-RTN departure",
+        "attempted": 6,
+        "retained": 6,
+        "reference_c3_km2_s2": 6.242944169774687,
+        "minimum_departure_vector_error_kms": 0.21811571964638313
+      },
+      "elapsed_seconds": 0.0629999999946449
+    },
+    {
+      "branch": [
+        2,
+        true
+      ],
+      "baseline_valid": 1,
+      "baseline_min_c3": 9.999119048792766,
+      "seed_c3": [
+        10.99999889486269,
+        10.999998935969309,
+        10.999998967562739,
+        10.999999045604765,
+        10.999999105272805,
+        10.999999242685437
+      ],
+      "statistics": {
+        "source": "JUICE Horizons -28 / Earth-RTN departure",
+        "attempted": 6,
+        "retained": 6,
+        "reference_c3_km2_s2": 6.242944169774687,
+        "minimum_departure_vector_error_kms": 1.0556828692544709
+      },
+      "elapsed_seconds": 0.031000000017229468
+    },
+    {
+      "branch": [
+        2,
+        false
+      ],
+      "baseline_valid": 0,
+      "baseline_min_c3": null,
+      "seed_c3": [
+        6.249999990789552,
+        6.249999999489169,
+        6.250000059587501,
+        6.250000060921529,
+        6.250000137488578,
+        6.250006658722682
+      ],
+      "statistics": {
+        "source": "JUICE Horizons -28 / Earth-RTN departure",
+        "attempted": 6,
+        "retained": 6,
+        "reference_c3_km2_s2": 6.242944169774687,
+        "minimum_departure_vector_error_kms": 0.38061294110596944
+      },
+      "elapsed_seconds": 0.0629999999946449
+    }
+  ]
+}

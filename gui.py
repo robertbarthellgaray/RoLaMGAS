@@ -39,12 +39,18 @@ class App:
         self.lock = threading.RLock()
         self.lookup_lock = threading.Lock()
         self.render_lock = threading.Lock()
+        self.render_event = threading.Event()
+        self.render_stop = threading.Event()
+        self.render_thread = None
+        self.render_runs = {}
+        self.render_priority = None
+        self.render_ephemerides = {}
+        self.render_revision = {}
+        self.render_metadata = {}
         self.active = None
         self.process = None
         self.building = set()
         self.archive_errors = {}
-        self.quality_cache = {}
-        self.quality_seed = None
         self.integrations = {}
         self.moon_process = None
         self.moon_run = None
@@ -283,21 +289,136 @@ class App:
                 stream.seek(max(0,(output/'console.log').stat().st_size-12000))
                 logs = stream.read().decode('utf-8',errors='replace')
         request=read_json(output/'request.json') or read_json(output/'run_manifest.json',{}).get('config',{})
+        if live and live.get('candidates'):
+            from live_gallery import plot_status
+            hydrated=[self._hydrate_render_row(name,q,request) for q in live['candidates']]
+            self._register_render_run(name)
+            live=dict(live,revision=max(float(live.get('revision',0)),self.render_revision.get(name,0)),
+                      candidates=[dict(q,**plot_status(output/'candidates',q,request)) for q in hydrated])
         limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years')}
         limits['effective_min_c3']=max(float(request.get('min_c3') if request.get('min_c3') is not None else DEFAULT_MIN_C3),DEFAULT_MIN_C3)
-        if live and live.get('candidates'):
-            from quality import assess_candidates
-            key=(name,live.get('revision'))
-            if key not in self.quality_cache:
-                if self.quality_seed is None:
-                    self.quality_seed=read_json(RESOURCE_ROOT/'community_seed_catalog.json',{}).get('candidates',[])
-                target=(request.get('target_object') or {}).get('id') or request.get('target')
-                self.quality_cache={key:assess_candidates(live['candidates'],self.quality_seed,target)}
-            live=dict(live,candidates=[dict(q,quality=self.quality_cache[key].get(q.get('id'),{})) for q in live['candidates']])
         return dict(run=name,status=status or dict(state='finished'),live=live,log=logs,
                     heartbeat=read_json(output/'heartbeat.json'),database=read_json(output/'database_first.json',{}),
                     limits=limits,
                     active=name==self.active and self.process is not None and self.process.poll() is None)
+
+    def _hydrate_render_row(self,name,row,config):
+        from candidate_status import unresolved_mismatch_sum,unresolved_mismatch_peak,modeled_plus_unresolved_mismatch
+        q=row
+        if not isinstance(row.get('total_unresolved_vinf_mismatch_mps'),(int,float)):
+            path=self.folder(name)/'candidates'/(row['id']+'.json')
+            try:stamp=path.stat().st_mtime_ns
+            except OSError:stamp=None
+            cache=getattr(self,'render_metadata',None)
+            if cache is None:self.render_metadata=cache={}
+            key=(name,row['id']);saved=cache.get(key)
+            if saved is None or saved[0]!=stamp:
+                full=read_json(path) or row
+                fields=dict(total_unresolved_vinf_mismatch_mps=unresolved_mismatch_sum(full),
+                            max_unresolved_vinf_mismatch_mps=unresolved_mismatch_peak(full),
+                            modeled_plus_unresolved_mismatch_kms=modeled_plus_unresolved_mismatch(full))
+                cache[key]=(stamp,fields)
+                if len(cache)>10000:cache.pop(next(iter(cache)))
+            else:fields=saved[1]
+            q=dict(row,**fields)
+        total=modeled_plus_unresolved_mismatch(q)
+        return dict(q,modeled_plus_unresolved_mismatch_kms=total,
+                    mismatch_screening_budget_exceeded=unresolved_mismatch_sum(q)>1e-6 and config.get('max_dsm_kms') is not None and total>config['max_dsm_kms']+1e-9)
+
+    def _register_render_run(self,name):
+        with self.lock:
+            self.render_runs[name]=time.monotonic()
+            if self.render_thread is None or not self.render_thread.is_alive():
+                self.render_stop.clear()
+                self.render_thread=threading.Thread(target=self._render_loop,daemon=True,name='trajectory-previews')
+                self.render_thread.start()
+            self.render_event.set()
+
+    def render_candidate(self,name,identifier):
+        if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
+        root=self.folder(name);q=read_json(root/'candidates'/(identifier+'.json'))
+        if not q:raise ValueError('Candidate has not been published yet')
+        from live_gallery import LiveGallery,plot_status
+        config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{}).get('config',{})
+        gallery=LiveGallery(root,None,deferred=True,config=config)
+        gallery.placeholder(q)
+        status=plot_status(gallery.folder,q,config)
+        if status['render_skipped']:
+            state,message='skipped','Plot skipped for red diagnostic. Its science data and export options remain available.'
+        elif status['image_ready']:
+            state,message='ready','Trajectory preview is ready.'
+        elif status['render_error']:
+            state,message='failed',status['render_error']
+        else:
+            with self.lock:self.render_priority=(name,identifier,time.monotonic_ns())
+            self._register_render_run(name)
+            state,message='queued','Selected trajectory has priority over background previews. Numerical optimization continues.'
+        return dict(state=state,message=message,card_url='/files/'+urllib.parse.quote(name)+'/candidates/'+identifier+'.card.json')
+
+    def _next_render_task(self):
+        from live_gallery import plot_status
+        with self.lock:
+            priority=self.render_priority
+            names=sorted(self.render_runs,key=self.render_runs.get,reverse=True)
+        if priority:
+            name,identifier,_=priority;root=self.folder(name)
+            q=read_json(root/'candidates'/(identifier+'.json'))
+            config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{}).get('config',{})
+            if q and plot_status(root/'candidates',q,config)['render_pending']:
+                return name,q,config,priority
+            with self.lock:
+                if self.render_priority==priority:self.render_priority=None
+        for name in names:
+            root=self.folder(name);live=read_json(root/'live.json',{})
+            config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{}).get('config',{})
+            for row in live.get('candidates',[]):
+                row=self._hydrate_render_row(name,row,config)
+                if not plot_status(root/'candidates',row,config)['render_pending']:continue
+                q=read_json(root/'candidates'/(row['id']+'.json'))
+                if q and plot_status(root/'candidates',q,config)['render_pending']:return name,q,config,None
+        return None
+
+    def _render_ephemeris(self,name,config):
+        if name not in self.render_ephemerides:
+            c=normalize(config,HERE)
+            if not Path(c['cache']).exists():c['cache']=str(self.cache)
+            ep=get_ephemerides(c,routes_for(c))
+            if len(self.render_ephemerides)>=3:self.render_ephemerides.pop(next(iter(self.render_ephemerides)))
+            self.render_ephemerides[name]=ep
+        return self.render_ephemerides[name]
+
+    def _render_loop(self):
+        from live_gallery import LiveGallery
+        while not self.render_stop.is_set():
+            task=self._next_render_task()
+            if task is None:
+                self.render_event.wait(.25);self.render_event.clear();continue
+            name,q,config,priority=task
+            def preempted():
+                with self.lock:current=self.render_priority
+                return self.render_stop.is_set() or (current is not None and current[:2]!=(name,q['id']))
+            try:
+                if preempted():continue
+                ep=self._render_ephemeris(name,config)
+                with self.render_lock:
+                    result=LiveGallery(self.folder(name),ep,deferred=True,config=config).render(q,cancel=preempted)
+                if result!='preempted':
+                    with self.lock:
+                        self.render_revision[name]=time.time()
+                        if self.render_priority==priority:self.render_priority=None
+            except Exception as exc:
+                from ephemeris import atomic_json
+                folder=self.folder(name)/'candidates'
+                atomic_json(folder/(q['id']+'.plot_error.json'),dict(message=str(exc),candidate_id=q['id']))
+                atomic_json(folder/(q['id']+'.card.json'),dict(q,paths=[],planet_paths=[],render_pending=False,render_skipped=None,render_error=str(exc)))
+                (folder/(q['id']+'.render_pending.json')).unlink(missing_ok=True)
+                with self.lock:
+                    self.render_revision[name]=time.time()
+                    if self.render_priority==priority:self.render_priority=None
+
+    def close_renderer(self):
+        self.render_stop.set();self.render_event.set()
+        if self.render_thread is not None:self.render_thread.join(timeout=3)
 
     def build_archive(self,name):
         try:
@@ -306,11 +427,10 @@ class App:
             c = normalize(read_json(p/'run_manifest.json')['config'],HERE)
             if not Path(c['cache']).exists():
                 c['cache'] = str(self.cache)
-            ep = get_ephemerides(c,routes_for(c))
             results = read_json(p/'results.json')
-            with self.render_lock:
-                LiveGallery(p,ep).update(results,dict(state='finished',completed_jobs=results['completed_jobs'],
+            LiveGallery(p,None,deferred=True,config=c).update(results,dict(state='finished',completed_jobs=results['completed_jobs'],
                                          total_jobs=results['completed_jobs']),final=True)
+            self._register_render_run(name)
         except Exception as exc:
             self.archive_errors[name] = str(exc)
         finally:
@@ -548,6 +668,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.database_decision(value['run'],value.get('run_local')))
             if self.path=='/api/stop':
                 return self.json(self.app.stop(value['run']))
+            if self.path=='/api/render-candidate':
+                return self.json(self.app.render_candidate(value['run'],value['candidate']))
             if self.path=='/api/integrate':
                 return self.json(self.app.integrate(value['run'],value['candidate'],value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg')))
             if self.path=='/api/moon-screen':
@@ -599,6 +721,7 @@ def main():
     try:
         server.serve_forever(poll_interval=.25)
     finally:
+        app.close_renderer()
         server.server_close()
         if read_json(instance_file,{}).get('instance_id')==server.instance_id:
             instance_file.unlink(missing_ok=True)

@@ -19,7 +19,8 @@ def write_tsv(path, rows):
         writer.writerows(rows)
 
 
-def publish(output, summary, ep):
+def publish(output, summary, ep, deferred=False, config=None):
+    from candidate_status import red_reason
     candidates = output/'candidates'
     candidates.mkdir(exist_ok=True)
     cards, table = [], []
@@ -34,7 +35,8 @@ def publish(output, summary, ep):
                            delta_v_kms=b['magnitude_kms'],speed_mismatch_mps='') for b in q['dsms'])
         write_tsv(candidates/(q['id']+'_events.tsv'),sorted(events,key=lambda e:e['julian_date_tdb']))
         paths = []
-        for segment in q['segments']:
+        skipped=red_reason(q,config)
+        for segment in ([] if deferred or skipped else q['segments']):
             try:
                 r,v = np.array(segment['r']),np.array(segment['v'])
                 duration = (segment['end_jd']-segment['start_jd'])*DAY
@@ -42,13 +44,13 @@ def publish(output, summary, ep):
             except (ValueError,OverflowError):
                 paths.append([])
         orbits = []
-        for body in dict.fromkeys(q['bodies']):
+        for body in ([] if deferred or skipped else dict.fromkeys(q['bodies'])):
             # Show the portion of each planet's actual ephemeris covered by this mission.
             dates = np.linspace(q['dates_jd_tdb'][0],q['dates_jd_tdb'][-1],500)
             orbits.append(dict(body=body,points=[(ep.state(body,d)[:3]/AU).tolist() for d in dates]))
         card = dict(q)
         card.pop('segments',None)
-        card.update(paths=paths,planet_paths=orbits)
+        card.update(paths=paths,planet_paths=orbits,render_skipped=skipped,render_pending=deferred and not skipped)
         cards.append(card)
         table.append({key:q[key] for key in ('id','status','sequence','launch_date','arrival_date','duration_years',
                      'launch_c3_km2_s2','arrival_vinf_kms','total_dsm_kms','max_vinf_mismatch_mps','min_turn_margin_deg')})

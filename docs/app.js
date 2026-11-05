@@ -1,12 +1,12 @@
-import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName} from './community.js?v=20261104';
-import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,rateCandidates,launchYear,sequenceColors,resolveAlias,filterStateFromHash,filterHash} from './library_analysis.js?v=20261104';
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName} from './community.js?v=20261104b';
+import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,resolveAlias,filterStateFromHash,filterHash} from './library_analysis.js?v=20261104b';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
 const colors = ['#79d8f1', '#ffd08a', '#8ae3bd', '#b4aeff', '#ff9f9a', '#9ed2ff'];
 const catalog = [];
 const cache = new Map(), sharedRecords = new Map(), previewCache = new Map(), encounterDays=new Map();
-let ratings=new Map(), duplicateAliases={}, displayAliases={}, pendingHashTarget=null;
+let duplicateAliases={}, displayAliases={}, pendingHashTarget=null;
 let sharedEndpoint='', sharedSince='1970-01-01T00:00:00.000Z', sharedBusy=false, curatedAliases={}, visibleCount=48;
 let destination = 'All', smallBodyTarget = 'All', selected = null, requestVersion = 0, playing = false, lastTick = 0, fraction = 0;
 let yaw = -.35, pitch = .65, zoom = 1, view = '3d', framePending = false;
@@ -17,6 +17,12 @@ async function fetchJson(path) {
   const r = await fetch(path);
   if (!r.ok) throw new Error(`Could not load saved data (${r.status}). Please retry.`);
   return r.json();
+}
+const previewHidden={markers:new Set(),orbits:new Set()};
+function bodyVisible(body,layer){return $(layer==='orbits'?'planet-arcs':'planet-markers').checked&&!previewHidden[layer].has(body)}
+function renderBodyVisibility(c){
+ const bodies=[...new Set([...c.events.map(e=>e.body),...c.planet_paths.map(p=>p.body)])].filter(Boolean),orbits=new Set(c.planet_paths.map(p=>p.body));
+ $('body-visibility-options').innerHTML=bodies.map(body=>`<div class="body-visibility-row"><span>${escapeHtml(body)}</span><label><input type="checkbox" data-preview-body="${escapeHtml(body)}" data-preview-layer="markers" ${previewHidden.markers.has(body)?'':'checked'}> Body</label><label><input type="checkbox" data-preview-body="${escapeHtml(body)}" data-preview-layer="orbits" ${previewHidden.orbits.has(body)?'':'checked'} ${orbits.has(body)?'':'disabled'}> Orbit${orbits.has(body)?'':' (unavailable)'}</label></div>`).join('');
 }
 function category(c){return bodyCategory(c.target,c.target_id)}
 function makeDestinations() {
@@ -46,14 +52,14 @@ function visibleRows(){
 }
 function renderList() {
   const rows=visibleRows(),sort=$('sort').value;
-  rows.sort((a,b) => sort === 'recommended' ? Number(ratings.get(a.id)?.dominated)-Number(ratings.get(b.id)?.dominated)||Number(b.spotlight) - Number(a.spotlight) || (b.featured_priority || 0) - (a.featured_priority || 0) || (b.received||0)-(a.received||0) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
+  rows.sort((a,b) => sort === 'recommended' ? Number(b.spotlight) - Number(a.spotlight) || (b.featured_priority || 0) - (a.featured_priority || 0) || (b.received||0)-(a.received||0) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
   $('result-count').textContent = `${rows.length} ${rows.length === 1 ? 'trajectory' : 'trajectories'}`;
   $('candidate-more').hidden=visibleCount>=rows.length;
   $('candidate-more').textContent=`Show ${Math.min(48,Math.max(0,rows.length-visibleCount))} more (${Math.min(visibleCount,rows.length)} of ${rows.length})`;
   $('candidate-list').innerHTML = rows.length ? rows.slice(0,visibleCount).map(c => `<button type="button" class="candidate-card" data-id="${c.id}" aria-pressed="${c.id === selected?.id}" aria-label="Inspect ${escapeHtml(c.title)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}">
     <div class="card-preview"><img loading="lazy" src="${c.community ? sharedPreview(c.id) : `images/${c.id}.svg`}" width="320" height="220" alt="${escapeHtml(c.sequence)} heliocentric trajectory preview"><span class="card-badge">${c.spotlight ? 'Integrated concept' : escapeHtml(c.model)}</span></div>
     <div class="card-title">${escapeHtml(c.sequence)}<b aria-hidden="true">↗</b></div><p class="card-subtitle">${escapeHtml(c.target)} · ${c.launch_date} → ${c.arrival_date}</p>
-    <div class="card-metrics"><div><span>C3 · km²/s²</span>${fmt(c.c3,1)}</div><div><span>Δv · m/s</span>${fmt(c.burns_mps,0)}</div><div><span>FLIGHT · yr</span>${fmt(c.years,1)}</div></div><span class="rating-label ${ratings.get(c.id)?.dominated?'dominated':''}">${escapeHtml(ratings.get(c.id)?.label||'Not compared')}</span></button>`).join('')
+    <div class="card-metrics"><div><span>C3 · km²/s²</span>${fmt(c.c3,1)}</div><div><span>Δv · m/s</span>${fmt(c.burns_mps,0)}</div><div><span>FLIGHT · yr</span>${fmt(c.years,1)}</div></div></button>`).join('')
     : '<p class="empty">No saved examples match these filters. Try raising a limit, changing launch years or choosing another destination.</p>';
   drawTradeoff(rows);
   if (rows.length && !rows.some(c => c.id === selected?.id)) selectCandidate(rows[0].id);
@@ -67,18 +73,14 @@ function drawTradeoff(rows=visibleRows()){
  const all=targetRows(),years=all.map(launchYear);for(const id of ['launch-year-min','launch-year-max']){$(id).min=Math.min(...years);$(id).max=Math.max(...years)}
  const palette=sequenceColors(all),w=1000,h=340,left=74,right=22,top=22,bottom=56,maxX=Math.max(1,...rows.map(c=>c.c3))*1.06,maxY=Math.max(.1,...rows.map(c=>c.years))*1.08;
  let svg='';
- for(let i=0;i<=5;i++){const x=left+(w-left-right)*i/5,y=h-bottom-(h-top-bottom)*i/5;svg+=`<path d="M${x},${top}V${h-bottom}M${left},${y}H${w-right}" stroke="#26394a" stroke-width="1"/><text x="${x}" y="${h-bottom+22}" text-anchor="middle">${fmt(maxX*i/5,1)}</text><text x="${left-10}" y="${y+4}" text-anchor="end">${fmt(maxY*i/5,1)}</text>`}
+ for(let i=0;i<=5;i++){const x=left+(w-left-right)*i/5,y=h-bottom-(h-top-bottom)*i/5;svg+=`<path d="M${x},${top}V${h-bottom}M${left},${y}H${w-right}" stroke="#26394a" stroke-width="1"/><text x="${x}" y="${h-bottom+22}" text-anchor="middle">${fmt(maxX*i/5,1)}</text><text x="${left-10}" y="${y+4}" text-anchor="end">${fmt(maxY*i/5,maxY<1?2:1)}</text>`}
  svg+=`<text class="axis-label" x="${(left+w-right)/2}" y="${h-5}" text-anchor="middle">Launch C3 (km²/s²)</text><text class="axis-label" transform="translate(17 ${(top+h-bottom)/2}) rotate(-90)" text-anchor="middle">Flight time (years)</text>`;
- svg+=rows.map(c=>`<circle class="tradeoff-point" data-candidate="${escapeHtml(c.id)}" tabindex="0" role="button" aria-pressed="${c.id===selected?.id}" aria-label="${escapeHtml(c.sequence)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}, ${fmt(c.years)} years; open trajectory and downloads" cx="${left+c.c3/maxX*(w-left-right)}" cy="${h-bottom-c.years/maxY*(h-top-bottom)}" r="5" fill="${palette.get(c.sequence)}"><title>${escapeHtml(c.sequence)} · launch ${c.launch_date} · C3 ${fmt(c.c3)} km²/s² · ${fmt(c.years,3)} years · ${escapeHtml(ratings.get(c.id)?.label||'')}</title></circle>`).join('');
+ svg+=rows.map(c=>`<circle class="tradeoff-point" data-candidate="${escapeHtml(c.id)}" tabindex="0" role="button" aria-pressed="${c.id===selected?.id}" aria-label="${escapeHtml(c.sequence)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}, ${fmt(c.years)} years; open trajectory and downloads" cx="${left+c.c3/maxX*(w-left-right)}" cy="${h-bottom-c.years/maxY*(h-top-bottom)}" r="5" fill="${palette.get(c.sequence)}"><title>${escapeHtml(c.sequence)} · launch ${c.launch_date} · C3 ${fmt(c.c3)} km²/s² · ${fmt(c.years,3)} years</title></circle>`).join('');
  $('tradeoff-svg').innerHTML=svg;
  $('tradeoff-legend').innerHTML=[...palette].filter(([sequence])=>rows.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<span><i class="sequence-swatch" style="background:${color}"></i>${escapeHtml(sequence)}</span>`).join('');
  $('tradeoff-status').textContent=`${target} · ${rows.length} trajectories · ${Math.min(...rows.map(launchYear))}–${Math.max(...rows.map(launchYear))} launches. Select a dot to inspect and download.`;
 }
-function showRating(id){
- const r=ratings.get(id),element=$('candidate-rating');
- element.textContent=r?(r.dominated?`${r.count} saved alternative${r.count===1?'':'s'} offer equal or better costs for this target within two years of launch.`:`${r.label} among saved alternatives for this target within two years of launch. This is a cost comparison.`):'';
- if(r?.alternative){const b=document.createElement('button');b.type='button';b.className='subtle-button';b.textContent='Inspect a better alternative →';b.onclick=()=>selectCandidate(r.alternative);element.append(b)}
-}
+
 function canonicalId(id){return resolveAlias(id,{...duplicateAliases,...curatedAliases,...displayAliases})}
 function updateLocation(id){const hash=filterHash({target:selectedTarget()||destination,mission:id,launchMin:$('launch-year-min').value,launchMax:$('launch-year-max').value});history.replaceState(null,'',`${location.pathname}${location.search}${hash}`)}
 function applyTargetHash(target){if(!target)return false;if(CATEGORIES.includes(target)||target==='All'||Object.keys(bodyColors).includes(target)){destination=target;smallBodyTarget='All';return true}const row=catalog.find(c=>c.target===target);if(row){destination=category(row);smallBodyTarget=target;return true}return false}
@@ -115,8 +117,8 @@ async function selectCandidate(id) {
     let c = cache.get(id);
     if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json`); cache.set(id, c); }
     if (token !== requestVersion) return;
-    selected = c; fraction = 0; zoom = 1; setView('3d');
-    updateLocation(c.id);showRating(c.id);
+    selected = c; renderBodyVisibility(c); fraction = 0; zoom = 1; setView('3d');
+    updateLocation(c.id);
     document.querySelectorAll('[data-candidate]').forEach(p=>p.setAttribute('aria-pressed',p.dataset.candidate===c.id));
     $('model-label').textContent = c.model.toUpperCase();
     $('mission-title').textContent = c.title;
@@ -220,13 +222,14 @@ function draw() {
   }
   line([[-radius,0,0],[radius,0,0]], '#2e495c55', .6);
   line([[0,-radius,0],[0,radius,0]], '#2e495c55', .6);
-  if ($('planet-arcs').checked) for (const orbit of selected.planet_paths) line(orbit.points, '#64819855', .8, [3,4]);
+  for (const orbit of selected.planet_paths) if(bodyVisible(orbit.body,'orbits')) line(orbit.points, '#64819855', .8, [3,4]);
   selected.paths.forEach((p,i) => line(p.points, colors[i%colors.length], 1.6));
   const dot = (p, color, size) => { const [x,y] = project(p); ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill(); return [x,y]; };
   const sun = dot([0,0,0], '#ffd08a', 4);
   ctx.fillStyle = '#d1b98a'; ctx.font = '10px Segoe UI, sans-serif'; ctx.fillText('Sun', sun[0]+9, sun[1]+4);
   const used = [];
   for (const e of selected.events) {
+    if(!bodyVisible(e.body,'markers'))continue;
     const [x,y] = dot(e.position_au, bodyColors[e.body] || '#e7eff6', 3.5);
     let dy = -10;
     while (used.some(p => Math.abs(p[0]-x)<55 && Math.abs(p[1]-(y+dy))<13)) dy += 14;
@@ -267,6 +270,8 @@ $('clear-filters').addEventListener('click', () => { ['search','max-c3','max-vin
 document.querySelector('.projection').addEventListener('click', e => { if (e.target.dataset.view) setView(e.target.dataset.view); });
 $('reset-view').addEventListener('click', () => { zoom=1; setView('3d'); });
 $('planet-arcs').addEventListener('change', drawSoon);
+$('planet-markers').addEventListener('change',drawSoon);
+$('body-visibility-options').addEventListener('change',e=>{const t=e.target;if(!t.dataset.previewBody||!previewHidden[t.dataset.previewLayer])return;previewHidden[t.dataset.previewLayer][t.checked?'delete':'add'](t.dataset.previewBody);drawSoon();});
 $('play').addEventListener('click', () => { if (!selected) return; if (fraction>=1) fraction=0; setPlaying(!playing); });
 $('time').addEventListener('input', () => { setPlaying(false); fraction=Number($('time').value)/1000; updateTime(); });
 document.addEventListener('visibilitychange', () => { if (document.hidden) setPlaying(false); });
@@ -318,7 +323,7 @@ function addShared(records){let added=0;for(const record of records)try{
  }
  encounterDays.set(key,{record,id:record.id});catalog.push(summary);added++;
 }catch{}return added}
-function updateCounts(){if(pendingHashTarget&&applyTargetHash(pendingHashTarget))pendingHashTarget=null;ratings=rateCandidates(catalog);$('total-count').textContent=catalog.length.toLocaleString('en-US');$('destination-count').textContent=new Set(catalog.map(c=>c.target)).size;makeDestinations();if(selected)showRating(selected.id)}
+function updateCounts(){if(pendingHashTarget&&applyTargetHash(pendingHashTarget))pendingHashTarget=null;$('total-count').textContent=catalog.length.toLocaleString('en-US');$('destination-count').textContent=new Set(catalog.map(c=>c.target)).size;makeDestinations()}
 async function syncShared(){
  if(sharedBusy||!sharedEndpoint)return;sharedBusy=true;$('community-refresh').disabled=true;
  try{const result=await fetchUpdates(sharedEndpoint,sharedSince);sharedSince=result.watermark;const added=addShared(result.records);
@@ -328,7 +333,7 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings]=await Promise.all([fetchJson('data/index.json'),fetchJson('data/community_seed_catalog.json?v=20261104').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({}))]);
+ const [data,archive,settings]=await Promise.all([fetchJson('data/index.json'),fetchJson('data/community_seed_catalog.json?v=20261104b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({}))]);
  catalog.push(...data.cases.filter(c=>c.c3<=250));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
  const filters=filterStateFromHash(location.hash),initial=canonicalId(filters.mission||'claudius-uop-2045');

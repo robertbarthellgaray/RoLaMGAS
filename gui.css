@@ -14,4 +14,9 @@ td.failure{color:#ff9fad}
 
 .database-decision{border-color:#7ee2b8}.database-decision .actions{display:flex;gap:12px;flex-wrap:wrap}.database-decision p{line-height:1.6}
 
-.quality-note{font-size:12px;line-height:1.5;margin:9px 0 0;color:#9eb5ca}.quality-note.less-efficient{color:#e5b974}.quality-note.efficient{color:#7ccebb}.quality-explainer{margin:12px 0}
+
+
+.body-visibility{margin:0 0 12px;padding:10px 12px;border:1px solid #2c415a;border-radius:6px}.body-visibility summary{cursor:pointer;font-size:12px}.body-visibility-options{display:flex;flex-wrap:wrap;gap:8px 20px}.body-visibility-row{display:flex;align-items:center;gap:12px}.body-visibility-row>span{min-width:70px;font-size:12px}.body-visibility-row label{margin:0;font-size:12px}
+
+.app-logo{width:48px;height:48px;object-fit:contain;flex:none;border-radius:9px}
+.results-chart{border:1px solid #29415b;border-radius:12px;background:#0b1728;padding:18px;margin:16px 0}.results-chart-head{display:flex;justify-content:space-between;gap:18px}.results-chart>summary{color:var(--text);font-size:18px;font-weight:600}.results-chart>summary::marker{color:var(--accent)}.results-chart[open]>summary{margin-bottom:14px}.chart-toggle-label{margin-left:12px;color:var(--muted);font-size:11px;font-weight:400}.chart-toggle-label::after{content:"Expand graph"}.results-chart[open] .chart-toggle-label::after{content:"Collapse graph"}.chart-year-controls{display:flex;align-items:end;gap:10px;flex-wrap:wrap}.chart-year-controls label{font-size:12px;margin:0;max-width:135px}.chart-year-controls input{width:100%}#resultsChart{display:block;width:100%;min-height:220px}#resultsChart text{fill:#b4c8dd;font:12px system-ui}#resultsChart circle{cursor:pointer}#resultsChart circle:focus{stroke:white;stroke-width:3;outline:none}.results-chart-legend{display:flex;flex-wrap:wrap;gap:10px 18px;color:#b4c8dd;font-size:12px}.results-chart-legend span{display:flex;align-items:center;gap:6px}.results-chart-legend i{width:9px;height:9px;border-radius:50%;display:inline-block}@media(max-width:800px){.results-chart-head{flex-direction:column}.results-chart{padding:12px}#resultsChart{min-height:170px}}

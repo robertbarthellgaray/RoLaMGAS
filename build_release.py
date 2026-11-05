@@ -8,11 +8,11 @@ import argparse,hashlib,json,os,platform,re,shutil,subprocess,sys,tempfile,zipfi
 
 ROOT=Path(__file__).resolve().parent
 MODULES=['app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search','dynamics','ephemeris',
-         'horizons_targets','network','search_options','candidate_archive','community','quality','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
+         'horizons_targets','network','search_options','candidate_archive','community','candidate_status','earth_return_seeds','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
          'presentation','live_gallery','integrate_export','celestia_package','moon_screen','baseline_cache',
          'build_database','build_release','restore_diagnostics']
-DOCS=['GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md']
-DATA_FILES=('community_seed_catalog.json','community_config.json','gui.html','gui.js','gui.css','gallery.html','sequence_database.json','examples','model_assets',
+DOCS=['GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md','JUICE_DEPARTURE_SEEDS.md','PREVIEW_AND_RESULTS.md']
+DATA_FILES=('departure_seeds','community_seed_catalog.json','community_config.json','gui.html','gui.js','gui.css','gallery.html','sequence_database.json','examples','model_assets',
             'gui_assets','baseline_ephemerides.zip','LICENSE','THIRD_PARTY_NOTICES.md','third_party_licenses')
 
 
@@ -53,7 +53,7 @@ def source_release(baseline):
     files += list((ROOT/'examples').glob('*.json'))
     files += list((ROOT/'model_assets').glob('*'))
     files += [p for p in (ROOT/'.github').rglob('*') if p.is_file()]
-    files += [p for folder in ('docs','tools','gui_assets','third_party_licenses','mission_comparison') for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts]
+    files += [p for folder in ('docs','tools','gui_assets','departure_seeds','third_party_licenses','mission_comparison') for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts]
     files += [ROOT/name for name in ('LICENSE','THIRD_PARTY_NOTICES.md') if (ROOT/name).is_file()]
     with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
         for path in sorted(set(files)):
@@ -66,7 +66,7 @@ def source_release(baseline):
     return destination
 
 
-def pyinstaller_command(system=None,windows_folder=False):
+def pyinstaller_command(system=None,windows_folder=False,output_directory=None):
     """Return arguments only; target selection follows the host, never emulation."""
     system=system or sys.platform
     if system not in ('win32','darwin','linux'):
@@ -76,7 +76,7 @@ def pyinstaller_command(system=None,windows_folder=False):
     if system=='win32':
         mode+=['--icon',str(ROOT/'gui_assets/rolamgas.ico'),'--version-file',str(ROOT/'gui_assets/windows_version.txt')]
     elif system=='darwin':mode+=['--icon',str(ROOT/'gui_assets/rolamgas.icns')]
-    destination=ROOT/'releases/testing/windows-folder' if windows_folder else ROOT/'releases'
+    destination=Path(output_directory) if output_directory is not None else (ROOT/'releases/testing/windows-folder' if windows_folder else ROOT/'releases')
     if system=='darwin':
         mode+=['--windowed','--osx-bundle-identifier','io.github.robertbarthellgaray.rolamgas']
     command=[sys.executable,'-m','PyInstaller','--noconfirm',*mode,'--name','RoLaMGAS',
@@ -96,16 +96,17 @@ def pyinstaller_command(system=None,windows_folder=False):
     return command
 
 
-def executable(baseline,windows_folder=False):
+def executable(baseline,windows_folder=False,output_directory=None):
     if baseline!=ROOT/'baseline_ephemerides.zip':
         raise ValueError('Expected the baseline archive in the project root')
-    command=pyinstaller_command(windows_folder=windows_folder)
+    command=pyinstaller_command(windows_folder=windows_folder,output_directory=output_directory)
     paths=[ROOT,ROOT/'.build_deps',ROOT.parents[1]/'deps']
     env=dict(os.environ,MPLBACKEND='Agg',PYTHONIOENCODING='utf-8',PYTHONPATH=os.pathsep.join(str(p) for p in reversed(paths) if p.exists()))
     (ROOT/'.build').mkdir(exist_ok=True)
     with (ROOT/'.build/executable_build.log').open('w',encoding='utf-8') as log:
         subprocess.run(command,cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
-    output=(ROOT/'releases/testing/windows-folder/RoLaMGAS/RoLaMGAS.exe') if windows_folder else ROOT/'releases'/('RoLaMGAS.exe' if sys.platform=='win32' else 'RoLaMGAS.app' if sys.platform=='darwin' else 'RoLaMGAS')
+    destination=Path(command[command.index('--distpath')+1])
+    output=(destination/'RoLaMGAS/RoLaMGAS.exe') if windows_folder else destination/('RoLaMGAS.exe' if sys.platform=='win32' else 'RoLaMGAS.app' if sys.platform=='darwin' else 'RoLaMGAS')
     print('Native application:',output,flush=True)
     return output
 
@@ -187,7 +188,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--exe',action='store_true',help='Build the native application on this operating system')
     parser.add_argument('--native',action='store_true',help='Also wrap it in a macOS DMG or Linux DEB; Windows outputs EXE')
-    parser.add_argument('--version',default='0.2.2',help='Package version, for example 0.2.0')
+    parser.add_argument('--version',default='0.2.3',help='Package version, for example 0.2.0')
     args=parser.parse_args();validate_version(args.version)
     baseline=baseline_archive();source_release(baseline)
     if args.exe or args.native:

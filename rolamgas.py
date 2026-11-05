@@ -19,7 +19,7 @@ def self_check():
     compiled=bool(kepler.signatures) and bool(lamberthub.izzo2015.signatures)
     if not numpy.isfinite(error) or error>=1. or not compiled:
         raise RuntimeError('Compiled Lambert/Kepler self-check failed: '+str(error)+' km')
-    required=('gui.html','gui.js','gui.css','sequence_database.json','gui_assets/launch_mass_c3.png','gui_assets/rolamgas-icon.png',
+    required=('gui.html','gui.js','gui.css','sequence_database.json','gui_assets/launch_mass_c3.png','gui_assets/rolamgas-icon.png','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json',
               'model_assets/LowPolySatPanels.3ds','model_assets/LowPolySatRTG.3ds','LICENSE')
     missing=[name for name in required if not (RESOURCE_ROOT/name).is_file()]
     if missing:raise RuntimeError('Bundled resources missing: '+', '.join(missing))

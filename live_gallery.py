@@ -2,21 +2,30 @@
 import bootstrap  # noqa: F401
 from pathlib import Path
 import time
+import json
+from candidate_status import red_reason
 import numpy as np
 from dynamics import kepler
 from ephemeris import AU,DAY,atomic_json
 
 
-def card_data(q,ep):
+class RenderPreempted(Exception):
+    """A newer user selection superseded optional background sampling."""
+
+
+def card_data(q,ep,cancel=None):
     card = dict(q)
     paths = []
     for s in q['segments']:
+        if cancel and cancel():raise RenderPreempted()
         r,v = np.array(s['r']),np.array(s['v'])
         paths.append([(kepler(r,v,float(t))[0]/AU).tolist()
                       for t in np.linspace(0,(s['end_jd']-s['start_jd'])*DAY,160)])
     dates = np.linspace(q['dates_jd_tdb'][0],q['dates_jd_tdb'][-1],250)
-    orbits = [dict(body=b,points=[(ep.state(b,d)[:3]/AU).tolist() for d in dates])
-              for b in dict.fromkeys(q['bodies'])]
+    orbits=[]
+    for body in dict.fromkeys(q['bodies']):
+        if cancel and cancel():raise RenderPreempted()
+        orbits.append(dict(body=body,points=[(ep.state(body,d)[:3]/AU).tolist() for d in dates]))
     card.update(paths=paths,planet_paths=orbits)
     return card
 
@@ -65,48 +74,84 @@ def summary_fields(q,keys):
     return fields
 
 
+def read_json(path,default=None):
+    try:return json.loads(Path(path).read_text(encoding='utf-8'))
+    except (OSError,ValueError):return default
+
+
+def plot_status(folder,q,config=None):
+    folder=Path(folder);identifier=q['id'];skip=red_reason(q,config)
+    error=read_json(folder/(identifier+'.plot_error.json'),{}).get('message')
+    ready=not skip and not error and not (folder/(identifier+'.render_pending.json')).exists() and (folder/(identifier+'.png')).is_file() and (folder/(identifier+'.card.json')).is_file()
+    return dict(image_ready=bool(ready),render_error=error,render_skipped=skip,render_pending=not (skip or error or ready))
+
+
 class LiveGallery:
-    def __init__(self,output,ep):
+    def __init__(self,output,ep,deferred=False,config=None):
         self.output,self.ep = Path(output),ep
+        self.deferred,self.config=deferred,config or {}
         self.folder = self.output/'candidates'
         self.folder.mkdir(parents=True,exist_ok=True)
 
+    def placeholder(self,q):
+        skip=red_reason(q,self.config);identifier=q['id'];path=self.folder/(identifier+'.card.json')
+        pending=self.folder/(identifier+'.render_pending.json')
+        error=self.folder/(identifier+'.plot_error.json')
+        if skip:
+            atomic_json(path,dict(q,paths=[],planet_paths=[],render_pending=False,render_skipped=skip,render_error=None))
+            pending.unlink(missing_ok=True)
+        elif not error.exists() and (not path.exists() or not (self.folder/(identifier+'.png')).exists()):
+            if not pending.exists() or not path.exists():
+                atomic_json(pending,dict(candidate_id=identifier))
+                atomic_json(path,dict(q,paths=[],planet_paths=[],render_pending=True,render_skipped=None,render_error=None))
+
+    def render(self,q,cancel=None):
+        identifier=q['id'];self.placeholder(q)
+        if red_reason(q,self.config):return 'skipped'
+        if plot_status(self.folder,q,self.config)['image_ready']:return 'ready'
+        try:
+            if cancel and cancel():raise RenderPreempted()
+            card=card_data(q,self.ep,cancel=cancel) if cancel else card_data(q,self.ep)
+            if cancel and cancel():raise RenderPreempted()
+            thumbnail(card,self.folder/(identifier+'.png'))
+            card.update(render_pending=False,render_skipped=None,render_error=None)
+            atomic_json(self.folder/(identifier+'.card.json'),card)
+            (self.folder/(identifier+'.render_pending.json')).unlink(missing_ok=True)
+            return 'ready'
+        except RenderPreempted:
+            return 'preempted'
+        except Exception as exc:
+            print(f'PLOT ERROR {identifier}: {exc}',flush=True)
+            atomic_json(self.folder/(identifier+'.plot_error.json'),dict(message=str(exc),candidate_id=identifier))
+            atomic_json(self.folder/(identifier+'.card.json'),dict(q,paths=[],planet_paths=[],render_pending=False,render_skipped=None,render_error=str(exc)))
+            (self.folder/(identifier+'.render_pending.json')).unlink(missing_ok=True)
+            return 'failed'
+
     def update(self,summary,progress,final=False):
-        rows = []
-        new_images = 0
         ordered = sorted(summary['candidates']+summary['near_misses'],key=lambda q:q.get('discovered_unix',0),reverse=True)
         keys = ('id','sequence','status','launch_date','arrival_date','duration_years','dates_jd_tdb','bodies',
                 'launch_c3_km2_s2','arrival_vinf_kms','total_dsm_kms','max_vinf_mismatch_mps',
                 'min_turn_margin_deg','screening_residual_norm','pareto_front','discovered_unix',
                 'periapsis_violation','powered_geometry_valid','powered_flyby_delta_v_kms','cruise_dsm_kms',
                 'max_single_dsm_kms','max_powered_flyby_kms','requested_min_c3','effective_min_c3',
-                'unresolved_flyby_count','maneuver_budget_complete','budget_complete','modeled_maneuver_total_kms','turnaround_delta_v_kms')
-        if final:
-            # Publish every retained candidate before potentially lengthy image
-            # rendering, so archive recovery does not hide the expanded list.
-            initial=[summary_fields(q,keys)|dict(image_ready=(self.folder/(q['id']+'.png')).is_file(),render_error=None) for q in ordered]
-            atomic_json(self.output/'live.json',dict(revision=time.time(),progress=progress,candidates=initial,
+                'unresolved_flyby_count','maneuver_budget_complete','budget_complete','modeled_maneuver_total_kms','turnaround_delta_v_kms',
+                'total_unresolved_vinf_mismatch_mps','unresolved_speed_mismatch_total_mps','modeled_plus_unresolved_mismatch_kms')
+        # Publish full scientific data for every candidate before spending time
+        # drawing any picture, so a click can immediately prioritize any row.
+        for q in ordered:
+            atomic_json(self.folder/(q['id']+'.json'),q)
+            self.placeholder(q)
+        def snapshot():
+            rows=[summary_fields(q,keys)|plot_status(self.folder,q,self.config) for q in ordered]
+            atomic_json(self.output/'live.json',dict(revision=time.time(),progress=progress,candidates=rows,
                         distinct_accepted=summary['distinct_accepted'],raw_accepted=summary['raw_accepted'],
                         model=summary['model'],nbody_validated=False))
+        snapshot()
+        if self.deferred:return
+        new_images=0
         for q in ordered:
-            identifier = q['id']
-            card_path = self.folder/(identifier+'.card.json')
-            image_path = self.folder/(identifier+'.png')
-            error_path = self.folder/(identifier+'.plot_error.json')
-            atomic_json(self.folder/(identifier+'.json'),q)
-            if not image_path.exists() and not error_path.exists() and (final or new_images < 8):
-                try:
-                    card = card_data(q,self.ep)
-                    atomic_json(card_path,card)
-                    thumbnail(card,image_path)
-                except Exception as exc:
-                    print(f'PLOT ERROR {identifier}: {exc}',flush=True)
-                    atomic_json(error_path,dict(message=str(exc),candidate_id=identifier))
-                    atomic_json(card_path,dict(q,paths=[],planet_paths=[],render_error=str(exc)))
-                new_images += 1
-            import json
-            error=json.loads(error_path.read_text()).get('message') if error_path.exists() else None
-            rows.append(summary_fields(q,keys)|dict(image_ready=image_path.exists(),render_error=error))
-        atomic_json(self.output/'live.json',dict(revision=time.time(),progress=progress,candidates=rows,
-                    distinct_accepted=summary['distinct_accepted'],raw_accepted=summary['raw_accepted'],
-                    model=summary['model'],nbody_validated=False))
+            status=plot_status(self.folder,q,self.config)
+            if not status['render_pending']:continue
+            if not final and new_images>=8:break
+            self.render(q);new_images+=1
+        snapshot()

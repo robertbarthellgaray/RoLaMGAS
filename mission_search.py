@@ -95,7 +95,7 @@ def normalize(config, config_dir=HERE):
              branch_families=16, workers=max(1,min(4,(os.cpu_count() or 2)-1)), batches=1,
              seed=502, keep=100, cache='cache', max_ephemeris_step_days=1., sequences=[],
              route_overrides={},target_object=None,custom_leg_days=[180,8000],search_objective='feasibility',cost_refinements=3,powered_flybys=False,
-             local_refinement=None,mercury_resonant_seeds=True,append_flyby=None,
+             local_refinement=None,mercury_resonant_seeds=True,earth_return_seeds=True,append_flyby=None,
              arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom',c3_seed_boundary='minimum')
     unknown = set(config)-set(c)-{'event_windows','launch_jd','event_windows_jd','arrival_window_jd','effective_min_c3'}
     if unknown:
@@ -104,6 +104,7 @@ def normalize(config, config_dir=HERE):
     if 'c3_seed_boundary' not in config:c['c3_seed_boundary']='maximum' if c['mission_profile']=='flyby' else 'minimum'
     if not isinstance(c['powered_flybys'],bool):raise ValueError('powered_flybys must be boolean')
     if not isinstance(c['mercury_resonant_seeds'],bool):raise ValueError('mercury_resonant_seeds must be boolean')
+    if not isinstance(c['earth_return_seeds'],bool):raise ValueError('earth_return_seeds must be boolean')
     local=c.get('local_refinement')
     if local:
         if not isinstance(local,dict) or len(c['sequences'])!=1 or not c.get('event_windows'):
@@ -351,6 +352,9 @@ def job_search(job):
         samples[:nsamples//2,offset:offset+3] = np.clip(rng.normal(.5,.06,(nsamples//2,3)),.001,.999)
     if model.extension:
         samples=np.array([model.expand_variables(model.active_variables(x)) for x in samples])
+    from earth_return_seeds import seed_departures
+    departure_seeds,departure_seed_stats=seed_departures(samples,model,branch)
+    for i,point in enumerate(departure_seeds):samples[i]=point
     from cost_refinement import boundary_seed,feasibility_refine
     ranked, accepted, near = [], [], []
     boundary_seeds=[]
@@ -415,7 +419,10 @@ def job_search(job):
     ranked.sort(key=lambda row:row[0])
     # Spread refinements across the good random starts, avoid identical basins.
     starts = [np.asarray(local['seed_x'])] if local and model.c3_in_bounds(model.launch_c3(local['seed_x'],branch)) else []
-    for x in boundary_seeds+root_seeds:
+    # Reserve a quarter of refinement slots for empirical low-energy Earth
+    # departures, even when the user starts ordinary C3 trials at the maximum.
+    priority_departures=departure_seeds[:max(1,nstarts//4)]
+    for x in priority_departures+boundary_seeds+root_seeds:
         if len(starts)<nstarts and all(np.linalg.norm(x[:model.n]-p[:model.n])>.01 for p in starts):starts.append(np.asarray(x))
     for score,x in ranked:
         if len(starts)>=nstarts:break
@@ -441,7 +448,7 @@ def job_search(job):
                     record(polished['x'],polished['cost_refinement'])
     return dict(job_id=identifier,sequence=route['id'],branch=branch,seed=seed,
                 random_evaluations=nsamples,valid_random_evaluations=valid,refinements=len(starts)+len(warm_starts),known_seed_refinements=len(warm_starts),mercury_resonant_seed_rows=resonant_rows,
-                appended_return_roots=len(root_seeds),
+                appended_return_roots=len(root_seeds),earth_return_departure_seeds=departure_seed_stats,
                 c3_seed_boundary=c.get('c3_seed_boundary','minimum'),c3_boundary_seed_count=len(boundary_seeds),
                 effective_min_c3=model.c3_minimum,c3_preflight_evaluations=model.c3_preflight_evaluations,
                 c3_pruned_evaluations=model.c3_pruned_evaluations,
@@ -502,7 +509,11 @@ def planned_jobs(c, routes):
     """
     for batch in range(c['batches']):
         for ri,route in enumerate(routes):
-            families = branch_families(route,c['branch_families'],c['seed'],preferred=(c.get('local_refinement') or {}).get('branches'))
+            preferred=(c.get('local_refinement') or {}).get('branches')
+            if preferred is None:
+                from earth_return_seeds import preferred_chain_branch
+                preferred=preferred_chain_branch(c,route)
+            families = branch_families(route,c['branch_families'],c['seed'],preferred=preferred)
             nsamples = max(8,math.ceil(c['samples_per_sequence']/len(families)))
             nstarts = max(1,math.ceil(c['refinements_per_sequence']/len(families)))
             for bi,branch in enumerate(families):
@@ -528,6 +539,11 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
         from candidate_archive import collect_candidates
         archive=collect_candidates(c,routes,ep,HERE/'runs',exclude=output)
         archive['accepted'].extend(online['accepted']);archive['near_misses']=online['near_misses']
+        from earth_return_seeds import verified_chain_seeds
+        chain_seeds=verified_chain_seeds(c,routes,ep)
+        archive['accepted'].extend(chain_seeds['accepted']);archive['chain_seed_stats']=chain_seeds['stats']
+        if chain_seeds['accepted']:
+            print(f"Revalidated {len(chain_seeds['accepted'])} complete EdvEVEEJ C3/DSM starters under the current limits.",flush=True)
         archive['database_status']=online.get('online_status','unknown');archive['downloaded_records']=online.get('downloaded_records',0)
         atomic_json(archive_path,archive)
     else:
@@ -537,7 +553,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     archive_hash=hashlib.sha256(archive_path.read_bytes()).hexdigest()
     if reused:print(f'Revalidated {len(reused)} compatible saved candidates against all current limits.',flush=True)
     engine_hashes = {name:hashlib.sha256((RESOURCE_ROOT/name).read_bytes()).hexdigest()
-                     for name in ('mission_search.py','dynamics.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py')}
+                     for name in ('mission_search.py','dynamics.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
     signature = hashlib.sha256(json.dumps([c,routes,ep.manifest,engine_hashes,archive_hash],sort_keys=True).encode()).hexdigest()
     manifest_path = output/'run_manifest.json'
     if resume:
@@ -592,8 +608,8 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     print(f'{len(routes)} routes; {total} branch jobs; {c["workers"]} CPU workers; {len(done)} completed checkpoints.',flush=True)
     initial = summarize(done,c,reused,reused_near)
     atomic_json(output/'results.json',initial)
-    publish(output,initial,ep)
-    live = LiveGallery(output,ep)
+    publish(output,initial,ep,deferred=managed,config=c)
+    live = LiveGallery(output,ep,deferred=managed,config=c)
     started = time.monotonic()
     progress = dict(state='running',completed_jobs=len(done),total_jobs=total,elapsed_seconds=0)
     live.update(initial,progress)
@@ -608,7 +624,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
         if not proceed:
             initial['database_first']=report;atomic_json(output/'results.json',initial)
             progress.update(state='finished',total_jobs=0,completed_jobs=0,elapsed_seconds=time.monotonic()-started,local_search_skipped=True)
-            live.update(initial,progress,final=True);publish(output,initial,ep)
+            live.update(initial,progress,final=True);publish(output,initial,ep,deferred=managed,config=c)
             print(f"Using {report['passing_matches']} verified database matches; local optimization skipped.",flush=True)
             return output/'index.html'
     print('Preparing local optimizer workers. Ctrl+C preserves completed jobs.',flush=True)
@@ -661,7 +677,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
                 atomic_json(output/'results.json',summary)
                 dirty = True
                 if time.monotonic()-last_gallery > 30:
-                    publish(output,summary,ep)
+                    publish(output,summary,ep,deferred=managed,config=c)
                     last_gallery = time.monotonic()
                 print(f'[{len(done)}/{total}] {result["sequence"]}: {len(result["accepted"])} accepted, '
                       f'{result["valid_random_evaluations"]}/{result["random_evaluations"]} valid samples; '
@@ -700,7 +716,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
         progress.update(state='failed' if (output/'run_error.json').exists() else 'stopped' if stopped else 'finished',completed_jobs=len(done),
                         elapsed_seconds=time.monotonic()-started)
         live.update(summary,progress,final=True)
-        publish(output,summary,ep)
+        publish(output,summary,ep,deferred=managed,config=c)
         progress_manager.shutdown()
         sharing.close()
     print(f'Saved {len(summary["candidates"])} accepted candidates and {len(summary["near_misses"])} diagnostics to {output}',flush=True)

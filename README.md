@@ -4,11 +4,11 @@
 
 ![RoLaMGAS orbital artwork](docs/images/RoLaMGAS.png)
 
-[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.2) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
+[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.3) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
 
 ## Browse before downloading
 
-The live GitHub Pages explorer combines 2,047 recovered historical passes with curated mission examples: 2,056 interactive entries after deduplication. New shared submissions join the same destination filters, playback, mission dates and downloads automatically. All seven planetary destinations and nine small-body targets are represented.
+The live GitHub Pages explorer combines curated mission examples with a shared trajectory library. New shared submissions join the destination filters, playback, mission dates and downloads automatically. Duplicate same-day encounter sequences share one public entry.
 
 Curated Lambert admission independently recomputes flyby speeds and turning geometry: excess-speed mismatch ≤1 m/s, each DSM ≤700 m/s, and inferred periapses above their stated floors. Coast endpoints and event states are cross-checked against the independent JPL cache. Integrated concepts have a separate Sun/eight-planet clearance audit. See [`docs/data/catalog_audit.json`](docs/data/catalog_audit.json).
 
@@ -24,8 +24,9 @@ API key or subscription is required.
 
 ## Desktop app
 
-Download the v0.2.2 package for your platform: Windows EXE, Apple Silicon or
+Download the v0.2.3 package for your platform: Windows ZIP, Apple Silicon or
 Intel Mac DMG, or Debian/Ubuntu x64 DEB. They open the same local browser GUI.
+On Windows, extract the ZIP and open RoLaMGAS.exe inside the folder.
 The Mac preview is unsigned/not notarized. See [platform instructions](SHARING.md).
 Python and the scientific dependencies are bundled. The eight-planet baseline
 is included, covering 2027–2100 at one-day cadence, with extra six-hour Mercury
@@ -35,6 +36,21 @@ Searches, exports and extra Horizons downloads are stored in
 `%LOCALAPPDATA%/RoLaMGAS`, separate from the executable. Updating the executable
 preserves your work. An internet connection is needed for targets or epochs not
 already cached. `ROLAMGAS_DATA_DIR` can select another data directory.
+
+## New in v0.2.3
+
+Complete EdvEVEEJ starters now include a solver-built Jupiter route at C3 6.25
+with a 493.9 m/s first-leg DSM, plus four higher-C3/lower-DSM tradeoffs. Select
+**Juice style low C3** to load a compatible example. Every starter is rechecked
+against the current limits; its reference launch is November 2033 and its last
+Earth flyby is about 204.5 km high. This is an original Sun-only design, not a
+reconstruction or an n-body validation of JUICE. See [seed details](JUICE_DEPARTURE_SEEDS.md).
+
+The results C3/time graph starts folded and supports filtering and candidate
+selection. Planet markers and paths have separate preview switches. Selected
+candidates get render priority; red trajectories skip rendering. Combined
+unresolved flyby speed mismatches count against the DSM screening budget.
+Efficiency ratings are removed; destination groups remain. See [preview details](PREVIEW_AND_RESULTS.md).
 
 ## New in v0.2.2
 
@@ -105,7 +121,7 @@ See `GUI_GUIDE.md`, `SHARING.md` and the original JPL response metadata for deta
 `python -m unittest discover -p "test_*.py"`
 
 Install `requirements-build.txt` and run
-`python build_release.py --native --version 0.2.2` on the target OS to build
+`python build_release.py --native --version 0.2.3` on the target OS to build
 the native EXE, DMG or DEB plus matching GPL source. GitHub Actions can build all
 three platforms; see [SHARING.md](SHARING.md).
 

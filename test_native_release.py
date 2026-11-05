@@ -50,6 +50,17 @@ class NativeReleaseTests(unittest.TestCase):
             self.assertEqual(Path(single[single.index('--distpath')+1]),root/'releases')
             with self.assertRaises(ValueError):build.pyinstaller_command('linux',windows_folder=True)
 
+    def test_custom_preview_destination_preserves_previous_trial(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)/'project';root.mkdir()
+            for name in build.DATA_FILES:
+                path=root/name
+                if name in ('examples','model_assets','gui_assets','departure_seeds','third_party_licenses'):path.mkdir()
+                else:path.touch()
+            destination=root/'releases/testing/0.2.3-test2/windows-folder'
+            with patch.object(build,'ROOT',root):command=build.pyinstaller_command('win32',windows_folder=True,output_directory=destination)
+            self.assertEqual(Path(command[command.index('--distpath')+1]),destination)
+
     def test_clean_source_archive_has_rebuild_inputs_without_private_runs(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)/'project';root.mkdir()

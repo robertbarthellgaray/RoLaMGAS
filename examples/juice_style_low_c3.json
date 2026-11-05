@@ -1,0 +1,50 @@
+{
+  "target": "Jupiter",
+  "target_object": null,
+  "powered_flybys": false,
+  "sequences": [
+    "EdvEVEEJ"
+  ],
+  "launch_start": "2029-01-01",
+  "launch_end": "2043-01-01",
+  "vinf_tolerance_mps": 20,
+  "min_c3": 6.25,
+  "c3_seed_boundary": "minimum",
+  "max_c3": 10,
+  "mission_profile": "custom",
+  "arrival_date": null,
+  "arrival_tolerance_days": 0,
+  "transfer_direction": "prograde",
+  "max_dsm_kms": 1.5,
+  "max_single_dsm_kms": 0.7,
+  "max_powered_flyby_kms": 0.2,
+  "max_arrival_vinf_kms": 15,
+  "max_years": 20,
+  "workers": 4,
+  "batches": 1,
+  "seed": 502,
+  "samples_per_sequence": 6000,
+  "refinements_per_sequence": 72,
+  "branch_families": 25,
+  "max_nfev": 350,
+  "keep": 100,
+  "max_ephemeris_step_days": 1,
+  "search_objective": "c3",
+  "cost_refinements": 3,
+  "custom_leg_days": [
+    180,
+    8000
+  ],
+  "minimum_altitude_km": {
+    "Mercury": 200.0,
+    "Venus": 300.0,
+    "Earth": 200.0,
+    "Mars": 200.0,
+    "Jupiter": 10000.0,
+    "Saturn": 10000.0,
+    "Uranus": 1000.0,
+    "Neptune": 1000.0
+  },
+  "mercury_resonant_seeds": true,
+  "cache": "../cache"
+}

@@ -4,7 +4,7 @@ VSVersionInfo(
   kids=[StringFileInfo([StringTable('040904B0',[
     StringStruct('CompanyName','Robert Barthell Garay'),
     StringStruct('FileDescription',"Robert's Lambert Multi Gravity Assist Solver"),
-    StringStruct('FileVersion','0.2.3-test1'),StringStruct('InternalName','RoLaMGAS'),
+    StringStruct('FileVersion','0.2.3'),StringStruct('InternalName','RoLaMGAS'),
     StringStruct('OriginalFilename','RoLaMGAS.exe'),StringStruct('ProductName','RoLaMGAS'),
-    StringStruct('ProductVersion','0.2.3-test1'),StringStruct('LegalCopyright','Robert Barthell Garay; GPL-3.0')
+    StringStruct('ProductVersion','0.2.3'),StringStruct('LegalCopyright','Robert Barthell Garay; GPL-3.0')
   ])]),VarFileInfo([VarStruct('Translation',[1033,1200])])])

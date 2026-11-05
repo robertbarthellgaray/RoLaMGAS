@@ -90,9 +90,8 @@ def body_ids(config,route):
 
 
 def quality(q,c):
-    if q.get('periapsis_violation') or (q.get('min_turn_margin_deg',0)<-1e-8 and q.get('powered_geometry_valid') is not True):return 'red'
-    if q.get('max_single_dsm_kms',0)>c['max_single_dsm_kms']+1e-9 or q.get('max_powered_flyby_kms',0)>c['max_powered_flyby_kms']+1e-9:return 'red'
-    if q.get('max_vinf_mismatch_mps',0)>1000*c['max_single_dsm_kms']+1e-6:return 'red'
+    from candidate_status import red_reason
+    if red_reason(q,c):return 'red'
     return 'pass' if q.get('status','').startswith('passes') else 'yellow'
 
 

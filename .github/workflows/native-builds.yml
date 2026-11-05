@@ -7,7 +7,7 @@ on:
     inputs:
       version:
         description: Package version (manual runs create downloadable Actions artifacts only)
-        default: '0.2.2'
+        default: '0.2.3'
         required: true
         type: string
 
@@ -46,7 +46,7 @@ jobs:
       - name: Test source and packaging contracts
         run: python -m unittest discover -p "test_*.py"
       - name: Test community API and browser contracts
-        run: node --test tools/test_gui_min_c3.mjs community_backend/worker.test.mjs community_backend/preview.test.mjs community_backend/library_analysis.test.mjs
+        run: node --test tools/test_gui_min_c3.mjs community_backend/worker.test.mjs community_backend/preview.test.mjs community_backend/library_analysis.test.mjs tools/test_preview_controls.mjs tools/test_results_chart.mjs
       - name: Build source and native download
         env:
           MANUAL_VERSION: ${{ inputs.version }}
@@ -57,7 +57,7 @@ jobs:
           python - <<'PY'
           import os, subprocess, sys
           from build_release import validate_version
-          version = os.environ['MANUAL_VERSION'] or '0.2.2'
+          version = os.environ['MANUAL_VERSION'] or '0.2.3'
           if os.environ['IS_TAG'] == 'true':
               tag = os.environ['RELEASE_TAG']
               version = tag.removeprefix('rolamgas-').removeprefix('v')
@@ -85,6 +85,7 @@ jobs:
           assert result['certificate_verification'] is True, result
           print(json.dumps(result, indent=2))
           subprocess.run([sys.executable, 'tools/smoke_frozen_seeded.py', '--app', str(app.resolve()), '--directory', str(output.parent / 'seeded')], check=True, timeout=240)
+          subprocess.run([sys.executable, 'tools/smoke_full_chain_seed.py', '--app', str(app.resolve()), '--directory', str(output.parent / 'full-chain')], check=True, timeout=300)
           PY
       - name: Name checksum manifest by platform
         shell: bash

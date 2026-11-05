@@ -2390,6 +2390,116 @@
       "provenance": "Analyst template; future feasibility must be searched"
     },
     {
+      "id": "EdvEVEEJ",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "target": "Jupiter",
+      "dsm_legs": [
+        0
+      ],
+      "leg_days": [
+        [
+          300,
+          1200
+        ],
+        [
+          90,
+          500
+        ],
+        [
+          45,
+          500
+        ],
+        [
+          300,
+          1200
+        ],
+        [
+          300,
+          1800
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "Earth-return DSM leveraging followed by Venus-Earth-Earth-Jupiter; includes a solver-built low-C3 reference family, not a flight reconstruction"
+    },
+    {
       "id": "ES",
       "bodies": [
         "Earth",

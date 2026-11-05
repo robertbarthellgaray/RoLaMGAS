@@ -279,6 +279,8 @@ class Model:
         total_dsm+=turnaround_dv
         powered_dv=sum(f.get('powered_flyby',{}).get('magnitude_kms',0.) for f in flybys)
         total_dsm+=powered_dv
+        mismatch_sum=sum(f['speed_mismatch_mps'] for f in flybys if not f.get('passes_powered_geometry'))
+        screening_total=total_dsm+mismatch_sum/1000.
         unresolved=[f for f in flybys if not f.get('passes_powered_geometry') and not (f['speed_matched_to_1_mm_s'] and f['passes_turn_screen'])]
         extension_source=None
         if self.extension:
@@ -300,6 +302,9 @@ class Model:
                     modeled_maneuver_total_kms=total_dsm,maneuver_budget_complete=not unresolved,budget_complete=not unresolved,
                     unresolved_flyby_count=len(unresolved),
                     unresolved_speed_mismatch_total_mps=sum(f['speed_mismatch_mps'] for f in unresolved),
+                    total_unresolved_vinf_mismatch_mps=mismatch_sum,modeled_plus_unresolved_mismatch_kms=screening_total,
+                    mismatch_screening_budget_exceeded=(mismatch_sum>1e-6 and screening_total>self.config['max_dsm_kms']+1e-9),
+                    mismatch_screening_note='Modeled burns plus unresolved excess-speed mismatch sum is a screening criterion, not an actual periapsis burn estimate. Construct powered flybys for physical burn vectors and costs.',
                     maneuver_budget_note=('Explicit designed DSM, target-turnaround impulses and full powered-periapsis vector burns only; unresolved flybys require physical retargeting or a powered-flyby construction, not a scalar mismatch sum.'),
                     max_single_dsm_kms=max((burn['magnitude_kms'] for burn in burns+event_burns),default=0.),
                     max_powered_flyby_kms=max((f.get('powered_flyby',{}).get('magnitude_kms',0.) for f in flybys),default=0.),
@@ -337,7 +342,7 @@ class Model:
             res.extend([max(min_c3+margin-q['launch_c3_km2_s2'],0.)/10 if min_c3>0 else 0.,
                         max(q['launch_c3_km2_s2']-(max_c3-margin), 0.)/10,
                         0. if self.extension else max(q['arrival_vinf_kms']-.999*self.config['max_arrival_vinf_kms'], 0.),
-                        max(q['total_dsm_kms']-.999*self.config['max_dsm_kms'], 0.)/0.5,
+                        max(q['modeled_plus_unresolved_mismatch_kms']-.999*self.config['max_dsm_kms'], 0.)/0.5,
                         max(q['duration_years']-.999*self.config['max_years'], 0.),
                         max(q['max_single_dsm_kms']-self.config.get('max_single_dsm_kms',float('inf')),0.)/.1,
                         max(q['max_powered_flyby_kms']-self.config.get('max_powered_flyby_kms',float('inf')),0.)/.1])
@@ -357,7 +362,7 @@ class Model:
                 and (not self.config.get('arrival_window_jd') or
                      self.config['arrival_window_jd'][0]-1e-8 <= q['dates_jd_tdb'][-1] <= self.config['arrival_window_jd'][1]+1e-8)
                 and ((allow_arrival_overrun and self.extension) or q['arrival_vinf_kms'] <= self.config['max_arrival_vinf_kms']+1e-9)
-                and q['total_dsm_kms'] <= self.config['max_dsm_kms']+1e-9
+                and q['total_dsm_kms']+sum(f.get('speed_mismatch_mps',0.) for f in q['flybys'] if not f.get('passes_powered_geometry'))/1000. <= self.config['max_dsm_kms']+1e-9
                 and max((burn['magnitude_kms'] for burn in q.get('dsms',[])+q.get('event_burns',[])),default=0.)<=self.config.get('max_single_dsm_kms',float('inf'))+1e-9
                 and max((f.get('powered_flyby',{}).get('magnitude_kms',0.) for f in q['flybys']),default=0.)<=self.config.get('max_powered_flyby_kms',float('inf'))+1e-9
                 and q['duration_years'] <= self.config['max_years']+1e-9)
