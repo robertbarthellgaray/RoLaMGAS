@@ -370,6 +370,10 @@
     "Mercury-Venus": [
       80,
       500
+    ],
+    "Uranus-Neptune": [
+      900,
+      6000
     ]
   },
   "conventions": {
