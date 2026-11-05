@@ -1,0 +1,2 @@
+Solver-built low-launch-energy EdvEVEEJ family, not the flown JUICE mission. Sun-only Lambert/Kepler arcs join at planet centers. Flyby altitudes are inferred from asymptotic turns, not resolved closest approaches. The first-leg DSM trades against C3. Finite-radius flyby targeting, lunar assists, launch injection and Jupiter capture are excluded.
+Columns: JD(TDB), x_km, y_km, z_km, vx_km_s, vy_km_s, vz_km_s. Sun-centered Ecliptic J2000.

@@ -1,0 +1,71 @@
+{
+  "target": "Mercury",
+  "sequences": [
+    "EVMeMeMe"
+  ],
+  "launch_start": "1973-11-03",
+  "launch_end": "1973-11-04",
+  "event_windows": [
+    [
+      "1973-11-03",
+      "1973-11-04"
+    ],
+    [
+      "1974-02-05",
+      "1974-02-06"
+    ],
+    [
+      "1974-03-29",
+      "1974-03-30"
+    ],
+    [
+      "1974-09-21",
+      "1974-09-22"
+    ],
+    [
+      "1975-03-16",
+      "1975-03-17"
+    ]
+  ],
+  "min_c3": 6.25,
+  "max_c3": 80.0,
+  "max_years": 12,
+  "max_dsm_kms": 1.5,
+  "max_single_dsm_kms": 0.7,
+  "max_powered_flyby_kms": 0.2,
+  "max_arrival_vinf_kms": 30,
+  "vinf_tolerance_mps": 20,
+  "powered_flybys": false,
+  "workers": 4,
+  "branch_families": 12,
+  "samples_per_sequence": 1200,
+  "refinements_per_sequence": 24,
+  "max_nfev": 250,
+  "keep": 100,
+  "search_objective": "feasibility",
+  "historical_mission_seeds": true,
+  "max_ephemeris_step_days": 1.0,
+  "cache": "../cache",
+  "route_overrides": {
+    "EVMeMeMe": {
+      "leg_days": [
+        [
+          92.0,
+          96.0
+        ],
+        [
+          50.0,
+          54.0
+        ],
+        [
+          174.0,
+          178.0
+        ],
+        [
+          174.0,
+          178.0
+        ]
+      ]
+    }
+  }
+}

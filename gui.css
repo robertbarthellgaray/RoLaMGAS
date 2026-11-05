@@ -20,3 +20,13 @@ td.failure{color:#ff9fad}
 
 .app-logo{width:48px;height:48px;object-fit:contain;flex:none;border-radius:9px}
 .results-chart{border:1px solid #29415b;border-radius:12px;background:#0b1728;padding:18px;margin:16px 0}.results-chart-head{display:flex;justify-content:space-between;gap:18px}.results-chart>summary{color:var(--text);font-size:18px;font-weight:600}.results-chart>summary::marker{color:var(--accent)}.results-chart[open]>summary{margin-bottom:14px}.chart-toggle-label{margin-left:12px;color:var(--muted);font-size:11px;font-weight:400}.chart-toggle-label::after{content:"Expand graph"}.results-chart[open] .chart-toggle-label::after{content:"Collapse graph"}.chart-year-controls{display:flex;align-items:end;gap:10px;flex-wrap:wrap}.chart-year-controls label{font-size:12px;margin:0;max-width:135px}.chart-year-controls input{width:100%}#resultsChart{display:block;width:100%;min-height:220px}#resultsChart text{fill:#b4c8dd;font:12px system-ui}#resultsChart circle{cursor:pointer}#resultsChart circle:focus{stroke:white;stroke-width:3;outline:none}.results-chart-legend{display:flex;flex-wrap:wrap;gap:10px 18px;color:#b4c8dd;font-size:12px}.results-chart-legend span{display:flex;align-items:center;gap:6px}.results-chart-legend i{width:9px;height:9px;border-radius:50%;display:inline-block}@media(max-width:800px){.results-chart-head{flex-direction:column}.results-chart{padding:12px}#resultsChart{min-height:170px}}
+
+/* Departure energy and sequence comparisons */
+.departure-estimate,.sequence-comparison {padding:16px 24px;border-top:1px solid #294052}
+.departure-estimate label {display:block;max-width:280px}.departure-estimate input {display:block;margin-top:7px;width:100%}
+.sequence-comparison {overflow:auto}.sequence-comparison summary {cursor:pointer;font-weight:600}.sequence-comparison table {width:100%;min-width:530px;font-variant-numeric:tabular-nums;border-collapse:collapse;margin:12px 0}
+.sequence-comparison th,.sequence-comparison td {padding:9px 10px;text-align:right;border-bottom:1px solid #294052}.sequence-comparison th:first-child,.sequence-comparison td:first-child {text-align:left}
+.chart-axis {min-width:200px}.chart-axis select {display:block;margin-top:6px}.playback {flex-wrap:wrap}.playback-note {padding:0 24px 14px;margin:0}
+@media(max-width:600px){.departure-estimate,.sequence-comparison{padding:14px}.chart-axis{width:100%}}
+
+.mission-name-editor{padding:16px 24px;border-top:1px solid #294052;display:flex;gap:12px;align-items:end;flex-wrap:wrap}.mission-name-editor label{flex:1;min-width:200px}.mission-name-editor input{display:block;width:100%;margin-top:6px}.mission-name-editor p{flex-basis:100%;margin:0}.card-title{overflow-wrap:anywhere}#candidateSearch{min-width:210px;max-width:330px}

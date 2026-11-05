@@ -1,0 +1,71 @@
+{
+  "target": "Jupiter",
+  "sequences": [
+    "EVEEJ"
+  ],
+  "launch_start": "1989-10-18",
+  "launch_end": "1989-10-19",
+  "event_windows": [
+    [
+      "1989-10-18",
+      "1989-10-19"
+    ],
+    [
+      "1990-02-10",
+      "1990-02-11"
+    ],
+    [
+      "1990-12-08",
+      "1990-12-09"
+    ],
+    [
+      "1992-12-08",
+      "1992-12-09"
+    ],
+    [
+      "1995-12-07",
+      "1995-12-08"
+    ]
+  ],
+  "min_c3": 6.25,
+  "max_c3": 80.0,
+  "max_years": 12,
+  "max_dsm_kms": 1.5,
+  "max_single_dsm_kms": 0.7,
+  "max_powered_flyby_kms": 0.2,
+  "max_arrival_vinf_kms": 30,
+  "vinf_tolerance_mps": 20,
+  "powered_flybys": false,
+  "workers": 4,
+  "branch_families": 12,
+  "samples_per_sequence": 1200,
+  "refinements_per_sequence": 24,
+  "max_nfev": 250,
+  "keep": 100,
+  "search_objective": "feasibility",
+  "historical_mission_seeds": true,
+  "max_ephemeris_step_days": 1.0,
+  "cache": "../cache",
+  "route_overrides": {
+    "EVEEJ": {
+      "leg_days": [
+        [
+          113.0,
+          117.0
+        ],
+        [
+          299.0,
+          303.0
+        ],
+        [
+          729.0,
+          733.0
+        ],
+        [
+          1092.0,
+          1096.0
+        ]
+      ]
+    }
+  }
+}

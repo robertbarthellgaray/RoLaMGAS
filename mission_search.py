@@ -95,7 +95,7 @@ def normalize(config, config_dir=HERE):
              branch_families=16, workers=max(1,min(4,(os.cpu_count() or 2)-1)), batches=1,
              seed=502, keep=100, cache='cache', max_ephemeris_step_days=1., sequences=[],
              route_overrides={},target_object=None,custom_leg_days=[180,8000],search_objective='feasibility',cost_refinements=3,powered_flybys=False,
-             local_refinement=None,mercury_resonant_seeds=True,earth_return_seeds=True,append_flyby=None,
+             local_refinement=None,mercury_resonant_seeds=True,earth_return_seeds=True,historical_mission_seeds=True,append_flyby=None,
              arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom',c3_seed_boundary='minimum')
     unknown = set(config)-set(c)-{'event_windows','launch_jd','event_windows_jd','arrival_window_jd','effective_min_c3'}
     if unknown:
@@ -105,6 +105,7 @@ def normalize(config, config_dir=HERE):
     if not isinstance(c['powered_flybys'],bool):raise ValueError('powered_flybys must be boolean')
     if not isinstance(c['mercury_resonant_seeds'],bool):raise ValueError('mercury_resonant_seeds must be boolean')
     if not isinstance(c['earth_return_seeds'],bool):raise ValueError('earth_return_seeds must be boolean')
+    if not isinstance(c['historical_mission_seeds'],bool):raise ValueError('historical_mission_seeds must be boolean')
     local=c.get('local_refinement')
     if local:
         if not isinstance(local,dict) or len(c['sequences'])!=1 or not c.get('event_windows'):
@@ -354,7 +355,10 @@ def job_search(job):
         samples=np.array([model.expand_variables(model.active_variables(x)) for x in samples])
     from earth_return_seeds import seed_departures
     departure_seeds,departure_seed_stats=seed_departures(samples,model,branch)
-    for i,point in enumerate(departure_seeds):samples[i]=point
+    from historical_seeds import seed_missions
+    historical_points,historical_stats=seed_missions(samples,model,branch)
+    departure_seeds=departure_seeds+historical_points
+    for i,point in enumerate(departure_seeds[:len(samples)]):samples[i]=point
     from cost_refinement import boundary_seed,feasibility_refine
     ranked, accepted, near = [], [], []
     boundary_seeds=[]
@@ -448,7 +452,7 @@ def job_search(job):
                     record(polished['x'],polished['cost_refinement'])
     return dict(job_id=identifier,sequence=route['id'],branch=branch,seed=seed,
                 random_evaluations=nsamples,valid_random_evaluations=valid,refinements=len(starts)+len(warm_starts),known_seed_refinements=len(warm_starts),mercury_resonant_seed_rows=resonant_rows,
-                appended_return_roots=len(root_seeds),earth_return_departure_seeds=departure_seed_stats,
+                appended_return_roots=len(root_seeds),earth_return_departure_seeds=departure_seed_stats,historical_mission_seeds=historical_stats,
                 c3_seed_boundary=c.get('c3_seed_boundary','minimum'),c3_boundary_seed_count=len(boundary_seeds),
                 effective_min_c3=model.c3_minimum,c3_preflight_evaluations=model.c3_preflight_evaluations,
                 c3_pruned_evaluations=model.c3_pruned_evaluations,
@@ -553,7 +557,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     archive_hash=hashlib.sha256(archive_path.read_bytes()).hexdigest()
     if reused:print(f'Revalidated {len(reused)} compatible saved candidates against all current limits.',flush=True)
     engine_hashes = {name:hashlib.sha256((RESOURCE_ROOT/name).read_bytes()).hexdigest()
-                     for name in ('mission_search.py','dynamics.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
+                     for name in ('mission_search.py','dynamics.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','historical_seeds.py','departure_seeds/historical_missions.json','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
     signature = hashlib.sha256(json.dumps([c,routes,ep.manifest,engine_hashes,archive_hash],sort_keys=True).encode()).hexdigest()
     manifest_path = output/'run_manifest.json'
     if resume:

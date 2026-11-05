@@ -1,0 +1,147 @@
+{
+  "scope": "Initialization only: first-leg solves under hard C3 bounds; downstream flybys remain unsolved.",
+  "rows": [
+    {
+      "sequence": "EMEJ",
+      "launch_years": [
+        2030,
+        2036
+      ],
+      "c3_bounds": [
+        6.25,
+        80
+      ],
+      "ordinary_in_range_first_legs": 19,
+      "ordinary_samples": 64,
+      "historical_seed_stats": {
+        "source": "NASA mission timing + JPL Horizons Earth-RTN departures",
+        "attempted": 1,
+        "retained": 1,
+        "missions": [
+          "Europa Clipper"
+        ]
+      },
+      "seed_c3_km2_s2": [
+        40.606708329100975
+      ],
+      "elapsed_seconds": 0.031000000002677552,
+      "full_mission_validated": false
+    },
+    {
+      "sequence": "EVEEJ",
+      "launch_years": [
+        2030,
+        2036
+      ],
+      "c3_bounds": [
+        6.25,
+        80
+      ],
+      "ordinary_in_range_first_legs": 8,
+      "ordinary_samples": 64,
+      "historical_seed_stats": {
+        "source": "NASA mission timing + JPL Horizons Earth-RTN departures",
+        "attempted": 3,
+        "retained": 3,
+        "missions": [
+          "Galileo",
+          "Mariner 10",
+          "Cassini"
+        ]
+      },
+      "seed_c3_km2_s2": [
+        12.790830449988682,
+        17.57681871221357,
+        13.184190422736574
+      ],
+      "elapsed_seconds": 0.06300000000192085,
+      "full_mission_validated": false
+    },
+    {
+      "sequence": "EVdvVEJS",
+      "launch_years": [
+        2030,
+        2036
+      ],
+      "c3_bounds": [
+        6.25,
+        80
+      ],
+      "ordinary_in_range_first_legs": 9,
+      "ordinary_samples": 64,
+      "historical_seed_stats": {
+        "source": "NASA mission timing + JPL Horizons Earth-RTN departures",
+        "attempted": 3,
+        "retained": 3,
+        "missions": [
+          "Cassini",
+          "Galileo",
+          "Mariner 10"
+        ]
+      },
+      "seed_c3_km2_s2": [
+        13.184190422736574,
+        12.790830449988682,
+        17.57681871221357
+      ],
+      "elapsed_seconds": 0.0629999999946449,
+      "full_mission_validated": false
+    },
+    {
+      "sequence": "EdvEJ",
+      "launch_years": [
+        2030,
+        2036
+      ],
+      "c3_bounds": [
+        6.25,
+        80
+      ],
+      "ordinary_in_range_first_legs": 16,
+      "ordinary_samples": 64,
+      "historical_seed_stats": {
+        "source": "NASA mission timing + JPL Horizons Earth-RTN departures",
+        "attempted": 1,
+        "retained": 1,
+        "missions": [
+          "Juno"
+        ]
+      },
+      "seed_c3_km2_s2": [
+        31.097281214484426
+      ],
+      "elapsed_seconds": 0.014999999999417923,
+      "full_mission_validated": false
+    },
+    {
+      "sequence": "EVMeMeMe",
+      "launch_years": [
+        2030,
+        2036
+      ],
+      "c3_bounds": [
+        6.25,
+        80
+      ],
+      "ordinary_in_range_first_legs": 8,
+      "ordinary_samples": 64,
+      "historical_seed_stats": {
+        "source": "NASA mission timing + JPL Horizons Earth-RTN departures",
+        "attempted": 3,
+        "retained": 3,
+        "missions": [
+          "Mariner 10",
+          "Galileo",
+          "Cassini"
+        ]
+      },
+      "seed_c3_km2_s2": [
+        17.57681871221357,
+        12.790830449988682,
+        13.184190422736574
+      ],
+      "elapsed_seconds": 0.06300000000192085,
+      "full_mission_validated": false
+    }
+  ]
+}

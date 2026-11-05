@@ -1,0 +1,79 @@
+{
+  "target": "Saturn",
+  "sequences": [
+    "EVdvVEJS"
+  ],
+  "launch_start": "1997-10-15",
+  "launch_end": "1997-10-16",
+  "event_windows": [
+    [
+      "1997-10-15",
+      "1997-10-16"
+    ],
+    [
+      "1998-04-26",
+      "1998-04-27"
+    ],
+    [
+      "1999-06-24",
+      "1999-06-25"
+    ],
+    [
+      "1999-08-18",
+      "1999-08-19"
+    ],
+    [
+      "2000-12-30",
+      "2000-12-31"
+    ],
+    [
+      "2004-07-01",
+      "2004-07-02"
+    ]
+  ],
+  "min_c3": 6.25,
+  "max_c3": 80.0,
+  "max_years": 12,
+  "max_dsm_kms": 1.5,
+  "max_single_dsm_kms": 0.7,
+  "max_powered_flyby_kms": 0.2,
+  "max_arrival_vinf_kms": 30,
+  "vinf_tolerance_mps": 20,
+  "powered_flybys": false,
+  "workers": 4,
+  "branch_families": 12,
+  "samples_per_sequence": 1200,
+  "refinements_per_sequence": 24,
+  "max_nfev": 250,
+  "keep": 100,
+  "search_objective": "feasibility",
+  "historical_mission_seeds": true,
+  "max_ephemeris_step_days": 1.0,
+  "cache": "../cache",
+  "route_overrides": {
+    "EVdvVEJS": {
+      "leg_days": [
+        [
+          191.0,
+          195.0
+        ],
+        [
+          422.0,
+          426.0
+        ],
+        [
+          53.0,
+          57.0
+        ],
+        [
+          498.0,
+          502.0
+        ],
+        [
+          1277.0,
+          1281.0
+        ]
+      ]
+    }
+  }
+}

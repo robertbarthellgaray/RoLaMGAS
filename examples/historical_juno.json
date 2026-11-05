@@ -1,0 +1,55 @@
+{
+  "target": "Jupiter",
+  "sequences": [
+    "EdvEJ"
+  ],
+  "launch_start": "2011-08-05",
+  "launch_end": "2011-08-06",
+  "event_windows": [
+    [
+      "2011-08-05",
+      "2011-08-06"
+    ],
+    [
+      "2013-10-09",
+      "2013-10-10"
+    ],
+    [
+      "2016-07-05",
+      "2016-07-06"
+    ]
+  ],
+  "min_c3": 6.25,
+  "max_c3": 80.0,
+  "max_years": 12,
+  "max_dsm_kms": 1.5,
+  "max_single_dsm_kms": 0.7,
+  "max_powered_flyby_kms": 0.2,
+  "max_arrival_vinf_kms": 30,
+  "vinf_tolerance_mps": 20,
+  "powered_flybys": false,
+  "workers": 4,
+  "branch_families": 12,
+  "samples_per_sequence": 1200,
+  "refinements_per_sequence": 24,
+  "max_nfev": 250,
+  "keep": 100,
+  "search_objective": "feasibility",
+  "historical_mission_seeds": true,
+  "max_ephemeris_step_days": 1.0,
+  "cache": "../cache",
+  "route_overrides": {
+    "EdvEJ": {
+      "leg_days": [
+        [
+          794.0,
+          798.0
+        ],
+        [
+          998.0,
+          1002.0
+        ]
+      ]
+    }
+  }
+}

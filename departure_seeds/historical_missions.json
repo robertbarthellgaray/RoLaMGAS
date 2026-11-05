@@ -1,0 +1,628 @@
+{
+  "schema_version": 1,
+  "kind": "Historical timing and departure initialization; not machine learning or mission validation",
+  "missions": [
+    {
+      "name": "Europa Clipper",
+      "horizons_id": "-159",
+      "sequence": "EMEJ",
+      "bodies": [
+        "Earth",
+        "Mars",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "2024-10-14",
+        "2025-03-01",
+        "2026-12-03",
+        "2030-04-11"
+      ],
+      "sources": [
+        "https://science.nasa.gov/mission/europa-clipper/mission-timeline/"
+      ],
+      "note": "Future encounter dates are planned Horizons-era values, not flown navigation validation.",
+      "planet_leg_days": [
+        138.0,
+        642.0,
+        1225.0
+      ],
+      "departure": {
+        "selected": {
+          "jd_tdb": 2460600.0,
+          "position_km": [
+            -544845.7556852698,
+            846779.0116612904,
+            198124.5443494488
+          ],
+          "velocity_kms": [
+            -3.476193811448288,
+            5.263481668611207,
+            1.27960937843473
+          ],
+          "c3_km2_s2": 40.64873695639275,
+          "vinf_kms": 6.375636200128796,
+          "vinf_vector_kms": [
+            -3.443721609380469,
+            5.213672857405523,
+            1.2677277978460821
+          ],
+          "finite_speed_squared_km2_s2": 41.42556285193571,
+          "distance_km": 1026228.4965600991,
+          "eccentricity": 1.7064265415749535
+        },
+        "samples": [
+          {
+            "jd_tdb": 2460600.0,
+            "position_km": [
+              -544845.7556852698,
+              846779.0116612904,
+              198124.5443494488
+            ],
+            "velocity_kms": [
+              -3.476193811448288,
+              5.263481668611207,
+              1.27960937843473
+            ],
+            "c3_km2_s2": 40.64873695639275,
+            "vinf_kms": 6.375636200128796,
+            "vinf_vector_kms": [
+              -3.443721609380469,
+              5.213672857405523,
+              1.2677277978460821
+            ],
+            "finite_speed_squared_km2_s2": 41.42556285193571,
+            "distance_km": 1026228.4965600991,
+            "eccentricity": 1.7064265415749535
+          },
+          {
+            "jd_tdb": 2460601.0,
+            "position_km": [
+              -844741.983819291,
+              1300454.726142864,
+              308440.9294356405
+            ],
+            "velocity_kms": [
+              -3.467356505653481,
+              5.240341664094657,
+              1.274519063596653
+            ],
+            "c3_km2_s2": 40.60393729038172,
+            "vinf_kms": 6.372121882888126,
+            "vinf_vector_kms": [
+              -3.446154680270174,
+              5.20800306628556,
+              1.26675146401885
+            ],
+            "finite_speed_squared_km2_s2": 41.10814073721517,
+            "distance_km": 1581109.5221158413,
+            "eccentricity": 1.7834073928402392
+          },
+          {
+            "jd_tdb": 2460603.0,
+            "position_km": [
+              -1443333.659131572,
+              2203175.549877484,
+              528080.8598609251
+            ],
+            "velocity_kms": [
+              -3.460863270975642,
+              5.208430488770608,
+              1.268063538407293
+            ],
+            "c3_km2_s2": 40.41653952710615,
+            "vinf_kms": 6.357400374925756,
+            "vinf_vector_kms": [
+              -3.448285811677524,
+              5.189367716106154,
+              1.2634584263539699
+            ],
+            "finite_speed_squared_km2_s2": 40.71330787418148,
+            "distance_km": 2686273.2455414026,
+            "eccentricity": 2.1004819662597694
+          }
+        ],
+        "earth_reference_state_km_kms": [
+          139010229.6945107,
+          54178057.47175632,
+          -3656.807086348534,
+          -11.30592572788356,
+          27.6308458491742,
+          -0.002597469063619684
+        ],
+        "direction_rtn": [
+          -0.20631622672805464,
+          0.9580528142376384,
+          0.19891812315633522
+        ],
+        "reference_launch_jd_tdb": 2460598.0,
+        "reference_epoch_note": "Noon TDB on published launch day; approximate orientation reference, not an exact launch/separation epoch.",
+        "frame": "Geometric Ecliptic J2000",
+        "time_scale": "TDB",
+        "source_urls": [
+          "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27-159%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TLIST=%272460600.0%0A2460601.0%0A2460603.0%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+          "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27399%27&CENTER=%27500%4010%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TLIST=%272460598.0%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27"
+        ],
+        "limitations": "Earth-only outgoing osculating asymptote. Perturbations cause epoch dependence; not definitive delivered C3. Direction is rotated through the Earth RTN basis for each trial launch."
+      }
+    },
+    {
+      "name": "Galileo",
+      "horizons_id": "-77",
+      "sequence": "EVEEJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "1989-10-18",
+        "1990-02-10",
+        "1990-12-08",
+        "1992-12-08",
+        "1995-12-07"
+      ],
+      "sources": [
+        "https://science.nasa.gov/mission/galileo/"
+      ],
+      "note": "VEEGA cruise; individual trajectory corrections are not copied as designed DSMs.",
+      "planet_leg_days": [
+        115.0,
+        301.0,
+        731.0,
+        1094.0
+      ],
+      "departure": {
+        "selected": {
+          "jd_tdb": 2447820.0,
+          "position_km": [
+            320573.0593216676,
+            -362632.9702924265,
+            305469.4791573799
+          ],
+          "velocity_kms": [
+            2.400924279443084,
+            -2.575638477718788,
+            2.101579983484944
+          ],
+          "c3_km2_s2": 15.42212712311937,
+          "vinf_kms": 3.927101618639295,
+          "vinf_vector_kms": [
+            2.301463402944686,
+            -2.4661611718420224,
+            2.010831271520416
+          ],
+          "finite_speed_squared_km2_s2": 16.814989390509425,
+          "distance_km": 572347.2374377658,
+          "eccentricity": 1.2654578727693948
+        },
+        "samples": [
+          {
+            "jd_tdb": 2447820.0,
+            "position_km": [
+              320573.0593216676,
+              -362632.9702924265,
+              305469.4791573799
+            ],
+            "velocity_kms": [
+              2.400924279443084,
+              -2.575638477718788,
+              2.101579983484944
+            ],
+            "c3_km2_s2": 15.42212712311937,
+            "vinf_kms": 3.927101618639295,
+            "vinf_vector_kms": [
+              2.301463402944686,
+              -2.4661611718420224,
+              2.010831271520416
+            ],
+            "finite_speed_squared_km2_s2": 16.814989390509425,
+            "distance_km": 572347.2374377658,
+            "eccentricity": 1.2654578727693948
+          },
+          {
+            "jd_tdb": 2447821.0,
+            "position_km": [
+              526207.9175241427,
+              -583115.9916691697,
+              485249.9234833643
+            ],
+            "velocity_kms": [
+              2.364957566180622,
+              -2.534467410652578,
+              2.065461022045481
+            ],
+            "c3_km2_s2": 15.419204156067197,
+            "vinf_kms": 3.9267294477805823,
+            "vinf_vector_kms": [
+              2.3022518893043444,
+              -2.4661552942355813,
+              2.009208416012532
+            ],
+            "finite_speed_squared_km2_s2": 16.282678579084116,
+            "distance_km": 923247.8109619458,
+            "eccentricity": 1.2730802012642433
+          },
+          {
+            "jd_tdb": 2447823.0,
+            "position_km": [
+              932401.0288840038,
+              -1017821.785653332,
+              839303.2173028477
+            ],
+            "velocity_kms": [
+              2.341341617147052,
+              -2.50125777752892,
+              2.036518228912532
+            ],
+            "c3_km2_s2": 15.39210015495981,
+            "vinf_kms": 3.9232767114951006,
+            "vinf_vector_kms": [
+              2.305004664995376,
+              -2.4620224932912356,
+              2.0043699488461133
+            ],
+            "finite_speed_squared_km2_s2": 15.885577534526721,
+            "distance_km": 1615476.0154794615,
+            "eccentricity": 1.3206374638490395
+          }
+        ],
+        "earth_reference_state_km_kms": [
+          134804370.6654364,
+          63524959.69575366,
+          1654.870949760079,
+          -13.17159374155302,
+          26.83146972404481,
+          0.000958551544943731
+        ],
+        "direction_rtn": [
+          0.26244213904015995,
+          -0.8178726147121063,
+          0.5120629939372764
+        ],
+        "reference_launch_jd_tdb": 2447818.0,
+        "reference_epoch_note": "Noon TDB on published launch day; approximate orientation reference, not an exact launch/separation epoch.",
+        "frame": "Geometric Ecliptic J2000",
+        "time_scale": "TDB",
+        "source_urls": [
+          "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27-77%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TLIST=%272447820.0%0A2447821.0%0A2447823.0%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+          "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27399%27&CENTER=%27500%4010%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TLIST=%272447818.0%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27"
+        ],
+        "limitations": "Earth-only outgoing osculating asymptote. Perturbations cause epoch dependence; not definitive delivered C3. Direction is rotated through the Earth RTN basis for each trial launch."
+      }
+    },
+    {
+      "name": "Mariner 10",
+      "horizons_id": null,
+      "sequence": "EVMeMeMe",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Mercury",
+        "Mercury",
+        "Mercury"
+      ],
+      "dates": [
+        "1973-11-03",
+        "1974-02-05",
+        "1974-03-29",
+        "1974-09-21",
+        "1975-03-16"
+      ],
+      "sources": [
+        "https://science.nasa.gov/mission/mariner-10/"
+      ],
+      "note": "NASA encounter timing only. No matching Horizons spacecraft was returned by lookup; no empirical launch vector is invented.",
+      "planet_leg_days": [
+        94.0,
+        52.0,
+        176.0,
+        176.0
+      ]
+    },
+    {
+      "name": "Cassini",
+      "horizons_id": "-82",
+      "sequence": "EVdvVEJS",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Earth",
+        "Jupiter",
+        "Saturn"
+      ],
+      "dates": [
+        "1997-10-15",
+        "1998-04-26",
+        "1999-06-24",
+        "1999-08-18",
+        "2000-12-30",
+        "2004-07-01"
+      ],
+      "dsm_event": {
+        "leg_index": 1,
+        "date": "1998-12-03"
+      },
+      "sources": [
+        "https://science.nasa.gov/mission/cassini/the-journey/timeline/",
+        "https://solarsystem.nasa.gov/system/downloadable_items/1946_trajectory.pdf"
+      ],
+      "note": "One ideal DSM on the Venus-return leg; the flown mission includes additional corrections.",
+      "planet_leg_days": [
+        193.0,
+        424.0,
+        55.0,
+        500.0,
+        1279.0
+      ],
+      "dsm_fraction": 0.5212264150943396,
+      "departure": {
+        "selected": {
+          "jd_tdb": 2450739.0,
+          "position_km": [
+            717080.5240104352,
+            -374448.1103569321,
+            113011.9807251915
+          ],
+          "velocity_kms": [
+            3.722230320818244,
+            -1.83539843763989,
+            0.5924664215433505
+          ],
+          "c3_km2_s2": 16.598715992425298,
+          "vinf_kms": 4.074152180813242,
+          "vinf_vector_kms": [
+            3.6179672636346645,
+            -1.782500830417893,
+            0.5759510927611137
+          ],
+          "finite_speed_squared_km2_s2": 17.57470244676602,
+          "distance_km": 816815.5073530305,
+          "eccentricity": 1.2859039254607456
+        },
+        "samples": [
+          {
+            "jd_tdb": 2450739.0,
+            "position_km": [
+              717080.5240104352,
+              -374448.1103569321,
+              113011.9807251915
+            ],
+            "velocity_kms": [
+              3.722230320818244,
+              -1.83539843763989,
+              0.5924664215433505
+            ],
+            "c3_km2_s2": 16.598715992425298,
+            "vinf_kms": 4.074152180813242,
+            "vinf_vector_kms": [
+              3.6179672636346645,
+              -1.782500830417893,
+              0.5759510927611137
+            ],
+            "finite_speed_squared_km2_s2": 17.57470244676602,
+            "distance_km": 816815.5073530305,
+            "eccentricity": 1.2859039254607456
+          },
+          {
+            "jd_tdb": 2450740.0,
+            "position_km": [
+              1037162.150377244,
+              -532149.8856644238,
+              163948.0656802764
+            ],
+            "velocity_kms": [
+              3.691152005418003,
+              -1.816992511530003,
+              0.5871952673296061
+            ],
+            "c3_km2_s2": 16.59365449051444,
+            "vinf_kms": 4.0735309610354555,
+            "vinf_vector_kms": [
+              3.61834705880957,
+              -1.780406329718809,
+              0.5756495058764257
+            ],
+            "finite_speed_squared_km2_s2": 17.270863196031744,
+            "distance_km": 1177186.3893318307,
+            "eccentricity": 1.2991086607173452
+          },
+          {
+            "jd_tdb": 2450742.0,
+            "position_km": [
+              1672659.749489844,
+              -844157.6559791726,
+              264908.8119088941
+            ],
+            "velocity_kms": [
+              3.669375818257882,
+              -1.795518640589246,
+              0.5819033908861153
+            ],
+            "c3_km2_s2": 16.605517394705878,
+            "vinf_kms": 4.074986796875037,
+            "vinf_vector_kms": [
+              3.6238286335573204,
+              -1.7728848057817936,
+              0.5746850396034442
+            ],
+            "finite_speed_squared_km2_s2": 17.026817640643916,
+            "distance_km": 1892239.272486083,
+            "eccentricity": 1.3977541684725465
+          }
+        ],
+        "earth_reference_state_km_kms": [
+          138089321.3126044,
+          56366552.3664135,
+          702.733292363584,
+          -11.7394759309231,
+          27.45557094641789,
+          0.001283766203584946
+        ],
+        "direction_rtn": [
+          0.6568288538581871,
+          -0.7406639266520166,
+          0.14139591399950702
+        ],
+        "reference_launch_jd_tdb": 2450737.0,
+        "reference_epoch_note": "Noon TDB on published launch day; approximate orientation reference, not an exact launch/separation epoch.",
+        "frame": "Geometric Ecliptic J2000",
+        "time_scale": "TDB",
+        "source_urls": [
+          "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27-82%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TLIST=%272450739.0%0A2450740.0%0A2450742.0%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+          "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27399%27&CENTER=%27500%4010%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TLIST=%272450737.0%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27"
+        ],
+        "limitations": "Earth-only outgoing osculating asymptote. Perturbations cause epoch dependence; not definitive delivered C3. Direction is rotated through the Earth RTN basis for each trial launch."
+      }
+    },
+    {
+      "name": "Juno",
+      "horizons_id": "-61",
+      "sequence": "EdvEJ",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "2011-08-05",
+        "2013-10-09",
+        "2016-07-05"
+      ],
+      "dsm_event": {
+        "leg_index": 0,
+        "date": "2012-09-07"
+      },
+      "sources": [
+        "https://www.jpl.nasa.gov/news/press_kits/juno/overview/"
+      ],
+      "note": "The two actual 2012-08-30 and 2012-09-14 DSMs are represented by a midpoint timing guess for a single ideal impulse; it is not their measured combined burn.",
+      "planet_leg_days": [
+        796.0,
+        1000.0
+      ],
+      "dsm_fraction": 0.5012562814070352,
+      "departure": {
+        "selected": {
+          "jd_tdb": 2455781.0,
+          "position_km": [
+            471954.3181209698,
+            771822.0416105882,
+            -8606.411856437102
+          ],
+          "velocity_kms": [
+            2.872883938360471,
+            4.870738329177794,
+            -0.03914178562389248
+          ],
+          "c3_km2_s2": 31.097931704634604,
+          "vinf_kms": 5.576551954804564,
+          "vinf_vector_kms": [
+            2.8324940392712765,
+            4.8034807319810655,
+            -0.03849778713031851
+          ],
+          "finite_speed_squared_km2_s2": 31.979086073993084,
+          "distance_km": 904723.2795910629,
+          "eccentricity": 1.5269990653832652
+        },
+        "samples": [
+          {
+            "jd_tdb": 2455781.0,
+            "position_km": [
+              471954.3181209698,
+              771822.0416105882,
+              -8606.411856437102
+            ],
+            "velocity_kms": [
+              2.872883938360471,
+              4.870738329177794,
+              -0.03914178562389248
+            ],
+            "c3_km2_s2": 31.097931704634604,
+            "vinf_kms": 5.576551954804564,
+            "vinf_vector_kms": [
+              2.8324940392712765,
+              4.8034807319810655,
+              -0.03849778713031851
+            ],
+            "finite_speed_squared_km2_s2": 31.979086073993084,
+            "distance_km": 904723.2795910629,
+            "eccentricity": 1.5269990653832652
+          },
+          {
+            "jd_tdb": 2455782.0,
+            "position_km": [
+              719370.5003261864,
+              1191554.290978108,
+              -11970.60642540635
+            ],
+            "velocity_kms": [
+              2.8560314588964,
+              4.848546468902202,
+              -0.03878082453236553
+            ],
+            "c3_km2_s2": 31.094087455302233,
+            "vinf_kms": 5.576207264378023,
+            "vinf_vector_kms": [
+              2.8298489486241185,
+              4.804640358236652,
+              -0.03838503975225498
+            ],
+            "finite_speed_squared_km2_s2": 31.666822507661323,
+            "distance_km": 1391919.1213953781,
+            "eccentricity": 1.5626751850993812
+          },
+          {
+            "jd_tdb": 2455784.0,
+            "position_km": [
+              1210909.128083453,
+              2027642.833483676,
+              -18644.79145537305
+            ],
+            "velocity_kms": [
+              2.833597303256024,
+              4.830935297356637,
+              -0.0385319527002046
+            ],
+            "c3_km2_s2": 31.031151215286748,
+            "vinf_kms": 5.570561122121069,
+            "vinf_vector_kms": [
+              2.8182081739492313,
+              4.804933541706935,
+              -0.03830878948919852
+            ],
+            "finite_speed_squared_km2_s2": 31.368694235644963,
+            "distance_km": 2361775.604265137,
+            "eccentricity": 1.7776339949850977
+          }
+        ],
+        "earth_reference_state_km_kms": [
+          102688369.5234262,
+          -111748703.1641658,
+          3197.106208354235,
+          21.44328236927156,
+          20.05406330878975,
+          -0.00129019795600982
+        ],
+        "direction_rtn": [
+          -0.290571871719197,
+          0.9568286101765171,
+          -0.006855516995623291
+        ],
+        "reference_launch_jd_tdb": 2455779.0,
+        "reference_epoch_note": "Noon TDB on published launch day; approximate orientation reference, not an exact launch/separation epoch.",
+        "frame": "Geometric Ecliptic J2000",
+        "time_scale": "TDB",
+        "source_urls": [
+          "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27-61%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TLIST=%272455781.0%0A2455782.0%0A2455784.0%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+          "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27399%27&CENTER=%27500%4010%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TLIST=%272455779.0%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&OUT_UNITS=%27KM-S%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27"
+        ],
+        "limitations": "Earth-only outgoing osculating asymptote. Perturbations cause epoch dependence; not definitive delivered C3. Direction is rotated through the Earth RTN basis for each trial launch."
+      }
+    }
+  ]
+}

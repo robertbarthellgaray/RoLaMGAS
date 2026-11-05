@@ -1,13 +1,17 @@
-import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName} from './community.js?v=20261104b';
-import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,resolveAlias,filterStateFromHash,filterHash} from './library_analysis.js?v=20261104b';
+import './mission_metrics.js?v=20261105b';
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261105b';
+import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261105b';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
 const colors = ['#79d8f1', '#ffd08a', '#8ae3bd', '#b4aeff', '#ff9f9a', '#9ed2ff'];
 const catalog = [];
+const missionNames=(()=>{try{const data=JSON.parse(localStorage.getItem('rolamgas-mission-names')||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?Object.fromEntries(Object.entries(data).filter(([id,label])=>typeof label==='string'&&label.length<=100)):{}}catch{return {}}})();
+const missionName=c=>missionNames[c.id]||(/^(?:Rebuilding|Low-energy|Tianwen|Claudius)/.test(c.title)?c.title:'');
 const cache = new Map(), sharedRecords = new Map(), previewCache = new Map(), encounterDays=new Map();
 let duplicateAliases={}, displayAliases={}, pendingHashTarget=null;
 let sharedEndpoint='', sharedSince='1970-01-01T00:00:00.000Z', sharedBusy=false, curatedAliases={}, visibleCount=48;
+let planetEphemerides=null,planetLoad=null,animatePlanets=false;
 let destination = 'All', smallBodyTarget = 'All', selected = null, requestVersion = 0, playing = false, lastTick = 0, fraction = 0;
 let yaw = -.35, pitch = .65, zoom = 1, view = '3d', framePending = false;
 const canvas = $('orbit'), ctx = canvas.getContext('2d');
@@ -21,7 +25,7 @@ async function fetchJson(path) {
 const previewHidden={markers:new Set(),orbits:new Set()};
 function bodyVisible(body,layer){return $(layer==='orbits'?'planet-arcs':'planet-markers').checked&&!previewHidden[layer].has(body)}
 function renderBodyVisibility(c){
- const bodies=[...new Set([...c.events.map(e=>e.body),...c.planet_paths.map(p=>p.body)])].filter(Boolean),orbits=new Set(c.planet_paths.map(p=>p.body));
+ const bodies=[...new Set([...c.events.map(e=>e.body),...c.planet_paths.map(p=>p.body),...movingBodyNames(c)])].filter(Boolean),orbits=new Set([...c.planet_paths.map(p=>p.body),...(planetEphemerides?movingBodyNames(c):[])]);
  $('body-visibility-options').innerHTML=bodies.map(body=>`<div class="body-visibility-row"><span>${escapeHtml(body)}</span><label><input type="checkbox" data-preview-body="${escapeHtml(body)}" data-preview-layer="markers" ${previewHidden.markers.has(body)?'':'checked'}> Body</label><label><input type="checkbox" data-preview-body="${escapeHtml(body)}" data-preview-layer="orbits" ${previewHidden.orbits.has(body)?'':'checked'} ${orbits.has(body)?'':'disabled'}> Orbit${orbits.has(body)?'':' (unavailable)'}</label></div>`).join('');
 }
 function category(c){return bodyCategory(c.target,c.target_id)}
@@ -47,8 +51,8 @@ function maximumYear(){return $('launch-year-max').value.trim()===''?Infinity:Nu
 function targetRows(){return catalog.filter(c=>targetMatches(c)&&(!CATEGORIES.includes(destination)||smallBodyTarget==='All'||c.target===smallBodyTarget))}
 function visibleRows(){
  const search=$('search').value.trim().toLowerCase().replace(/\s+/g,'');
- return targetRows().filter(c=>`${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
-  &&(!c.community||c.classification!=='yellow'||$('include-yellow').checked)&&c.c3<=maximum('max-c3')&&c.vinf<=maximum('max-vinf')&&c.burns_mps<=maximum('max-burns')&&launchYear(c)>=minimumYear()&&launchYear(c)<=maximumYear());
+ return targetRows().filter(c=>`${missionName(c)} ${c.id} ${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
+  &&(!c.community||c.classification!=='yellow'||$('include-yellow').checked)&&c.c3<=maximum('max-c3')&&c.vinf<=maximum('max-vinf')&&c.burns_mps<=maximum('max-burns')&&c.years<=maximum('max-years')&&launchYear(c)>=minimumYear()&&launchYear(c)<=maximumYear());
 }
 function renderList() {
   const rows=visibleRows(),sort=$('sort').value;
@@ -58,7 +62,7 @@ function renderList() {
   $('candidate-more').textContent=`Show ${Math.min(48,Math.max(0,rows.length-visibleCount))} more (${Math.min(visibleCount,rows.length)} of ${rows.length})`;
   $('candidate-list').innerHTML = rows.length ? rows.slice(0,visibleCount).map(c => `<button type="button" class="candidate-card" data-id="${c.id}" aria-pressed="${c.id === selected?.id}" aria-label="Inspect ${escapeHtml(c.title)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}">
     <div class="card-preview"><img loading="lazy" src="${c.community ? sharedPreview(c.id) : `images/${c.id}.svg`}" width="320" height="220" alt="${escapeHtml(c.sequence)} heliocentric trajectory preview"><span class="card-badge">${c.spotlight ? 'Integrated concept' : escapeHtml(c.model)}</span></div>
-    <div class="card-title">${escapeHtml(c.sequence)}<b aria-hidden="true">↗</b></div><p class="card-subtitle">${escapeHtml(c.target)} · ${c.launch_date} → ${c.arrival_date}</p>
+    <div class="card-title">${escapeHtml(missionName(c)||c.sequence)}<b aria-hidden="true">↗</b></div><p class="card-subtitle">${escapeHtml(c.target)} · ${c.launch_date} → ${c.arrival_date}</p>
     <div class="card-metrics"><div><span>C3 · km²/s²</span>${fmt(c.c3,1)}</div><div><span>Δv · m/s</span>${fmt(c.burns_mps,0)}</div><div><span>FLIGHT · yr</span>${fmt(c.years,1)}</div></div></button>`).join('')
     : '<p class="empty">No saved examples match these filters. Try raising a limit, changing launch years or choosing another destination.</p>';
   drawTradeoff(rows);
@@ -70,19 +74,67 @@ function drawTradeoff(rows=visibleRows()){
  if(!target){chart.hidden=true;$('tradeoff-status').textContent='Choose a planet or a named small body to compare its trajectories.';return}
  chart.hidden=false;
  if(!rows.length){$('tradeoff-svg').innerHTML='';$('tradeoff-legend').innerHTML='';$('tradeoff-status').textContent=minimumYear()>maximumYear()?'The first launch year must be at or before the last year.':'No trajectories match this target and launch-year range.';return}
- const all=targetRows(),years=all.map(launchYear);for(const id of ['launch-year-min','launch-year-max']){$(id).min=Math.min(...years);$(id).max=Math.max(...years)}
- const palette=sequenceColors(all),w=1000,h=340,left=74,right=22,top=22,bottom=56,maxX=Math.max(1,...rows.map(c=>c.c3))*1.06,maxY=Math.max(.1,...rows.map(c=>c.years))*1.08;
+ const all=targetRows(),vertical=c=>$('chart-metric').value==='vinf'?c.vinf:c.years,verticalLabel=$('chart-metric').value==='vinf'?'Arrival V∞ (km/s)':'Flight time (years)';
+ const palette=sequenceColors(all),w=1000,h=340,left=74,right=22,top=22,bottom=56,maxX=Math.max(1,...rows.map(c=>c.c3))*1.06,maxY=Math.max(.1,...rows.map(vertical))*1.08;
  let svg='';
  for(let i=0;i<=5;i++){const x=left+(w-left-right)*i/5,y=h-bottom-(h-top-bottom)*i/5;svg+=`<path d="M${x},${top}V${h-bottom}M${left},${y}H${w-right}" stroke="#26394a" stroke-width="1"/><text x="${x}" y="${h-bottom+22}" text-anchor="middle">${fmt(maxX*i/5,1)}</text><text x="${left-10}" y="${y+4}" text-anchor="end">${fmt(maxY*i/5,maxY<1?2:1)}</text>`}
- svg+=`<text class="axis-label" x="${(left+w-right)/2}" y="${h-5}" text-anchor="middle">Launch C3 (km²/s²)</text><text class="axis-label" transform="translate(17 ${(top+h-bottom)/2}) rotate(-90)" text-anchor="middle">Flight time (years)</text>`;
- svg+=rows.map(c=>`<circle class="tradeoff-point" data-candidate="${escapeHtml(c.id)}" tabindex="0" role="button" aria-pressed="${c.id===selected?.id}" aria-label="${escapeHtml(c.sequence)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}, ${fmt(c.years)} years; open trajectory and downloads" cx="${left+c.c3/maxX*(w-left-right)}" cy="${h-bottom-c.years/maxY*(h-top-bottom)}" r="5" fill="${palette.get(c.sequence)}"><title>${escapeHtml(c.sequence)} · launch ${c.launch_date} · C3 ${fmt(c.c3)} km²/s² · ${fmt(c.years,3)} years</title></circle>`).join('');
- $('tradeoff-svg').innerHTML=svg;
+ svg+=`<text class="axis-label" x="${(left+w-right)/2}" y="${h-5}" text-anchor="middle">Launch C3 (km²/s²)</text><text class="axis-label" transform="translate(17 ${(top+h-bottom)/2}) rotate(-90)" text-anchor="middle">${verticalLabel}</text>`;
+ svg+=rows.map(c=>`<circle class="tradeoff-point" data-candidate="${escapeHtml(c.id)}" tabindex="0" role="button" aria-pressed="${c.id===selected?.id}" aria-label="${escapeHtml(c.sequence)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}, ${fmt(c.years)} years, arrival V∞ ${fmt(c.vinf)} km/s; open trajectory and downloads" cx="${left+c.c3/maxX*(w-left-right)}" cy="${h-bottom-vertical(c)/maxY*(h-top-bottom)}" r="5" fill="${palette.get(c.sequence)}"><title>${escapeHtml(c.sequence)} · launch ${c.launch_date} · C3 ${fmt(c.c3)} km²/s² · ${fmt(c.years,3)} years · arrival V∞ ${fmt(c.vinf,3)} km/s</title></circle>`).join('');
+ $('tradeoff-svg').innerHTML=svg;$('tradeoff-svg').setAttribute('aria-label',`Launch C3 versus ${verticalLabel}; select a point to inspect and download`);
  $('tradeoff-legend').innerHTML=[...palette].filter(([sequence])=>rows.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<span><i class="sequence-swatch" style="background:${color}"></i>${escapeHtml(sequence)}</span>`).join('');
  $('tradeoff-status').textContent=`${target} · ${rows.length} trajectories · ${Math.min(...rows.map(launchYear))}–${Math.max(...rows.map(launchYear))} launches. Select a dot to inspect and download.`;
 }
 
+
+function updateParkingEstimate(){
+ if(!selected)return;
+ const estimate=globalThis.MissionMetrics.parkingInjection(selected.c3,Number($('parking-altitude').value),selected.bodies[0]);
+ $('parking-delta-v').textContent=estimate?`Ideal departure Δv: ${fmt(estimate.deltaVKms,4)} km/s from a ${fmt(estimate.altitudeKm,1)} km circular ${estimate.body} orbit. C3 ${fmt(selected.c3,3)} km²/s².`:'Enter a positive altitude above a supported departure planet.';
+}
+function renderSequenceComparison(){
+ if(!selected)return;
+ const stats=globalThis.MissionMetrics.compare(catalog,selected);
+ if(stats.n<2){$('sequence-statistics').textContent=`Only ${stats.n} matching saved candidate${stats.n===1?'':'s'}. At least two are needed for comparison.`;return;}
+ const rows=[['c3','C3 · km²/s²',selected.c3],['years','Flight · years',selected.years],['vinf','Arrival V∞ · km/s',selected.vinf]];
+ $('sequence-statistics').innerHTML=`<p class="quiet">${stats.n} saved candidates · ${escapeHtml(selected.sequence)} · ${escapeHtml(selected.target)}</p><table><thead><tr><th>Metric</th><th>Selected</th><th>Mean</th><th>Median</th><th>σ</th><th>Percentile</th></tr></thead><tbody>${rows.map(([key,label,value])=>{const d=stats[key];return d?`<tr><td>${label}</td><td>${fmt(value,3)}</td><td>${fmt(d.mean,3)}</td><td>${fmt(d.median,3)}</td><td>${fmt(d.stddev,3)}</td><td>${fmt(d.percentile,1)}%</td></tr>`:''}).join('')}</tbody></table>`;
+}
+function movingBodyNames(c){return [...new Set(c.bodies)].filter(body=>bodyColors[body]);}
+function planetPosition(body,jd){
+ const segment=planetEphemerides?.bodies[body]?.segments.find(s=>s.start<=jd&&jd<=s.end);
+ return globalThis.MissionMetrics.ephemerisPosition(segment,jd);
+}
+function attachPlanetContext(c){
+ if(!planetEphemerides)return;
+ // Shared records contain no planet context. Add sampled JPL orbit arcs for display only.
+ for(const body of movingBodyNames(c)){
+  if(c.planet_paths.some(p=>p.body===body))continue;
+  const table=planetEphemerides.bodies[body],middle=(c.start+c.end)/2;
+  const segment=table?.segments.find(s=>s.start<=middle&&middle<=s.end);if(!segment)continue;
+  const start=Math.max(segment.start,middle-table.period_days/2),end=Math.min(segment.end,middle+table.period_days/2);
+  c.planet_paths.push({body,points:Array.from({length:300},(_,i)=>planetPosition(body,start+(end-start)*i/299))});
+ }
+}
+function updateAnimationStatus(){
+ if(!selected)return;
+ if(!animatePlanets){$('planet-animation-status').textContent='Play the spacecraft alone, or animate planets at the same TDB epoch.';return;}
+ const missing=movingBodyNames(selected).filter(body=>!planetPosition(body,currentJd()));
+ $('planet-animation-status').textContent=missing.length?`No cached JPL playback coverage for ${missing.join(', ')} at this date; those moving markers are omitted. Encounter markers remain fixed.`:'Planets and spacecraft share the timeline’s TDB date. JPL planet positions are interpolated for display; fixed markers show encounter locations.';
+}
+async function togglePlanetAnimation(){
+ if(animatePlanets){animatePlanets=false;$('animate-planets').textContent='Animate planets';$('animate-planets').setAttribute('aria-pressed','false');updateAnimationStatus();drawSoon();return;}
+ const button=$('animate-planets');button.disabled=true;$('planet-animation-status').textContent='Loading compact JPL planet playback data…';
+ try{
+  if(!planetLoad)planetLoad=fetchJson('data/planet_playback.json?v=20261105b').catch(error=>{planetLoad=null;throw error});
+  planetEphemerides=await planetLoad;animatePlanets=true;button.textContent='Planets animated ✓';button.setAttribute('aria-pressed','true');
+  if(selected){attachPlanetContext(selected);renderBodyVisibility(selected);$('planet-arcs').disabled=false;$('planet-arcs').title='Dated JPL ephemeris context, interpolated for display';updateAnimationStatus();if(fraction>=1)fraction=0;setPlaying(true);updateTime();}
+ }catch(error){$('planet-animation-status').textContent='Planet animation unavailable: '+error.message;}
+ finally{button.disabled=false;drawSoon();}
+}
+$('save-mission-name').addEventListener('click',()=>{if(!selected)return;const name=$('mission-name').value.trim();if(name.length>100||/[\u0000-\u001f\u007f]/.test(name)){$('mission-name-status').textContent='Use at most 100 characters, without control characters.';return;}if(name)missionNames[selected.id]=name;else delete missionNames[selected.id];try{localStorage.setItem('rolamgas-mission-names',JSON.stringify(missionNames));$('mission-name-status').textContent=name?'Saved. Search this name in the trajectory library.':'Custom name cleared.';$('mission-title').textContent=name||selected.title;renderList()}catch{$('mission-name-status').textContent='Browser storage unavailable; name is retained for this visit only.';}});
+$('parking-altitude').addEventListener('input',updateParkingEstimate);
+$('animate-planets').addEventListener('click',togglePlanetAnimation);
 function canonicalId(id){return resolveAlias(id,{...duplicateAliases,...curatedAliases,...displayAliases})}
-function updateLocation(id){const hash=filterHash({target:selectedTarget()||destination,mission:id,launchMin:$('launch-year-min').value,launchMax:$('launch-year-max').value});history.replaceState(null,'',`${location.pathname}${location.search}${hash}`)}
+function updateLocation(id){const hash=withMissionFilters(filterHash({target:selectedTarget()||destination,mission:id,launchMin:$('launch-year-min').value,launchMax:$('launch-year-max').value}),{metric:$('chart-metric').value,maxYears:$('max-years').value,maxC3:$('max-c3').value,maxVinf:$('max-vinf').value,maxBurns:$('max-burns').value});history.replaceState(null,'',`${location.pathname}${location.search}${hash}`)}
 function applyTargetHash(target){if(!target)return false;if(CATEGORIES.includes(target)||target==='All'||Object.keys(bodyColors).includes(target)){destination=target;smallBodyTarget='All';return true}const row=catalog.find(c=>c.target===target);if(row){destination=category(row);smallBodyTarget=target;return true}return false}
 function setPlaying(value) {
   playing = value;
@@ -95,6 +147,7 @@ function julianDate(jd) {
 }
 function currentJd() { return selected ? selected.start + fraction * (selected.end - selected.start) : 0; }
 function updateTime() {
+  updateAnimationStatus();
   $('time').value = Math.round(fraction * 1000);
   $('clock').textContent = selected ? julianDate(currentJd()) : '—';
   drawSoon();
@@ -117,11 +170,11 @@ async function selectCandidate(id) {
     let c = cache.get(id);
     if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json`); cache.set(id, c); }
     if (token !== requestVersion) return;
-    selected = c; renderBodyVisibility(c); fraction = 0; zoom = 1; setView('3d');
+    selected = c; attachPlanetContext(c); renderBodyVisibility(c); fraction = 0; zoom = 1; setView('3d');
     updateLocation(c.id);
     document.querySelectorAll('[data-candidate]').forEach(p=>p.setAttribute('aria-pressed',p.dataset.candidate===c.id));
     $('model-label').textContent = c.model.toUpperCase();
-    $('mission-title').textContent = c.title;
+    $('mission-title').textContent = missionNames[c.id]||c.title;$('mission-name').value=missionNames[c.id]||'';$('mission-name-status').textContent='Saved in this browser. Naming does not mark a trajectory validated.';
     $('mission-dates').textContent = `${c.launch_date} → ${c.arrival_date} (TDB) · ${fmt(c.years,3)} years / ${fmt(c.end-c.start,1)} days · ${c.bodies.join(' → ')}`;
     $('mission-id').textContent = c.id;
     const metrics = [ ['Launch C3', fmt(c.c3), 'km²/s²'], ['Cruise Δv', fmt(c.burns_mps,1), 'm/s'], ['Arrival V∞', fmt(c.vinf), 'km/s'], ['Flight time', fmt(c.years), 'years'] ];
@@ -134,7 +187,7 @@ async function selectCandidate(id) {
       if (f) detail = `${fmt(f.altitude_km,0)} km inferred altitude · ${fmt(f.mismatch_mps,3)} m/s |ΔV∞|${f.powered_mps ? ` · ${fmt(f.powered_mps,1)} m/s powered` : ''}`;
       return `<tr><td><i class="event-dot ${e.burn?'burn-dot':''}"></i>${escapeHtml(e.burn ? e.kind : e.body)}</td><td>${escapeHtml(e.date.replace('T',' ').replace(/\.[0-9]+(?= TDB)/,'').replace(' TDB',''))}</td><td>${e.jd.toFixed(6)}</td><td>${escapeHtml(detail)}</td></tr>`;
     }).join('');
-    $('model-note').textContent = c.note;
+    $('model-note').textContent = c.note;updateParkingEstimate();renderSequenceComparison();updateAnimationStatus();
     const labels = {source:'Data source', coordinates:'Coordinates', time_scale:'Time scale', plot_units:'Preview units', candidate_id:'Candidate', speed_tolerance_mps:'Saved speed tolerance (m/s)', sha256:'XYZV SHA-256', export_units:'Export columns', ephemerides:'Ephemerides', planet_arcs:'Planet context',target_horizons_id:'Horizons target ID',target_ephemeris:'Target representation'};
     $('provenance').innerHTML = Object.entries(labels).filter(([key]) => c.provenance[key] != null).map(([key,label]) => `<dt>${label}</dt><dd>${escapeHtml(c.provenance[key])}</dd>`).join('');
     if(c.validation) {
@@ -144,8 +197,8 @@ async function selectCandidate(id) {
     if(c.integration_validation) {
       $('provenance').innerHTML += `<dt>JPL clearance audit</dt><dd>Passed · Sun and eight planetary surfaces</dd><dt>Audit scope</dt><dd>${escapeHtml(c.integration_validation.scope)}</dd>`;
     }
-    $('planet-arcs').disabled=Boolean(c.community);
-    $('planet-arcs').title=c.community?'This shared record contains encounter markers, without full planet ephemeris arcs.':'';
+    $('planet-arcs').disabled=Boolean(c.community)&&!planetEphemerides;
+    $('planet-arcs').title=c.community&&!planetEphemerides?'Enable planet animation to load dated JPL context.':'';
     const files = c.trajectory_files;
     for (const [name,key] of [['download-csv','csv'],['download-xyzv','xyzv'],['download-state-readme','readme']]) {
       const link=$(name); link.hidden=!files?.[key];
@@ -204,7 +257,8 @@ function draw() {
   // A fixed background keeps the scientific curve readable while dragging.
   for (let i=0; i<65; i++) { ctx.fillStyle = i%3 ? '#96abc12c' : '#96abc155'; ctx.fillRect((i*179+23)%w, (i*i*37+19)%h, 1, 1); }
   if (!selected) return;
-  const all = [[0,0], ...selected.paths.flatMap(p => p.points.map(rotated))];
+  const context=animatePlanets?selected.planet_paths.filter(p=>bodyVisible(p.body,'markers')||bodyVisible(p.body,'orbits')).flatMap(p=>p.points.map(rotated)):[];
+  const all = [[0,0], ...selected.paths.flatMap(p => p.points.map(rotated)),...context];
   const xs = all.map(p => p[0]), ys = all.map(p => p[1]);
   const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
   const center = [(minX+maxX)/2, (minY+maxY)/2];
@@ -234,7 +288,16 @@ function draw() {
     let dy = -10;
     while (used.some(p => Math.abs(p[0]-x)<55 && Math.abs(p[1]-(y+dy))<13)) dy += 14;
     used.push([x,y+dy]); ctx.fillStyle = '#c5d6e4'; ctx.font = '10px Segoe UI, sans-serif';
-    ctx.fillText(e.body, x+7, y+dy);
+    ctx.fillText(animatePlanets?`${e.body} encounter`:e.body, x+7, y+dy);
+  }
+  if(animatePlanets&&planetEphemerides){
+    for(const body of movingBodyNames(selected)){
+      if(!bodyVisible(body,'markers'))continue;
+      const position=planetPosition(body,currentJd());if(!position)continue;
+      const [x,y]=dot(position,bodyColors[body]||'#e7eff6',5);
+      ctx.strokeStyle='#08121e';ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,6,0,2*Math.PI);ctx.stroke();
+      ctx.fillStyle=bodyColors[body]||'#e7eff6';ctx.fillText(body+' now',x+8,y+15);
+    }
   }
   for (const b of selected.burns) {
     const [x,y] = project(b.position_au); ctx.strokeStyle = '#b7f2ff'; ctx.lineWidth = 1;
@@ -258,15 +321,15 @@ $('destinations').addEventListener('click', e => {
 });
 $('small-body-options').addEventListener('click',e=>{const b=e.target.closest('[data-small-body]');if(!b)return;pendingHashTarget=null;smallBodyTarget=b.dataset.smallBody;visibleCount=48;makeDestinations();renderList();if(selected)updateLocation(selected.id);});
 $('candidate-list').addEventListener('click', e => { const b=e.target.closest('[data-id]'); if (b) selectCandidate(b.dataset.id); });
-for (const id of ['search','max-c3','max-vinf','max-burns','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
+for (const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
 $('sort').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('include-yellow').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('candidate-more').onclick=()=>{const top=$('candidate-list').scrollTop;visibleCount+=48;renderList();$('candidate-list').scrollTop=top};
 $('community-refresh').onclick=()=>syncShared();
-$('reset-years').onclick=()=>{$('launch-year-min').value='';$('launch-year-max').value='';visibleCount=48;renderList();if(selected)updateLocation(selected.id)};
+$('chart-metric').onchange=()=>{drawTradeoff();if(selected)updateLocation(selected.id)};
 function selectPoint(e){const point=e.target.closest('[data-candidate]');if(!point)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();selectCandidate(point.dataset.candidate);$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
 $('tradeoff-svg').addEventListener('click',selectPoint);$('tradeoff-svg').addEventListener('keydown',selectPoint);
-$('clear-filters').addEventListener('click', () => { ['search','max-c3','max-vinf','max-burns'].forEach(id => $(id).value=''); renderList(); });
+$('clear-filters').addEventListener('click', () => { ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'].forEach(id => $(id).value=''); renderList();if(selected)updateLocation(selected.id); });
 document.querySelector('.projection').addEventListener('click', e => { if (e.target.dataset.view) setView(e.target.dataset.view); });
 $('reset-view').addEventListener('click', () => { zoom=1; setView('3d'); });
 $('planet-arcs').addEventListener('change', drawSoon);
@@ -327,17 +390,18 @@ function updateCounts(){if(pendingHashTarget&&applyTargetHash(pendingHashTarget)
 async function syncShared(){
  if(sharedBusy||!sharedEndpoint)return;sharedBusy=true;$('community-refresh').disabled=true;
  try{const result=await fetchUpdates(sharedEndpoint,sharedSince);sharedSince=result.watermark;const added=addShared(result.records);
-  if(added){updateCounts();renderList()}
+  if(added){updateCounts();renderList();renderSequenceComparison()}
   $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · live shared library connected · checked ${new Date().toLocaleTimeString()}`;
  }catch{$('community-status').textContent='Showing the complete saved archive. Live service unavailable; retrying automatically.'}
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings]=await Promise.all([fetchJson('data/index.json'),fetchJson('data/community_seed_catalog.json?v=20261104b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({}))]);
+ const [data,archive,settings,names]=await Promise.all([fetchJson('data/index.json?v=20261105b'),fetchJson('data/community_seed_catalog.json?v=20261105b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261105b').catch(()=>({}))]);
+ registerBodyNames(names);
  catalog.push(...data.cases.filter(c=>c.c3<=250));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
  const filters=filterStateFromHash(location.hash),initial=canonicalId(filters.mission||'claudius-uop-2045');
- $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;
+ $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;const missionFilters=missionFiltersFromHash(location.hash);$('chart-metric').value=missionFilters.metric;for(const [id,key]of [['max-years','maxYears'],['max-c3','maxC3'],['max-vinf','maxVinf'],['max-burns','maxBurns']])$(id).value=missionFilters[key];
  if(filters.target){pendingHashTarget=filters.target;if(applyTargetHash(filters.target))pendingHashTarget=null;makeDestinations()}
  if(filters.mission&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))await syncShared();
  if(pendingHashTarget&&applyTargetHash(pendingHashTarget)){pendingHashTarget=null;makeDestinations()}

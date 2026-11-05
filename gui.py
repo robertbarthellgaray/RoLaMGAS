@@ -64,6 +64,21 @@ class App:
             raise ValueError('Invalid run identifier')
         return HERE/'runs'/name
 
+    def name_candidate(self,name,identifier,label):
+        """Persist a local display alias without modifying science or public uploads."""
+        if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
+        if not isinstance(label,str) or len(label)>100 or any(ord(c)<32 or ord(c)==127 for c in label):
+            raise ValueError('Use a mission name of at most 100 characters, without control characters')
+        root=self.folder(name)
+        if not (root/'candidates'/(identifier+'.json')).is_file():raise ValueError('Candidate not found')
+        with self.lock:
+            path=root/'candidate_names.json';names=read_json(path,{})
+            label=label.strip()
+            if label:names[identifier]=label
+            else:names.pop(identifier,None)
+            atomic_json(path,names)
+        return dict(candidate=identifier,name=label,names=names)
+
     def catalog(self):
         rows = []
         for p in sorted((HERE/'runs').iterdir(),key=lambda p:p.stat().st_mtime,reverse=True):
@@ -297,7 +312,7 @@ class App:
                       candidates=[dict(q,**plot_status(output/'candidates',q,request)) for q in hydrated])
         limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years')}
         limits['effective_min_c3']=max(float(request.get('min_c3') if request.get('min_c3') is not None else DEFAULT_MIN_C3),DEFAULT_MIN_C3)
-        return dict(run=name,status=status or dict(state='finished'),live=live,log=logs,
+        return dict(run=name,status=status or dict(state='finished'),live=live,log=logs,candidate_names=read_json(output/'candidate_names.json',{}),
                     heartbeat=read_json(output/'heartbeat.json'),database=read_json(output/'database_first.json',{}),
                     limits=limits,
                     active=name==self.active and self.process is not None and self.process.poll() is None)
@@ -613,7 +628,7 @@ class Handler(BaseHTTPRequestHandler):
                     raise ValueError('File is outside this run')
             elif url.path in ('/gui_assets/launch_mass_c3.png','/gui_assets/rolamgas-icon.png'):
                 path=RESOURCE_ROOT/'gui_assets'/url.path.rsplit('/',1)[-1]
-            elif url.path in ('/','/gui.html','/gui.js','/gui.css'):
+            elif url.path in ('/','/gui.html','/gui.js','/mission_metrics.js','/gui.css'):
                 path = RESOURCE_ROOT/('gui.html' if url.path=='/' else url.path[1:])
             else:
                 self.send_error(404)
@@ -668,6 +683,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.database_decision(value['run'],value.get('run_local')))
             if self.path=='/api/stop':
                 return self.json(self.app.stop(value['run']))
+            if self.path=='/api/name-candidate':
+                return self.json(self.app.name_candidate(value['run'],value['candidate'],value.get('name','')))
             if self.path=='/api/render-candidate':
                 return self.json(self.app.render_candidate(value['run'],value['candidate']))
             if self.path=='/api/integrate':

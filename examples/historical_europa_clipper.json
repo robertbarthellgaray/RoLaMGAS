@@ -1,0 +1,63 @@
+{
+  "target": "Jupiter",
+  "sequences": [
+    "EMEJ"
+  ],
+  "launch_start": "2024-10-14",
+  "launch_end": "2024-10-15",
+  "event_windows": [
+    [
+      "2024-10-14",
+      "2024-10-15"
+    ],
+    [
+      "2025-03-01",
+      "2025-03-02"
+    ],
+    [
+      "2026-12-03",
+      "2026-12-04"
+    ],
+    [
+      "2030-04-11",
+      "2030-04-12"
+    ]
+  ],
+  "min_c3": 6.25,
+  "max_c3": 80.0,
+  "max_years": 12,
+  "max_dsm_kms": 1.5,
+  "max_single_dsm_kms": 0.7,
+  "max_powered_flyby_kms": 0.2,
+  "max_arrival_vinf_kms": 30,
+  "vinf_tolerance_mps": 20,
+  "powered_flybys": false,
+  "workers": 4,
+  "branch_families": 12,
+  "samples_per_sequence": 1200,
+  "refinements_per_sequence": 24,
+  "max_nfev": 250,
+  "keep": 100,
+  "search_objective": "feasibility",
+  "historical_mission_seeds": true,
+  "max_ephemeris_step_days": 1.0,
+  "cache": "../cache",
+  "route_overrides": {
+    "EMEJ": {
+      "leg_days": [
+        [
+          136.0,
+          140.0
+        ],
+        [
+          640.0,
+          644.0
+        ],
+        [
+          1223.0,
+          1227.0
+        ]
+      ]
+    }
+  }
+}

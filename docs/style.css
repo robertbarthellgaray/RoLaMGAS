@@ -21,3 +21,16 @@
 @media(max-width:760px){.tradeoff{padding:18px 14px}.tradeoff-heading{display:block}.launch-years{margin-top:12px}.launch-years input{width:105px}#tradeoff-svg{min-height:150px}.candidate-rating{padding:0 16px 16px}.tradeoff-legend{gap:8px 12px}}
 
 .visibility-toggles{display:flex;flex-wrap:wrap;gap:8px 15px}.body-visibility{padding:12px 24px;border-bottom:1px solid var(--line,#24394b);font-size:12px}.body-visibility summary{cursor:pointer;color:#9dbbd1}.body-visibility-options{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:12px}.body-visibility-row{display:flex;align-items:center;gap:12px;font-size:12px}.body-visibility-row>span{min-width:70px}.body-visibility-row label{display:flex;gap:4px;align-items:center;color:#a6bfd3}.body-visibility-row input:disabled{opacity:.4}@media(max-width:600px){.plot-bottom{flex-wrap:wrap;gap:8px}.plot-bottom>span{display:none}.body-visibility{padding:12px}.body-visibility-options{display:grid;grid-template-columns:1fr}}
+
+/* Departure energy and sequence comparisons */
+.departure-estimate,.sequence-comparison {padding:16px 24px;border-top:1px solid #294052}
+.departure-estimate label {display:block;max-width:280px}.departure-estimate input {display:block;margin-top:7px;width:100%}
+.sequence-comparison {overflow:auto}.sequence-comparison summary {cursor:pointer;font-weight:600}.sequence-comparison table {width:100%;min-width:530px;font-variant-numeric:tabular-nums;border-collapse:collapse;margin:12px 0}
+.sequence-comparison th,.sequence-comparison td {padding:9px 10px;text-align:right;border-bottom:1px solid #294052}.sequence-comparison th:first-child,.sequence-comparison td:first-child {text-align:left}
+.chart-axis {min-width:200px}.chart-axis select {display:block;margin-top:6px}.playback {flex-wrap:wrap}.playback-note {padding:0 24px 14px;margin:0}
+@media(max-width:600px){.departure-estimate,.sequence-comparison{padding:14px}.chart-axis{width:100%}}
+
+.mission-name-editor{padding:16px 24px;border-top:1px solid #294052;display:flex;gap:12px;align-items:end;flex-wrap:wrap}.mission-name-editor label{flex:1;min-width:200px}.mission-name-editor input{display:block;width:100%;margin-top:6px}.mission-name-editor p{flex-basis:100%;margin:0}.card-title{overflow-wrap:anywhere}#candidateSearch{min-width:210px;max-width:330px}
+
+.departure-estimate input,.mission-name-editor input{background:var(--bg);color:var(--ink);border:1px solid #344758;border-radius:4px;padding:10px 12px;font-size:13px;min-height:38px}
+.departure-estimate label,.mission-name-editor label,.chart-axis{font-size:12px;color:#b8c7d7}.chart-axis select{max-width:none;width:100%;border:1px solid #344758;border-radius:4px;padding:10px}

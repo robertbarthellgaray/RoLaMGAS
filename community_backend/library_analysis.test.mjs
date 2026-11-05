@@ -4,7 +4,7 @@ import {bodyCategory,encounterDayKey,betterDuplicate,filteredYears,sequenceColor
 import {bodyName,summaryFor} from '../docs/community.js';
 const base={id:'base',target:'Saturn',start:2463232.5,c3:40,years:8,vinf:6,burns_mps:500};
 test('Sedna uses its JPL identity and targets split into distinct categories',()=>{
- assert.equal(bodyName('20090377'),'Sedna');assert.equal(bodyCategory('Sedna','20090377'),'Dwarf planets');assert.equal(bodyCategory('Ceres','20000001'),'Dwarf planets');assert.equal(bodyCategory('1P/Halley','1000036'),'Comets');assert.equal(bodyCategory('2026 ED138','50666516'),'Asteroids');assert.equal(bodyCategory('Titan','606'),'Other bodies');assert.equal(bodyCategory('Saturn','699'),'Planets');
+ assert.equal(bodyName('20090377'),'Sedna');assert.equal(bodyCategory('Sedna','20090377'),'Dwarf planets');assert.equal(bodyCategory('Ceres','20000001'),'Dwarf planets');assert.equal(bodyCategory('1P/Halley','1000036'),'Comets');assert.equal(bodyCategory('2026 ED138','54667839'),'Asteroids');assert.equal(bodyCategory('Titan','606'),'Other bodies');assert.equal(bodyCategory('Saturn','699'),'Planets');
 });
 test('same-day dedup respects TDB midnight and ordered encounters, independent of sequence annotation',()=>{
  const a={body_ids:['399','299','399','599'],dates_jd_tdb:[2463232.5,2463598.5,2463963.5,2465000.5]};

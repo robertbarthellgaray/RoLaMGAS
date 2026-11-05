@@ -4,7 +4,7 @@ const PLANETS=new Set(['Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uran
 export const CATEGORIES=['Dwarf planets','Asteroids','Comets','Other bodies'];
 export function bodyCategory(name,id=''){
  if(PLANETS.has(name))return 'Planets';
- if(DWARFS.has(name)||['999','20000001','20136199','20136108','20136472','20090377'].includes(String(id)))return 'Dwarf planets';
+ if(DWARFS.has(name)||['999','20000001','20136199','20136108','20136472','20090377','20225088'].includes(String(id)))return 'Dwarf planets';
  if((Number(id)>=1000000&&Number(id)<2000000)||/^(?:[CPADX]\/|\d+[PD]\/)/i.test(name))return 'Comets';
  if(Number(id)>=2000000||['Arrokoth','624 Hektor','13579 Allodd','420356 Praamzius','2026 ED138','2012 VP113'].includes(name))return 'Asteroids';
  return 'Other bodies';
@@ -22,3 +22,14 @@ export function resolveAlias(id,aliases){const seen=new Set();while(aliases[id]&
 
 export function filterStateFromHash(hash){const p=new URLSearchParams(hash.replace(/^#/,'')),year=key=>{const s=p.get(key);return s!==null&&/^\d{1,6}$/.test(s)?s:''};return {target:p.get('target'),mission:p.get('mission'),launchMin:year('launch_from'),launchMax:year('launch_to')}}
 export function filterHash(state){const p=new URLSearchParams();if(state.target&&state.target!=='All')p.set('target',state.target);if(state.mission)p.set('mission',state.mission);for(const [key,value]of [['launch_from',state.launchMin],['launch_to',state.launchMax]])if(value!==''&&value!=null&&/^\d{1,6}$/.test(String(value)))p.set(key,value);return '#'+p}
+
+export function missionFiltersFromHash(hash){
+ const p=new URLSearchParams(hash.replace(/^#/,'')),out={metric:p.get('axis')==='vinf'?'vinf':'years'};
+ for(const [key,param] of [['maxYears','max_years'],['maxC3','max_c3'],['maxVinf','max_vinf'],['maxBurns','max_burns']]){const v=p.get(param);out[key]=v!==null&&v.trim()!==''&&Number.isFinite(Number(v))&&Number(v)>=0?v:'';}
+ return out;
+}
+export function withMissionFilters(hash,state){
+ const p=new URLSearchParams(hash.replace(/^#/,''));if(state.metric==='vinf')p.set('axis','vinf');
+ for(const [key,param] of [['maxYears','max_years'],['maxC3','max_c3'],['maxVinf','max_vinf'],['maxBurns','max_burns']]){const v=state[key];if(v!==''&&v!=null&&Number.isFinite(Number(v))&&Number(v)>=0)p.set(param,v);}
+ return '#'+p;
+}
