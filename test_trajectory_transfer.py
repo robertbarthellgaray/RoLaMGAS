@@ -1,0 +1,69 @@
+"""Selected website solutions are re-evaluated, never replaced by an optimization."""
+import bootstrap
+import json,shutil,subprocess,tempfile,threading,time,unittest
+from pathlib import Path
+from copy import deepcopy
+from unittest.mock import patch
+from trajectory_transfer import checked_record,materialize
+from search_options import import_options
+from mission_search import normalize,routes_for
+from test_full_chain_seeds import EventEphemerides
+
+ROOT=Path(__file__).resolve().parent
+
+def documents():
+    script="""import fs from 'node:fs';import {transferDocument} from './docs/desktop_transfer.js';
+    const list=JSON.parse(fs.readFileSync('./docs/data/index.json','utf8')).cases;
+    console.log(JSON.stringify(list.map(row=>{const c=JSON.parse(fs.readFileSync('./docs/data/cases/'+row.id+'.json','utf8'));if(c.desktop_record_url)c.desktop_record=JSON.parse(fs.readFileSync('./docs/'+c.desktop_record_url,'utf8'));return transferDocument(c);})));"""
+    result=subprocess.run(['node','--input-type=module','-e',script],cwd=ROOT,capture_output=True,text=True,encoding='utf-8',check=True)
+    return json.loads(result.stdout)
+
+class WebsiteTransferTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        if not shutil.which('node'):raise unittest.SkipTest('Node is used to test actual browser package generation')
+        cls.documents=documents()
+        cls.document=next(d for d in cls.documents if d['source_candidate_id']=='4d76acaf1f6f')
+    def test_all_curated_downloads_are_valid_portable_options(self):
+        self.assertEqual(len(self.documents),94)
+        for d in self.documents:
+            with self.subTest(id=d['source_candidate_id']):
+                result=import_options(d);self.assertEqual(len(result['config']['sequences']),1)
+                if d.get('trajectory'):checked_record(d['trajectory'])
+    def test_reproduces_selected_chain_without_search_or_cost_refinement(self):
+        c=normalize(import_options(self.document)['config']);route=routes_for(c)[0]
+        with patch('scipy.optimize.least_squares',side_effect=AssertionError('No optimizer during import')),patch('mission_search.run',side_effect=AssertionError('No new search')):
+            q=materialize(self.document['trajectory'],c,route,EventEphemerides())
+        self.assertAlmostEqual(q['launch_c3_km2_s2'],6.25,places=6)
+        self.assertAlmostEqual(q['total_dsm_kms'],.4939246300633,places=5)
+        self.assertFalse(q['import_verification']['optimization_performed'])
+        self.assertLess(q['import_verification']['maximum_coast_velocity_difference_kms'],.00001)
+        self.assertEqual(len(q['dsms']),1);self.assertEqual(len(q['bodies']),6)
+    def test_rejects_changed_saved_states_instead_of_substituting_a_trajectory(self):
+        c=normalize(import_options(self.document)['config']);r=deepcopy(self.document['trajectory']);r['segments'][0]['v'][0]+=.1
+        with self.assertRaisesRegex(ValueError,'No replacement trajectory'):materialize(r,c,routes_for(c)[0],EventEphemerides())
+    def test_malformed_numeric_state_and_duplicate_burns_are_rejected(self):
+        original=self.document['trajectory']
+        for alter in (lambda r:r['dates_jd_tdb'].__setitem__(0,float('nan')),lambda r:r['segments'][0].__setitem__('v',[float('inf'),0,0]),lambda r:r['branches'][0].__setitem__(0,'2'),lambda r:r['dsm_controls'].append(r['dsm_controls'][0])):
+            r=deepcopy(original);alter(r)
+            with self.assertRaises(ValueError):checked_record(r)
+        r=deepcopy(original);r['cache']='C:/arbitrary';r['script']='evil.py';clean=checked_record(r)
+        self.assertNotIn('cache',clean);self.assertNotIn('script',clean)
+    def test_gui_import_publishes_one_candidate_and_never_launches_search(self):
+        from gui import App,read_json
+        with tempfile.TemporaryDirectory() as tmp,patch('gui.HERE',Path(tmp)),patch('gui.ensure_data'):
+            app=App();app.cache=Path(tmp)/'cache'
+            with patch('mission_search.prepare'),patch('gui.get_ephemerides',return_value=EventEphemerides()),patch.object(app,'_register_render_run') as renderer,patch.object(app,'start',side_effect=AssertionError('No optimizer')),patch('gui.threading.Thread',side_effect=lambda target,**kw:type('InlineThread',(),{'start':staticmethod(target)})()):
+                loaded=app.import_website_candidate(self.document);out=app.folder(loaded['run'])
+                for _ in range(100):
+                    status=read_json(out/'gui_status.json',{})
+                    if status.get('state') in ('finished','failed'):break
+                    time.sleep(.02)
+                self.assertEqual(status['state'],'finished',status)
+                candidate=read_json(out/'candidates'/(status['candidate_id']+'.json'))
+                self.assertEqual(candidate['source_candidate_id'],'4d76acaf1f6f')
+                self.assertFalse(candidate['import_verification']['optimization_performed'])
+                self.assertEqual(len(read_json(out/'live.json')['candidates']),1)
+                self.assertEqual(read_json(out/'candidate_names.json')[candidate['id']],self.document['display_name'])
+                renderer.assert_called_once()
+if __name__=='__main__':unittest.main()

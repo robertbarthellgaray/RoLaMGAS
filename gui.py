@@ -52,8 +52,6 @@ class App:
         self.building = set()
         self.archive_errors = {}
         self.integrations = {}
-        self.moon_process = None
-        self.moon_run = None
         self.targets_path = HERE/'resolved_targets.json'
         self.targets = read_json(self.targets_path,{})
         self.cache = HERE/'cache'
@@ -150,7 +148,53 @@ class App:
                 result['config']['target_object']=dict(confirmed)
                 result['notes']=[n for n in result['notes'] if not n.startswith('Confirm this Horizons target')]
                 result['notes'].append('This target matches a resolved identity already cached by this client; no network lookup was made.')
+        result['has_trajectory']=bool(document.get('trajectory'))
         return result
+
+    def import_website_candidate(self,document):
+        """Load one selected solution; this path never starts random optimization."""
+        from search_options import import_options
+        from trajectory_transfer import checked_record
+        parsed=import_options(document);record=checked_record(document.get('trajectory'))
+        label=document.get('display_name','')
+        if not isinstance(label,str) or len(label)>100 or any(ord(v)<32 for v in label):raise ValueError('Invalid imported display name')
+        name='import_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'_'+secrets.token_hex(3)
+        output=self.folder(name);output.mkdir()
+        source=str(document.get('source_candidate_id',''))[:100]
+        def status(state,message,**extra):atomic_json(output/'gui_status.json',dict(state=state,message=message,**extra))
+        status('preparing','Loading selected website trajectory. Using local JPL data or downloading missing coverage; no search is running.')
+        atomic_json(output/'imported_record.json',record)
+        config=parsed['config'];config['cache']=str(self.cache);atomic_json(output/'request.json',config)
+        def load():
+            try:
+                from mission_search import prepare
+                from live_gallery import LiveGallery
+                from trajectory_transfer import materialize
+                obj=config.get('target_object')
+                if obj:
+                    confirmed=self.lookup('SPK='+str(obj['id']),config['launch_start'])
+                    if confirmed.get('ambiguous') or str(confirmed.get('id'))!=str(record['body_ids'][-1]):raise ValueError('JPL target identity does not match the imported candidate')
+                    from horizons_targets import target_for_epoch,moon_model_notice
+                    notice=moon_model_notice(confirmed)
+                    if notice:raise ValueError(notice)
+                    confirmed=target_for_epoch(confirmed,record['dates_jd_tdb'][0])
+                    config['target_object']=confirmed;config['target']=confirmed['name']
+                c=normalize(config,HERE);routes=routes_for(c)
+                if len(routes)!=1:raise ValueError('Selected-candidate import requires exactly one sequence')
+                atomic_json(output/'request.json',c)
+                atomic_json(output/'run_manifest.json',dict(config=c,routes=routes,source='Website selected-candidate import'))
+                prepare(c,routes);ep=get_ephemerides(c,routes)
+                q=materialize(record,c,routes[0],ep);q['source_candidate_id']=source
+                accepted=q['status'].startswith('passes')
+                summary=dict(candidates=[q] if accepted else [],near_misses=[] if accepted else [q],distinct_accepted=int(accepted),raw_accepted=int(accepted),completed_jobs=0,model='Saved website trajectory, recomputed with local JPL ephemerides',nbody_validated=False)
+                atomic_json(output/'results.json',summary)
+                LiveGallery(output,None,deferred=True,config=c).update(summary,dict(state='finished',completed_jobs=0,total_jobs=0),final=True)
+                if label:self.name_candidate(name,q['id'],label)
+                status('finished','Selected trajectory loaded and rechecked. No optimization was performed. Use Integrate & export for finite-radius planetary flybys.',candidate_id=q['id'])
+                self._register_render_run(name)
+            except Exception as exc:status('failed','Could not reproduce the selected candidate: '+str(exc))
+        threading.Thread(target=load,daemon=True,name='website-candidate-import').start()
+        return dict(run=name,optimization_performed=False)
 
     def confirmed_source_config(self,config,bodies):
         from copy import deepcopy
@@ -356,7 +400,7 @@ class App:
         from live_gallery import LiveGallery,plot_status
         config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{}).get('config',{})
         gallery=LiveGallery(root,None,deferred=True,config=config)
-        gallery.placeholder(q)
+        gallery.placeholder(q,force=True)
         status=plot_status(gallery.folder,q,config)
         if status['render_skipped']:
             state,message='skipped','Plot skipped for red diagnostic. Its science data and export options remain available.'
@@ -416,7 +460,7 @@ class App:
                 if preempted():continue
                 ep=self._render_ephemeris(name,config)
                 with self.render_lock:
-                    result=LiveGallery(self.folder(name),ep,deferred=True,config=config).render(q,cancel=preempted)
+                    result=LiveGallery(self.folder(name),ep,deferred=True,config=config).render(q,cancel=preempted,force=priority is not None)
                 if result!='preempted':
                     with self.lock:
                         self.render_revision[name]=time.time()
@@ -451,42 +495,8 @@ class App:
         finally:
             self.building.discard(name)
 
-    def moon_status(self,name):
-        output=self.folder(name)/'moon_screen'
-        result=read_json(output/'status.json',dict(state='none',rows=[]))
-        if result['state']=='running' and name==self.moon_run and self.moon_process and self.moon_process.poll() is not None:
-            result.update(state='failed',message='Screening exited unexpectedly; see moon_screen/console.log')
-            atomic_json(output/'status.json',result)
-        return result
 
-    def start_moon_screen(self,name,count=10,altitude=10000.,clocks=12):
-        import math
-        count=int(count);clocks=int(clocks);altitude=float(altitude)
-        if not 1<=count<=1000 or not 1<=clocks<=72 or not math.isfinite(altitude) or altitude<=0:raise ValueError('Invalid Titan screening settings')
-        with self.lock:
-            if self.moon_process and self.moon_process.poll() is None:raise ValueError('A Titan screen is already running')
-            root=self.folder(name)
-            if not root.is_dir():raise ValueError('Saved search not found')
-            request=read_json(root/'request.json') or read_json(root/'run_manifest.json',{}).get('config',{})
-            if str(request.get('target','')).lower()!='saturn':raise ValueError('Open a search whose final destination is Saturn')
-            output=root/'moon_screen';output.mkdir(exist_ok=True)
-            if read_json(output/'status.json',{}).get('rows'):
-                shutil.copytree(output,root/'moon_screen_history'/datetime.now().strftime('%Y%m%d_%H%M%S_%f'))
-            atomic_json(output/'status.json',dict(state='running',message='Starting Saturn/Titan screening…',rows=[]))
-            with (output/'console.log').open('w',encoding='utf-8') as log:
-                self.moon_process=subprocess.Popen(worker_command('moon_screen','--run',str(root),'--cache',str(self.cache),
-                    '--count',str(count),'--altitude',str(altitude),'--clocks',str(clocks)),cwd=HERE,stdout=log,stderr=subprocess.STDOUT,
-                    creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0,env=worker_environment(output/'console.log'))
-            self.moon_run=name
-            return dict(started=True)
 
-    def stop_moon_screen(self,name):
-        if name!=self.moon_run or not self.moon_process or self.moon_process.poll() is not None:raise ValueError('No owned Titan screening process is running for this search')
-        self.moon_process.terminate()
-        self.moon_process.wait(timeout=5)
-        output=self.folder(name)/'moon_screen/status.json';result=read_json(output,{})
-        result.update(state='stopped',message='Screening stopped; completed rows are preserved.');atomic_json(output,result)
-        return dict(stopped=True)
 
     def integrate(self,name,identifier,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None):
         from integrate_export import validate_post_flyby_months
@@ -616,8 +626,6 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.snapshot(params.get('run',[''])[0]))
             if url.path=='/api/export-status':
                 return self.json(self.app.export_status(params.get('run',[''])[0],params.get('candidate',[''])[0]))
-            if url.path=='/api/moon-screen':
-                return self.json(self.app.moon_status(params.get('run',[''])[0]))
             if url.path.startswith('/files/'):
                 parts = urllib.parse.unquote(url.path).split('/',3)
                 if len(parts)!=4:
@@ -656,7 +664,7 @@ class Handler(BaseHTTPRequestHandler):
             if self.headers.get('X-Explorer-Token')!=self.app.token or (origin and origin not in allowed):
                 return self.json(dict(error='Invalid local application session'),403)
             size = int(self.headers.get('Content-Length','0'))
-            maximum=1024*1024 if self.path in ('/api/options/export','/api/options/import') else 200000
+            maximum=1024*1024 if self.path in ('/api/options/export','/api/options/import','/api/trajectory/import') else 200000
             if not 0<size<=maximum:
                 raise ValueError('Invalid request size')
             value = json.loads(self.rfile.read(size))
@@ -666,6 +674,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.export_search_options(value.get('config'),value.get('run')))
             if self.path=='/api/options/import':
                 return self.json(self.app.import_search_options(value.get('document')))
+            if self.path=='/api/trajectory/import':
+                return self.json(self.app.import_website_candidate(value.get('document')))
             if self.path=='/api/resolve':
                 return self.json(self.app.lookup(value['query'],value.get('epoch','2030-01-01'),value.get('refresh',False)))
             if self.path=='/api/start':
@@ -689,16 +699,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.render_candidate(value['run'],value['candidate']))
             if self.path=='/api/integrate':
                 return self.json(self.app.integrate(value['run'],value['candidate'],value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg')))
-            if self.path=='/api/moon-screen':
-                return self.json(self.app.start_moon_screen(value['run'],value.get('count',10),value.get('altitude',10000),value.get('clocks',12)))
-            if self.path=='/api/stop-moon-screen':
-                return self.json(self.app.stop_moon_screen(value['run']))
             if self.path=='/api/package':
                 return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg')))
             if self.path=='/api/open-package-folder':
                 return self.json(self.app.open_package_folder(value['run'],value['candidate']))
             if self.path=='/api/shutdown':
-                if self.app.moon_process and self.app.moon_process.poll() is None:self.app.stop_moon_screen(self.app.moon_run)
                 if self.app.process is not None and self.app.process.poll() is None:
                     self.app.stop(self.app.active)
                 self.json(dict(closing=True))

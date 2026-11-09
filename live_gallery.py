@@ -80,10 +80,11 @@ def read_json(path,default=None):
 
 
 def plot_status(folder,q,config=None):
-    folder=Path(folder);identifier=q['id'];skip=red_reason(q,config)
+    folder=Path(folder);identifier=q['id'];manual=(folder/(identifier+'.preview_requested.json')).is_file();skip=None if manual else red_reason(q,config)
     error=read_json(folder/(identifier+'.plot_error.json'),{}).get('message')
     ready=not skip and not error and not (folder/(identifier+'.render_pending.json')).exists() and (folder/(identifier+'.png')).is_file() and (folder/(identifier+'.card.json')).is_file()
-    return dict(image_ready=bool(ready),render_error=error,render_skipped=skip,render_pending=not (skip or error or ready))
+    if manual and red_reason(q,config) and not read_json(folder/(identifier+'.card.json'),{}).get('manual_preview'):ready=False
+    return dict(image_ready=bool(ready),render_error=error,render_skipped=skip,manual_preview=manual,render_pending=not (skip or error or ready))
 
 
 class LiveGallery:
@@ -93,28 +94,32 @@ class LiveGallery:
         self.folder = self.output/'candidates'
         self.folder.mkdir(parents=True,exist_ok=True)
 
-    def placeholder(self,q):
-        skip=red_reason(q,self.config);identifier=q['id'];path=self.folder/(identifier+'.card.json')
+    def placeholder(self,q,force=False):
+        identifier=q['id'];manual=self.folder/(identifier+'.preview_requested.json')
+        reason=red_reason(q,self.config)
+        if force and reason:atomic_json(manual,dict(candidate_id=identifier,requested=True))
+        skip=reason if not manual.exists() else None;path=self.folder/(identifier+'.card.json')
         pending=self.folder/(identifier+'.render_pending.json')
         error=self.folder/(identifier+'.plot_error.json')
         if skip:
             atomic_json(path,dict(q,paths=[],planet_paths=[],render_pending=False,render_skipped=skip,render_error=None))
             pending.unlink(missing_ok=True)
-        elif not error.exists() and (not path.exists() or not (self.folder/(identifier+'.png')).exists()):
+        elif not error.exists() and (not path.exists() or not (self.folder/(identifier+'.png')).exists() or (manual.exists() and not read_json(path,{}).get('manual_preview'))):
             if not pending.exists() or not path.exists():
                 atomic_json(pending,dict(candidate_id=identifier))
                 atomic_json(path,dict(q,paths=[],planet_paths=[],render_pending=True,render_skipped=None,render_error=None))
 
-    def render(self,q,cancel=None):
-        identifier=q['id'];self.placeholder(q)
-        if red_reason(q,self.config):return 'skipped'
+    def render(self,q,cancel=None,force=False):
+        identifier=q['id'];self.placeholder(q,force=force)
+        manual=(self.folder/(identifier+'.preview_requested.json')).is_file()
+        if red_reason(q,self.config) and not manual:return 'skipped'
         if plot_status(self.folder,q,self.config)['image_ready']:return 'ready'
         try:
             if cancel and cancel():raise RenderPreempted()
             card=card_data(q,self.ep,cancel=cancel) if cancel else card_data(q,self.ep)
             if cancel and cancel():raise RenderPreempted()
             thumbnail(card,self.folder/(identifier+'.png'))
-            card.update(render_pending=False,render_skipped=None,render_error=None)
+            card.update(render_pending=False,render_skipped=None,render_error=None,manual_preview=manual,preview_warning=red_reason(q,self.config) if manual else None)
             atomic_json(self.folder/(identifier+'.card.json'),card)
             (self.folder/(identifier+'.render_pending.json')).unlink(missing_ok=True)
             return 'ready'

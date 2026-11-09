@@ -24,7 +24,7 @@ export function filterStateFromHash(hash){const p=new URLSearchParams(hash.repla
 export function filterHash(state){const p=new URLSearchParams();if(state.target&&state.target!=='All')p.set('target',state.target);if(state.mission)p.set('mission',state.mission);for(const [key,value]of [['launch_from',state.launchMin],['launch_to',state.launchMax]])if(value!==''&&value!=null&&/^\d{1,6}$/.test(String(value)))p.set(key,value);return '#'+p}
 
 export function missionFiltersFromHash(hash){
- const p=new URLSearchParams(hash.replace(/^#/,'')),out={metric:p.get('axis')==='vinf'?'vinf':'years'};
+ const p=new URLSearchParams(hash.replace(/^#/,'')),out={metric:p.get('axis')==='vinf'?'vinf':'c3'};
  for(const [key,param] of [['maxYears','max_years'],['maxC3','max_c3'],['maxVinf','max_vinf'],['maxBurns','max_burns']]){const v=p.get(param);out[key]=v!==null&&v.trim()!==''&&Number.isFinite(Number(v))&&Number(v)>=0?v:'';}
  return out;
 }

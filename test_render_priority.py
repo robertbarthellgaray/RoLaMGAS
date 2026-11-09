@@ -97,7 +97,12 @@ class RenderPriorityTests(unittest.TestCase):
                 result=app.render_candidate('run',q['id']);self.assertEqual(result['state'],'queued');queue.assert_called_once();ep.assert_not_called()
             q['periapsis_violation']=True;atomic_json(out/'candidates'/(q['id']+'.json'),q)
             with patch.object(app,'_register_render_run') as queue:
-                self.assertEqual(app.render_candidate('run',q['id'])['state'],'skipped');queue.assert_not_called()
+                self.assertEqual(app.render_candidate('run',q['id'])['state'],'queued');queue.assert_called_once()
+            self.assertTrue(plot_status(out/'candidates',q)['manual_preview'])
+            with patch('live_gallery.card_data',return_value=dict(q,paths=[],planet_paths=[])),patch('live_gallery.thumbnail',side_effect=lambda card,path:path.write_bytes(b'png')):
+                self.assertEqual(LiveGallery(out,None).render(q),'ready')
+            self.assertTrue(plot_status(out/'candidates',q)['image_ready'])
+            self.assertTrue(json.loads((out/'candidates'/(q['id']+'.card.json')).read_text())['manual_preview'])
             with self.assertRaises(ValueError):app.render_candidate('../other',q['id'])
             with self.assertRaises(ValueError):app.render_candidate('run','../anything')
 

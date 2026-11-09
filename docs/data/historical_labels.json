@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "note": "Every ordered encounter must match its reference calendar day. Calendar agreement is not flown-vector or maneuver validation. Voyager 2 Saturn date is UTC, not the preceding US local date.",
+  "missions": [
+    {
+      "name": "Europa Clipper",
+      "bodies": [
+        "Earth",
+        "Mars",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "2024-10-14",
+        "2025-03-01",
+        "2026-12-03",
+        "2030-04-11"
+      ],
+      "sources": [
+        "https://science.nasa.gov/mission/europa-clipper/mission-timeline/"
+      ],
+      "planned": true
+    },
+    {
+      "name": "Galileo",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "1989-10-18",
+        "1990-02-10",
+        "1990-12-08",
+        "1992-12-08",
+        "1995-12-07"
+      ],
+      "sources": [
+        "https://science.nasa.gov/mission/galileo/"
+      ],
+      "planned": false
+    },
+    {
+      "name": "Mariner 10",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Mercury",
+        "Mercury",
+        "Mercury"
+      ],
+      "dates": [
+        "1973-11-03",
+        "1974-02-05",
+        "1974-03-29",
+        "1974-09-21",
+        "1975-03-16"
+      ],
+      "sources": [
+        "https://science.nasa.gov/mission/mariner-10/"
+      ],
+      "planned": false
+    },
+    {
+      "name": "Cassini",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Earth",
+        "Jupiter",
+        "Saturn"
+      ],
+      "dates": [
+        "1997-10-15",
+        "1998-04-26",
+        "1999-06-24",
+        "1999-08-18",
+        "2000-12-30",
+        "2004-07-01"
+      ],
+      "sources": [
+        "https://science.nasa.gov/mission/cassini/the-journey/timeline/",
+        "https://solarsystem.nasa.gov/system/downloadable_items/1946_trajectory.pdf"
+      ],
+      "planned": false
+    },
+    {
+      "name": "Juno",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "2011-08-05",
+        "2013-10-09",
+        "2016-07-05"
+      ],
+      "sources": [
+        "https://www.jpl.nasa.gov/news/press_kits/juno/overview/"
+      ],
+      "planned": false
+    },
+    {
+      "name": "Voyager 1",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "Saturn"
+      ],
+      "dates": [
+        "1977-09-05",
+        "1979-03-05",
+        "1980-11-12"
+      ],
+      "sources": [
+        "https://science.nasa.gov/mission/voyager/fact-sheet/"
+      ]
+    },
+    {
+      "name": "Voyager 2",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "Saturn",
+        "Uranus",
+        "Neptune"
+      ],
+      "dates": [
+        "1977-08-20",
+        "1979-07-09",
+        "1981-08-26",
+        "1986-01-24",
+        "1989-08-25"
+      ],
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/09/DSC_monograph24.pdf",
+        "https://science.nasa.gov/mission/voyager/voyager-2/"
+      ]
+    }
+  ]
+}

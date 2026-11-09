@@ -1,13 +1,16 @@
-import './mission_metrics.js?v=20261105b';
-import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261105b';
-import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261105b';
+import {historicalMatch} from './historical_labels.js?v=20261108a';
+import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261108a';
+import './mission_metrics.js?v=20261108a';
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261108a';
+import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261108a';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
 const colors = ['#79d8f1', '#ffd08a', '#8ae3bd', '#b4aeff', '#ff9f9a', '#9ed2ff'];
 const catalog = [];
 const missionNames=(()=>{try{const data=JSON.parse(localStorage.getItem('rolamgas-mission-names')||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?Object.fromEntries(Object.entries(data).filter(([id,label])=>typeof label==='string'&&label.length<=100)):{}}catch{return {}}})();
-const missionName=c=>missionNames[c.id]||(/^(?:Rebuilding|Low-energy|Tianwen|Claudius)/.test(c.title)?c.title:'');
+let historicalProfiles=[];
+const missionName=c=>missionNames[c.id]||c.historical_match?.label||(/^(?:Rebuilding|Low-energy|Tianwen|Claudius)/.test(c.title)?c.title:'');
 const cache = new Map(), sharedRecords = new Map(), previewCache = new Map(), encounterDays=new Map();
 let duplicateAliases={}, displayAliases={}, pendingHashTarget=null;
 let sharedEndpoint='', sharedSince='1970-01-01T00:00:00.000Z', sharedBusy=false, curatedAliases={}, visibleCount=48;
@@ -46,6 +49,7 @@ function maximum(id) {
   const value = $(id).value.trim();
   return value === '' ? Infinity : Math.max(0, Number(value));
 }
+function syncGraphYears(){for(const suffix of ['min','max'])$('chart-launch-year-'+suffix).value=$('launch-year-'+suffix).value;}
 function minimumYear(){return $('launch-year-min').value.trim()===''?-Infinity:Number($('launch-year-min').value)}
 function maximumYear(){return $('launch-year-max').value.trim()===''?Infinity:Number($('launch-year-max').value)}
 function targetRows(){return catalog.filter(c=>targetMatches(c)&&(!CATEGORIES.includes(destination)||smallBodyTarget==='All'||c.target===smallBodyTarget))}
@@ -74,13 +78,13 @@ function drawTradeoff(rows=visibleRows()){
  if(!target){chart.hidden=true;$('tradeoff-status').textContent='Choose a planet or a named small body to compare its trajectories.';return}
  chart.hidden=false;
  if(!rows.length){$('tradeoff-svg').innerHTML='';$('tradeoff-legend').innerHTML='';$('tradeoff-status').textContent=minimumYear()>maximumYear()?'The first launch year must be at or before the last year.':'No trajectories match this target and launch-year range.';return}
- const all=targetRows(),vertical=c=>$('chart-metric').value==='vinf'?c.vinf:c.years,verticalLabel=$('chart-metric').value==='vinf'?'Arrival V∞ (km/s)':'Flight time (years)';
- const palette=sequenceColors(all),w=1000,h=340,left=74,right=22,top=22,bottom=56,maxX=Math.max(1,...rows.map(c=>c.c3))*1.06,maxY=Math.max(.1,...rows.map(vertical))*1.08;
+ const all=targetRows(),vertical=c=>$('chart-metric').value==='vinf'?c.vinf:c.c3,verticalLabel=$('chart-metric').value==='vinf'?'Arrival V∞ (km/s)':'Launch C3 (km²/s²)';
+ const palette=sequenceColors(all),w=1000,h=340,left=74,right=22,top=22,bottom=56,maxX=Math.max(.1,...rows.map(c=>c.years))*1.06,maxY=Math.max(.1,...rows.map(vertical))*1.08;
  let svg='';
  for(let i=0;i<=5;i++){const x=left+(w-left-right)*i/5,y=h-bottom-(h-top-bottom)*i/5;svg+=`<path d="M${x},${top}V${h-bottom}M${left},${y}H${w-right}" stroke="#26394a" stroke-width="1"/><text x="${x}" y="${h-bottom+22}" text-anchor="middle">${fmt(maxX*i/5,1)}</text><text x="${left-10}" y="${y+4}" text-anchor="end">${fmt(maxY*i/5,maxY<1?2:1)}</text>`}
- svg+=`<text class="axis-label" x="${(left+w-right)/2}" y="${h-5}" text-anchor="middle">Launch C3 (km²/s²)</text><text class="axis-label" transform="translate(17 ${(top+h-bottom)/2}) rotate(-90)" text-anchor="middle">${verticalLabel}</text>`;
- svg+=rows.map(c=>`<circle class="tradeoff-point" data-candidate="${escapeHtml(c.id)}" tabindex="0" role="button" aria-pressed="${c.id===selected?.id}" aria-label="${escapeHtml(c.sequence)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}, ${fmt(c.years)} years, arrival V∞ ${fmt(c.vinf)} km/s; open trajectory and downloads" cx="${left+c.c3/maxX*(w-left-right)}" cy="${h-bottom-vertical(c)/maxY*(h-top-bottom)}" r="5" fill="${palette.get(c.sequence)}"><title>${escapeHtml(c.sequence)} · launch ${c.launch_date} · C3 ${fmt(c.c3)} km²/s² · ${fmt(c.years,3)} years · arrival V∞ ${fmt(c.vinf,3)} km/s</title></circle>`).join('');
- $('tradeoff-svg').innerHTML=svg;$('tradeoff-svg').setAttribute('aria-label',`Launch C3 versus ${verticalLabel}; select a point to inspect and download`);
+ svg+=`<text class="axis-label" x="${(left+w-right)/2}" y="${h-5}" text-anchor="middle">Flight time (years)</text><text class="axis-label" transform="translate(17 ${(top+h-bottom)/2}) rotate(-90)" text-anchor="middle">${verticalLabel}</text>`;
+ svg+=rows.map(c=>`<circle class="tradeoff-point" data-candidate="${escapeHtml(c.id)}" tabindex="0" role="button" aria-pressed="${c.id===selected?.id}" aria-label="${escapeHtml(c.sequence)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}, ${fmt(c.years)} years, arrival V∞ ${fmt(c.vinf)} km/s; open trajectory and downloads" cx="${left+c.years/maxX*(w-left-right)}" cy="${h-bottom-vertical(c)/maxY*(h-top-bottom)}" r="5" fill="${palette.get(c.sequence)}"><title>${escapeHtml(c.sequence)} · launch ${c.launch_date} · C3 ${fmt(c.c3)} km²/s² · ${fmt(c.years,3)} years · arrival V∞ ${fmt(c.vinf,3)} km/s</title></circle>`).join('');
+ $('tradeoff-svg').innerHTML=svg;$('tradeoff-svg').setAttribute('aria-label',`Flight time versus ${verticalLabel}; select a point to inspect and download`);
  $('tradeoff-legend').innerHTML=[...palette].filter(([sequence])=>rows.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<span><i class="sequence-swatch" style="background:${color}"></i>${escapeHtml(sequence)}</span>`).join('');
  $('tradeoff-status').textContent=`${target} · ${rows.length} trajectories · ${Math.min(...rows.map(launchYear))}–${Math.max(...rows.map(launchYear))} launches. Select a dot to inspect and download.`;
 }
@@ -124,13 +128,14 @@ async function togglePlanetAnimation(){
  if(animatePlanets){animatePlanets=false;$('animate-planets').textContent='Animate planets';$('animate-planets').setAttribute('aria-pressed','false');updateAnimationStatus();drawSoon();return;}
  const button=$('animate-planets');button.disabled=true;$('planet-animation-status').textContent='Loading compact JPL planet playback data…';
  try{
-  if(!planetLoad)planetLoad=fetchJson('data/planet_playback.json?v=20261105b').catch(error=>{planetLoad=null;throw error});
+  if(!planetLoad)planetLoad=fetchJson('data/planet_playback.json?v=20261108a').catch(error=>{planetLoad=null;throw error});
   planetEphemerides=await planetLoad;animatePlanets=true;button.textContent='Planets animated ✓';button.setAttribute('aria-pressed','true');
   if(selected){attachPlanetContext(selected);renderBodyVisibility(selected);$('planet-arcs').disabled=false;$('planet-arcs').title='Dated JPL ephemeris context, interpolated for display';updateAnimationStatus();if(fraction>=1)fraction=0;setPlaying(true);updateTime();}
  }catch(error){$('planet-animation-status').textContent='Planet animation unavailable: '+error.message;}
  finally{button.disabled=false;drawSoon();}
 }
 $('save-mission-name').addEventListener('click',()=>{if(!selected)return;const name=$('mission-name').value.trim();if(name.length>100||/[\u0000-\u001f\u007f]/.test(name)){$('mission-name-status').textContent='Use at most 100 characters, without control characters.';return;}if(name)missionNames[selected.id]=name;else delete missionNames[selected.id];try{localStorage.setItem('rolamgas-mission-names',JSON.stringify(missionNames));$('mission-name-status').textContent=name?'Saved. Search this name in the trajectory library.':'Custom name cleared.';$('mission-title').textContent=name||selected.title;renderList()}catch{$('mission-name-status').textContent='Browser storage unavailable; name is retained for this visit only.';}});
+$('apply-historical-name').addEventListener('click',()=>{if(!selected?.historical_match)return;$('mission-name').value=selected.historical_match.label;$('save-mission-name').click();});
 $('parking-altitude').addEventListener('input',updateParkingEstimate);
 $('animate-planets').addEventListener('click',togglePlanetAnimation);
 function canonicalId(id){return resolveAlias(id,{...duplicateAliases,...curatedAliases,...displayAliases})}
@@ -174,7 +179,10 @@ async function selectCandidate(id) {
     updateLocation(c.id);
     document.querySelectorAll('[data-candidate]').forEach(p=>p.setAttribute('aria-pressed',p.dataset.candidate===c.id));
     $('model-label').textContent = c.model.toUpperCase();
-    $('mission-title').textContent = missionNames[c.id]||c.title;$('mission-name').value=missionNames[c.id]||'';$('mission-name-status').textContent='Saved in this browser. Naming does not mark a trajectory validated.';
+    c.historical_match=historicalMatch(c,historicalProfiles);
+    $('mission-title').textContent = missionName(c)||c.title;$('mission-name').value=missionNames[c.id]||'';
+    $('apply-historical-name').hidden=!c.historical_match;
+    $('mission-name-status').textContent=c.historical_match?c.historical_match.label+'. Every encounter calendar day matches; spacecraft vectors and burns are not validated.':'Save a searchable name in this browser. No complete historical calendar-date match was found.';
     $('mission-dates').textContent = `${c.launch_date} → ${c.arrival_date} (TDB) · ${fmt(c.years,3)} years / ${fmt(c.end-c.start,1)} days · ${c.bodies.join(' → ')}`;
     $('mission-id').textContent = c.id;
     const metrics = [ ['Launch C3', fmt(c.c3), 'km²/s²'], ['Cruise Δv', fmt(c.burns_mps,1), 'm/s'], ['Arrival V∞', fmt(c.vinf), 'km/s'], ['Flight time', fmt(c.years), 'years'] ];
@@ -199,14 +207,18 @@ async function selectCandidate(id) {
     }
     $('planet-arcs').disabled=Boolean(c.community)&&!planetEphemerides;
     $('planet-arcs').title=c.community&&!planetEphemerides?'Enable planet animation to load dated JPL context.':'';
-    const files = c.trajectory_files;
+    const files = c.trajectory_files,finite=finiteRadiusDownload(c);
+    $('download-csv').textContent=finite?'Trajectory CSV ↓':'Lambert analysis CSV ↓';
+    $('download-xyzv').textContent=finite?'Flyby trajectory XYZV ↓':'Build flyby XYZV in app ↓';
     for (const [name,key] of [['download-csv','csv'],['download-xyzv','xyzv'],['download-state-readme','readme']]) {
       const link=$(name); link.hidden=!files?.[key];
       if(files?.[key]) link.href=files[key];
     }
     if(files) $('trajectory-download-note').textContent=`${files.rows.toLocaleString()} saved position/velocity states · ${files.units} · ${files.coordinates}. ${files.note}`;
     else if(c.download) { $('download-xyzv').href=c.download; $('download-xyzv').hidden=false; }
-    if(c.community_record){for(const id of ['download-csv','download-xyzv']){$(id).hidden=false;$(id).href='#export'}$('trajectory-download-note').textContent='Downloads sample the saved Sun-only Lambert coasts (JD TDB, km, km/s). Planet-center joins are not finite-radius flybys; use the desktop exporter for flyby rendering and validation.';}
+    if(!finite){$('download-xyzv').hidden=false;$('download-xyzv').href='#desktop-transfer';$('trajectory-download-note').textContent='Preview / analysis CSV uses ideal Lambert coasts joined at planet centers. For Celestia flybys, load this trajectory in the desktop app, then choose Integrate & export to construct finite-radius SOI patches and list their extra burns. Public v0.2.3 imports settings; exact-candidate loading is in the local v0.2.4 preview.';}
+    if(c.community_record){$('download-csv').hidden=false;$('download-csv').href='#analysis-csv';}
+    if(!finite){$('download-xyzv').removeAttribute('download');$('download-xyzv').href='#desktop-transfer';}else $('download-xyzv').setAttribute('download','');
     document.querySelectorAll('.candidate-card').forEach(b => b.setAttribute('aria-pressed', b.dataset.id === c.id));
     canvas.setAttribute('aria-label', `${c.title} heliocentric trajectory in AU. Drag to rotate, scroll to zoom; arrow keys rotate and plus or minus zoom.`);
     $('plot-message').hidden = true;
@@ -321,15 +333,16 @@ $('destinations').addEventListener('click', e => {
 });
 $('small-body-options').addEventListener('click',e=>{const b=e.target.closest('[data-small-body]');if(!b)return;pendingHashTarget=null;smallBodyTarget=b.dataset.smallBody;visibleCount=48;makeDestinations();renderList();if(selected)updateLocation(selected.id);});
 $('candidate-list').addEventListener('click', e => { const b=e.target.closest('[data-id]'); if (b) selectCandidate(b.dataset.id); });
-for (const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
+for (const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{syncGraphYears();visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
 $('sort').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('include-yellow').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('candidate-more').onclick=()=>{const top=$('candidate-list').scrollTop;visibleCount+=48;renderList();$('candidate-list').scrollTop=top};
 $('community-refresh').onclick=()=>syncShared();
+for(const suffix of ['min','max'])$('chart-launch-year-'+suffix).addEventListener('input',()=>{$('launch-year-'+suffix).value=$('chart-launch-year-'+suffix).value;$('launch-year-'+suffix).dispatchEvent(new Event('input'))});
 $('chart-metric').onchange=()=>{drawTradeoff();if(selected)updateLocation(selected.id)};
 function selectPoint(e){const point=e.target.closest('[data-candidate]');if(!point)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();selectCandidate(point.dataset.candidate);$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
 $('tradeoff-svg').addEventListener('click',selectPoint);$('tradeoff-svg').addEventListener('keydown',selectPoint);
-$('clear-filters').addEventListener('click', () => { ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'].forEach(id => $(id).value=''); renderList();if(selected)updateLocation(selected.id); });
+$('clear-filters').addEventListener('click', () => { ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'].forEach(id => $(id).value=''); syncGraphYears();renderList();if(selected)updateLocation(selected.id); });
 document.querySelector('.projection').addEventListener('click', e => { if (e.target.dataset.view) setView(e.target.dataset.view); });
 $('reset-view').addEventListener('click', () => { zoom=1; setView('3d'); });
 $('planet-arcs').addEventListener('change', drawSoon);
@@ -367,17 +380,27 @@ $('tab-model').tabIndex=-1;
 function downloadBlob(blob, filename) {
   const url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download=filename; a.hidden=true; document.body.append(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),30000);
 }
-$('download-json').addEventListener('click',()=>{ if(selected) downloadBlob(new Blob([JSON.stringify(selected.community_record||selected,null,2)],{type:'application/json'}),`rolamgas-${selected.id}.json`); });
+async function exportDesktopCandidate(){
+ if(!selected)return;
+ try{
+  const c=selected;if(c.desktop_record_url&&!c.desktop_record)c.desktop_record=await fetchJson(c.desktop_record_url);
+  const document=transferDocument(c,missionNames[c.id]||c.title);
+  downloadBlob(new Blob([JSON.stringify(document,null,2)],{type:'application/json'}),`RoLaMGAS-${c.id}.json`);
+  $('trajectory-download-note').textContent=document.trajectory?'In the desktop app, choose Import options / website trajectory and select this JSON. The selected dates, branches and burns are loaded and checked without another search. Then choose Integrate & export for a finite-radius Celestia XYZV. Exact-candidate loading is in the local v0.2.4 preview, pending release. The public v0.2.3 can import its search settings.':'Search options downloaded. This is an integrated concept, so the original CSV/XYZV files remain the authoritative trajectory; these settings start a new Lambert search.';
+ }catch(error){$('trajectory-download-note').textContent='Could not prepare desktop transfer: '+error.message;}
+}
+$('download-json').addEventListener('click',exportDesktopCandidate);
 $('save-plot').addEventListener('click',()=>{ if(selected) { draw(); canvas.toBlob(blob=>{if(blob)downloadBlob(blob,`rolamgas-${selected.id}.png`);}); } });
 
 for(const [id,kind] of [['download-csv','csv'],['download-xyzv','xyzv']])$(id).addEventListener('click',e=>{
+ if(kind==='xyzv'&&selected&&!finiteRadiusDownload(selected)){e.preventDefault();exportDesktopCandidate();return;}
  if(!selected?.community_record)return;e.preventDefault();
  try{downloadBlob(new Blob([trajectoryText(selected.community_record,kind)],{type:kind==='csv'?'text/csv':'text/plain'}),`rolamgas-${selected.id}.${kind}`)}catch(error){$('trajectory-download-note').textContent='Export failed: '+error.message}
 });
 function sharedPreview(id){if(!previewCache.has(id))try{previewCache.set(id,thumbnailFor(sharedRecords.get(id)))}catch{previewCache.set(id,'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="320" height="220"><rect width="320" height="220" fill="#08121e"/></svg>'))}return previewCache.get(id)}
 function addShared(records){let added=0;for(const record of records)try{
  if(sharedRecords.has(record.id))continue;
- const summary=summaryFor(record);sharedRecords.set(record.id,record);
+ const summary=summaryFor(record);summary.historical_match=historicalMatch(record,historicalProfiles);sharedRecords.set(record.id,record);
  const alias=curatedAliases[record.id],key=encounterDayKey(record),existing=encounterDays.get(key);
  if(alias&&catalog.some(c=>c.id===alias)){encounterDays.set(key,{record,id:alias,curated:true});continue}
  if(existing){
@@ -396,12 +419,12 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings,names]=await Promise.all([fetchJson('data/index.json?v=20261105b'),fetchJson('data/community_seed_catalog.json?v=20261105b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261105b').catch(()=>({}))]);
- registerBodyNames(names);
+ const [data,archive,settings,names,historical]=await Promise.all([fetchJson('data/index.json?v=20261108a'),fetchJson('data/community_seed_catalog.json?v=20261108a').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108a').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108a').catch(()=>({missions:[]}))]);
+ registerBodyNames(names);historicalProfiles=historical.missions||[];
  catalog.push(...data.cases.filter(c=>c.c3<=250));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
  const filters=filterStateFromHash(location.hash),initial=canonicalId(filters.mission||'claudius-uop-2045');
- $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;const missionFilters=missionFiltersFromHash(location.hash);$('chart-metric').value=missionFilters.metric;for(const [id,key]of [['max-years','maxYears'],['max-c3','maxC3'],['max-vinf','maxVinf'],['max-burns','maxBurns']])$(id).value=missionFilters[key];
+ $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;syncGraphYears();const missionFilters=missionFiltersFromHash(location.hash);$('chart-metric').value=missionFilters.metric;for(const [id,key]of [['max-years','maxYears'],['max-c3','maxC3'],['max-vinf','maxVinf'],['max-burns','maxBurns']])$(id).value=missionFilters[key];
  if(filters.target){pendingHashTarget=filters.target;if(applyTargetHash(filters.target))pendingHashTarget=null;makeDestinations()}
  if(filters.mission&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))await syncShared();
  if(pendingHashTarget&&applyTargetHash(pendingHashTarget)){pendingHashTarget=null;makeDestinations()}

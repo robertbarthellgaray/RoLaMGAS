@@ -35,7 +35,7 @@ test('desktop and public site use byte-identical scientific display calculations
 });
 
 import {missionFiltersFromHash,withMissionFilters} from '../docs/library_analysis.js';
-test('mission limits and graph mode round-trip in deep links without accepting invalid numbers',()=>{const hash=withMissionFilters('#target=Jupiter&mission=4d76acaf1f6f',{metric:'vinf',maxYears:'8',maxC3:'40',maxVinf:'12',maxBurns:'700'});assert.deepEqual(missionFiltersFromHash(hash),{metric:'vinf',maxYears:'8',maxC3:'40',maxVinf:'12',maxBurns:'700'});assert.equal(missionFiltersFromHash('#axis=bad&max_years=NaN&max_c3=-1').maxC3,'');assert.equal(missionFiltersFromHash('#axis=bad').metric,'years')});
+test('mission limits and graph mode round-trip in deep links without accepting invalid numbers',()=>{const hash=withMissionFilters('#target=Jupiter&mission=4d76acaf1f6f',{metric:'vinf',maxYears:'8',maxC3:'40',maxVinf:'12',maxBurns:'700'});assert.deepEqual(missionFiltersFromHash(hash),{metric:'vinf',maxYears:'8',maxC3:'40',maxVinf:'12',maxBurns:'700'});assert.equal(missionFiltersFromHash('#axis=bad&max_years=NaN&max_c3=-1').maxC3,'');assert.equal(missionFiltersFromHash('#axis=bad').metric,'c3')});
 
 test('planet playback shares the stored spacecraft encounter dates, axes and distance units',()=>{
  const table=JSON.parse(fs.readFileSync(new URL('../docs/data/planet_playback.json',import.meta.url),'utf8'));

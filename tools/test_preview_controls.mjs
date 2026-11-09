@@ -32,7 +32,7 @@ test('already modeled powered flybys are not counted twice in combined screening
  q.flybys[1].speed_mismatch_mps=201;g.run('state.card='+JSON.stringify(q));assert.equal(g.run('severity(state.card)'),'failure');
 });
 test('red diagnostics skip drawing trajectory or planet paths',()=>{
- const g=gui();g.run('state.card.modeled_plus_unresolved_mismatch_kms=2;state.card.total_unresolved_vinf_mismatch_mps=1000;drawPlot()');assert.equal(g.operations.strokes,0);assert.equal(g.operations.arcs.length,0);assert.ok(g.operations.labels.includes('Red diagnostic: trajectory plot skipped'));
+ const g=gui();g.run('state.card.modeled_plus_unresolved_mismatch_kms=2;state.card.total_unresolved_vinf_mismatch_mps=1000;drawPlot()');assert.equal(g.operations.strokes,0);assert.equal(g.operations.arcs.length,0);assert.ok(g.operations.labels.some(s=>s.includes('diagnostic preview')));
 });
 test('website uses the same independent global and per-body switches',()=>{
  const web=fs.readFileSync(new URL('../docs/app.js',import.meta.url),'utf8'),snippet=web.slice(web.indexOf('const previewHidden='),web.indexOf('function category(c)'));
@@ -42,3 +42,5 @@ test('website uses the same independent global and per-body switches',()=>{
 });
 
 test('pure modeled burn budget excess stays yellow when there is no unresolved mismatch',()=>{const g=gui();g.run("state.card.status='near_miss_not_accepted';state.card.total_dsm_kms=1.2;state.card.max_single_dsm_kms=.6;state.card.flybys=[]");assert.equal(g.run('severity(state.card)'),'warning')});
+
+test('explicitly requested red diagnostic draws its paths while staying red',()=>{const g=gui();g.run('state.card.modeled_plus_unresolved_mismatch_kms=2;state.card.total_unresolved_vinf_mismatch_mps=1000;state.card.manual_preview=true;drawPlot()');assert.equal(g.run('severity(state.card)'),'failure');assert.ok(g.operations.strokes>0);});
