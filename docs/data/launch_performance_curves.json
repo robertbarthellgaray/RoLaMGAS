@@ -1,0 +1,361 @@
+{
+  "schema_version": 1,
+  "source": "NASA Launch Services Program / NLS-II public performance website",
+  "source_url": "https://elvperf.ksc.nasa.gov/Pages/Query.aspx",
+  "retrieved_at": "2026-11-09T04:32:52.912240+00:00",
+  "assumptions": "NASA NLS-II high-energy ground rules, instantaneous launch attempt, configuration-specific recovery and adapter assumptions. Mission-specific reserves, launch-window requirements and contractual details can change capacity.",
+  "interpolation": "Linear between cached samples only; no extrapolation or inference across missing vehicle samples.",
+  "queries": [
+    {
+      "c3": 0.0,
+      "retrieved_at": "2026-11-09T04:23:57.800859+00:00",
+      "sha256": "d293ea555f7b86675b4d325fc25fba8c18e4636dfebe7ba45e18d86d049ee572"
+    },
+    {
+      "c3": 6.25,
+      "retrieved_at": "2026-11-09T04:23:59.863482+00:00",
+      "sha256": "eaf00f3b7e8b4174d08ce07924f6cc86107c0195ee6cfb802c3067da89bf86c9"
+    },
+    {
+      "c3": 10.0,
+      "retrieved_at": "2026-11-09T04:24:01.259334+00:00",
+      "sha256": "5b00112c4a2273fd37aa61c5542b65308795d5e9659759d60568c205f91c26a3"
+    },
+    {
+      "c3": 20.0,
+      "retrieved_at": "2026-11-09T04:24:02.485934+00:00",
+      "sha256": "8f927d1d5a5aca64175dc382767c3ada0c545b72799b9870285d45cd40a204d3"
+    },
+    {
+      "c3": 28.0,
+      "retrieved_at": "2026-11-09T04:24:03.674863+00:00",
+      "sha256": "0bd250ef3a4053d30812a767aa3b0ba8ae00289106350eee1a6f6625968f9eed"
+    },
+    {
+      "c3": 40.0,
+      "retrieved_at": "2026-11-09T04:24:04.873825+00:00",
+      "sha256": "1a8bc9a219867b57c7bd1d952978564ea1c117d858249d74afe5b37e3b6294be"
+    },
+    {
+      "c3": 55.0,
+      "retrieved_at": "2026-11-09T04:24:06.095488+00:00",
+      "sha256": "ba4de00fadec51eae60731bf5a14971e4fe4971d605f8fb2d1f8865617fa4ad2"
+    },
+    {
+      "c3": 70.0,
+      "retrieved_at": "2026-11-09T04:24:07.491775+00:00",
+      "sha256": "e159bcedabdff3ca43f87451c69b49bbf2b31f7c2d2cccf1a08e2619ae6c5a3a"
+    },
+    {
+      "c3": 100.0,
+      "retrieved_at": "2026-11-09T04:24:09.065071+00:00",
+      "sha256": "81a75cd6efd66627e37c8d00025a42285cd11cf1cad8c747fedecae9ed2eed67"
+    },
+    {
+      "c3": 150.0,
+      "retrieved_at": "2026-11-09T04:32:50.048840+00:00",
+      "sha256": "1a663a262793e8ac3fa04241030463217b182d8052e3ecb038c46d0863f4ea16"
+    },
+    {
+      "c3": 200.0,
+      "retrieved_at": "2026-11-09T04:32:51.853862+00:00",
+      "sha256": "a4532d5d043f3b0068767fc48765de15cb28bdbe22da61457ee75d811bb3e5a7"
+    },
+    {
+      "c3": 250.0,
+      "retrieved_at": "2026-11-09T04:32:52.912240+00:00",
+      "sha256": "43237001751ea3d5a8c1d1efeb3af8b77001a8bcecbff7eb69dc0f29e23272b6"
+    }
+  ],
+  "vehicles": [
+    {
+      "vehicle": "Falcon 9 (Full Thrust, RTLS )",
+      "launch_site": "CCSFS",
+      "fairing": "5.2m",
+      "adapter": "47in (1194mm)",
+      "ground_rules": "First stage recovery has been accounted for in the performance capability. RTLS indicates a first stage return to the launch site; ASDS indicates a first stage downrange landing on the Automated Spaceport Drone Ship (ASDS). | 3-sigma guidance reserves. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 937-mm or 1194-mm payload adapter/separation systems are available; masses of each are comparable and have been accounted for to provide separated spacecraft mass. | 2 payload fairing doors. | Payload mass greater than 7,250 kg (15,983 lbm) may require mission-unique adapter/accommodations, resulting in cost and/or performance impacts. | 160 km (86 nmi) park orbit perigee altitude. | This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | Data generated with 7G acceleration limit on second stage. | Performance shown is applicable for declinations between 28.5 deg. and -28.5 deg. | Launch from SLC-40 at CCSFS (Cape Canaveral Space Force Station).",
+      "points": [
+        [
+          0.0,
+          1770.0
+        ],
+        [
+          6.25,
+          1220.0
+        ],
+        [
+          10.0,
+          875.0
+        ]
+      ]
+    },
+    {
+      "vehicle": "Vulcan (VC0)",
+      "launch_site": "CCSFS",
+      "fairing": "5.4m",
+      "adapter": "47in (1194mm) payload separation ring with C22 adapter",
+      "ground_rules": "This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | 3-sigma mission required margin. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 1194-mm (47-in) payload separation system with lightweight C22 adapter. | Performance values assume harness, logo, reradiating antenna, 2 payload fairing doors. | Payload mass greater than 9,000 kg (19,841 lbm) may require mission unique accommodations, resulting in cost and/or performance impacts. | Park-orbit coast duration up to 60 minutes. Longer coast periods may require additional consumables, which could affect performance capability. | 185 km (100 nmi) circular park orbit altitude. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-41 at CCSFS (Cape Canaveral Space Force Station).",
+      "points": [
+        [
+          0.0,
+          2100.0
+        ]
+      ]
+    },
+    {
+      "vehicle": "Falcon 9 (Full Thrust, ASDS)",
+      "launch_site": "CCSFS",
+      "fairing": "5.2m",
+      "adapter": "47in (1194mm)",
+      "ground_rules": "First stage recovery has been accounted for in the performance capability. RTLS indicates a first stage return to the launch site; ASDS indicates a first stage downrange landing on the Automated Spaceport Drone Ship (ASDS). | 3-sigma guidance reserves. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 937-mm or 1194-mm payload adapter/separation systems are available; masses of each are comparable and have been accounted for to provide separated spacecraft mass. | 2 payload fairing doors. | Payload mass greater than 7,250 kg (15,983 lbm) may require mission-unique adapter/accommodations, resulting in cost and/or performance impacts. | 160 km (86 nmi) park orbit perigee altitude. | This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | Data generated with 7G acceleration limit on second stage. | Performance shown is applicable for declinations between 28.5 deg. and -28.5 deg. | Launch from SLC-40 at CCSFS (Cape Canaveral Space Force Station).",
+      "points": [
+        [
+          0.0,
+          3310.0
+        ],
+        [
+          6.25,
+          2615.0
+        ],
+        [
+          10.0,
+          2220.0
+        ]
+      ]
+    },
+    {
+      "vehicle": "Vulcan (VC2)",
+      "launch_site": "CCSFS",
+      "fairing": "5.4m",
+      "adapter": "47in (1194mm) payload separation ring with C22 adapter",
+      "ground_rules": "This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | 3-sigma mission required margin. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 1194-mm (47-in) payload separation system with lightweight C22 adapter. | Performance values assume harness, logo, reradiating antenna, 2 payload fairing doors. | Payload mass greater than 9,000 kg (19,841 lbm) may require mission unique accommodations, resulting in cost and/or performance impacts. | Park-orbit coast duration up to 60 minutes. Longer coast periods may require additional consumables, which could affect performance capability. | 185 km (100 nmi) circular park orbit altitude. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-41 at CCSFS (Cape Canaveral Space Force Station).",
+      "points": [
+        [
+          0.0,
+          5920.0
+        ],
+        [
+          6.25,
+          5185.0
+        ],
+        [
+          10.0,
+          4750.0
+        ],
+        [
+          20.0,
+          3710.0
+        ],
+        [
+          28.0,
+          2965.0
+        ],
+        [
+          40.0,
+          1970.0
+        ],
+        [
+          55.0,
+          945.0
+        ]
+      ]
+    },
+    {
+      "vehicle": "Falcon Heavy (Recovery)",
+      "launch_site": "KSC",
+      "fairing": "5.2m",
+      "adapter": "47in (1194mm)",
+      "ground_rules": "First stage recovery has been accounted for in the performance capability. Recovery indicates that the performance includes the effects of recovering the booster components; Expendable indicates that the full performance of the vehicle is being used and the first stage is not recovered. | 3-sigma guidance reserves. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 937-mm or 1194-mm payload adapter/separation systems are available; masses of each are comparable and have been accounted for to provide separated spacecraft mass. | 2 payload fairing doors. | Payload mass greater than 10,000 kg (22,046 lbm) may require mission-unique adapter/accommodations, resulting in cost and/or performance impacts. | 160 km (86 nmi) park orbit perigee altitude. | This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-39A at KSC (Kennedy Space Center).",
+      "points": [
+        [
+          0.0,
+          6690.0
+        ],
+        [
+          6.25,
+          5675.0
+        ],
+        [
+          10.0,
+          5130.0
+        ],
+        [
+          20.0,
+          3845.0
+        ],
+        [
+          28.0,
+          2955.0
+        ],
+        [
+          40.0,
+          1805.0
+        ],
+        [
+          55.0,
+          650.0
+        ]
+      ]
+    },
+    {
+      "vehicle": "New Glenn (New Glenn)",
+      "launch_site": "CCSFS",
+      "fairing": "7m",
+      "adapter": "Various \u2013 see ground rules for specifics",
+      "ground_rules": "This performance takes into account the general effects of additional maneuvers associated with orbital debris compliance. This will also need to be evaluated on a mission-specific basis, which could result in additional performance impacts. | First stage recovery has been accounted for in the performance capability. | 3-sigma guidance reserves. | This configuration is under development; reserves are based on assumptions that are believed to be conservative. However, vehicle performance may change as the vehicle evolves and postflight data becomes available. Please contact LSP for guidance on use of performance data. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | Standard-capacity 1575-mm (62-in) payload adapter and one of various commercial-off-the-shelf (COTS) separation systems for payloads less than 10,000 kg (22,046 lbm). Masses of COTS separation systems are comparable and have been accounted for to provide separated spacecraft mass. | Payload mass greater than 10,000 kg (22,046 lbm) requires the standard service high-capacity 3169.9-mm (124.8-in) payload adapter; however, a mission-unique separation system or other accommodations may be required, which could have cost and/or performance impacts. | 2 payload fairing doors. | Vehicle environments and accelerations are based on a payload mass greater than 2,267 kg (5,000 lbm). Smaller payloads may be subject to higher accelerations and may require mission-unique accommodations, resulting in cost and/or performance impacts. | Launch from SLC-36 at CCSFS (Cape Canaveral Space Force Station). | To meet disposal requirements, an additional stage burn has been assumed for C3 < 0 km^2/s^2. Controlled entry is assumed for C3 < -5 km^2/s^2; escape is assumed for all other values. | 185 km (100 nmi) park orbit perigee altitude. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg.",
+      "points": [
+        [
+          0.0,
+          7180.0
+        ],
+        [
+          6.25,
+          6000.0
+        ],
+        [
+          10.0,
+          4930.0
+        ],
+        [
+          20.0,
+          2365.0
+        ],
+        [
+          28.0,
+          555.0
+        ]
+      ]
+    },
+    {
+      "vehicle": "Vulcan (VC4)",
+      "launch_site": "CCSFS",
+      "fairing": "5.4m",
+      "adapter": "47in (1194mm) payload separation ring with C22 adapter",
+      "ground_rules": "This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | 3-sigma mission required margin. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 1194-mm (47-in) payload separation system with lightweight C22 adapter. | Performance values assume harness, logo, reradiating antenna, 2 payload fairing doors. | Payload mass greater than 9,000 kg (19,841 lbm) may require mission unique accommodations, resulting in cost and/or performance impacts. | Park-orbit coast duration up to 60 minutes. Longer coast periods may require additional consumables, which could affect performance capability. | 185 km (100 nmi) circular park orbit altitude. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-41 at CCSFS (Cape Canaveral Space Force Station).",
+      "points": [
+        [
+          0.0,
+          8550.0
+        ],
+        [
+          6.25,
+          7650.0
+        ],
+        [
+          10.0,
+          7140.0
+        ],
+        [
+          20.0,
+          5880.0
+        ],
+        [
+          28.0,
+          4995.0
+        ],
+        [
+          40.0,
+          3800.0
+        ],
+        [
+          55.0,
+          2555.0
+        ],
+        [
+          70.0,
+          1420.0
+        ]
+      ]
+    },
+    {
+      "vehicle": "Vulcan (VC6)",
+      "launch_site": "CCSFS",
+      "fairing": "5.4m",
+      "adapter": "47in (1194mm) payload separation ring with C22 adapter",
+      "ground_rules": "This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | 3-sigma mission required margin. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 1194-mm (47-in) payload separation system with lightweight C22 adapter. | Performance values assume harness, logo, reradiating antenna, 2 payload fairing doors. | Payload mass greater than 9,000 kg (19,841 lbm) may require mission unique accommodations, resulting in cost and/or performance impacts. | Park-orbit coast duration up to 60 minutes. Longer coast periods may require additional consumables, which could affect performance capability. | 185 km (100 nmi) circular park orbit altitude. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-41 at CCSFS (Cape Canaveral Space Force Station).",
+      "points": [
+        [
+          0.0,
+          10850.0
+        ],
+        [
+          6.25,
+          9750.0
+        ],
+        [
+          10.0,
+          9130.0
+        ],
+        [
+          20.0,
+          7630.0
+        ],
+        [
+          28.0,
+          6565.0
+        ],
+        [
+          40.0,
+          5150.0
+        ],
+        [
+          55.0,
+          3685.0
+        ],
+        [
+          70.0,
+          2420.0
+        ],
+        [
+          100.0,
+          770.0
+        ]
+      ]
+    },
+    {
+      "vehicle": "Falcon Heavy (Expendable)",
+      "launch_site": "KSC",
+      "fairing": "5.2m",
+      "adapter": "47in (1194mm)",
+      "ground_rules": "First stage recovery has been accounted for in the performance capability. Recovery indicates that the performance includes the effects of recovering the booster components; Expendable indicates that the full performance of the vehicle is being used and the first stage is not recovered. | 3-sigma guidance reserves. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 937-mm or 1194-mm payload adapter/separation systems are available; masses of each are comparable and have been accounted for to provide separated spacecraft mass. | 2 payload fairing doors. | Payload mass greater than 10,000 kg (22,046 lbm) may require mission-unique adapter/accommodations, resulting in cost and/or performance impacts. | 160 km (86 nmi) park orbit perigee altitude. | This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-39A at KSC (Kennedy Space Center).",
+      "points": [
+        [
+          0.0,
+          15010.0
+        ],
+        [
+          6.25,
+          13295.0
+        ],
+        [
+          10.0,
+          12345.0
+        ],
+        [
+          20.0,
+          10115.0
+        ],
+        [
+          28.0,
+          8585.0
+        ],
+        [
+          40.0,
+          6640.0
+        ],
+        [
+          55.0,
+          4670.0
+        ],
+        [
+          70.0,
+          3080.0
+        ],
+        [
+          100.0,
+          755.0
+        ]
+      ]
+    }
+  ]
+}

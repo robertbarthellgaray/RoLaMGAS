@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "source": "Portfolio owner mission identifications; display metadata only, no trajectory states changed",
+  "missions": {
+    "8ea27f8c3842a8a9b17a91aed85cfd74c6c55c6052e8a480c0a07a45330f0aca": {
+      "label": "Juno recreation",
+      "featured_priority": 12,
+      "note": "User-identified Juno reconstruction. Matching encounter calendar days does not establish agreement with the flown state vectors or maneuver budget."
+    },
+    "6ef2b7edc240": {
+      "label": "Dragonfly recreation",
+      "featured_priority": 11,
+      "note": "User-identified Dragonfly-style Saturn transfer. Titan targeting, atmospheric entry and landing are not modeled; this is not a verified operational Dragonfly trajectory."
+    },
+    "f768b32a4c2d1122865aa5e7c7a284c498588ff1772e21de9a9634d3d9da76e2": {
+      "label": "New Horizons recreation · near match",
+      "featured_priority": 10,
+      "note": "User-identified New Horizons near reconstruction; launch is two calendar days later than the actual mission. It is not an exact historical-date or flown-state match."
+    },
+    "claudius-uop-2045": {
+      "label": "CLAUDIUS / Uranus Orbiter & Probe",
+      "featured_priority": 9,
+      "note": "Original Uranus Orbiter and Probe concept with December 2045 arrival. The assist sequence remains EdvEJU."
+    },
+    "4fed974cbffb": {
+      "label": "Cassini recreation · later arrival",
+      "featured_priority": 7,
+      "note": "Cassini-inspired reconstruction with a later Saturn arrival; not an exact historical-date match."
+    }
+  }
+}

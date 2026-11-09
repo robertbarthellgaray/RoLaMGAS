@@ -221,6 +221,25 @@ def extend_planet_ephemerides(ep,c,start,end,status,bodies=None):
         ep.splines[body]=extended.splines[body];ep.manifest[body]=extended.manifest[body]
 
 
+def heliocentric_orbit_summary(state,epoch):
+    """Sun-only osculating diagnostics; does not alter propagation or add a burn."""
+    def display_date(value):
+        try:return calendar(value)
+        except (OverflowError,ValueError):return None
+    y=np.asarray(state,float);r=float(np.linalg.norm(y[:3]));speed=float(np.linalg.norm(y[3:]))
+    energy=speed*speed/2-MU_SUN/r;h=np.cross(y[:3],y[3:]);ecc=float(np.linalg.norm(np.cross(y[3:],h)/MU_SUN-y[:3]/r))
+    result=dict(epoch_jd_tdb=float(epoch),specific_energy_km2_s2=energy,speed_kms=speed,
+                solar_escape_speed_kms=float(np.sqrt(2*MU_SUN/r)),radial_velocity_kms=float(y[:3]@y[3:]/r),
+                eccentricity=ecc,sun_bound=bool(energy < -1e-10),reference='Sun-only osculating conic; later planetary encounters are not modeled')
+    if result['sun_bound']:
+        a=-MU_SUN/(2*energy);result.update(semimajor_axis_au=a/AU,perihelion_au=a*(1-ecc)/AU,aphelion_au=a*(1+ecc)/AU,period_years=float(2*np.pi*np.sqrt(a**3/MU_SUN)/(365.25*DAY)))
+        if 1e-8<ecc<1:
+            E=float(np.arctan2(y[:3]@y[3:]/(ecc*np.sqrt(MU_SUN*a)),(1-r/a)/ecc))
+            mean=(E-ecc*np.sin(E))%(2*np.pi);to_apo=(np.pi-mean)%(2*np.pi)/np.sqrt(MU_SUN/a**3)/DAY
+            apo_epoch=float(epoch+to_apo);peri_epoch=float(epoch+(-mean)%(2*np.pi)/np.sqrt(MU_SUN/a**3)/DAY);result.update(next_aphelion_jd_tdb=apo_epoch,next_aphelion_date=display_date(apo_epoch),next_perihelion_jd_tdb=peri_epoch,next_perihelion_date=display_date(peri_epoch))
+    return result
+
+
 def solar_continuation(start,end,initial):
     initial=np.array(initial,dtype=float);seconds=(end-start)*DAY
     expected,_=kepler(initial[:3],initial[3:],seconds)
@@ -474,6 +493,8 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
     if post_flyby_months>0:
         status('Integrating '+str(post_flyby_months)+' months after the final flyby…')
         pieces.extend(post_flyby_pieces(nodes[-1],ep,extended_end,pieces[-1]['state'](encounter_date)))
+    post_solar=next((p for p in pieces if p.get('label')=='Post-flyby heliocentric coast'),None)
+    outgoing_solar_orbit=heliocentric_orbit_summary(post_solar['state'](post_solar['start']),post_solar['start']) if post_solar else None
     status('Checking state joins and recording every maneuver…')
     burns=[];jumps=[]
     mu=BODIES['Earth'][1];r0=BODIES['Earth'][2]+200
@@ -572,7 +593,8 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
     individual_pass=actual_dsm_peak<=c['max_single_dsm_kms']+1e-9 and actual_power_peak<=c['max_powered_flyby_kms']+1e-9
     if not individual_pass:violations.append('An integrated DSM/patch correction or flyby impulse exceeds its individual burn cap; see burns.csv')
     budget=export_budget_breakdown(q,burns)
-    report=dict(model='Two-body patched conics: Sun-only coasts and one-planet-only SOI hyperbolas, translated using JPL planet states',
+    from app_paths import APP_VERSION
+    report=dict(engine_version=APP_VERSION,model='Two-body patched conics: Sun-only coasts and one-planet-only SOI hyperbolas, translated using JPL planet states',
                 propagation_model='two_body_patched_conics',nbody_propagation=False,
                 force_model=dict(heliocentric_coasts='Sun point mass only, outside planned encounter SOIs',
                     planetary_patches='Encounter-planet point mass only in planet-relative coordinates, inside its Laplace SOI',
@@ -585,7 +607,7 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
                 maneuver_budget_breakdown=budget,candidate_maneuver_budget_complete=budget['candidate_maneuver_budget_complete'],
                 frame='Sun-centered Ecliptic J2000; km, km/s; Julian dates TDB',candidate_id=q['id'],
                 arrival_altitude_option_km=arrival_altitude_km,arrival_inclination_option_deg=arrival_inclination_deg,arrival_state=arrival_state,
-                post_flyby_months=post_flyby_months,month_length_days=MONTH_DAYS,
+                post_flyby_months=post_flyby_months,month_length_days=MONTH_DAYS,post_flyby_solar_orbit=outgoing_solar_orbit,
                 final_encounter_jd_tdb=encounter_date,post_flyby_end_date=calendar(end),
                 passes_individual_burn_limits=individual_pass,maximum_integrated_dsm_or_patch_kms=actual_dsm_peak,
                 maximum_integrated_flyby_burn_kms=actual_power_peak,

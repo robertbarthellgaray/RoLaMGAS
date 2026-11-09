@@ -6,7 +6,7 @@ Mission limits fields and are preserved in shared links.
 
 Select **Use in desktop app** on the website, save the JSON, and choose
 **Import options / website trajectory** in a client built from these sources
-(local trial: v0.2.4-test2). The document includes portable search settings and,
+(local trial: v0.2.4-test3). The document includes portable search settings and,
 for Lambert candidates, the selected dates, branch choices, DSM controls and
 reference coast states. It contains no executable commands or local paths.
 
@@ -71,8 +71,8 @@ Verification and sitemap submission do not guarantee indexing or ranking.
 
 ## Local validation
 
-- 210 Python solver/backend tests and 14 catalog tests passed.
-- 67 JavaScript/browser-logic tests passed.
+- 219 Python solver/backend tests and 14 catalog tests passed.
+- 72 JavaScript/browser-logic tests passed.
 - Real Edge browser: visible years, time-based axes, mobile layout, download then
   import of the selected Jupiter chain, explicit red preview, removed Titan UI.
 - That import reproduced the stored coasts within 0.02834 km and

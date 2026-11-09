@@ -8,10 +8,10 @@ import argparse,hashlib,json,os,platform,re,shutil,subprocess,sys,tempfile,zipfi
 
 ROOT=Path(__file__).resolve().parent
 MODULES=['app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search','dynamics','ephemeris',
-         'horizons_targets','network','search_options','candidate_archive','community','candidate_status','earth_return_seeds','historical_seeds','trajectory_transfer','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
+         'horizons_targets','network','search_options','candidate_archive','community','candidate_status','earth_return_seeds','historical_seeds','launch_performance','trajectory_transfer','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
          'presentation','live_gallery','integrate_export','celestia_package','moon_screen','baseline_cache',
          'build_database','build_release','restore_diagnostics']
-DOCS=['WEBSITE_HANDOFF.md','GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md','JUICE_DEPARTURE_SEEDS.md','PREVIEW_AND_RESULTS.md','HISTORICAL_SEEDS.md']
+DOCS=['LAUNCH_PERFORMANCE.md','WEBSITE_HANDOFF.md','GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md','JUICE_DEPARTURE_SEEDS.md','PREVIEW_AND_RESULTS.md','HISTORICAL_SEEDS.md']
 DATA_FILES=('departure_seeds','community_seed_catalog.json','community_config.json','gui.html','gui.js','mission_metrics.js','gui.css','gallery.html','sequence_database.json','examples','model_assets',
             'gui_assets','baseline_ephemerides.zip','LICENSE','THIRD_PARTY_NOTICES.md','third_party_licenses')
 

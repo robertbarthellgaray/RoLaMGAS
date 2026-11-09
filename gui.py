@@ -90,6 +90,10 @@ class App:
                              state=status.get('state','finished' if (p/'results.json').exists() else 'unknown')))
         return rows
 
+    def launch_performance(self,c3):
+        from launch_performance import capacity_query
+        return capacity_query(c3,self.cache/'launch_performance')
+
     def cache_status(self):
         baseline = read_json(self.cache/'baseline_manifest.json',{})
         rows = []
@@ -634,7 +638,7 @@ class Handler(BaseHTTPRequestHandler):
                 path = (root/parts[3]).resolve()
                 if not path.is_relative_to(root) or path.suffix.lower() not in ('.json','.png','.tsv','.html','.md','.log','.csv','.xyzv','.ssc','.txt','.zip'):
                     raise ValueError('File is outside this run')
-            elif url.path in ('/gui_assets/launch_mass_c3.png','/gui_assets/rolamgas-icon.png'):
+            elif url.path in ('/gui_assets/launch_mass_c3.png','/gui_assets/rolamgas-icon.png','/gui_assets/launch_performance_curves.json'):
                 path=RESOURCE_ROOT/'gui_assets'/url.path.rsplit('/',1)[-1]
             elif url.path in ('/','/gui.html','/gui.js','/mission_metrics.js','/gui.css'):
                 path = RESOURCE_ROOT/('gui.html' if url.path=='/' else url.path[1:])
@@ -676,6 +680,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.import_search_options(value.get('document')))
             if self.path=='/api/trajectory/import':
                 return self.json(self.app.import_website_candidate(value.get('document')))
+            if self.path=='/api/launch-performance':
+                return self.json(self.app.launch_performance(value.get('c3')))
             if self.path=='/api/resolve':
                 return self.json(self.app.lookup(value['query'],value.get('epoch','2030-01-01'),value.get('refresh',False)))
             if self.path=='/api/start':

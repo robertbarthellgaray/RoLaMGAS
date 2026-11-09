@@ -42,3 +42,13 @@ test('planet playback shares the stored spacecraft encounter dates, axes and dis
  const c=JSON.parse(fs.readFileSync(new URL('../docs/data/cases/4d76acaf1f6f.json',import.meta.url),'utf8'));
  for(const event of c.events){const segment=table.bodies[event.body].segments.find(s=>s.start<=event.jd&&event.jd<=s.end);const p=m.ephemerisPosition(segment,event.jd);assert.ok(p,'Coverage for '+event.body);const error=Math.hypot(...p.map((v,i)=>v-event.position_au[i]))*149597870.7;assert.ok(error<2000,`${event.body} display ephemeris error ${error} km`);}
 });
+
+test('hide coast corrections that round to zero without hiding real burns or altering totals',()=>{
+ const burns=[{kind:'Coast 2 targeting correction',magnitude_mps:0},{kind:'Coast 3 targeting correction',magnitude_mps:.0049},{kind:'Coast 4 targeting correction',magnitude_mps:.005},{kind:'DSM',magnitude_mps:0},{kind:'powered flyby',magnitude_mps:50}];
+ assert.deepEqual(burns.filter(m.visibleManeuver),burns.slice(2));assert.equal(burns.length,5);assert.equal(m.visibleManeuver({kind:'Coast 2 targeting correction',magnitude_kms:1e-8}),false);
+});
+test('NASA capacities retain configuration, interpolate only inside known adjacent samples and never extrapolate',()=>{
+ const d={queries:[{c3:0},{c3:10},{c3:20}],vehicles:[{vehicle:'Falcon Heavy (Recovery)',points:[[0,5000],[10,3000]]},{vehicle:'Falcon Heavy (Expendable)',points:[[0,12000],[10,9000],[20,7000]]},{vehicle:'Unavailable gap',points:[[0,100],[20,80]]}]};
+ const r=m.launchCapacities(d,5);assert.equal(r[0].capacity_kg,4000);assert.equal(r[1].capacity_kg,10500);assert.equal(r[2].capacity_kg,null);
+ assert.equal(m.launchCapacities(d,15)[0].capacity_kg,null);assert.equal(m.launchCapacities(d,25)[1].capacity_kg,null);assert.equal(m.launchCapacities(d,10)[0].interpolated,false);
+});

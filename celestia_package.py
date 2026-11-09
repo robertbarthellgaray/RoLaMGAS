@@ -109,7 +109,8 @@ def build_package(output,candidate,config,override='auto'):
     (root/(addon_name+'.ssc')).write_text(ssc,encoding='utf-8')
     for name in ('integration_report.json','burns.csv','encounters.csv','planet_clearances.csv','trajectory.csv','arrival_state.json','arrival_state.csv'):
         if (output/name).is_file():shutil.copy2(output/name,root/'reports'/name)
-    manifest=dict(candidate_id=identifier,model=selected,model_filename=filename,model_selection_reason=reason,
+    from app_paths import APP_VERSION
+    manifest=dict(engine_version=APP_VERSION,candidate_id=identifier,model=selected,model_filename=filename,model_selection_reason=reason,
                   source_model_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
                   trajectory_sha256=hashlib.sha256((output/'trajectory.xyzv').read_bytes()).hexdigest(),
                   maximum_heliocentric_distance_au=maximum,celestia_object='Sol/'+object_name,

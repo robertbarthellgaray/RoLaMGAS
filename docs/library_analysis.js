@@ -1,10 +1,14 @@
 // Comparison uses saved costs, not a claim of physical validation.
 const DWARFS=new Set(['Pluto','Ceres','Eris','Haumea','Makemake','Sedna']);
 const PLANETS=new Set(['Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uranus','Neptune']);
-export const CATEGORIES=['Dwarf planets','Asteroids','Comets','Other bodies'];
+export const DWARF_CATEGORY='Dwarf planets & TNOs';
+const bodyClasses=new Map();
+export function registerBodyCategories(document){for(const [id,row] of Object.entries(document?.bodies||{}))if(String(row.horizons_id)===id)bodyClasses.set(id,row);}
+export const CATEGORIES=[DWARF_CATEGORY,'Asteroids','Comets','Other bodies'];
 export function bodyCategory(name,id=''){
  if(PLANETS.has(name))return 'Planets';
- if(DWARFS.has(name)||['999','20000001','20136199','20136108','20136472','20090377','20225088'].includes(String(id)))return 'Dwarf planets';
+ if(DWARFS.has(name)||['9','999','20000001','20136199','20136108','20136472','20090377','20225088'].includes(String(id)))return DWARF_CATEGORY;
+ const metadata=bodyClasses.get(String(id));if(metadata?.orbit_class_code==='TNO'||/trans.?neptun/i.test(metadata?.orbit_class||''))return DWARF_CATEGORY;
  if((Number(id)>=1000000&&Number(id)<2000000)||/^(?:[CPADX]\/|\d+[PD]\/)/i.test(name))return 'Comets';
  if(Number(id)>=2000000||['Arrokoth','624 Hektor','13579 Allodd','420356 Praamzius','2026 ED138','2012 VP113'].includes(name))return 'Asteroids';
  return 'Other bodies';
@@ -20,7 +24,7 @@ export function filteredYears(rows,min,max){return rows.filter(r=>launchYear(r)>
 export function sequenceColors(rows){const names=[...new Set(rows.map(r=>r.sequence))].sort();return new Map(names.map((s,i)=>[s,`hsl(${Math.round(i*360/Math.max(1,names.length))} 72% 69%)`]))}
 export function resolveAlias(id,aliases){const seen=new Set();while(aliases[id]&&!seen.has(id)){seen.add(id);id=aliases[id]}return id}
 
-export function filterStateFromHash(hash){const p=new URLSearchParams(hash.replace(/^#/,'')),year=key=>{const s=p.get(key);return s!==null&&/^\d{1,6}$/.test(s)?s:''};return {target:p.get('target'),mission:p.get('mission'),launchMin:year('launch_from'),launchMax:year('launch_to')}}
+export function filterStateFromHash(hash){const p=new URLSearchParams(hash.replace(/^#/,'')),year=key=>{const s=p.get(key);return s!==null&&/^\d{1,6}$/.test(s)?s:''};return {target:p.get('target')==='Dwarf planets'?DWARF_CATEGORY:p.get('target'),mission:p.get('mission'),launchMin:year('launch_from'),launchMax:year('launch_to')}}
 export function filterHash(state){const p=new URLSearchParams();if(state.target&&state.target!=='All')p.set('target',state.target);if(state.mission)p.set('mission',state.mission);for(const [key,value]of [['launch_from',state.launchMin],['launch_to',state.launchMax]])if(value!==''&&value!=null&&/^\d{1,6}$/.test(String(value)))p.set(key,value);return '#'+p}
 
 export function missionFiltersFromHash(hash){

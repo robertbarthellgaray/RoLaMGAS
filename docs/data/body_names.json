@@ -14,77 +14,126 @@
       "horizons_id": "20000001",
       "designation": "A801 AA",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20000001"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20000001",
+      "orbit_class": "Main-belt Asteroid",
+      "orbit_class_code": "MBA",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20000001"
     },
     "20000624": {
       "name": "624 Hektor",
       "horizons_id": "20000624",
       "designation": "A907 CF",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20000624"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20000624",
+      "orbit_class": "Jupiter Trojan",
+      "orbit_class_code": "TJN",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20000624"
     },
     "20010253": {
       "name": "10253 Westerwald",
       "horizons_id": "20010253",
       "designation": "2116 T-2",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20010253"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20010253",
+      "orbit_class": "Main-belt Asteroid",
+      "orbit_class_code": "MBA",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20010253"
     },
     "20013579": {
       "name": "13579 Allodd",
       "horizons_id": "20013579",
       "designation": "1993 NA2",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20013579"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20013579",
+      "orbit_class": "Main-belt Asteroid",
+      "orbit_class_code": "MBA",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20013579"
     },
     "20090377": {
       "name": "90377 Sedna",
       "horizons_id": "20090377",
       "designation": "2003 VB12",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20090377"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20090377",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20090377"
     },
     "20225088": {
       "name": "225088 Gonggong",
       "horizons_id": "20225088",
       "designation": "2007 OR10",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20225088"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20225088",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20225088"
     },
     "20420356": {
       "name": "420356 Praamzius",
       "horizons_id": "20420356",
       "designation": "2012 BX85",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20420356"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20420356",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20420356"
     },
     "20469219": {
       "name": "469219 Kamo`oalewa",
       "horizons_id": "20469219",
       "designation": "2016 HO3",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20469219"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20469219",
+      "orbit_class": "Apollo",
+      "orbit_class_code": "APO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20469219"
     },
     "20486958": {
       "name": "486958 Arrokoth",
       "horizons_id": "20486958",
       "designation": "2014 MU69",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20486958"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20486958",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20486958"
     },
     "50666516": {
       "name": "(2012 VP113)",
       "horizons_id": "50666516",
       "designation": "2012 VP113",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=50666516"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=50666516",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=50666516"
     },
     "54667839": {
       "name": "(2026 ED138)",
       "horizons_id": "54667839",
       "designation": "2026 ED138",
       "object_type": "asteroid (integrated barycenter)",
-      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=54667839"
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=54667839",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=54667839"
+    },
+    "9": {
+      "name": "Pluto",
+      "horizons_id": "9",
+      "object_type": "Pluto system barycenter",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=9"
+    },
+    "20028978": {
+      "name": "28978 Ixion",
+      "horizons_id": "20028978",
+      "designation": "2001 KX76",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20028978",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20028978"
     }
   }
 }

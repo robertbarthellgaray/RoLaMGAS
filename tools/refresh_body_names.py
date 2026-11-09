@@ -42,6 +42,16 @@ def refresh(live=False,extra=()):
         print(body_id,m['name'],flush=True)
         # Save each identity so an interrupted run can resume without repeat calls.
         output.write_text(json.dumps(saved,indent=2)+'\n',encoding='utf-8');time.sleep(.2)
+    for body_id,row in saved['bodies'].items():
+        if int(body_id)<2000000 or row.get('orbit_class'):continue
+        url='https://ssd-api.jpl.nasa.gov/sbdb.api?'+urllib.parse.urlencode({'spk':body_id})
+        try:
+            data=fetch(url);obj=data.get('object',{})
+            if str(obj.get('spkid'))!=body_id:
+                print('No exact SBDB classification:',body_id,flush=True);continue
+            kind=obj.get('orbit_class',{});row.update(orbit_class=kind.get('name'),orbit_class_code=kind.get('code'),classification_source=url)
+            output.write_text(json.dumps(saved,indent=2)+'\n',encoding='utf-8')
+        except (RuntimeError,ValueError) as exc:print('Classification unavailable:',body_id,str(exc),flush=True)
     print('Library target counts:',json.dumps(counts,sort_keys=True),flush=True)
     return saved
 if __name__=='__main__':

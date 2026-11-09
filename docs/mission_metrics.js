@@ -39,5 +39,21 @@
     const t=(jd-a[0])/dt,h00=2*t**3-3*t**2+1,h10=t**3-2*t**2+t,h01=-2*t**3+3*t**2,h11=t**3-t**2;
     return [0,1,2].map(i=>h00*a[1+i]+h10*dt*a[4+i]+h01*b[1+i]+h11*dt*b[4+i]);
   }
-  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition});
+  function visibleManeuver(burn) {
+    const kind=String(burn.kind||burn.label||'');
+    const mps=burn.magnitude_mps??(burn.magnitude_kms==null?NaN:burn.magnitude_kms*1000);
+    return !(/(?:coast.*targeting correction|targeting correction.*coast)/i.test(kind)&&Number.isFinite(mps)&&mps>=0&&mps<.005);
+  }
+  function launchCapacities(document,c3) {
+    if(!document?.vehicles||!Number.isFinite(c3)||c3<0)return [];
+    const grid=(document.queries||[]).map(q=>q.c3);
+    return document.vehicles.map(vehicle=>{
+      const points=vehicle.points||[],exact=points.find(p=>Math.abs(p[0]-c3)<1e-9);
+      if(exact)return {...vehicle,capacity_kg:exact[1],interpolated:false};
+      const lower=points.filter(p=>p[0]<c3).at(-1),upper=points.find(p=>p[0]>c3);
+      if(!lower||!upper||grid.some(v=>lower[0]<v&&v<upper[0]))return {...vehicle,capacity_kg:null,interpolated:false};
+      return {...vehicle,capacity_kg:lower[1]+(upper[1]-lower[1])*(c3-lower[0])/(upper[0]-lower[0]),interpolated:true,bracket_c3:[lower[0],upper[0]]};
+    });
+  }
+  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,launchCapacities});
 })(globalThis);
