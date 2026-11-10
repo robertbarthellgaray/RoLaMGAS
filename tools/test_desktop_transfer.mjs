@@ -4,6 +4,14 @@ import {transferDocument,finiteRadiusDownload} from '../docs/desktop_transfer.js
 import {historicalMatch} from '../docs/historical_labels.js';
 const root=new URL('../docs/',import.meta.url),load=p=>JSON.parse(fs.readFileSync(new URL(p,root),'utf8'));
 
+test('curated shared aliases keep the server timestamp for Newest shared ordering',()=>{
+ const source=fs.readFileSync(new URL('app.js',root),'utf8'),snippet=source.slice(source.indexOf('function addShared(records)'),source.indexOf('function updateCounts()'));
+ const curated={id:'featured',mission_label:'Named mission'},context=vm.createContext({catalog:[curated],sharedRecords:new Map(),curatedAliases:{shared:'featured'},encounterDays:new Map(),displayAliases:{},historicalProfiles:[],annotateMission:x=>x,historicalMatch:()=>null,summaryFor:r=>({id:r.id,received:Date.parse(r.received_at)}),encounterDayKey:()=> 'key',carryMissionLabel:(a,b)=>b,betterDuplicate:()=>true});
+ vm.runInContext(snippet,context);
+ const changed=vm.runInContext("addShared([{id:'shared',received_at:'2026-11-10T18:21:32.938Z'}])",context);
+ assert.equal(changed,1);assert.equal(curated.received,Date.parse('2026-11-10T18:21:32.938Z'));assert.equal(context.catalog.length,1);assert.equal(context.catalog[0].mission_label,'Named mission');
+});
+
 test('desktop handoff enables explicit powered burns without counting DSMs twice',()=>{
  const c={id:'powered',c3:20,years:3,vinf:8,sequence:'EJ',bodies:['Earth','Jupiter'],events:[{jd:2460000},{jd:2461000}],burns_mps:200,burns:[{kind:'DSM',magnitude_mps:100}],community_record:{sequence:'EJ',dates_jd_tdb:[2460000,2461000],dsm_controls:[],branches:[[0,true]]}};
  assert.equal(transferDocument(c).settings.powered_flybys,true);

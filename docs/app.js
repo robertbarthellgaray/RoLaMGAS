@@ -418,7 +418,12 @@ function addShared(records){let added=0;for(const record of records)try{
  if(sharedRecords.has(record.id))continue;
  const summary=annotateMission(summaryFor(record));summary.historical_match=historicalMatch(record,historicalProfiles);sharedRecords.set(record.id,record);
  const alias=curatedAliases[record.id],key=encounterDayKey(record),existing=encounterDays.get(key);
- if(alias&&catalog.some(c=>c.id===alias)){carryMissionLabel(summary,catalog.find(c=>c.id===alias));encounterDays.set(key,{record,id:alias,curated:true});continue}
+ if(alias&&catalog.some(c=>c.id===alias)){
+  const curated=catalog.find(c=>c.id===alias);carryMissionLabel(summary,curated);
+  const previous=curated.received||0;curated.received=Math.max(previous,summary.received||0);
+  if(curated.received!==previous)added++;
+  encounterDays.set(key,{record,id:alias,curated:true});continue
+ }
  if(existing){
   if(existing.curated||!betterDuplicate(record,existing.record)){carryMissionLabel(summary,catalog.find(c=>c.id===existing.id)||summary);displayAliases[record.id]=existing.id;continue}
   const index=catalog.findIndex(c=>c.id===existing.id);if(index>=0){carryMissionLabel(catalog[index],summary);catalog.splice(index,1);}displayAliases[existing.id]=record.id;
