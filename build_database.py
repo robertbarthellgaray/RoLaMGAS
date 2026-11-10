@@ -57,6 +57,8 @@ def build():
         'Mercury-Mercury':[80,750], 'Mercury-Venus':[80,500],
     }
     codes = dict(E='Earth',V='Venus',M='Mars',Me='Mercury',J='Jupiter',S='Saturn',U='Uranus',N='Neptune')
+    from sequence_timing import complete_pairs
+    pair_days=complete_pairs(pair_days)
     import re
 
     def parse(sequence):

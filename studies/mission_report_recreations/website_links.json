@@ -1,0 +1,44 @@
+[
+  {
+    "id": "f53fc65c9329",
+    "title": "Trident date-match \u2014 added maneuvers",
+    "c3": 16.660438212790538,
+    "burns_mps": 617.864827775087,
+    "url": "https://robertbarthellgaray.github.io/RoLaMGAS/#mission=f53fc65c9329"
+  },
+  {
+    "id": "0fc1f2bcd586",
+    "title": "Mars Life Explorer 2035",
+    "c3": 22.966542205913427,
+    "burns_mps": 0,
+    "url": "https://robertbarthellgaray.github.io/RoLaMGAS/#mission=0fc1f2bcd586"
+  },
+  {
+    "id": "dd67c26fd41f",
+    "title": "Mars Life Explorer 2037",
+    "c3": 18.197601621246704,
+    "burns_mps": 0,
+    "url": "https://robertbarthellgaray.github.io/RoLaMGAS/#mission=dd67c26fd41f"
+  },
+  {
+    "id": "9ca55df1c55c",
+    "title": "Mars Life Explorer 2039",
+    "c3": 37.06583132132816,
+    "burns_mps": 0,
+    "url": "https://robertbarthellgaray.github.io/RoLaMGAS/#mission=9ca55df1c55c"
+  },
+  {
+    "id": "35bd4d9c6e03",
+    "title": "CALYPSO Ariel / KBO concept \u2014 Uranus cruise",
+    "c3": 120.70413198753758,
+    "burns_mps": 39.49587221552655,
+    "url": "https://robertbarthellgaray.github.io/RoLaMGAS/#mission=35bd4d9c6e03"
+  },
+  {
+    "id": "552363ae7812",
+    "title": "T-OWS 2030 concept \u2014 operations-table schedule",
+    "c3": 89.68809531291954,
+    "burns_mps": 9.612424348313725,
+    "url": "https://robertbarthellgaray.github.io/RoLaMGAS/#mission=552363ae7812"
+  }
+]

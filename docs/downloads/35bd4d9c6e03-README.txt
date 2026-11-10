@@ -1,0 +1,2 @@
+Proposed-study schedule recreation, not an official mission ephemeris. Launch-period opening; 494-day Jupiter leg corresponds to July 11 launch. Uranus proxy only: Ariel flyby and later KBO encounter are not reconstructed. Solar-only Lambert/Kepler cruise; full powered-periapsis vector burns are charged where needed. Launch injection, resolved moon flybys, and capture are excluded.
+Columns: JD(TDB), x_km, y_km, z_km, vx_km_s, vy_km_s, vz_km_s. Sun-centered Ecliptic J2000.

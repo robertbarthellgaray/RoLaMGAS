@@ -1,0 +1,636 @@
+[
+  {
+    "name": "Mars Life Explorer 2035",
+    "reference": {
+      "name": "Mars Life Explorer 2035",
+      "sequence": "EM",
+      "bodies": [
+        "Earth",
+        "Mars"
+      ],
+      "dates": [
+        "2035-05-17",
+        "2036-02-25"
+      ],
+      "c3": 23.1,
+      "vinf": 3.1,
+      "section": "Table 3-4, printed page 3-5; Type II",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        284
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1n-7g0IFQayFWEubCiWY7XADin1sUkcB2/view"
+      ]
+    },
+    "initialization_attempts": 1,
+    "preflight_rejections": [],
+    "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+    "accepted": true,
+    "audit": {
+      "passed": true,
+      "reasons": [],
+      "method": "Independent stored-vector patched-conic screen",
+      "joins": [],
+      "max_vinf_mismatch_mps": 0,
+      "max_single_dsm_mps": 0,
+      "max_powered_flyby_mps": 0,
+      "cruise_total_mps": 0,
+      "policy": {
+        "max_unpowered_speed_mismatch_mps": 1.0,
+        "max_single_dsm_mps": 700.0,
+        "max_powered_flyby_mps": 200.0,
+        "max_total_cruise_mps": 1500.0
+      }
+    },
+    "coasts": {
+      "maximum_dop853_endpoint_error_km": 0.0012168791773355195,
+      "maximum_velocity_difference_kms": 5.1839952515982784e-11,
+      "passed": true,
+      "nbody_validated": false
+    },
+    "candidate_id": "0fc1f2bcd586",
+    "launch_c3": 22.966542205913427,
+    "arrival_vinf": 3.1053034216152877,
+    "total_burn_mps": 0
+  },
+  {
+    "name": "Mars Life Explorer 2037",
+    "reference": {
+      "name": "Mars Life Explorer 2037",
+      "sequence": "EM",
+      "bodies": [
+        "Earth",
+        "Mars"
+      ],
+      "dates": [
+        "2037-08-11",
+        "2038-02-26"
+      ],
+      "c3": 18.4,
+      "vinf": 3.7,
+      "section": "Table 3-4; Type I",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        199
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1n-7g0IFQayFWEubCiWY7XADin1sUkcB2/view"
+      ]
+    },
+    "initialization_attempts": 1,
+    "preflight_rejections": [],
+    "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+    "accepted": true,
+    "audit": {
+      "passed": true,
+      "reasons": [],
+      "method": "Independent stored-vector patched-conic screen",
+      "joins": [],
+      "max_vinf_mismatch_mps": 0,
+      "max_single_dsm_mps": 0,
+      "max_powered_flyby_mps": 0,
+      "cruise_total_mps": 0,
+      "policy": {
+        "max_unpowered_speed_mismatch_mps": 1.0,
+        "max_single_dsm_mps": 700.0,
+        "max_powered_flyby_mps": 200.0,
+        "max_total_cruise_mps": 1500.0
+      }
+    },
+    "coasts": {
+      "maximum_dop853_endpoint_error_km": 0.0004555902074459532,
+      "maximum_velocity_difference_kms": 4.747289749078529e-11,
+      "passed": true,
+      "nbody_validated": false
+    },
+    "candidate_id": "dd67c26fd41f",
+    "launch_c3": 18.197601621246704,
+    "arrival_vinf": 3.6338224583236847,
+    "total_burn_mps": 0
+  },
+  {
+    "name": "Mars Life Explorer 2039",
+    "reference": {
+      "name": "Mars Life Explorer 2039",
+      "sequence": "EM",
+      "bodies": [
+        "Earth",
+        "Mars"
+      ],
+      "dates": [
+        "2039-07-28",
+        "2040-05-13"
+      ],
+      "c3": 37.5,
+      "vinf": 3.7,
+      "section": "Table 3-4; Type II",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        290
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1n-7g0IFQayFWEubCiWY7XADin1sUkcB2/view"
+      ]
+    },
+    "initialization_attempts": 1,
+    "preflight_rejections": [],
+    "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+    "accepted": true,
+    "audit": {
+      "passed": true,
+      "reasons": [],
+      "method": "Independent stored-vector patched-conic screen",
+      "joins": [],
+      "max_vinf_mismatch_mps": 0,
+      "max_single_dsm_mps": 0,
+      "max_powered_flyby_mps": 0,
+      "cruise_total_mps": 0,
+      "policy": {
+        "max_unpowered_speed_mismatch_mps": 1.0,
+        "max_single_dsm_mps": 700.0,
+        "max_powered_flyby_mps": 200.0,
+        "max_total_cruise_mps": 1500.0
+      }
+    },
+    "coasts": {
+      "maximum_dop853_endpoint_error_km": 0.0023413765858425976,
+      "maximum_velocity_difference_kms": 1.6091667419285703e-10,
+      "passed": true,
+      "nbody_validated": false
+    },
+    "candidate_id": "9ca55df1c55c",
+    "launch_c3": 37.06583132132816,
+    "arrival_vinf": 2.8823826205747722,
+    "total_burn_mps": 0
+  },
+  {
+    "name": "CALYPSO Ariel / KBO concept \u2014 Uranus cruise",
+    "reference": {
+      "name": "CALYPSO Ariel / KBO concept \u2014 Uranus cruise",
+      "sequence": "EJU",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2035-07-11",
+        "2036-11-16",
+        "2041-11-01"
+      ],
+      "c3": 121,
+      "section": "Mission design, printed pages 12\u201313",
+      "note": "Launch-period opening; 494-day Jupiter leg corresponds to July 11 launch. Uranus proxy only: Ariel flyby and later KBO encounter are not reconstructed.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        494,
+        1811
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1dWc9J2XJy9KrJRFVkUXpL2F0U3bP_1vu/view"
+      ]
+    },
+    "initialization_attempts": 1,
+    "preflight_rejections": [],
+    "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+    "accepted": true,
+    "audit": {
+      "passed": true,
+      "reasons": [],
+      "method": "Independent stored-vector patched-conic screen",
+      "joins": [
+        {
+          "body": "Jupiter",
+          "event_index": 1,
+          "jd": 2465013.9999942128,
+          "mismatch_mps": 55.396261075012276,
+          "vinf_in_kms": 12.369461046634877,
+          "vinf_out_kms": 12.314064785559864,
+          "turn_deg": 38.04926211514534,
+          "max_turn_deg": 131.12083738910658,
+          "inferred_altitude_km": 1640577.5450893128,
+          "minimum_altitude_km": 10000.0,
+          "powered_mps": 39.49587221552655,
+          "clearance_above_floor_km": 1630577.5450893128
+        }
+      ],
+      "max_vinf_mismatch_mps": 55.396261075012276,
+      "max_single_dsm_mps": 0,
+      "max_powered_flyby_mps": 39.49587221552655,
+      "cruise_total_mps": 39.49587221552655,
+      "policy": {
+        "max_unpowered_speed_mismatch_mps": 1.0,
+        "max_single_dsm_mps": 700.0,
+        "max_powered_flyby_mps": 200.0,
+        "max_total_cruise_mps": 1500.0
+      }
+    },
+    "coasts": {
+      "maximum_dop853_endpoint_error_km": 0.00089217785972381,
+      "maximum_velocity_difference_kms": 3.056137493815488e-11,
+      "passed": true,
+      "nbody_validated": false
+    },
+    "candidate_id": "35bd4d9c6e03",
+    "launch_c3": 120.70413198753758,
+    "arrival_vinf": 12.400127866582363,
+    "total_burn_mps": 39.49587221552655
+  },
+  {
+    "name": "CORAL chemical Centaur concept",
+    "reference": {
+      "name": "CORAL chemical Centaur concept",
+      "sequence": "EdvEJdvX",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "433873 (2015 BQ311)"
+      ],
+      "dates": [
+        "2040-01-23",
+        "2042-02-02",
+        "2044-05-16",
+        "2049-01-20"
+      ],
+      "c3": 58.084,
+      "section": "Figure 3-5, printed pages 20\u201321",
+      "target_object": {
+        "name": "433873 (2015 BQ311)",
+        "id": "20433873",
+        "command": "433873;",
+        "designation": "433873",
+        "query": "SPK=20433873",
+        "kind": "small_body",
+        "orbit_class": "Centaur"
+      },
+      "note": "Chemical figure baseline, distinct from electric-propulsion alternatives. The 325 m/s terminal rendezvous burn is excluded from cruise costs.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        741,
+        834,
+        1710
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1nfvptLBEOkKo546hgkS_kqBOpoyruslI/view"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2040-12-17",
+          "magnitude_kms": 0.225,
+          "fraction": 0.44399460188933876
+        },
+        {
+          "leg_index": 2,
+          "date": "2045-11-28",
+          "magnitude_kms": 0.193,
+          "fraction": 0.3280701754385965
+        }
+      ]
+    },
+    "initialization_attempts": 2,
+    "preflight_rejections": [
+      "Launch C3 2039.18558797 is outside [5, 78.4134] km\u00b2/s\u00b2",
+      "Launch C3 1714.20938142 is outside [5, 78.4134] km\u00b2/s\u00b2",
+      "Launch C3 0.000154251792157 is outside [5, 78.4134] km\u00b2/s\u00b2",
+      "Launch C3 1435.56743195 is outside [5, 78.4134] km\u00b2/s\u00b2"
+    ],
+    "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+    "accepted": false,
+    "audit": {
+      "passed": false,
+      "reasons": [
+        "Individual DSM exceeds cap",
+        "Powered flyby exceeds cap",
+        "Cruise maneuver total exceeds catalog limit",
+        "Cruise maneuver total exceeds saved budget"
+      ],
+      "method": "Independent stored-vector patched-conic screen",
+      "joins": [
+        {
+          "body": "Earth",
+          "event_index": 1,
+          "jd": 2466917.500006943,
+          "mismatch_mps": 2369.0030895936543,
+          "vinf_in_kms": 6.616730369196528,
+          "vinf_out_kms": 8.985733458790182,
+          "turn_deg": 60.45575894557387,
+          "max_turn_deg": 50.77293039372555,
+          "inferred_altitude_km": -1508.9778992110414,
+          "minimum_altitude_km": 200.0,
+          "powered_mps": 1372.0511951841468,
+          "clearance_above_floor_km": -1708.9778992110414
+        },
+        {
+          "body": "Jupiter",
+          "event_index": 2,
+          "jd": 2467752.499456072,
+          "mismatch_mps": 353.41996102849913,
+          "vinf_in_kms": 6.3602211066934204,
+          "vinf_out_kms": 6.006801145664921,
+          "turn_deg": 97.356984366147,
+          "max_turn_deg": 154.13716838067597,
+          "inferred_altitude_km": 966771.314188996,
+          "minimum_altitude_km": 10000.0,
+          "powered_mps": 133.29295186501824,
+          "clearance_above_floor_km": 956771.314188996
+        }
+      ],
+      "max_vinf_mismatch_mps": 2369.0030895936543,
+      "max_single_dsm_mps": 1006.7626320259409,
+      "max_powered_flyby_mps": 1372.0511951841468,
+      "cruise_total_mps": 2523.086288983839,
+      "policy": {
+        "max_unpowered_speed_mismatch_mps": 1.0,
+        "max_single_dsm_mps": 700.0,
+        "max_powered_flyby_mps": 200.0,
+        "max_total_cruise_mps": 1500.0
+      }
+    },
+    "coasts": {
+      "maximum_dop853_endpoint_error_km": 0.004240040624414009,
+      "maximum_velocity_difference_kms": 6.341304130580488e-10,
+      "passed": true,
+      "nbody_validated": false
+    },
+    "candidate_id": "f4b75631e46c",
+    "launch_c3": 45.74804860832659,
+    "arrival_vinf": 0.3490522838298629,
+    "total_burn_mps": 2523.086288983839
+  },
+  {
+    "name": "ADVENTS primary Venus concept",
+    "reference": {
+      "name": "ADVENTS primary Venus concept",
+      "sequence": "EVdvV",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus"
+      ],
+      "dates": [
+        "2039-06-04",
+        "2039-10-07",
+        "2043-05-20"
+      ],
+      "c3": 13.435,
+      "vinf": 1.95,
+      "section": "Appendix A.2.3.2, printed A19",
+      "note": "The cited DSM is about 8.5% through the Venus-return leg; the current app permits 10\u201390%, so this burn date cannot be represented exactly. Venus capture excluded.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        125,
+        1321
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1IK0aD91I2fsreNW_Hdssu69Jr9E5hqIE/view"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 1,
+          "date": "2040-01-27",
+          "magnitude_kms": 0.154,
+          "fraction": 0.08478425435276306
+        }
+      ]
+    },
+    "initialization_attempts": 4,
+    "preflight_rejections": [
+      "No feasible solution, try lower M!",
+      "No feasible solution, try lower M!",
+      "No feasible solution, try lower M!",
+      "No feasible solution, try lower M!",
+      "No feasible solution, try lower M!",
+      "No feasible solution, try lower M!"
+    ],
+    "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+    "accepted": false,
+    "audit": {
+      "passed": false,
+      "reasons": [
+        "Individual DSM exceeds cap",
+        "Powered flyby exceeds cap",
+        "Cruise maneuver total exceeds catalog limit",
+        "Cruise maneuver total exceeds saved budget"
+      ],
+      "method": "Independent stored-vector patched-conic screen",
+      "joins": [
+        {
+          "body": "Venus",
+          "event_index": 1,
+          "jd": 2466068.5,
+          "mismatch_mps": 7249.380166177025,
+          "vinf_in_kms": 2.9251706111592957,
+          "vinf_out_kms": 10.17455077733632,
+          "turn_deg": 24.481656398475096,
+          "max_turn_deg": 38.619670268409706,
+          "inferred_altitude_km": 5610.897781348946,
+          "minimum_altitude_km": 300.0,
+          "powered_mps": 6338.792663972464,
+          "clearance_above_floor_km": 5310.897781348946
+        }
+      ],
+      "max_vinf_mismatch_mps": 7249.380166177025,
+      "max_single_dsm_mps": 2708.3349446315624,
+      "max_powered_flyby_mps": 6338.792663972464,
+      "cruise_total_mps": 9047.127608604027,
+      "policy": {
+        "max_unpowered_speed_mismatch_mps": 1.0,
+        "max_single_dsm_mps": 700.0,
+        "max_powered_flyby_mps": 200.0,
+        "max_total_cruise_mps": 1500.0
+      }
+    },
+    "coasts": {
+      "maximum_dop853_endpoint_error_km": 0.0003957095091965454,
+      "maximum_velocity_difference_kms": 1.3185773332156936e-10,
+      "passed": true,
+      "nbody_validated": false
+    },
+    "candidate_id": "8f7fc30fabb9",
+    "launch_c3": 13.423845191135008,
+    "arrival_vinf": 14.643867489268944,
+    "total_burn_mps": 9047.127608604025
+  },
+  {
+    "name": "T-OWS 2030 concept \u2014 operations-table schedule",
+    "reference": {
+      "name": "T-OWS 2030 concept \u2014 operations-table schedule",
+      "sequence": "EdvJN",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "Neptune"
+      ],
+      "dates": [
+        "2030-01-10",
+        "2032-06-05",
+        "2047-01-07"
+      ],
+      "c3": 80.4,
+      "section": "Section 3.3 and operations Table 5-5",
+      "note": "Report contains different design iterations; operations-table dates and section-3.3 C3 are initialization targets, not an asserted single high-fidelity solution. Broken-plane maneuver approximately seven months after launch.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        877,
+        5329
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/11Q-vGdK53-fcpszFuAMV9dsY4eR8K8oz/view"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2030-08-10",
+          "magnitude_kms": null,
+          "fraction": 0.24173318129988597
+        }
+      ]
+    },
+    "initialization_attempts": 1,
+    "preflight_rejections": [],
+    "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+    "accepted": true,
+    "audit": {
+      "passed": true,
+      "reasons": [],
+      "method": "Independent stored-vector patched-conic screen",
+      "joins": [
+        {
+          "body": "Jupiter",
+          "event_index": 1,
+          "jd": 2463388.9999942128,
+          "mismatch_mps": 39.39534477343454,
+          "vinf_in_kms": 6.207501065347004,
+          "vinf_out_kms": 6.168105720573569,
+          "turn_deg": 125.15132749047555,
+          "max_turn_deg": 154.745473525461,
+          "inferred_altitude_km": 344763.03842789086,
+          "minimum_altitude_km": 10000.0,
+          "powered_mps": 9.612424348033763,
+          "clearance_above_floor_km": 334763.03842789086
+        }
+      ],
+      "max_vinf_mismatch_mps": 39.39534477343454,
+      "max_single_dsm_mps": 2.7996148125910683e-10,
+      "max_powered_flyby_mps": 9.612424348033763,
+      "cruise_total_mps": 9.612424348313723,
+      "policy": {
+        "max_unpowered_speed_mismatch_mps": 1.0,
+        "max_single_dsm_mps": 700.0,
+        "max_powered_flyby_mps": 200.0,
+        "max_total_cruise_mps": 1500.0
+      }
+    },
+    "coasts": {
+      "maximum_dop853_endpoint_error_km": 0.0045810279389580846,
+      "maximum_velocity_difference_kms": 2.2602660009714747e-11,
+      "passed": true,
+      "nbody_validated": false
+    },
+    "candidate_id": "552363ae7812",
+    "launch_c3": 89.68809531291954,
+    "arrival_vinf": 7.3429870138919275,
+    "total_burn_mps": 9.612424348313725
+  },
+  {
+    "name": "T-OWS 2031 Mars-assist backup",
+    "reference": {
+      "name": "T-OWS 2031 Mars-assist backup",
+      "sequence": "EMJN",
+      "bodies": [
+        "Earth",
+        "Mars",
+        "Jupiter",
+        "Neptune"
+      ],
+      "section": "Section 3.3",
+      "launch_start": "2031-02-02",
+      "launch_end": "2031-02-21",
+      "planet_leg_days": [
+        95,
+        635,
+        5113.5
+      ],
+      "c3": 74.6,
+      "note": "Only approximate leg durations supplied: Mars about 95 days after launch, Jupiter about two years after launch, Neptune about fourteen years later. Analyst timing estimates are not exact event dates.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "sources": [
+        "https://drive.google.com/file/d/11Q-vGdK53-fcpszFuAMV9dsY4eR8K8oz/view"
+      ]
+    },
+    "initialization_attempts": 2,
+    "preflight_rejections": [],
+    "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+    "accepted": false,
+    "audit": {
+      "passed": false,
+      "reasons": [
+        "Powered flyby exceeds cap",
+        "Cruise maneuver total exceeds catalog limit",
+        "Cruise maneuver total exceeds saved budget"
+      ],
+      "method": "Independent stored-vector patched-conic screen",
+      "joins": [
+        {
+          "body": "Mars",
+          "event_index": 1,
+          "jd": 2462995.499988426,
+          "mismatch_mps": 2218.1408304717856,
+          "vinf_in_kms": 18.54830138029708,
+          "vinf_out_kms": 16.330160549825294,
+          "turn_deg": 5.015909985355996,
+          "max_turn_deg": 3.8347323739445933,
+          "inferred_altitude_km": -675.7905667924633,
+          "minimum_altitude_km": 200.0,
+          "powered_mps": 2273.242320179405,
+          "clearance_above_floor_km": -875.7905667924633
+        },
+        {
+          "body": "Jupiter",
+          "event_index": 2,
+          "jd": 2463629.5,
+          "mismatch_mps": 737.0689551695566,
+          "vinf_in_kms": 7.443528768194609,
+          "vinf_out_kms": 8.180597723364166,
+          "turn_deg": 76.23189686765909,
+          "max_turn_deg": 146.9632099006599,
+          "inferred_altitude_km": 1102338.7240950982,
+          "minimum_altitude_km": 10000.0,
+          "powered_mps": 358.80324298269096,
+          "clearance_above_floor_km": 1092338.7240950982
+        }
+      ],
+      "max_vinf_mismatch_mps": 2218.1408304717856,
+      "max_single_dsm_mps": 0,
+      "max_powered_flyby_mps": 2273.242320179405,
+      "cruise_total_mps": 2632.0455631620957,
+      "policy": {
+        "max_unpowered_speed_mismatch_mps": 1.0,
+        "max_single_dsm_mps": 700.0,
+        "max_powered_flyby_mps": 200.0,
+        "max_total_cruise_mps": 1500.0
+      }
+    },
+    "coasts": {
+      "maximum_dop853_endpoint_error_km": 0.0008625178145771446,
+      "maximum_velocity_difference_kms": 2.0671437129160605e-11,
+      "passed": true,
+      "nbody_validated": false
+    },
+    "candidate_id": "03960e6a089c",
+    "launch_c3": 89.27629422412377,
+    "arrival_vinf": 7.391299439255994,
+    "total_burn_mps": 2632.0455631620957
+  }
+]

@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS candidates (
  launch_jd REAL NOT NULL, arrival_jd REAL NOT NULL, c3 REAL NOT NULL,
  classification TEXT NOT NULL CHECK(classification IN ('pass','yellow')),
  solved_at TEXT NOT NULL, received_at TEXT NOT NULL, payload TEXT NOT NULL,
+ added_at TEXT NOT NULL, added_at_basis TEXT NOT NULL DEFAULT 'server receipt',
  encounter_key TEXT NOT NULL, selection_score REAL NOT NULL
 );
 CREATE INDEX IF NOT EXISTS candidate_target_energy ON candidates(target,c3,launch_jd);

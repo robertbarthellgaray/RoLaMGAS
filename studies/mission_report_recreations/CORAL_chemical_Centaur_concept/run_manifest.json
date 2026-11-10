@@ -1,0 +1,115 @@
+{
+  "config": {
+    "target": "433873 (2015 BQ311)",
+    "launch_start": "2040-01-23T00:00:00",
+    "launch_end": "2040-01-23T23:59:59",
+    "max_years": 15.0,
+    "vinf_tolerance_mps": 1.0,
+    "min_c3": 5.0,
+    "max_c3": 78.41340000000001,
+    "max_arrival_vinf_kms": 30.0,
+    "max_dsm_kms": 0.7,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 20.0,
+    "minimum_altitude_km": {},
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "workers": 4,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "cache": "cache",
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EdvEJdvX"
+    ],
+    "route_overrides": {
+      "EdvEJdvX": {
+        "leg_days": [
+          [
+            370.5,
+            1112.5
+          ],
+          [
+            417.0,
+            1252.0
+          ],
+          [
+            855.0,
+            2566.0
+          ]
+        ]
+      }
+    },
+    "target_object": {
+      "name": "433873 (2015 BQ311)",
+      "id": "20433873",
+      "command": "433873;",
+      "designation": "433873",
+      "query": "SPK=20433873",
+      "kind": "small_body",
+      "orbit_class": "Centaur"
+    },
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": true,
+    "local_refinement": null,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "append_flyby": null,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "event_windows": [
+      [
+        "2040-01-23T00:00:00",
+        "2040-01-23T23:59:59"
+      ],
+      [
+        "2042-02-02T00:00:00",
+        "2042-02-02T23:59:59"
+      ],
+      [
+        "2044-05-16T00:00:00",
+        "2044-05-16T23:59:59"
+      ],
+      [
+        "2049-01-20T00:00:00",
+        "2049-01-20T23:59:59"
+      ]
+    ],
+    "effective_min_c3": 5.0,
+    "launch_jd": [
+      2466176.5,
+      2466177.499988426
+    ],
+    "event_windows_jd": [
+      [
+        2466176.5,
+        2466177.499988426
+      ],
+      [
+        2466917.5,
+        2466918.499988426
+      ],
+      [
+        2467751.5,
+        2467752.499988426
+      ],
+      [
+        2469461.5,
+        2469462.499988426
+      ]
+    ]
+  }
+}

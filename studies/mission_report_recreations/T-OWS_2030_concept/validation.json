@@ -1,0 +1,49 @@
+{
+  "vector_audit": {
+    "passed": true,
+    "reasons": [],
+    "method": "Independent stored-vector patched-conic screen",
+    "joins": [
+      {
+        "body": "Jupiter",
+        "event_index": 1,
+        "jd": 2463388.9999942128,
+        "mismatch_mps": 39.39534477343454,
+        "vinf_in_kms": 6.207501065347004,
+        "vinf_out_kms": 6.168105720573569,
+        "turn_deg": 125.15132749047555,
+        "max_turn_deg": 154.745473525461,
+        "inferred_altitude_km": 347418.59777932795,
+        "minimum_altitude_km": 10000.0,
+        "powered_mps": 9.612424348033763,
+        "powered_geometry_audited": true,
+        "clearance_above_floor_km": 337418.59777932795
+      }
+    ],
+    "max_vinf_mismatch_mps": 39.39534477343454,
+    "max_unpowered_vinf_mismatch_mps": 0,
+    "max_single_dsm_mps": 2.7996148125910683e-10,
+    "max_powered_flyby_mps": 9.612424348033763,
+    "cruise_total_mps": 9.612424348313723,
+    "policy": {
+      "max_unpowered_speed_mismatch_mps": 1.0,
+      "max_single_dsm_mps": 700.0,
+      "max_powered_flyby_mps": 200.0,
+      "max_total_cruise_mps": 1500.0
+    }
+  },
+  "independent_coasts": {
+    "maximum_dop853_endpoint_error_km": 0.0045810279389580846,
+    "maximum_velocity_difference_kms": 2.2602660009714747e-11,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "desktop_import": {
+    "source": "Website trajectory transfer",
+    "maximum_coast_position_difference_km": 0.0,
+    "maximum_coast_velocity_difference_kms": 0.0,
+    "optimization_performed": false,
+    "source_cruise_delta_v_kms": 0.009612424348313725,
+    "recomputed_cruise_delta_v_kms": 0.009612424348313725
+  }
+}

@@ -3,6 +3,13 @@ import test from 'node:test';import assert from 'node:assert/strict';import fs f
 import {transferDocument,finiteRadiusDownload} from '../docs/desktop_transfer.js';
 import {historicalMatch} from '../docs/historical_labels.js';
 const root=new URL('../docs/',import.meta.url),load=p=>JSON.parse(fs.readFileSync(new URL(p,root),'utf8'));
+
+test('desktop handoff enables explicit powered burns without counting DSMs twice',()=>{
+ const c={id:'powered',c3:20,years:3,vinf:8,sequence:'EJ',bodies:['Earth','Jupiter'],events:[{jd:2460000},{jd:2461000}],burns_mps:200,burns:[{kind:'DSM',magnitude_mps:100}],community_record:{sequence:'EJ',dates_jd_tdb:[2460000,2461000],dsm_controls:[],branches:[[0,true]]}};
+ assert.equal(transferDocument(c).settings.powered_flybys,true);
+ c.burns_mps=100;assert.equal(transferDocument(c).settings.powered_flybys,false);
+ c.powered_flybys=true;assert.equal(transferDocument(c).settings.powered_flybys,true);
+});
 test('every curated Lambert handoff preserves saved dates, branches and physical DSM controls',()=>{
  const catalog=load('data/index.json');let count=0;
  for(const row of catalog.cases){

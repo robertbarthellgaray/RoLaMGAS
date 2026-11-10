@@ -1,0 +1,2 @@
+Modified Trident date-match, not the proposed ballistic mission: every supplied encounter day matches, but three DSMs and powered Venus/Earth/Jupiter flybys are added. The final body is Neptune, not a resolved Triton flyby. Saved trajectories use ideal planet-center Lambert joins; finite-radius flyby export remains a separate desktop step. Cruise budget excludes launch injection and capture.
+Columns: JD(TDB), x_km, y_km, z_km, vx_km_s, vy_km_s, vz_km_s. Sun-centered Ecliptic J2000.

@@ -1,0 +1,56 @@
+{
+  "name": "Mars Life Explorer 2037",
+  "reference": {
+    "name": "Mars Life Explorer 2037",
+    "sequence": "EM",
+    "bodies": [
+      "Earth",
+      "Mars"
+    ],
+    "dates": [
+      "2037-08-11",
+      "2038-02-26"
+    ],
+    "c3": 18.4,
+    "vinf": 3.7,
+    "section": "Table 3-4; Type I",
+    "reference_kind": "Proposed mission study / numerical initialization",
+    "seed_eligible": true,
+    "planet_leg_days": [
+      199
+    ],
+    "sources": [
+      "https://drive.google.com/file/d/1n-7g0IFQayFWEubCiWY7XADin1sUkcB2/view"
+    ]
+  },
+  "initialization_attempts": 1,
+  "preflight_rejections": [],
+  "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+  "accepted": true,
+  "audit": {
+    "passed": true,
+    "reasons": [],
+    "method": "Independent stored-vector patched-conic screen",
+    "joins": [],
+    "max_vinf_mismatch_mps": 0,
+    "max_single_dsm_mps": 0,
+    "max_powered_flyby_mps": 0,
+    "cruise_total_mps": 0,
+    "policy": {
+      "max_unpowered_speed_mismatch_mps": 1.0,
+      "max_single_dsm_mps": 700.0,
+      "max_powered_flyby_mps": 200.0,
+      "max_total_cruise_mps": 1500.0
+    }
+  },
+  "coasts": {
+    "maximum_dop853_endpoint_error_km": 0.0004555902074459532,
+    "maximum_velocity_difference_kms": 4.747289749078529e-11,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "candidate_id": "dd67c26fd41f",
+  "launch_c3": 18.197601621246704,
+  "arrival_vinf": 3.6338224583236847,
+  "total_burn_mps": 0
+}

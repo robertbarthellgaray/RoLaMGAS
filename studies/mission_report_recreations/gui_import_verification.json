@@ -1,0 +1,50 @@
+[
+  {
+    "source_candidate_id": "f53fc65c9329",
+    "imported_candidate_id": "5648da31b6f7",
+    "state": "finished",
+    "status": "passes_configured_patched_conic_screen",
+    "optimization_performed": false,
+    "total_delta_v_kms": 0.617864827775087
+  },
+  {
+    "source_candidate_id": "0fc1f2bcd586",
+    "imported_candidate_id": "2055611dfaf1",
+    "state": "finished",
+    "status": "passes_configured_patched_conic_screen",
+    "optimization_performed": false,
+    "total_delta_v_kms": 0
+  },
+  {
+    "source_candidate_id": "dd67c26fd41f",
+    "imported_candidate_id": "31585c9d3e1c",
+    "state": "finished",
+    "status": "passes_configured_patched_conic_screen",
+    "optimization_performed": false,
+    "total_delta_v_kms": 0
+  },
+  {
+    "source_candidate_id": "9ca55df1c55c",
+    "imported_candidate_id": "45fcb43109d5",
+    "state": "finished",
+    "status": "passes_configured_patched_conic_screen",
+    "optimization_performed": false,
+    "total_delta_v_kms": 0
+  },
+  {
+    "source_candidate_id": "35bd4d9c6e03",
+    "imported_candidate_id": "0e099023d81d",
+    "state": "finished",
+    "status": "passes_configured_patched_conic_screen",
+    "optimization_performed": false,
+    "total_delta_v_kms": 0.039495872215526556
+  },
+  {
+    "source_candidate_id": "552363ae7812",
+    "imported_candidate_id": "deef595d0867",
+    "state": "finished",
+    "status": "passes_configured_patched_conic_screen",
+    "optimization_performed": false,
+    "total_delta_v_kms": 0.009612424348313725
+  }
+]

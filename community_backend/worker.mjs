@@ -64,8 +64,8 @@ export default {async fetch(request,env){
    // A unique encounter slot makes concurrent old/new client submissions safe.
    // A better representative atomically replaces the previous one and refreshes
    // received_at so incremental website readers can update the same-day slot.
-   const sql=`INSERT INTO candidates(id,target,sequence,launch_jd,arrival_jd,c3,classification,solved_at,received_at,payload,encounter_key,selection_score)
-    VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12)
+   const sql=`INSERT INTO candidates(id,target,sequence,launch_jd,arrival_jd,c3,classification,solved_at,received_at,payload,encounter_key,selection_score,added_at,added_at_basis)
+    VALUES(?1,?2,?3,?4,?5,?6,?7,?8,?9,?10,?11,?12,?9,'server receipt')
     ON CONFLICT(encounter_key) DO UPDATE SET
      id=excluded.id,target=excluded.target,sequence=excluded.sequence,launch_jd=excluded.launch_jd,
      arrival_jd=excluded.arrival_jd,c3=excluded.c3,classification=excluded.classification,
@@ -98,9 +98,9 @@ export default {async fetch(request,env){
     where.push(`(received_at<?${t} OR (received_at=?${t} AND id>?${i}))`);
    }
    values.push(count+1);
-   const rows=await env.DB.prepare('SELECT id,payload,received_at FROM candidates WHERE '+where.join(' AND ')+' ORDER BY received_at DESC,id LIMIT ?'+values.length).bind(...values).all();
+   const rows=await env.DB.prepare('SELECT id,payload,received_at,added_at,added_at_basis FROM candidates WHERE '+where.join(' AND ')+' ORDER BY received_at DESC,id LIMIT ?'+values.length).bind(...values).all();
    const page=rows.results.slice(0,count),last=page.at(-1),next=rows.results.length>count?JSON.stringify([last.received_at,last.id]):null;
-   return response({schema_version:1,verification:'Submitted classifications are unverified. Recompute locally before use.',server_time:new Date().toISOString(),next_cursor:next,candidates:page.map(r=>({...JSON.parse(r.payload),received_at:r.received_at}))},200,origin,{'Cache-Control':'public, max-age=60'});
+   return response({schema_version:1,verification:'Submitted classifications are unverified. Recompute locally before use.',server_time:new Date().toISOString(),next_cursor:next,candidates:page.map(r=>({...JSON.parse(r.payload),received_at:r.received_at,added_at:r.added_at,added_at_basis:r.added_at_basis}))},200,origin,{'Cache-Control':'public, max-age=60'});
   }
   return response({error:'Method not allowed'},405,origin);
  }catch(error){return response({error:error.message==='Unknown record field'?'Only the documented public science fields are allowed':'Invalid request or temporarily unavailable library'},400,origin);}

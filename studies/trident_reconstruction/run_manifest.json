@@ -1,0 +1,181 @@
+{
+  "config": {
+    "target": "Neptune",
+    "launch_start": "2025-10-10",
+    "launch_end": "2025-10-11",
+    "max_years": 14.0,
+    "vinf_tolerance_mps": 0.1,
+    "min_c3": 6.25,
+    "max_c3": 30.0,
+    "max_arrival_vinf_kms": 25.0,
+    "max_dsm_kms": 0.7,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 20.0,
+    "minimum_altitude_km": {},
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "workers": 4,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "cache": "cache",
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EdvEVEdvEJdvN"
+    ],
+    "route_overrides": {
+      "EdvEVEdvEJdvN": {
+        "leg_days": [
+          [
+            182.5,
+            547.5
+          ],
+          [
+            83.0,
+            249.0
+          ],
+          [
+            160.0,
+            480.0
+          ],
+          [
+            547.5,
+            1642.5
+          ],
+          [
+            253.5,
+            760.5
+          ],
+          [
+            1141.5,
+            3424.5
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": true,
+    "local_refinement": null,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "append_flyby": null,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "event_windows": [
+      [
+        "2025-10-10",
+        "2025-10-11"
+      ],
+      [
+        "2026-10-10",
+        "2026-10-10T23:59:59"
+      ],
+      [
+        "2027-03-25",
+        "2027-03-25T23:59:59"
+      ],
+      [
+        "2028-02-08",
+        "2028-02-08T23:59:59"
+      ],
+      [
+        "2031-02-07",
+        "2031-02-07T23:59:59"
+      ],
+      [
+        "2032-06-28",
+        "2032-06-28T23:59:59"
+      ],
+      [
+        "2038-09-28",
+        "2038-09-28T23:59:59"
+      ]
+    ],
+    "effective_min_c3": 6.25,
+    "launch_jd": [
+      2460958.5,
+      2460959.5
+    ],
+    "event_windows_jd": [
+      [
+        2460958.5,
+        2460959.5
+      ],
+      [
+        2461323.5,
+        2461324.499988426
+      ],
+      [
+        2461489.5,
+        2461490.499988426
+      ],
+      [
+        2461809.5,
+        2461810.499988426
+      ],
+      [
+        2462904.5,
+        2462905.499988426
+      ],
+      [
+        2463411.5,
+        2463412.499988426
+      ],
+      [
+        2465694.5,
+        2465695.499988426
+      ]
+    ]
+  }
+}

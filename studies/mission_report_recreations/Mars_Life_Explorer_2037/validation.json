@@ -1,0 +1,33 @@
+{
+  "vector_audit": {
+    "passed": true,
+    "reasons": [],
+    "method": "Independent stored-vector patched-conic screen",
+    "joins": [],
+    "max_vinf_mismatch_mps": 0,
+    "max_unpowered_vinf_mismatch_mps": 0,
+    "max_single_dsm_mps": 0,
+    "max_powered_flyby_mps": 0,
+    "cruise_total_mps": 0,
+    "policy": {
+      "max_unpowered_speed_mismatch_mps": 1.0,
+      "max_single_dsm_mps": 700.0,
+      "max_powered_flyby_mps": 200.0,
+      "max_total_cruise_mps": 1500.0
+    }
+  },
+  "independent_coasts": {
+    "maximum_dop853_endpoint_error_km": 0.0004555902074459532,
+    "maximum_velocity_difference_kms": 4.747289749078529e-11,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "desktop_import": {
+    "source": "Website trajectory transfer",
+    "maximum_coast_position_difference_km": 0.0,
+    "maximum_coast_velocity_difference_kms": 0.0,
+    "optimization_performed": false,
+    "source_cruise_delta_v_kms": 0,
+    "recomputed_cruise_delta_v_kms": 0
+  }
+}

@@ -23,13 +23,15 @@ class PublicCatalogTests(unittest.TestCase):
             if c['model']!='Lambert candidate':continue
             with self.subTest(candidate=c['id']):
                 v=c['validation'];self.assertTrue(v['passed']);self.assertEqual(v['reasons'],[])
-                self.assertLessEqual(v['max_vinf_mismatch_mps'],1.000001)
+                self.assertLessEqual(v.get('max_unpowered_vinf_mismatch_mps',v['max_vinf_mismatch_mps']),1.000001)
                 self.assertLessEqual(v['max_single_dsm_mps'],700.000001)
                 self.assertLessEqual(v['max_powered_flyby_mps'],200.000001)
                 self.assertLessEqual(v['max_coast_endpoint_error_km'],1.)
                 self.assertLessEqual(v['max_reference_ephemeris_position_error_km'],.1)
                 self.assertLessEqual(v['max_reference_ephemeris_velocity_error_mps'],.001)
                 for join in v['joins']:
+                    if join['mismatch_mps']>1.000001:
+                        self.assertTrue(c.get('powered_flybys'));self.assertTrue(join.get('powered_geometry_audited'))
                     if join['clearance_above_floor_km'] is not None:self.assertGreaterEqual(join['clearance_above_floor_km'],-.001)
     def test_integrated_concepts_have_clearance_checks_and_unchanged_downloads(self):
         for c in self.cases:

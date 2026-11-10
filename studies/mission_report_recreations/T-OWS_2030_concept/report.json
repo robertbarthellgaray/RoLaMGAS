@@ -1,0 +1,82 @@
+{
+  "name": "T-OWS 2030 concept \u2014 operations-table schedule",
+  "reference": {
+    "name": "T-OWS 2030 concept \u2014 operations-table schedule",
+    "sequence": "EdvJN",
+    "bodies": [
+      "Earth",
+      "Jupiter",
+      "Neptune"
+    ],
+    "dates": [
+      "2030-01-10",
+      "2032-06-05",
+      "2047-01-07"
+    ],
+    "c3": 80.4,
+    "section": "Section 3.3 and operations Table 5-5",
+    "note": "Report contains different design iterations; operations-table dates and section-3.3 C3 are initialization targets, not an asserted single high-fidelity solution. Broken-plane maneuver approximately seven months after launch.",
+    "reference_kind": "Proposed mission study / numerical initialization",
+    "seed_eligible": true,
+    "planet_leg_days": [
+      877,
+      5329
+    ],
+    "sources": [
+      "https://drive.google.com/file/d/11Q-vGdK53-fcpszFuAMV9dsY4eR8K8oz/view"
+    ],
+    "dsm_events": [
+      {
+        "leg_index": 0,
+        "date": "2030-08-10",
+        "magnitude_kms": null,
+        "fraction": 0.24173318129988597
+      }
+    ]
+  },
+  "initialization_attempts": 1,
+  "preflight_rejections": [],
+  "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+  "accepted": true,
+  "audit": {
+    "passed": true,
+    "reasons": [],
+    "method": "Independent stored-vector patched-conic screen",
+    "joins": [
+      {
+        "body": "Jupiter",
+        "event_index": 1,
+        "jd": 2463388.9999942128,
+        "mismatch_mps": 39.39534477343454,
+        "vinf_in_kms": 6.207501065347004,
+        "vinf_out_kms": 6.168105720573569,
+        "turn_deg": 125.15132749047555,
+        "max_turn_deg": 154.745473525461,
+        "inferred_altitude_km": 344763.03842789086,
+        "minimum_altitude_km": 10000.0,
+        "powered_mps": 9.612424348033763,
+        "clearance_above_floor_km": 334763.03842789086
+      }
+    ],
+    "max_vinf_mismatch_mps": 39.39534477343454,
+    "max_single_dsm_mps": 2.7996148125910683e-10,
+    "max_powered_flyby_mps": 9.612424348033763,
+    "cruise_total_mps": 9.612424348313723,
+    "policy": {
+      "max_unpowered_speed_mismatch_mps": 1.0,
+      "max_single_dsm_mps": 700.0,
+      "max_powered_flyby_mps": 200.0,
+      "max_total_cruise_mps": 1500.0
+    }
+  },
+  "coasts": {
+    "maximum_dop853_endpoint_error_km": 0.0045810279389580846,
+    "maximum_velocity_difference_kms": 2.2602660009714747e-11,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "candidate_id": "552363ae7812",
+  "launch_c3": 89.68809531291954,
+  "arrival_vinf": 7.3429870138919275,
+  "total_burn_mps": 9.612424348313725
+}

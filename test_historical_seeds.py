@@ -19,11 +19,25 @@ def model():
     return Model(r,c,Circles())
 class HistoricalSeedTests(unittest.TestCase):
     def test_all_five_missions_have_sourced_timing_and_four_have_reproducible_vectors(self):
-        refs=references();self.assertEqual({r['name'] for r in refs},{'Europa Clipper','Galileo','Mariner 10','Cassini','Juno'})
+        refs=[r for r in references() if not r.get('reference_kind')];self.assertEqual({r['name'] for r in refs},{'Europa Clipper','Galileo','Mariner 10','Cassini','Juno'})
         for r in refs:
             self.assertEqual(len(r['planet_leg_days']),len(r['bodies'])-1);self.assertTrue(r['sources'])
             if r['name']=='Mariner 10':self.assertNotIn('departure',r);continue
             d=r['departure'];q=d['selected'];fresh=hyperbolic_departure(q['position_km'],q['velocity_kms'],BODIES['Earth'][1]);self.assertAlmostEqual(fresh['c3_km2_s2'],q['c3_km2_s2'],places=11);self.assertAlmostEqual(np.linalg.norm(d['direction_rtn']),1,places=12)
+    def test_study_references_are_seeded_but_continuous_thrust_is_excluded(self):
+        refs=references();names={r['name'] for r in refs}
+        self.assertIn('ADVENTS primary Venus concept',names);self.assertIn('CORAL chemical Centaur concept',names)
+        self.assertNotIn('CROCODILE',names)
+        for r in refs:self.assertEqual(len(r['planet_leg_days']),len(r['bodies'])-1)
+    def test_reference_launch_is_used_only_inside_user_window(self):
+        from ephemeris import jd
+        m=model();m.config['launch_jd']=[jd('2030-01-01'),jd('2030-12-31')]
+        ref=dict(bodies=m.bodies,dates=['2030-04-02'],planet_leg_days=[115,301,731,1094])
+        point=timing_guess(m,np.full(m.dimension,.5),ref)
+        self.assertAlmostEqual(m.dates(point)[0],jd('2030-04-02'))
+        m.config['launch_jd']=[jd('2031-01-01'),jd('2031-12-31')]
+        point=timing_guess(m,np.full(m.dimension,.5),ref)
+        self.assertGreaterEqual(m.dates(point)[0],jd('2031-01-01'))
     def test_galileo_durations_map_without_modifying_inputs_or_windows(self):
         m=model();x=np.full(m.dimension,.5);original=x.copy();ref=next(r for r in references() if r['name']=='Galileo');point=timing_guess(m,x,ref)
         np.testing.assert_allclose(np.diff(m.dates(point)),[115,301,731,1094]);np.testing.assert_array_equal(x,original)

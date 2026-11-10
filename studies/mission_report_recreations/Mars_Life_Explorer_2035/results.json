@@ -1,0 +1,131 @@
+{
+  "candidates": [
+    {
+      "sequence": "EM",
+      "bodies": [
+        "Earth",
+        "Mars"
+      ],
+      "x": [
+        0.5,
+        0.49999999976716664
+      ],
+      "branches": [
+        [
+          0,
+          true
+        ]
+      ],
+      "extension_source": null,
+      "dates_jd_tdb": [
+        2464464.9999942128,
+        2464748.9999942128
+      ],
+      "launch_date": "2035-05-17T11:59:59 TDB",
+      "arrival_date": "2036-02-25T11:59:59 TDB",
+      "duration_years": 0.7775496235455168,
+      "launch_c3_km2_s2": 22.966542205913427,
+      "launch_vinf_kms": 4.7923420376589805,
+      "requested_min_c3": 5.0,
+      "effective_min_c3": 5.0,
+      "launch_c3_definition": "Squared Sun-centered departure velocity relative to launch body; km^2/s^2",
+      "requested_arrival_window_jd": null,
+      "arrival_vinf_kms": 3.1053034216152877,
+      "total_dsm_kms": 0,
+      "cruise_dsm_kms": 0,
+      "powered_flyby_delta_v_kms": 0,
+      "modeled_maneuver_total_kms": 0,
+      "maneuver_budget_complete": true,
+      "budget_complete": true,
+      "unresolved_flyby_count": 0,
+      "unresolved_speed_mismatch_total_mps": 0,
+      "total_unresolved_vinf_mismatch_mps": 0,
+      "modeled_plus_unresolved_mismatch_kms": 0.0,
+      "mismatch_screening_budget_exceeded": false,
+      "mismatch_screening_note": "Modeled burns plus unresolved excess-speed mismatch sum is a screening criterion, not an actual periapsis burn estimate. Construct powered flybys for physical burn vectors and costs.",
+      "maneuver_budget_note": "Explicit designed DSM, target-turnaround impulses and full powered-periapsis vector burns only; unresolved flybys require physical retargeting or a powered-flyby construction, not a scalar mismatch sum.",
+      "max_single_dsm_kms": 0.0,
+      "max_powered_flyby_kms": 0.0,
+      "periapsis_violation": false,
+      "powered_geometry_valid": true,
+      "flybys": [],
+      "dsms": [],
+      "event_burns": [],
+      "turnaround_delta_v_kms": 0,
+      "mercury_returns": [],
+      "max_vinf_mismatch_mps": 0.0,
+      "min_turn_margin_deg": 180.0,
+      "launch_vinf_vector_kms": [
+        4.408223230704721,
+        1.403158258758106,
+        -1.251102335969197
+      ],
+      "arrival_vinf_vector_kms": [
+        2.3490642246183917,
+        -2.030070310637258,
+        0.06017593192261972
+      ],
+      "departure_velocities_kms": [
+        [
+          28.60561586648018,
+          -15.376769072452193,
+          -1.2509109766022157
+        ]
+      ],
+      "arrival_velocities_kms": [
+        [
+          -20.878080888671995,
+          2.096924049912111,
+          0.7157582879553892
+        ]
+      ],
+      "segments": [
+        {
+          "start_jd": 2464464.9999942128,
+          "end_jd": 2464748.9999942128,
+          "r": [
+            -84690962.32869147,
+            -125339185.19860154,
+            10764.605783607321
+          ],
+          "v": [
+            28.60561586648018,
+            -15.376769072452193,
+            -1.2509109766022157
+          ]
+        }
+      ],
+      "events": [
+        {
+          "body": "Earth",
+          "julian_date_tdb": 2464464.9999942128,
+          "date": "2035-05-17T11:59:59 TDB",
+          "planet_state_km_kms": [
+            -84690962.32869147,
+            -125339185.19860154,
+            10764.605783607321,
+            24.197392635775458,
+            -16.7799273312103,
+            0.0001913593669813762
+          ]
+        },
+        {
+          "body": "Mars",
+          "julian_date_tdb": 2464748.9999942128,
+          "date": "2036-02-25T11:59:59 TDB",
+          "planet_state_km_kms": [
+            19860378.626664665,
+            232111000.7820493,
+            4378644.574731909,
+            -23.227145113290387,
+            4.126994360549369,
+            0.6555823560327695
+          ]
+        }
+      ],
+      "id": "0fc1f2bcd586",
+      "status": "passes_configured_patched_conic_screen",
+      "screening_residual_norm": 0.0
+    }
+  ]
+}

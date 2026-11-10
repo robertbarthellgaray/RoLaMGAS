@@ -1,0 +1,232 @@
+{
+  "candidates": [
+    {
+      "sequence": "EJU",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "x": [
+        0.5,
+        0.49999999976716664,
+        0.49999999976716664
+      ],
+      "branches": [
+        [
+          0,
+          true
+        ],
+        [
+          0,
+          true
+        ]
+      ],
+      "extension_source": null,
+      "dates_jd_tdb": [
+        2464519.9999942128,
+        2465013.9999942128,
+        2466824.9999942128
+      ],
+      "launch_date": "2035-07-11T11:59:59 TDB",
+      "arrival_date": "2041-11-01T11:59:59 TDB",
+      "duration_years": 6.310746064339494,
+      "launch_c3_km2_s2": 120.70413198753758,
+      "launch_vinf_kms": 10.986543222849377,
+      "requested_min_c3": 5.0,
+      "effective_min_c3": 5.0,
+      "launch_c3_definition": "Squared Sun-centered departure velocity relative to launch body; km^2/s^2",
+      "requested_arrival_window_jd": null,
+      "arrival_vinf_kms": 12.400127866582363,
+      "total_dsm_kms": 0.039495872215526556,
+      "cruise_dsm_kms": 0,
+      "powered_flyby_delta_v_kms": 0.039495872215526556,
+      "modeled_maneuver_total_kms": 0.039495872215526556,
+      "maneuver_budget_complete": true,
+      "budget_complete": true,
+      "unresolved_flyby_count": 0,
+      "unresolved_speed_mismatch_total_mps": 0,
+      "total_unresolved_vinf_mismatch_mps": 0,
+      "modeled_plus_unresolved_mismatch_kms": 0.039495872215526556,
+      "mismatch_screening_budget_exceeded": false,
+      "mismatch_screening_note": "Modeled burns plus unresolved excess-speed mismatch sum is a screening criterion, not an actual periapsis burn estimate. Construct powered flybys for physical burn vectors and costs.",
+      "maneuver_budget_note": "Explicit designed DSM, target-turnaround impulses and full powered-periapsis vector burns only; unresolved flybys require physical retargeting or a powered-flyby construction, not a scalar mismatch sum.",
+      "max_single_dsm_kms": 0.0,
+      "max_powered_flyby_kms": 0.039495872215526556,
+      "periapsis_violation": false,
+      "powered_geometry_valid": true,
+      "flybys": [
+        {
+          "body": "Jupiter",
+          "vinf_in_kms": 12.369461046634877,
+          "vinf_out_kms": 12.314064785559866,
+          "speed_mismatch_mps": 55.3962610750105,
+          "incoming_vinf_vector_kms": [
+            7.516778965491023,
+            9.82006402296072,
+            -0.26065907450497605
+          ],
+          "outgoing_vinf_vector_kms": [
+            -0.13051598564541678,
+            12.313293340025554,
+            -0.04431978044682264
+          ],
+          "turn_angle_deg": 38.049262115145346,
+          "max_turn_deg": 131.12083738910658,
+          "turn_margin_deg": 93.07157527396123,
+          "minimum_altitude_km": 10000.0,
+          "conservative_equal_speed_periapsis_km": 1712069.5450893126,
+          "conservative_equal_speed_altitude_km": 1640577.5450893126,
+          "speed_matched_to_1_mm_s": false,
+          "passes_speed_tolerance": false,
+          "passes_turn_screen": true,
+          "event_index": 1,
+          "julian_date_tdb": 2465013.9999942128,
+          "date": "2036-11-16T11:59:59 TDB",
+          "powered_flyby": {
+            "periapsis_radius_km": 1719778.9081893296,
+            "peri_position_km": [
+              1630414.9657514654,
+              -545219.2731406997,
+              -46070.345152357666
+            ],
+            "peri_in_velocity_kms": [
+              5.4898822960324045,
+              16.43600502286899,
+              -0.22661988326186075
+            ],
+            "peri_out_velocity_kms": [
+              5.477370689766804,
+              16.398546828579768,
+              -0.2261028616852443
+            ],
+            "delta_v_vector_kms": [
+              -0.012511606265600328,
+              -0.037458194289222035,
+              0.0005170215766164554
+            ],
+            "magnitude_kms": 0.039495872215526556,
+            "model": "One ideal impulse at a common periapsis, preserving both asymptotes and the altitude floor. Conservative feasible construction, not a minimum-fuel powered flyby.",
+            "altitude_km": 1648286.9081893296
+          },
+          "passes_powered_geometry": true,
+          "maneuver_status": "powered"
+        }
+      ],
+      "dsms": [],
+      "event_burns": [],
+      "turnaround_delta_v_kms": 0,
+      "mercury_returns": [],
+      "max_vinf_mismatch_mps": 55.3962610750105,
+      "min_turn_margin_deg": 93.07157527396123,
+      "launch_vinf_vector_kms": [
+        9.01674375088843,
+        6.240981663737477,
+        -0.6727644396403606
+      ],
+      "arrival_vinf_vector_kms": [
+        -5.545115768710686,
+        11.08993632510658,
+        0.1678526862166319
+      ],
+      "departure_velocities_kms": [
+        [
+          36.770120512969996,
+          15.621676280198821,
+          -0.6746908700757283
+        ],
+        [
+          -13.092652288994955,
+          15.558312695277897,
+          0.2322733009697426
+        ]
+      ],
+      "arrival_velocities_kms": [
+        [
+          -5.445357337858516,
+          13.065083378213062,
+          0.015934006911589207
+        ],
+        [
+          -10.882620020255377,
+          6.47663012596222,
+          0.21956774739491897
+        ]
+      ],
+      "segments": [
+        {
+          "start_jd": 2464519.9999942128,
+          "end_jd": 2465013.9999942128,
+          "r": [
+            48415231.03427752,
+            -144175295.92889708,
+            11304.480251356565
+          ],
+          "v": [
+            36.770120512969996,
+            15.621676280198821,
+            -0.6746908700757283
+          ]
+        },
+        {
+          "start_jd": 2465013.9999942128,
+          "end_jd": 2466824.9999942128,
+          "r": [
+            153211617.0855627,
+            744845061.4277811,
+            -6523402.269897652
+          ],
+          "v": [
+            -13.092652288994955,
+            15.558312695277897,
+            0.2322733009697426
+          ]
+        }
+      ],
+      "events": [
+        {
+          "body": "Earth",
+          "julian_date_tdb": 2464519.9999942128,
+          "date": "2035-07-11T11:59:59 TDB",
+          "planet_state_km_kms": [
+            48415231.03427752,
+            -144175295.92889708,
+            11304.480251356565,
+            27.753376762081565,
+            9.380694616461344,
+            -0.0019264304353676753
+          ]
+        },
+        {
+          "body": "Jupiter",
+          "julian_date_tdb": 2465013.9999942128,
+          "date": "2036-11-16T11:59:59 TDB",
+          "planet_state_km_kms": [
+            153211617.0855627,
+            744845061.4277811,
+            -6523402.269897652,
+            -12.962136303349538,
+            3.2450193552523423,
+            0.27659308141656525
+          ]
+        },
+        {
+          "body": "Uranus",
+          "julian_date_tdb": 2466824.9999942128,
+          "date": "2041-11-01T11:59:59 TDB",
+          "planet_state_km_kms": [
+            -1740456814.8579514,
+            2150953230.204885,
+            30537362.51420298,
+            -5.337504251544691,
+            -4.613306199144359,
+            0.05171506117828707
+          ]
+        }
+      ],
+      "id": "35bd4d9c6e03",
+      "status": "passes_configured_patched_conic_screen",
+      "screening_residual_norm": 0.0
+    }
+  ]
+}

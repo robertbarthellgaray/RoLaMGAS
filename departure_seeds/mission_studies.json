@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "kind": "Cited mission-concept timing guesses; acceptance always requires fresh local evaluation",
+  "missions": [
+    {
+      "name": "Mars Life Explorer 2035",
+      "sequence": "EM",
+      "bodies": [
+        "Earth",
+        "Mars"
+      ],
+      "dates": [
+        "2035-05-17",
+        "2036-02-25"
+      ],
+      "c3": 23.1,
+      "vinf": 3.1,
+      "section": "Table 3-4, printed page 3-5; Type II",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        284
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1n-7g0IFQayFWEubCiWY7XADin1sUkcB2/view"
+      ]
+    },
+    {
+      "name": "Mars Life Explorer 2037",
+      "sequence": "EM",
+      "bodies": [
+        "Earth",
+        "Mars"
+      ],
+      "dates": [
+        "2037-08-11",
+        "2038-02-26"
+      ],
+      "c3": 18.4,
+      "vinf": 3.7,
+      "section": "Table 3-4; Type I",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        199
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1n-7g0IFQayFWEubCiWY7XADin1sUkcB2/view"
+      ]
+    },
+    {
+      "name": "Mars Life Explorer 2039",
+      "sequence": "EM",
+      "bodies": [
+        "Earth",
+        "Mars"
+      ],
+      "dates": [
+        "2039-07-28",
+        "2040-05-13"
+      ],
+      "c3": 37.5,
+      "vinf": 3.7,
+      "section": "Table 3-4; Type II",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        290
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1n-7g0IFQayFWEubCiWY7XADin1sUkcB2/view"
+      ]
+    },
+    {
+      "name": "CALYPSO Ariel / KBO concept — Uranus cruise",
+      "sequence": "EJU",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2035-07-11",
+        "2036-11-16",
+        "2041-11-01"
+      ],
+      "c3": 121,
+      "section": "Mission design, printed pages 12–13",
+      "note": "Launch-period opening; 494-day Jupiter leg corresponds to July 11 launch. Uranus proxy only: Ariel flyby and later KBO encounter are not reconstructed.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        494,
+        1811
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1dWc9J2XJy9KrJRFVkUXpL2F0U3bP_1vu/view"
+      ]
+    },
+    {
+      "name": "CORAL chemical Centaur concept",
+      "sequence": "EdvEJdvX",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "433873 (2015 BQ311)"
+      ],
+      "dates": [
+        "2040-01-23",
+        "2042-02-02",
+        "2044-05-16",
+        "2049-01-20"
+      ],
+      "c3": 58.084,
+      "section": "Figure 3-5, printed pages 20–21",
+      "target_object": {
+        "name": "433873 (2015 BQ311)",
+        "id": "20433873",
+        "command": "433873;",
+        "designation": "433873",
+        "query": "SPK=20433873",
+        "kind": "small_body",
+        "orbit_class": "Centaur"
+      },
+      "note": "Chemical figure baseline, distinct from electric-propulsion alternatives. The 325 m/s terminal rendezvous burn is excluded from cruise costs.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        741,
+        834,
+        1710
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1nfvptLBEOkKo546hgkS_kqBOpoyruslI/view"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2040-12-17",
+          "magnitude_kms": 0.225,
+          "fraction": 0.44399460188933876
+        },
+        {
+          "leg_index": 2,
+          "date": "2045-11-28",
+          "magnitude_kms": 0.193,
+          "fraction": 0.3280701754385965
+        }
+      ]
+    },
+    {
+      "name": "ADVENTS primary Venus concept",
+      "sequence": "EVdvV",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus"
+      ],
+      "dates": [
+        "2039-06-04",
+        "2039-10-07",
+        "2043-05-20"
+      ],
+      "c3": 13.435,
+      "vinf": 1.95,
+      "section": "Appendix A.2.3.2, printed A19",
+      "note": "The cited DSM is about 8.5% through the Venus-return leg; the current app permits 10–90%, so this burn date cannot be represented exactly. Venus capture excluded.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        125,
+        1321
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/1IK0aD91I2fsreNW_Hdssu69Jr9E5hqIE/view"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 1,
+          "date": "2040-01-27",
+          "magnitude_kms": 0.154,
+          "fraction": 0.08478425435276306
+        }
+      ]
+    },
+    {
+      "name": "T-OWS 2030 concept — operations-table schedule",
+      "sequence": "EdvJN",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "Neptune"
+      ],
+      "dates": [
+        "2030-01-10",
+        "2032-06-05",
+        "2047-01-07"
+      ],
+      "c3": 80.4,
+      "section": "Section 3.3 and operations Table 5-5",
+      "note": "Report contains different design iterations; operations-table dates and section-3.3 C3 are initialization targets, not an asserted single high-fidelity solution. Broken-plane maneuver approximately seven months after launch.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        877,
+        5329
+      ],
+      "sources": [
+        "https://drive.google.com/file/d/11Q-vGdK53-fcpszFuAMV9dsY4eR8K8oz/view"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2030-08-10",
+          "magnitude_kms": null,
+          "fraction": 0.24173318129988597
+        }
+      ]
+    },
+    {
+      "name": "T-OWS 2031 Mars-assist backup",
+      "sequence": "EMJN",
+      "bodies": [
+        "Earth",
+        "Mars",
+        "Jupiter",
+        "Neptune"
+      ],
+      "section": "Section 3.3",
+      "launch_start": "2031-02-02",
+      "launch_end": "2031-02-21",
+      "planet_leg_days": [
+        95,
+        635,
+        5113.5
+      ],
+      "c3": 74.6,
+      "note": "Only approximate leg durations supplied: Mars about 95 days after launch, Jupiter about two years after launch, Neptune about fourteen years later. Analyst timing estimates are not exact event dates.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "sources": [
+        "https://drive.google.com/file/d/11Q-vGdK53-fcpszFuAMV9dsY4eR8K8oz/view"
+      ]
+    },
+    {
+      "name": "Trident calendar-date reconstruction",
+      "sequence": "EdvEVEdvEJdvN",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Neptune"
+      ],
+      "dates": [
+        "2025-10-10",
+        "2026-10-10",
+        "2027-03-25",
+        "2028-02-08",
+        "2031-02-07",
+        "2032-06-28",
+        "2038-09-28"
+      ],
+      "c3": 16.6604382136,
+      "section": "Encounter-day initialization",
+      "note": "RoLaMGAS modified reconstruction adds DSMs and powered flybys. Neptune target is not a resolved Triton flyby; not the proposed ballistic Trident solution.",
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        365,
+        166,
+        320,
+        1095,
+        507,
+        2283
+      ],
+      "sources": [
+        "User-supplied Trident mission diagram; proposal context https://www.hou.usra.edu/meetings/lpsc2019/pdf/3200.pdf"
+      ]
+    },
+    {
+      "name": "Enceladus Multiple Flybys",
+      "sequence": "EVEES",
+      "launch_window": "2038-10",
+      "approximate_cruise_years": 9,
+      "source": "https://drive.google.com/file/d/1XeKk9jWqwKUDa2MNqbBx1Eq-vJAXd0eE/view",
+      "seed_eligible": false,
+      "reference_kind": "Study reference only",
+      "note": "Individual encounter epochs unavailable in the extracted schedule; do not invent exact dates."
+    },
+    {
+      "name": "Titan Orbiter and Probe",
+      "sequence": "EVEES",
+      "launch_window": "2031–2039",
+      "approximate_cruise_years": 10,
+      "source": "https://drive.google.com/file/d/1WYBrBXnTBN3cIipb-4GrlDzXiX2ztedG/view",
+      "seed_eligible": false,
+      "reference_kind": "Study reference only",
+      "note": "Individual encounter epochs unavailable in the extracted schedule; do not invent exact dates."
+    },
+    {
+      "name": "CROCODILE",
+      "sequence": "EEcEE",
+      "dates": [
+        "2036-05-06",
+        "2037-11-12",
+        "2042-01-24",
+        "2046-02-23",
+        "2050-11-16",
+        "2051-11-15"
+      ],
+      "c3": 7.8,
+      "source": "https://drive.google.com/file/d/1wGhnB2z5RQZpJY2M4Xx2VMi4DXmm5h-l/view",
+      "propulsion": "Continuous solar electric propulsion; not a ballistic Lambert template",
+      "seed_eligible": false,
+      "reference_kind": "Study reference only",
+      "note": "Continuous solar electric propulsion; not a ballistic Lambert template"
+    }
+  ]
+}

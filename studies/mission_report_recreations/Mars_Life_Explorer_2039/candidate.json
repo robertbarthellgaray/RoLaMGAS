@@ -1,0 +1,127 @@
+{
+  "sequence": "EM",
+  "bodies": [
+    "Earth",
+    "Mars"
+  ],
+  "x": [
+    0.5,
+    0.49999999976716664
+  ],
+  "branches": [
+    [
+      0,
+      true
+    ]
+  ],
+  "extension_source": null,
+  "dates_jd_tdb": [
+    2465997.9999942128,
+    2466287.9999942128
+  ],
+  "launch_date": "2039-07-28T11:59:59 TDB",
+  "arrival_date": "2040-05-13T11:59:59 TDB",
+  "duration_years": 0.7939767282683093,
+  "launch_c3_km2_s2": 37.06583132132816,
+  "launch_vinf_kms": 6.088171426736287,
+  "requested_min_c3": 5.0,
+  "effective_min_c3": 5.0,
+  "launch_c3_definition": "Squared Sun-centered departure velocity relative to launch body; km^2/s^2",
+  "requested_arrival_window_jd": null,
+  "arrival_vinf_kms": 2.8823826205747722,
+  "total_dsm_kms": 0,
+  "cruise_dsm_kms": 0,
+  "powered_flyby_delta_v_kms": 0,
+  "modeled_maneuver_total_kms": 0,
+  "maneuver_budget_complete": true,
+  "budget_complete": true,
+  "unresolved_flyby_count": 0,
+  "unresolved_speed_mismatch_total_mps": 0,
+  "total_unresolved_vinf_mismatch_mps": 0,
+  "modeled_plus_unresolved_mismatch_kms": 0.0,
+  "mismatch_screening_budget_exceeded": false,
+  "mismatch_screening_note": "Modeled burns plus unresolved excess-speed mismatch sum is a screening criterion, not an actual periapsis burn estimate. Construct powered flybys for physical burn vectors and costs.",
+  "maneuver_budget_note": "Explicit designed DSM, target-turnaround impulses and full powered-periapsis vector burns only; unresolved flybys require physical retargeting or a powered-flyby construction, not a scalar mismatch sum.",
+  "max_single_dsm_kms": 0.0,
+  "max_powered_flyby_kms": 0.0,
+  "periapsis_violation": false,
+  "powered_geometry_valid": true,
+  "flybys": [],
+  "dsms": [],
+  "event_burns": [],
+  "turnaround_delta_v_kms": 0,
+  "mercury_returns": [],
+  "max_vinf_mismatch_mps": 0.0,
+  "min_turn_margin_deg": 180.0,
+  "launch_vinf_vector_kms": [
+    -0.476402377567144,
+    5.835975675278249,
+    -1.6674111711084112
+  ],
+  "arrival_vinf_vector_kms": [
+    -0.4861246351141162,
+    2.610526838447022,
+    1.1211431827712524
+  ],
+  "departure_velocities_kms": [
+    [
+      23.506143312850497,
+      22.716933111229206,
+      -1.6683190292881958
+    ]
+  ],
+  "arrival_velocities_kms": [
+    [
+      -7.696583039751488,
+      -18.14863666532731,
+      0.8625194437986224
+    ]
+  ],
+  "segments": [
+    {
+      "start_jd": 2465997.9999942128,
+      "end_jd": 2466287.9999942128,
+      "r": [
+        86608443.87440261,
+        -124804709.60043655,
+        9927.096685836465
+      ],
+      "v": [
+        23.506143312850497,
+        22.716933111229206,
+        -1.6683190292881958
+      ]
+    }
+  ],
+  "events": [
+    {
+      "body": "Earth",
+      "julian_date_tdb": 2465997.9999942128,
+      "date": "2039-07-28T11:59:59 TDB",
+      "planet_state_km_kms": [
+        86608443.87440261,
+        -124804709.60043655,
+        9927.096685836465,
+        23.98254569041764,
+        16.880957435950958,
+        -0.0009078581797846473
+      ]
+    },
+    {
+      "body": "Mars",
+      "julian_date_tdb": 2466287.9999942128,
+      "date": "2040-05-13T11:59:59 TDB",
+      "planet_state_km_kms": [
+        -234683083.37160125,
+        83410729.3357836,
+        7496165.437383474,
+        -7.210458404637372,
+        -20.75916350377433,
+        -0.2586237389726299
+      ]
+    }
+  ],
+  "id": "9ca55df1c55c",
+  "status": "passes_configured_patched_conic_screen",
+  "screening_residual_norm": 0.0
+}

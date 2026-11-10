@@ -1,0 +1,93 @@
+{
+  "target": "Neptune",
+  "launch_start": "2030-01-10T00:00:00",
+  "launch_end": "2030-01-10T23:59:59",
+  "max_years": 17.99110198494182,
+  "vinf_tolerance_mps": 1.0,
+  "min_c3": 5.0,
+  "max_c3": 108.54000000000002,
+  "max_arrival_vinf_kms": 30.0,
+  "max_dsm_kms": 0.7,
+  "max_single_dsm_kms": 0.7,
+  "max_powered_flyby_kms": 0.2,
+  "dsm_velocity_box_kms": 20.0,
+  "minimum_altitude_km": {
+    "Mercury": 200.0,
+    "Venus": 300.0,
+    "Earth": 200.0,
+    "Mars": 200.0,
+    "Jupiter": 10000.0,
+    "Saturn": 10000.0,
+    "Uranus": 1000.0,
+    "Neptune": 1000.0
+  },
+  "samples_per_sequence": 3000,
+  "refinements_per_sequence": 36,
+  "max_nfev": 250,
+  "branch_families": 16,
+  "batches": 1,
+  "seed": 502,
+  "keep": 100,
+  "max_ephemeris_step_days": 1.0,
+  "sequences": [
+    "EdvJN"
+  ],
+  "route_overrides": {
+    "EdvJN": {
+      "leg_days": [
+        [
+          438.5,
+          1316.5
+        ],
+        [
+          2664.5,
+          7994.5
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ]
+    }
+  },
+  "target_object": null,
+  "custom_leg_days": [
+    30.0,
+    18262.5
+  ],
+  "search_objective": "feasibility",
+  "cost_refinements": 3,
+  "powered_flybys": true,
+  "mercury_resonant_seeds": true,
+  "earth_return_seeds": true,
+  "historical_mission_seeds": true,
+  "arrival_date": null,
+  "arrival_tolerance_days": 0.0,
+  "transfer_direction": "prograde",
+  "mission_profile": "custom",
+  "c3_seed_boundary": "minimum",
+  "event_windows": [
+    [
+      "2030-01-10T00:00:00",
+      "2030-01-10T23:59:59"
+    ],
+    [
+      "2032-06-05T00:00:00",
+      "2032-06-05T23:59:59"
+    ],
+    [
+      "2047-01-07T00:00:00",
+      "2047-01-07T23:59:59"
+    ]
+  ]
+}

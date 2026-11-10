@@ -1,7 +1,8 @@
 import {historicalMatch} from './historical_labels.js?v=20261108b';
-import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261108b';
+import {publicationDate} from './publication_dates.js?v=20261110b';
+import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261110b';
 import './mission_metrics.js?v=20261110a';
-import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261108b';
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261110b';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261108b';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -9,7 +10,7 @@ const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractio
 const colors = ['#79d8f1', '#ffd08a', '#8ae3bd', '#b4aeff', '#ff9f9a', '#9ed2ff'];
 const catalog = [];
 const missionNames=(()=>{try{const data=JSON.parse(localStorage.getItem('rolamgas-mission-names')||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?Object.fromEntries(Object.entries(data).filter(([id,label])=>typeof label==='string'&&label.length<=100)):{}}catch{return {}}})();
-let historicalProfiles=[],ownerMissions={},launchPerformance=null;
+let historicalProfiles=[],ownerMissions={},launchPerformance=null,publicationHistory={};
 function annotateMission(c,id=c.id){const a=ownerMissions[id];if(a)Object.assign(c,{mission_label:a.label,featured_priority:a.featured_priority,mission_note:a.note});return c;}
 function carryMissionLabel(from,to){if(from?.mission_label){Object.assign(to,{mission_label:from.mission_label,mission_note:from.mission_note,featured_priority:from.featured_priority});ownerMissions[to.id]={label:from.mission_label,note:from.mission_note,featured_priority:from.featured_priority};}return to;}
 const missionName=c=>missionNames[c.id]||c.mission_label||c.historical_match?.label||(/^(?:Rebuilding|Low-energy|Tianwen|Claudius)/.test(c.title)?c.title:'');
@@ -195,6 +196,9 @@ async function selectCandidate(id) {
     $('mission-name-status').textContent=c.historical_match?c.historical_match.label+'. Every encounter calendar day matches; spacecraft vectors and burns are not validated.':'Save a searchable name in this browser. No complete historical calendar-date match was found.';
     $('mission-dates').textContent = `${c.launch_date} → ${c.arrival_date} (TDB) · ${fmt(c.years,3)} years / ${fmt(c.end-c.start,1)} days · ${c.bodies.join(' → ')}`;
     $('mission-id').textContent = c.id;
+    const publication=publicationDate(c,publicationHistory);
+    $('mission-added').textContent='Added to repository: '+publication.text;
+    $('mission-added').title='Source: '+publication.basis+'. First encounter-sequence publication is retained when a better same-day candidate replaces it.';
     const metrics = [ ['Launch C3', fmt(c.c3), 'km²/s²'], ['Cruise Δv', fmt(c.burns_mps,1), 'm/s'], ['Arrival V∞', fmt(c.vinf), 'km/s'], ['Flight time', fmt(c.years), 'years'] ];
     $('metrics').innerHTML = metrics.map(([label,value,unit]) => `<div class="metric"><p>${label}</p><strong>${value}</strong><small>${unit}</small></div>`).join('');
     const events = [...c.events.map(e => ({...e, burn:false})), ...c.burns.filter(globalThis.MissionMetrics.visibleManeuver).map(b => ({...b, burn:true}))].sort((a,b) => a.jd - b.jd);
@@ -210,7 +214,7 @@ async function selectCandidate(id) {
     $('provenance').innerHTML = Object.entries(labels).filter(([key]) => c.provenance[key] != null).map(([key,label]) => `<dt>${label}</dt><dd>${escapeHtml(c.provenance[key])}</dd>`).join('');
     if(c.validation) {
       const v=c.validation;
-      $('provenance').innerHTML += `<dt>Gallery admission</dt><dd>${v.passed?'Passed independent vector and coast checks':'Not admitted'}</dd><dt>Worst |ΔV∞|</dt><dd>${fmt(v.max_vinf_mismatch_mps,6)} m/s (limit 1 m/s)</dd><dt>Largest DSM</dt><dd>${fmt(v.max_single_dsm_mps,3)} m/s (limit 700 m/s)</dd><dt>Coast endpoint error</dt><dd>${fmt(v.max_coast_endpoint_error_km*1000,3)} m maximum</dd>`;
+      $('provenance').innerHTML += `<dt>Gallery admission</dt><dd>${v.passed?'Passed independent vector and coast checks':'Not admitted'}</dd><dt>Worst |ΔV∞|</dt><dd>${fmt(v.max_vinf_mismatch_mps,6)} m/s ${c.powered_flybys?'(powered joins audited from full periapsis vectors)':'(unpowered limit 1 m/s)'}</dd><dt>Largest DSM</dt><dd>${fmt(v.max_single_dsm_mps,3)} m/s (limit 700 m/s)</dd><dt>Coast endpoint error</dt><dd>${fmt(v.max_coast_endpoint_error_km*1000,3)} m maximum</dd>`;
     }
     if(c.integration_validation) {
       $('provenance').innerHTML += `<dt>JPL clearance audit</dt><dd>Passed · Sun and eight planetary surfaces</dd><dt>Audit scope</dt><dd>${escapeHtml(c.integration_validation.scope)}</dd>`;
@@ -431,8 +435,8 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings,names,historical,annotations,performance]=await Promise.all([fetchJson('data/index.json?v=20261108b'),fetchJson('data/community_seed_catalog.json?v=20261110a').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261108b').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261110a').catch(()=>null)]);
- registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;
+ const [data,archive,settings,names,historical,annotations,performance,publications]=await Promise.all([fetchJson('data/index.json?v=20261110b'),fetchJson('data/community_seed_catalog.json?v=20261110b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261110b').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261110a').catch(()=>null),fetchJson('data/publication_dates.json?v=20261110b').catch(()=>({candidates:{}}))]);
+ registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  catalog.push(...data.cases.filter(c=>c.c3<=250).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
  const filters=filterStateFromHash(location.hash),initial=canonicalId(filters.mission||'claudius-uop-2045');

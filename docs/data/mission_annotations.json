@@ -26,6 +26,66 @@
       "label": "Cassini recreation · later arrival",
       "featured_priority": 7,
       "note": "Cassini-inspired reconstruction with a later Saturn arrival; not an exact historical-date match."
+    },
+    "f53fc65c9329": {
+      "label": "Trident date-match — added maneuvers",
+      "featured_priority": 8,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "0fc1f2bcd586": {
+      "label": "Mars Life Explorer 2035",
+      "featured_priority": 3,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "dd67c26fd41f": {
+      "label": "Mars Life Explorer 2037",
+      "featured_priority": 3,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "9ca55df1c55c": {
+      "label": "Mars Life Explorer 2039",
+      "featured_priority": 3,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "35bd4d9c6e03": {
+      "label": "CALYPSO — Uranus cruise",
+      "featured_priority": 3,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "552363ae7812": {
+      "label": "T-OWS 2030 — operations-table recreation",
+      "featured_priority": 3,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "f6a3008ac24c2458dc784351382194e4db6f275329be4a29184374a77e9c56f7": {
+      "label": "Trident date-match — added maneuvers",
+      "featured_priority": 8,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "5d4dab0be875c8783a31e14557d6b03c0c4f38ce030100e6916cbd5b9658fe1c": {
+      "label": "Mars Life Explorer 2035",
+      "featured_priority": 3,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "b9014fe931349fbaffab168685d6b5bddbc79c3897852e9cf1ce23a68ce8b2bd": {
+      "label": "Mars Life Explorer 2037",
+      "featured_priority": 3,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "321bb98fa2a2ecbeea0dde031589fe4ac9db166ef9e87c1b58b69ccf55c9b17d": {
+      "label": "Mars Life Explorer 2039",
+      "featured_priority": 3,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "917cb46a1443b95e5cf59862af7e23d30394b3be25d7a03d1642525bf58f6b31": {
+      "label": "CALYPSO — Uranus cruise",
+      "featured_priority": 3,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+    },
+    "6e96d6b564fde4ab44d2b8754693292d44df64180a078928349c6f7639c7b3d7": {
+      "label": "T-OWS 2030 — operations-table recreation",
+      "featured_priority": 3,
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
     }
   }
 }

@@ -21,6 +21,7 @@ from scipy.optimize import least_squares
 from dynamics import Model, lambert, DEFAULT_MIN_C3, HARD_MIN_C3, C3BoundsError
 from ephemeris import BODIES, DAY, JD0, Ephemerides, atomic_json, calendar, fetch, jd, save_table
 from horizons_targets import register_target, moon_model_notice
+from sequence_timing import pair_bounds,OTHER_DEFAULT_DAYS
 
 from app_paths import DATA_ROOT,RESOURCE_ROOT
 HERE = DATA_ROOT
@@ -59,12 +60,10 @@ def resolve_route(sequence, db, target_object=None, custom_leg_days=None):
         ranges,options = [],[]
         for index,(a,b) in enumerate(zip(bodies,bodies[1:])):
             if index==len(bodies)-2:
-                ranges.append(custom_leg_days or [180,8000])
+                ranges.append(list(custom_leg_days or OTHER_DEFAULT_DAYS))
             else:
                 pair=a+'-'+b
-                if pair not in db['pair_days']:
-                    raise ValueError('No duration range for '+pair)
-                ranges.append(db['pair_days'][pair])
+                ranges.append(pair_bounds(a,b,db))
             options.append(default_branch_options(a,b,ranges[-1][1]))
         return dict(id=sequence,bodies=bodies,dsm_legs=dsms,leg_days=ranges,branch_options=options,
                     target=target_object['name'],provenance='Planet assists to a resolved Horizons terminal target')
@@ -87,9 +86,7 @@ def resolve_route(sequence, db, target_object=None, custom_leg_days=None):
     ranges = []
     for a,b in zip(bodies,bodies[1:]):
         pair = a+'-'+b
-        if pair not in db['pair_days']:
-            raise ValueError(f'No timing bounds for {pair}; add them to sequence_database.json first')
-        ranges.append(db['pair_days'][pair])
+        ranges.append(pair_bounds(a,b,db))
     options=[default_branch_options(a,b,bounds[1]) for a,b,bounds in zip(bodies,bodies[1:],ranges)]
     return dict(id=sequence, bodies=bodies, target=bodies[-1], dsm_legs=dsms, leg_days=ranges,
                 branch_options=options, provenance='Custom user route')
@@ -102,7 +99,7 @@ def normalize(config, config_dir=HERE):
              samples_per_sequence=3000, refinements_per_sequence=36, max_nfev=250,
              branch_families=16, workers=max(1,min(4,(os.cpu_count() or 2)-1)), batches=1,
              seed=502, keep=100, cache='cache', max_ephemeris_step_days=1., sequences=[],
-             route_overrides={},target_object=None,custom_leg_days=[180,8000],search_objective='feasibility',cost_refinements=3,powered_flybys=False,
+             route_overrides={},target_object=None,custom_leg_days=list(OTHER_DEFAULT_DAYS),search_objective='feasibility',cost_refinements=3,powered_flybys=False,
              local_refinement=None,mercury_resonant_seeds=True,earth_return_seeds=True,historical_mission_seeds=True,append_flyby=None,
              arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom',c3_seed_boundary='minimum')
     unknown = set(config)-set(c)-{'event_windows','launch_jd','event_windows_jd','arrival_window_jd','effective_min_c3'}

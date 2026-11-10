@@ -1,0 +1,131 @@
+{
+  "target": "433873 (2015 BQ311)",
+  "launch_start": "2040-01-23T00:00:00",
+  "launch_end": "2040-01-23T23:59:59",
+  "max_years": 15.0,
+  "vinf_tolerance_mps": 1.0,
+  "min_c3": 5.0,
+  "max_c3": 78.41340000000001,
+  "max_arrival_vinf_kms": 30.0,
+  "max_dsm_kms": 0.7,
+  "max_single_dsm_kms": 0.7,
+  "max_powered_flyby_kms": 0.2,
+  "dsm_velocity_box_kms": 20.0,
+  "minimum_altitude_km": {
+    "Mercury": 200.0,
+    "Venus": 300.0,
+    "Earth": 200.0,
+    "Mars": 200.0,
+    "Jupiter": 10000.0,
+    "Saturn": 10000.0,
+    "Uranus": 1000.0,
+    "Neptune": 1000.0
+  },
+  "samples_per_sequence": 3000,
+  "refinements_per_sequence": 36,
+  "max_nfev": 250,
+  "branch_families": 16,
+  "batches": 1,
+  "seed": 502,
+  "keep": 100,
+  "max_ephemeris_step_days": 1.0,
+  "sequences": [
+    "EdvEJdvX"
+  ],
+  "route_overrides": {
+    "EdvEJdvX": {
+      "leg_days": [
+        [
+          370.5,
+          1112.5
+        ],
+        [
+          417.0,
+          1252.0
+        ],
+        [
+          855.0,
+          2566.0
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ]
+    }
+  },
+  "target_object": {
+    "command": "433873;",
+    "name": "433873 (2015 BQ311)",
+    "kind": "small_body",
+    "orbit_class": "Centaur",
+    "id": "20433873",
+    "designation": "433873",
+    "query": "SPK=20433873"
+  },
+  "custom_leg_days": [
+    30.0,
+    18262.5
+  ],
+  "search_objective": "feasibility",
+  "cost_refinements": 3,
+  "powered_flybys": true,
+  "mercury_resonant_seeds": true,
+  "earth_return_seeds": true,
+  "historical_mission_seeds": true,
+  "arrival_date": null,
+  "arrival_tolerance_days": 0.0,
+  "transfer_direction": "prograde",
+  "mission_profile": "custom",
+  "c3_seed_boundary": "minimum",
+  "event_windows": [
+    [
+      "2040-01-23T00:00:00",
+      "2040-01-23T23:59:59"
+    ],
+    [
+      "2042-02-02T00:00:00",
+      "2042-02-02T23:59:59"
+    ],
+    [
+      "2044-05-16T00:00:00",
+      "2044-05-16T23:59:59"
+    ],
+    [
+      "2049-01-20T00:00:00",
+      "2049-01-20T23:59:59"
+    ]
+  ]
+}

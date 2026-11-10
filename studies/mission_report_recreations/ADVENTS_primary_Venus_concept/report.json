@@ -1,0 +1,95 @@
+{
+  "name": "ADVENTS primary Venus concept",
+  "reference": {
+    "name": "ADVENTS primary Venus concept",
+    "sequence": "EVdvV",
+    "bodies": [
+      "Earth",
+      "Venus",
+      "Venus"
+    ],
+    "dates": [
+      "2039-06-04",
+      "2039-10-07",
+      "2043-05-20"
+    ],
+    "c3": 13.435,
+    "vinf": 1.95,
+    "section": "Appendix A.2.3.2, printed A19",
+    "note": "The cited DSM is about 8.5% through the Venus-return leg; the current app permits 10\u201390%, so this burn date cannot be represented exactly. Venus capture excluded.",
+    "reference_kind": "Proposed mission study / numerical initialization",
+    "seed_eligible": true,
+    "planet_leg_days": [
+      125,
+      1321
+    ],
+    "sources": [
+      "https://drive.google.com/file/d/1IK0aD91I2fsreNW_Hdssu69Jr9E5hqIE/view"
+    ],
+    "dsm_events": [
+      {
+        "leg_index": 1,
+        "date": "2040-01-27",
+        "magnitude_kms": 0.154,
+        "fraction": 0.08478425435276306
+      }
+    ]
+  },
+  "initialization_attempts": 4,
+  "preflight_rejections": [
+    "No feasible solution, try lower M!",
+    "No feasible solution, try lower M!",
+    "No feasible solution, try lower M!",
+    "No feasible solution, try lower M!",
+    "No feasible solution, try lower M!",
+    "No feasible solution, try lower M!"
+  ],
+  "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+  "accepted": false,
+  "audit": {
+    "passed": false,
+    "reasons": [
+      "Individual DSM exceeds cap",
+      "Powered flyby exceeds cap",
+      "Cruise maneuver total exceeds catalog limit",
+      "Cruise maneuver total exceeds saved budget"
+    ],
+    "method": "Independent stored-vector patched-conic screen",
+    "joins": [
+      {
+        "body": "Venus",
+        "event_index": 1,
+        "jd": 2466068.5,
+        "mismatch_mps": 7249.380166177025,
+        "vinf_in_kms": 2.9251706111592957,
+        "vinf_out_kms": 10.17455077733632,
+        "turn_deg": 24.481656398475096,
+        "max_turn_deg": 38.619670268409706,
+        "inferred_altitude_km": 5610.897781348946,
+        "minimum_altitude_km": 300.0,
+        "powered_mps": 6338.792663972464,
+        "clearance_above_floor_km": 5310.897781348946
+      }
+    ],
+    "max_vinf_mismatch_mps": 7249.380166177025,
+    "max_single_dsm_mps": 2708.3349446315624,
+    "max_powered_flyby_mps": 6338.792663972464,
+    "cruise_total_mps": 9047.127608604027,
+    "policy": {
+      "max_unpowered_speed_mismatch_mps": 1.0,
+      "max_single_dsm_mps": 700.0,
+      "max_powered_flyby_mps": 200.0,
+      "max_total_cruise_mps": 1500.0
+    }
+  },
+  "coasts": {
+    "maximum_dop853_endpoint_error_km": 0.0003957095091965454,
+    "maximum_velocity_difference_kms": 1.3185773332156936e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "candidate_id": "8f7fc30fabb9",
+  "launch_c3": 13.423845191135008,
+  "arrival_vinf": 14.643867489268944,
+  "total_burn_mps": 9047.127608604025
+}

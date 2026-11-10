@@ -16,7 +16,7 @@
   <link rel="icon" type="image/png" sizes="64x64" href="images/rolamgas-icon-64.png">
   <link rel="apple-touch-icon" sizes="180x180" href="images/rolamgas-touch-180.png">
   <link rel="stylesheet" href="style.css?v=20261108b">
-  <script type="module" src="app.js?v=20261110a"></script>
+  <script type="module" src="app.js?v=20261110b"></script>
 </head>
 <body>
   <a class="skip-link" href="#explorer">Skip to trajectory explorer</a>
@@ -51,7 +51,7 @@
           <div id="candidate-list" class="candidate-list"><p class="empty">Loading saved trajectories…</p></div><button id="candidate-more" type="button" class="subtle-button" hidden>Show more trajectories</button>
         </aside>
         <div class="mission-view" id="mission-view" aria-busy="true">
-          <div class="mission-heading"><div><p class="eyebrow" id="model-label">SAVED TRAJECTORY</p><h3 id="mission-title">Preparing the flight deck…</h3><p id="mission-dates" class="quiet">Select a candidate to inspect its route.</p></div><span class="mission-id" id="mission-id"></span></div>
+          <div class="mission-heading"><div><p class="eyebrow" id="model-label">SAVED TRAJECTORY</p><h3 id="mission-title">Preparing the flight deck…</h3><p id="mission-dates" class="quiet">Select a candidate to inspect its route.</p><p id="mission-added" class="quiet"></p></div><span class="mission-id" id="mission-id"></span></div>
           <div class="plot-area">
             <canvas id="orbit" tabindex="0" role="img" aria-label="Interactive heliocentric trajectory plot. Drag to rotate, scroll to zoom, use arrow keys to rotate and plus or minus to zoom."></canvas>
             <div class="plot-top"><span class="plot-tag">SOLAR SYSTEM / AU</span><div class="projection" role="group" aria-label="Plot projection"><button type="button" data-view="3d" aria-pressed="true">3D</button><button type="button" data-view="xy" aria-pressed="false">XY</button><button type="button" data-view="xz" aria-pressed="false">XZ</button><button type="button" data-view="yz" aria-pressed="false">YZ</button></div></div>

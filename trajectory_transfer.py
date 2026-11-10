@@ -40,6 +40,8 @@ def materialize(record,config,route,ep):
     if max_r>2. or max_v>.002:raise ValueError(f'Cached JPL states do not reproduce this candidate: {max_r:.3f} km / {max_v:.6f} km/s. No replacement trajectory was substituted.')
     m=r['metrics']
     if abs(q['launch_c3_km2_s2']-m['launch_c3_km2_s2'])>.02 or abs(q['arrival_vinf_kms']-m['arrival_vinf_kms'])>.01:raise ValueError('Recomputed costs differ from selected website candidate')
+    if abs(q['total_dsm_kms']-m['total_dsm_kms'])>.001:
+        raise ValueError('Recomputed maneuver total differs from the selected candidate; check powered-flyby settings and altitude floors.')
     q.update(status='passes_configured_patched_conic_screen' if model.accepted(q) else 'near_miss_not_accepted',screening_residual_norm=float(np.linalg.norm(model.residual(x,branches))) if model.c3_in_bounds(q['launch_c3_km2_s2']) else 1e6,discovered_unix=time.time(),import_verification=dict(source='Website trajectory transfer',maximum_coast_position_difference_km=max_r,maximum_coast_velocity_difference_kms=max_v,optimization_performed=False,source_cruise_delta_v_kms=m['total_dsm_kms'],recomputed_cruise_delta_v_kms=q['total_dsm_kms']))
     q['id']=hashlib.sha256(json.dumps([r['sequence'],r['dates_jd_tdb'],r['branches'],r['dsm_controls']],separators=(',',':')).encode()).hexdigest()[:12]
     return q

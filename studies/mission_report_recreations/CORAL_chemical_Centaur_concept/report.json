@@ -1,0 +1,124 @@
+{
+  "name": "CORAL chemical Centaur concept",
+  "reference": {
+    "name": "CORAL chemical Centaur concept",
+    "sequence": "EdvEJdvX",
+    "bodies": [
+      "Earth",
+      "Earth",
+      "Jupiter",
+      "433873 (2015 BQ311)"
+    ],
+    "dates": [
+      "2040-01-23",
+      "2042-02-02",
+      "2044-05-16",
+      "2049-01-20"
+    ],
+    "c3": 58.084,
+    "section": "Figure 3-5, printed pages 20\u201321",
+    "target_object": {
+      "name": "433873 (2015 BQ311)",
+      "id": "20433873",
+      "command": "433873;",
+      "designation": "433873",
+      "query": "SPK=20433873",
+      "kind": "small_body",
+      "orbit_class": "Centaur"
+    },
+    "note": "Chemical figure baseline, distinct from electric-propulsion alternatives. The 325 m/s terminal rendezvous burn is excluded from cruise costs.",
+    "reference_kind": "Proposed mission study / numerical initialization",
+    "seed_eligible": true,
+    "planet_leg_days": [
+      741,
+      834,
+      1710
+    ],
+    "sources": [
+      "https://drive.google.com/file/d/1nfvptLBEOkKo546hgkS_kqBOpoyruslI/view"
+    ],
+    "dsm_events": [
+      {
+        "leg_index": 0,
+        "date": "2040-12-17",
+        "magnitude_kms": 0.225,
+        "fraction": 0.44399460188933876
+      },
+      {
+        "leg_index": 2,
+        "date": "2045-11-28",
+        "magnitude_kms": 0.193,
+        "fraction": 0.3280701754385965
+      }
+    ]
+  },
+  "initialization_attempts": 2,
+  "preflight_rejections": [
+    "Launch C3 2039.18558797 is outside [5, 78.4134] km\u00b2/s\u00b2",
+    "Launch C3 1714.20938142 is outside [5, 78.4134] km\u00b2/s\u00b2",
+    "Launch C3 0.000154251792157 is outside [5, 78.4134] km\u00b2/s\u00b2",
+    "Launch C3 1435.56743195 is outside [5, 78.4134] km\u00b2/s\u00b2"
+  ],
+  "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+  "accepted": false,
+  "audit": {
+    "passed": false,
+    "reasons": [
+      "Individual DSM exceeds cap",
+      "Powered flyby exceeds cap",
+      "Cruise maneuver total exceeds catalog limit",
+      "Cruise maneuver total exceeds saved budget"
+    ],
+    "method": "Independent stored-vector patched-conic screen",
+    "joins": [
+      {
+        "body": "Earth",
+        "event_index": 1,
+        "jd": 2466917.500006943,
+        "mismatch_mps": 2369.0030895936543,
+        "vinf_in_kms": 6.616730369196528,
+        "vinf_out_kms": 8.985733458790182,
+        "turn_deg": 60.45575894557387,
+        "max_turn_deg": 50.77293039372555,
+        "inferred_altitude_km": -1508.9778992110414,
+        "minimum_altitude_km": 200.0,
+        "powered_mps": 1372.0511951841468,
+        "clearance_above_floor_km": -1708.9778992110414
+      },
+      {
+        "body": "Jupiter",
+        "event_index": 2,
+        "jd": 2467752.499456072,
+        "mismatch_mps": 353.41996102849913,
+        "vinf_in_kms": 6.3602211066934204,
+        "vinf_out_kms": 6.006801145664921,
+        "turn_deg": 97.356984366147,
+        "max_turn_deg": 154.13716838067597,
+        "inferred_altitude_km": 966771.314188996,
+        "minimum_altitude_km": 10000.0,
+        "powered_mps": 133.29295186501824,
+        "clearance_above_floor_km": 956771.314188996
+      }
+    ],
+    "max_vinf_mismatch_mps": 2369.0030895936543,
+    "max_single_dsm_mps": 1006.7626320259409,
+    "max_powered_flyby_mps": 1372.0511951841468,
+    "cruise_total_mps": 2523.086288983839,
+    "policy": {
+      "max_unpowered_speed_mismatch_mps": 1.0,
+      "max_single_dsm_mps": 700.0,
+      "max_powered_flyby_mps": 200.0,
+      "max_total_cruise_mps": 1500.0
+    }
+  },
+  "coasts": {
+    "maximum_dop853_endpoint_error_km": 0.004240040624414009,
+    "maximum_velocity_difference_kms": 6.341304130580488e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "candidate_id": "f4b75631e46c",
+  "launch_c3": 45.74804860832659,
+  "arrival_vinf": 0.3490522838298629,
+  "total_burn_mps": 2523.086288983839
+}

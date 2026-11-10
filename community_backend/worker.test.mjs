@@ -7,6 +7,19 @@ import {localEnv} from './local_server.mjs';
 const record=()=>({schema_version:1,engine_version:'0.2.1-test7',sequence:'EJ',body_ids:['399','599'],dates_jd_tdb:[2460000,2461000],branches:[[0,true]],dsm_controls:[],classification:'pass',solved_at:'2026-01-01T00:00:00Z',metrics:{launch_c3_km2_s2:11,total_dsm_kms:0,arrival_vinf_kms:7,duration_years:2.7,max_vinf_mismatch_mps:0},segments:[{start_jd:2460000,end_jd:2461000,r:[1e8,0,0],v:[0,30,0]}],id:'a'.repeat(64)});
 const post=(env,records)=>worker.fetch(new Request('https://example.test/v1/candidates',{method:'POST',headers:{'Content-Type':'application/json','User-Agent':'private computer name','CF-Connecting-IP':'192.0.2.1'},body:JSON.stringify({candidates:records})}),env);
 const get=(env,query='target=599&min_c3=10&max_c3=15')=>worker.fetch(new Request('https://example.test/v1/candidates?'+query),env);
+
+test('first publication survives a better same-day candidate replacing the original',async()=>{
+ const env=localEnv(),a=record();await post(env,[a]);
+ env.database.prepare("UPDATE candidates SET added_at='2026-01-02T03:04:05.000Z'").run();
+ const b=structuredClone(a);b.metrics.launch_c3_km2_s2=10;await post(env,[b]);
+ const saved=(await(await get(env)).json()).candidates[0];
+ assert.equal(saved.added_at,'2026-01-02T03:04:05.000Z');assert.equal(saved.added_at_basis,'server receipt');assert.notEqual(saved.received_at,saved.added_at);env.database.close();
+});
+test('publication migration labels old receipt backfills instead of inventing original timestamps',()=>{
+ const db=new DatabaseSync(':memory:');db.exec("CREATE TABLE candidates(received_at TEXT);INSERT INTO candidates VALUES('2026-01-01T12:34:56.000Z');");
+ db.exec(readFileSync(new URL('./migrations/0002_publication_dates.sql',import.meta.url),'utf8'));
+ const row=db.prepare('SELECT * FROM candidates').get();assert.equal(row.added_at,row.received_at);assert.equal(row.added_at_basis,'earliest retained receipt');db.close();
+});
 test('stores and queries trajectory science without transport identity',async()=>{const env=localEnv();assert.equal((await post(env,[record()])).status,200);const data=await(await get(env)).json();assert.equal(data.candidates.length,1);assert.ok(data.candidates[0].received_at);const raw=JSON.stringify(env.database.prepare('SELECT * FROM candidates').all());assert.ok(!raw.includes('private computer'));assert.ok(!raw.includes('192.0.2.1'));assert.equal((await(await get(env,'target=599&min_c3=12&max_c3=15')).json()).candidates.length,0);env.database.close();});
 test('deduplicates repeated science while preserving first solve time',async()=>{const env=localEnv(),a=record();await post(env,[a]);await post(env,[{...a,solved_at:'2026-02-01T00:00:00Z'}]);assert.equal(env.database.prepare('SELECT COUNT(*) AS n FROM candidates').get().n,1);assert.match((await(await get(env)).json()).candidates[0].solved_at,/2026-01-01/);env.database.close();});
 test('rejects personal extra fields, red records, malformed numbers and hostile targets',async()=>{const env=localEnv();for(const a of [{...record(),username:'someone'},{...record(),classification:'red'},{...record(),metrics:{...record().metrics,launch_c3_km2_s2:null}}])assert.equal((await post(env,[a])).status,400);assert.equal((await get(env,"target=599%27%20OR%201=1")).status,400);assert.equal(env.database.prepare('SELECT COUNT(*) AS n FROM candidates').get().n,0);env.database.close();});

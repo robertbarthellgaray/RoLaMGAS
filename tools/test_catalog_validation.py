@@ -25,5 +25,13 @@ class AdmissionTests(unittest.TestCase):
     def test_fake_low_burn_magnitude_is_rejected(self):
         q,b=self.example();q['dsms']=[dict(magnitude_kms=.1,delta_v_ecliptic_j2000_kms=[2.,0.,0.])];q['total_dsm_kms']=.1
         self.assertFalse(audit_candidate(q,{},b)['passed'])
+    def test_powered_geometry_is_recovered_from_vectors_not_pass_flags(self):
+        from powered_flyby import geometry
+        q,b=self.example();q['departure_velocities_kms'][1]=[7.99*math.cos(math.radians(10)),7.99*math.sin(math.radians(10)),0.]
+        power=geometry(b['Earth'][1],b['Earth'][2]+200,q['arrival_velocities_kms'][0],q['departure_velocities_kms'][1],1e7)
+        q['flybys'][0]['powered_flyby']=power;q['total_dsm_kms']=power['magnitude_kms']
+        self.assertTrue(audit_candidate(q,dict(powered_flybys=True),b)['passed'])
+        power['peri_out_velocity_kms'][2]+=.01
+        self.assertFalse(audit_candidate(q,dict(powered_flybys=True),b)['passed'])
 
 if __name__=='__main__':unittest.main()

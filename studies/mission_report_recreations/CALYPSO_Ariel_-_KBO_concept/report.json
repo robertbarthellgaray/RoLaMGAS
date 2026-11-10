@@ -1,0 +1,74 @@
+{
+  "name": "CALYPSO Ariel / KBO concept \u2014 Uranus cruise",
+  "reference": {
+    "name": "CALYPSO Ariel / KBO concept \u2014 Uranus cruise",
+    "sequence": "EJU",
+    "bodies": [
+      "Earth",
+      "Jupiter",
+      "Uranus"
+    ],
+    "dates": [
+      "2035-07-11",
+      "2036-11-16",
+      "2041-11-01"
+    ],
+    "c3": 121,
+    "section": "Mission design, printed pages 12\u201313",
+    "note": "Launch-period opening; 494-day Jupiter leg corresponds to July 11 launch. Uranus proxy only: Ariel flyby and later KBO encounter are not reconstructed.",
+    "reference_kind": "Proposed mission study / numerical initialization",
+    "seed_eligible": true,
+    "planet_leg_days": [
+      494,
+      1811
+    ],
+    "sources": [
+      "https://drive.google.com/file/d/1dWc9J2XJy9KrJRFVkUXpL2F0U3bP_1vu/view"
+    ]
+  },
+  "initialization_attempts": 1,
+  "preflight_rejections": [],
+  "note": "Fresh local desktop-model calculation. Study reference numbers are not assumed reproduced.",
+  "accepted": true,
+  "audit": {
+    "passed": true,
+    "reasons": [],
+    "method": "Independent stored-vector patched-conic screen",
+    "joins": [
+      {
+        "body": "Jupiter",
+        "event_index": 1,
+        "jd": 2465013.9999942128,
+        "mismatch_mps": 55.396261075012276,
+        "vinf_in_kms": 12.369461046634877,
+        "vinf_out_kms": 12.314064785559864,
+        "turn_deg": 38.04926211514534,
+        "max_turn_deg": 131.12083738910658,
+        "inferred_altitude_km": 1640577.5450893128,
+        "minimum_altitude_km": 10000.0,
+        "powered_mps": 39.49587221552655,
+        "clearance_above_floor_km": 1630577.5450893128
+      }
+    ],
+    "max_vinf_mismatch_mps": 55.396261075012276,
+    "max_single_dsm_mps": 0,
+    "max_powered_flyby_mps": 39.49587221552655,
+    "cruise_total_mps": 39.49587221552655,
+    "policy": {
+      "max_unpowered_speed_mismatch_mps": 1.0,
+      "max_single_dsm_mps": 700.0,
+      "max_powered_flyby_mps": 200.0,
+      "max_total_cruise_mps": 1500.0
+    }
+  },
+  "coasts": {
+    "maximum_dop853_endpoint_error_km": 0.00089217785972381,
+    "maximum_velocity_difference_kms": 3.056137493815488e-11,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "candidate_id": "35bd4d9c6e03",
+  "launch_c3": 120.70413198753758,
+  "arrival_vinf": 12.400127866582363,
+  "total_burn_mps": 39.49587221552655
+}

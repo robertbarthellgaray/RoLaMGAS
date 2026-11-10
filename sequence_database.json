@@ -374,6 +374,178 @@
     "Uranus-Neptune": [
       900,
       6000
+    ],
+    "Mercury-Earth": [
+      30.0,
+      7305.0
+    ],
+    "Mercury-Mars": [
+      30.0,
+      7305.0
+    ],
+    "Mercury-Jupiter": [
+      30.0,
+      7305.0
+    ],
+    "Mercury-Saturn": [
+      30.0,
+      7305.0
+    ],
+    "Mercury-Uranus": [
+      30.0,
+      7305.0
+    ],
+    "Mercury-Neptune": [
+      30.0,
+      7305.0
+    ],
+    "Venus-Jupiter": [
+      30.0,
+      7305.0
+    ],
+    "Venus-Saturn": [
+      30.0,
+      7305.0
+    ],
+    "Venus-Uranus": [
+      30.0,
+      7305.0
+    ],
+    "Venus-Neptune": [
+      30.0,
+      7305.0
+    ],
+    "Mars-Mercury": [
+      30.0,
+      7305.0
+    ],
+    "Mars-Venus": [
+      30.0,
+      7305.0
+    ],
+    "Mars-Mars": [
+      30.0,
+      7305.0
+    ],
+    "Mars-Jupiter": [
+      250.0,
+      2500.0
+    ],
+    "Mars-Saturn": [
+      30.0,
+      7305.0
+    ],
+    "Mars-Uranus": [
+      30.0,
+      7305.0
+    ],
+    "Mars-Neptune": [
+      30.0,
+      7305.0
+    ],
+    "Jupiter-Mercury": [
+      30.0,
+      7305.0
+    ],
+    "Jupiter-Venus": [
+      30.0,
+      7305.0
+    ],
+    "Jupiter-Earth": [
+      30.0,
+      7305.0
+    ],
+    "Jupiter-Mars": [
+      250.0,
+      2500.0
+    ],
+    "Jupiter-Jupiter": [
+      30.0,
+      7305.0
+    ],
+    "Saturn-Mercury": [
+      30.0,
+      7305.0
+    ],
+    "Saturn-Venus": [
+      30.0,
+      7305.0
+    ],
+    "Saturn-Earth": [
+      30.0,
+      7305.0
+    ],
+    "Saturn-Mars": [
+      30.0,
+      7305.0
+    ],
+    "Saturn-Jupiter": [
+      30.0,
+      7305.0
+    ],
+    "Saturn-Saturn": [
+      30.0,
+      7305.0
+    ],
+    "Uranus-Mercury": [
+      30.0,
+      7305.0
+    ],
+    "Uranus-Venus": [
+      30.0,
+      7305.0
+    ],
+    "Uranus-Earth": [
+      30.0,
+      7305.0
+    ],
+    "Uranus-Mars": [
+      30.0,
+      7305.0
+    ],
+    "Uranus-Jupiter": [
+      30.0,
+      7305.0
+    ],
+    "Uranus-Saturn": [
+      30.0,
+      7305.0
+    ],
+    "Uranus-Uranus": [
+      30.0,
+      7305.0
+    ],
+    "Neptune-Mercury": [
+      30.0,
+      7305.0
+    ],
+    "Neptune-Venus": [
+      30.0,
+      7305.0
+    ],
+    "Neptune-Earth": [
+      30.0,
+      7305.0
+    ],
+    "Neptune-Mars": [
+      30.0,
+      7305.0
+    ],
+    "Neptune-Jupiter": [
+      30.0,
+      7305.0
+    ],
+    "Neptune-Saturn": [
+      30.0,
+      7305.0
+    ],
+    "Neptune-Uranus": [
+      900.0,
+      6000.0
+    ],
+    "Neptune-Neptune": [
+      30.0,
+      7305.0
     ]
   },
   "conventions": {
@@ -5196,5 +5368,16 @@
       ],
       "provenance": "Original Mercury flyby-plus-DSM resonance ladder inspired by MESSENGER; not a flown mission recreation. Capture burn excluded."
     }
-  ]
+  ],
+  "fallback_timing_policy": {
+    "planet_pair_days": [
+      30,
+      7305
+    ],
+    "other_body_days": [
+      30,
+      18262.5
+    ],
+    "note": "Broad search envelopes, not feasible-transfer guarantees. Existing specific bounds are retained."
+  }
 }

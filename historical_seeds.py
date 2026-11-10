@@ -11,7 +11,10 @@ from earth_return_seeds import rtn_basis
 
 @lru_cache(maxsize=1)
 def references():
-    return json.loads((RESOURCE_ROOT/'departure_seeds/historical_missions.json').read_text(encoding='utf-8'))['missions']
+    historical=json.loads((RESOURCE_ROOT/'departure_seeds/historical_missions.json').read_text(encoding='utf-8'))['missions']
+    study_path=RESOURCE_ROOT/'departure_seeds/mission_studies.json'
+    studies=json.loads(study_path.read_text(encoding='utf-8'))['missions'] if study_path.exists() else []
+    return historical+[m for m in studies if m.get('seed_eligible')]
 
 def matching_references(model):
     if model.extension or model.config.get('local_refinement') or not model.config.get('historical_mission_seeds',True):return []
@@ -22,11 +25,23 @@ def matching_references(model):
             if actual!=known:break
             count+=1
         if count>=2:rows.append((count,mission))
-    return [mission for count,mission in sorted(rows,key=lambda row:-row[0])]
+    from ephemeris import jd
+    lo,hi=model.config['launch_jd']
+    def order(row):
+        count,mission=row;date=(mission.get('dates') or [mission.get('launch_start')])[0]
+        launch=jd(date) if date else (lo+hi)/2
+        return (-count,max(lo-launch,launch-hi,0.))
+    return [mission for count,mission in sorted(rows,key=order)]
 
 def timing_guess(model,x,mission):
     """Use only matching prefix durations; fixed epochs/windows remain fixed."""
     point=np.array(x,dtype=float,copy=True);dates=model.dates(point);windows=model.config.get('event_windows_jd')
+    launch=(mission.get('dates') or [mission.get('launch_start')])[0]
+    if launch:
+        from ephemeris import jd
+        lo,hi=(windows[0] if windows else model.config['launch_jd']);desired=jd(launch)
+        if lo<=desired<=hi:point[0]=.5 if lo==hi else (desired-lo)/(hi-lo)
+        dates=model.dates(point)
     for i,days in enumerate(mission['planet_leg_days'],1):
         if i>=model.n or model.bodies[i]!=mission['bodies'][i]:break
         if windows:
@@ -37,11 +52,12 @@ def timing_guess(model,x,mission):
             lo,hi=model.route['leg_days'][i-1];desired=days
         point[i]=.5 if hi==lo else float(np.clip((desired-lo)/(hi-lo),0,1))
         dates=model.dates(point)
-    dsm=mission.get('dsm_event')
-    if dsm and dsm['leg_index'] in model.dsm_legs:
-        leg=dsm['leg_index'];k=model.n+4*model.dsm_legs.index(leg)
-        # Model maps the DSM epoch fraction from [0,1] into [0.1,0.9].
-        point[k]=np.clip((mission['dsm_fraction']-.1)/.8,0,1)
+    maneuvers=mission.get('dsm_events',[])
+    if mission.get('dsm_event'):maneuvers=[dict(mission['dsm_event'],fraction=mission['dsm_fraction']),*maneuvers]
+    for dsm in maneuvers:
+        if dsm['leg_index'] in model.dsm_legs:
+            k=model.n+4*model.dsm_legs.index(dsm['leg_index'])
+            point[k]=np.clip((dsm['fraction']-.1)/.8,0,1)
     return point
 
 def seed_missions(samples,model,branches):
