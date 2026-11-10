@@ -1,6 +1,8 @@
 """One gravity source per patched-conic arc, with explicit residual/burn budgets."""
 import bootstrap
 import unittest
+import json,tempfile
+from pathlib import Path
 from unittest.mock import patch
 import numpy as np
 import integrate_export as ex
@@ -11,6 +13,15 @@ class LinearPlanet:
     def state(self,body,date):return np.array([AU,30*(date-JD0)*DAY,0.,0.,30.,0.])
 
 class ExportForceModelTests(unittest.TestCase):
+    def test_low_energy_saved_candidate_is_rejected_before_ephemeris_or_propagation(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'candidate.json'
+            for energy in (0.,4.999999):
+                path.write_text(json.dumps(dict(launch_c3_km2_s2=energy)))
+                with patch.object(ex,'get_ephemerides',side_effect=AssertionError('Forbidden export queried ephemerides')):
+                    with self.assertRaisesRegex(ValueError,'at least 5'):
+                        ex.export(path,{},Path(folder)/'export')
+
     def test_soi_hyperbola_uses_only_encounter_planet_mu(self):
         original=ex.two_body_rhs;used=[]
         def tracked(t,y,mu):used.append(mu);return original(t,y,mu)

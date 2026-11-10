@@ -22,6 +22,7 @@ from ephemeris import BODIES,atomic_json
 from horizons_targets import resolve,register_target
 from community import settings as community_settings,save_settings as save_community_settings
 from mission_search import DEFAULT_MIN_C3,HERE,load_database,normalize,routes_for,get_ephemerides
+from dynamics import HARD_MIN_C3,supported_launch_energy
 from app_paths import APP_VERSION,RESOURCE_ROOT,ensure_data,worker_command,worker_environment
 
 
@@ -112,7 +113,7 @@ class App:
         for p in (RESOURCE_ROOT/'examples').glob('*.json'):
             c = read_json(p,{})
             presets.append(dict(id=p.stem,target=c.get('target'),name=p.stem.replace('_',' ').title()))
-        return dict(version=APP_VERSION,community=community_settings(),minimum_c3_floor=DEFAULT_MIN_C3,token=self.token,planets=[p for p in BODIES if p!='Earth'],
+        return dict(version=APP_VERSION,community=community_settings(),minimum_c3_floor=HARD_MIN_C3,token=self.token,planets=[p for p in BODIES if p!='Earth'],
                     routes=[dict(id=r['id'],target=r['target'],bodies=r['bodies'],dsm_legs=r['dsm_legs']) for r in db['sequences']],
                     custom_routes=['EX','EdvEX','EVX','EVEX','EVEEX','EJX','EdvEJX','EVEEJX','ESX','EJSX'],
                     presets=presets,runs=self.catalog(),cpu_count=os.cpu_count() or 2,active=self.active)
@@ -354,12 +355,17 @@ class App:
         request=read_json(output/'request.json') or read_json(output/'run_manifest.json',{}).get('config',{})
         if live and live.get('candidates'):
             from live_gallery import plot_status
-            hydrated=[self._hydrate_render_row(name,q,request) for q in live['candidates']]
+            # Older live.json files predate the hard launch-energy gate. Do not
+            # hydrate or queue plots for those obsolete low-energy diagnostics.
+            eligible=[q for q in live['candidates'] if supported_launch_energy(q.get('launch_c3_km2_s2'))]
+            hydrated=[self._hydrate_render_row(name,q,request) for q in eligible]
             self._register_render_run(name)
             live=dict(live,revision=max(float(live.get('revision',0)),self.render_revision.get(name,0)),
+                      distinct_accepted=max(0,live.get('distinct_accepted',0)-sum(q.get('status','').startswith('passes') for q in live['candidates'])+sum(q.get('status','').startswith('passes') for q in eligible)),
+                      excluded_below_hard_c3_floor=len(live['candidates'])-len(eligible),
                       candidates=[dict(q,**plot_status(output/'candidates',q,request)) for q in hydrated])
         limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years')}
-        limits['effective_min_c3']=max(float(request.get('min_c3') if request.get('min_c3') is not None else DEFAULT_MIN_C3),DEFAULT_MIN_C3)
+        limits['effective_min_c3']=max(float(request.get('min_c3') if request.get('min_c3') is not None else DEFAULT_MIN_C3),HARD_MIN_C3)
         return dict(run=name,status=status or dict(state='finished'),live=live,log=logs,candidate_names=read_json(output/'candidate_names.json',{}),
                     heartbeat=read_json(output/'heartbeat.json'),database=read_json(output/'database_first.json',{}),
                     limits=limits,
@@ -427,7 +433,7 @@ class App:
             name,identifier,_=priority;root=self.folder(name)
             q=read_json(root/'candidates'/(identifier+'.json'))
             config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{}).get('config',{})
-            if q and plot_status(root/'candidates',q,config)['render_pending']:
+            if q and supported_launch_energy(q.get('launch_c3_km2_s2')) and plot_status(root/'candidates',q,config)['render_pending']:
                 return name,q,config,priority
             with self.lock:
                 if self.render_priority==priority:self.render_priority=None
@@ -435,6 +441,7 @@ class App:
             root=self.folder(name);live=read_json(root/'live.json',{})
             config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{}).get('config',{})
             for row in live.get('candidates',[]):
+                if not supported_launch_energy(row.get('launch_c3_km2_s2')):continue
                 row=self._hydrate_render_row(name,row,config)
                 if not plot_status(root/'candidates',row,config)['render_pending']:continue
                 q=read_json(root/'candidates'/(row['id']+'.json'))

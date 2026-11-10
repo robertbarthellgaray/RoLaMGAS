@@ -103,7 +103,12 @@ def flyby(body, incoming, outgoing, floor, tolerance):
                 passes_turn_screen=dmax >= angle - 1e-10)
 
 
-DEFAULT_MIN_C3=6.25  # JUICE published day-launch design V-infinity 2.5 km/s squared.
+HARD_MIN_C3=5.0  # Application search policy, including legacy import/export paths.
+DEFAULT_MIN_C3=6.25  # Retain the existing departure-energy default for EEV seeds.
+
+
+def supported_launch_energy(energy):
+    return isinstance(energy,(int,float)) and math.isfinite(energy) and energy>=HARD_MIN_C3
 
 
 class C3BoundsError(ValueError):
@@ -162,7 +167,7 @@ class Model:
         return dates
 
     @property
-    def c3_minimum(self):return max(DEFAULT_MIN_C3,float(self.config.get('effective_min_c3',self.config.get('min_c3',DEFAULT_MIN_C3))))
+    def c3_minimum(self):return max(HARD_MIN_C3,float(self.config.get('effective_min_c3',self.config.get('min_c3',DEFAULT_MIN_C3))))
 
     def c3_in_bounds(self,energy):
         return (math.isfinite(energy) and self.c3_minimum-1e-8<=energy<=self.config['max_c3']+1e-8)
@@ -201,9 +206,13 @@ class Model:
         if min(np.diff(dates)) <= 1e-6:
             raise ValueError('Nonpositive time of flight')
         launch_preflight=self.launch_solution(x,branches)
-        if enforce_c3 and not self.c3_in_bounds(launch_preflight['c3']):
+        # Imports/exports may inspect candidates outside the user's requested
+        # interval, but must never bypass the application's absolute floor.
+        if (not supported_launch_energy(launch_preflight['c3'])
+                or (enforce_c3 and not self.c3_in_bounds(launch_preflight['c3']))):
             self.c3_pruned_evaluations+=1
-            raise C3BoundsError(launch_preflight['c3'],self.c3_minimum,self.config['max_c3'])
+            raise C3BoundsError(launch_preflight['c3'],self.c3_minimum if enforce_c3 else HARD_MIN_C3,
+                                self.config['max_c3'] if enforce_c3 else float('inf'))
         if self.extension:
             states=[self.ep.state(body,date) for body,date in zip(self.bodies,dates)]
         else:

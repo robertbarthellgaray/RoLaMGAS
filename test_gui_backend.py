@@ -23,6 +23,24 @@ def _fill_progress_proxy(progress):
 
 
 class GuiBackendTests(unittest.TestCase):
+    def test_old_low_c3_rows_are_removed_before_hydration_and_render_queue(self):
+        from gui import App
+        with tempfile.TemporaryDirectory() as folder,patch('gui.HERE',Path(folder)):
+            app=App();root=app.folder('legacy');root.mkdir()
+            rows=[dict(id=f'{i:012x}',launch_c3_km2_s2=c3,status='passes_configured_patched_conic_screen') for i,c3 in enumerate((0.,4.999,6.25,20.))]
+            (root/'live.json').write_text(json.dumps(dict(candidates=rows,distinct_accepted=4)))
+            (root/'request.json').write_text(json.dumps(dict(min_c3=0)))
+            with patch.object(app,'_register_render_run'),patch.object(app,'_hydrate_render_row',side_effect=lambda name,q,c:q) as hydrate:
+                live=app.snapshot('legacy')['live']
+            self.assertEqual([q['launch_c3_km2_s2'] for q in live['candidates']],[6.25,20.])
+            self.assertEqual(live['excluded_below_hard_c3_floor'],2)
+            self.assertEqual(live['distinct_accepted'],2)
+            self.assertEqual(hydrate.call_count,2)
+            app.render_runs={'legacy':0.}
+            (root/'live.json').write_text(json.dumps(dict(candidates=rows[:2])))
+            with patch.object(app,'_hydrate_render_row',side_effect=AssertionError('Low energy candidate was queued')):
+                self.assertIsNone(app._next_render_task())
+
     def test_full_progress_queue_does_not_block_worker_exit(self):
         context=multiprocessing.get_context('spawn')
         with context.Manager() as manager:
@@ -37,7 +55,7 @@ class GuiBackendTests(unittest.TestCase):
 
     def test_plot_failure_preserves_candidate_and_live_status(self):
         from live_gallery import LiveGallery
-        q=dict(id='0123456789ab',status='passes_configured_patched_conic_screen',sequence='EX')
+        q=dict(id='0123456789ab',status='passes_configured_patched_conic_screen',sequence='EX',launch_c3_km2_s2=10.)
         summary=dict(candidates=[q],near_misses=[],distinct_accepted=1,raw_accepted=1,model='test')
         with tempfile.TemporaryDirectory() as folder:
             with patch('live_gallery.card_data',side_effect=ValueError('test plot failure')):

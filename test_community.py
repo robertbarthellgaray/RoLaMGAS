@@ -27,6 +27,11 @@ class CommunityTests(unittest.TestCase):
         self.assertEqual(q['launch_c3_km2_s2'],250.000001)
     def test_red_candidates_are_not_shared(self):
         c,r,ep,q=self.parent();q['periapsis_violation']=True;self.assertIsNone(lib.public_record(q,c,r))
+    def test_low_c3_is_not_shared_even_if_legacy_record_says_pass(self):
+        c,r,ep,q=self.parent()
+        for energy in (0.,4.999999,float('nan')):
+            q['launch_c3_km2_s2']=energy;self.assertIsNone(lib.public_record(q,c,r))
+        q['launch_c3_km2_s2']=5.;self.assertIsNotNone(lib.public_record(q,c,r))
     def test_physical_dates_and_dsm_controls_remap_without_changing_arc(self):
         c,r,ep,q=self.parent('EdvM');record=lib.public_record(q,c,r)
         changed=dict(c,launch_jd=[c['launch_jd'][0]-10,c['launch_jd'][1]+10],dsm_velocity_box_kms=12.)

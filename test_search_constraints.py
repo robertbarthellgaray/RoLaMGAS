@@ -33,7 +33,7 @@ class SearchConstraintTests(unittest.TestCase):
                         dict(min_c3=101,max_c3=100)):
             with self.assertRaises(ValueError):normalize(request)
         self.assertEqual(normalize({})['min_c3'],6.25)
-        self.assertEqual(normalize(dict(min_c3=0))['effective_min_c3'],6.25)
+        self.assertEqual(normalize(dict(min_c3=0))['effective_min_c3'],5.)
 
     def test_launch_c3_is_relative_velocity_squared_and_can_differ_for_same_endpoints(self):
         c=normalize(dict(target='Mars',sequences=['EM'],max_c3=1e5))

@@ -18,7 +18,7 @@ import time
 import webbrowser
 import numpy as np
 from scipy.optimize import least_squares
-from dynamics import Model, lambert, DEFAULT_MIN_C3, C3BoundsError
+from dynamics import Model, lambert, DEFAULT_MIN_C3, HARD_MIN_C3, C3BoundsError
 from ephemeris import BODIES, DAY, JD0, Ephemerides, atomic_json, calendar, fetch, jd, save_table
 from horizons_targets import register_target, moon_model_notice
 
@@ -143,9 +143,9 @@ def normalize(config, config_dir=HERE):
         c[name] = float(c[name])
         if not math.isfinite(c[name]) or c[name] < 0 or (c[name] == 0 and name not in ('min_c3','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms')):
             raise ValueError(f'{name} must be positive and finite')
-    c['effective_min_c3']=max(DEFAULT_MIN_C3,c['min_c3'])
+    c['effective_min_c3']=max(HARD_MIN_C3,c['min_c3'])
     if c['c3_seed_boundary'] not in ('minimum','maximum'):raise ValueError('C3 seed boundary must be minimum or maximum')
-    if c['effective_min_c3']>c['max_c3']:raise ValueError(f'Maximum C3 must be at least the supported search floor {DEFAULT_MIN_C3:g} km²/s²')
+    if c['effective_min_c3']>c['max_c3']:raise ValueError(f'Maximum C3 must be at least the effective search floor {c["effective_min_c3"]:g} km²/s²')
     if c['min_c3'] > c['max_c3']:
         raise ValueError('Minimum launch C3 cannot exceed maximum launch C3')
     for name in ('samples_per_sequence','refinements_per_sequence','max_nfev','branch_families',
@@ -473,7 +473,7 @@ def job_search(job):
 def summarize(jobs, c, reused=None, reused_near=None):
     completed_jobs=len(jobs)
     if reused or reused_near:jobs=[*jobs,dict(accepted=reused or [],near_misses=reused_near or [])]
-    floor=max(DEFAULT_MIN_C3,c.get('effective_min_c3',c.get('min_c3',DEFAULT_MIN_C3)));ceiling=c.get('max_c3',float('inf'))
+    floor=max(HARD_MIN_C3,c.get('effective_min_c3',c.get('min_c3',DEFAULT_MIN_C3)));ceiling=c.get('max_c3',float('inf'))
     in_energy_range=lambda q:'launch_c3_km2_s2' not in q or floor-1e-8<=q['launch_c3_km2_s2']<=ceiling+1e-8
     found = [q for job in jobs for q in job['accepted'] if in_energy_range(q)]
     rank=objective_key(c)

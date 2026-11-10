@@ -10,7 +10,7 @@ import traceback
 import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.optimize import brentq
-from dynamics import kepler,lambert
+from dynamics import kepler,lambert,HARD_MIN_C3,supported_launch_energy
 from arrival_geometry import planet_pole,target_plane_axis,capture_assessment,validate_inclination
 from ephemeris import AU,BODIES,DAY,JD0,MU_SUN,Ephemerides,atomic_json,calendar,fetch
 from mission_search import normalize,routes_for,get_ephemerides
@@ -421,6 +421,8 @@ def export(candidate,config,output,arrival_altitude_km=None,powered_flybys=None,
     def status(message):
         atomic_json(output/'integration_status.json',dict(state='running',message=message))
     q=json.loads(Path(candidate).read_text(encoding='utf-8'))
+    if not supported_launch_energy(q.get('launch_c3_km2_s2')):
+        raise ValueError(f'Candidate launch C3 must be finite and at least {HARD_MIN_C3:g} km²/s²; rerun the launch search.')
     original_status=q['status']
     arrival_inclination_deg=validate_inclination(arrival_inclination_deg)
     if arrival_inclination_deg is not None and q['events'][-1]['body'] not in BODIES:

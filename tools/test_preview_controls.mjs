@@ -22,12 +22,12 @@ test('per-body visibility preserves independent orbit and marker preferences',()
  g.elements.planetPaths.checked=false;assert.equal(g.run("bodyVisible('Earth','markers')"),true);g.elements.planetPaths.checked=true;assert.equal(g.run("bodyVisible('Earth','orbits')"),false);
 });
 test('combined unresolved flyby screening sum is red even when every individual mismatch is below cap',()=>{
- const g=gui(),q={status:'passes_configured_patched_conic_screen',total_dsm_kms:.3,max_vinf_mismatch_mps:500,flybys:[{speed_mismatch_mps:400},{speed_mismatch_mps:500}]};
+ const g=gui(),q={status:'passes_configured_patched_conic_screen',launch_c3_km2_s2:10,total_dsm_kms:.3,max_vinf_mismatch_mps:500,flybys:[{speed_mismatch_mps:400},{speed_mismatch_mps:500}]};
  g.run('state.card='+JSON.stringify(q));assert.equal(g.run('severity(state.card)'),'failure');assert.ok(g.run('failedLimits(state.card).join(" ")').includes('Combined flyby mismatch + modeled burns'));
  q.total_dsm_kms=.1;g.run('state.card='+JSON.stringify(q));assert.equal(g.run('severity(state.card)'),'pass');
 });
 test('already modeled powered flybys are not counted twice in combined screening',()=>{
- const g=gui(),q={status:'passes_configured_patched_conic_screen',total_dsm_kms:.8,max_vinf_mismatch_mps:1000,flybys:[{speed_mismatch_mps:1000,passes_powered_geometry:true},{speed_mismatch_mps:200}]};
+ const g=gui(),q={status:'passes_configured_patched_conic_screen',launch_c3_km2_s2:10,total_dsm_kms:.8,max_vinf_mismatch_mps:1000,flybys:[{speed_mismatch_mps:1000,passes_powered_geometry:true},{speed_mismatch_mps:200}]};
  g.run('state.card='+JSON.stringify(q));assert.equal(g.run('combinedMismatchScreen(state.card)'),1);assert.equal(g.run('severity(state.card)'),'pass');
  q.flybys[1].speed_mismatch_mps=201;g.run('state.card='+JSON.stringify(q));assert.equal(g.run('severity(state.card)'),'failure');
 });

@@ -72,7 +72,7 @@ class ArrivalInclinationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'terminal'):
             planet_pieces('Earth',JD0,LinearPlanet(),uout=np.array([5.,0.,0.]),departure=True,arrival_inclination_deg=90.)
         with tempfile.TemporaryDirectory() as folder:
-            p=Path(folder)/'candidate.json';p.write_text(json.dumps(dict(status='passes',events=[dict(body='Asteroid')])) )
+            p=Path(folder)/'candidate.json';p.write_text(json.dumps(dict(status='passes',launch_c3_km2_s2=10.,events=[dict(body='Asteroid')])) )
             with self.assertRaisesRegex(ValueError,'known pole and GM'):
                 export(p,{},Path(folder)/'export',arrival_inclination_deg=90.)
 

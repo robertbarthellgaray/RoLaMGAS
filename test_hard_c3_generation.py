@@ -4,7 +4,7 @@ import copy
 import unittest
 from unittest.mock import patch
 import numpy as np
-from dynamics import Model,C3BoundsError,DEFAULT_MIN_C3
+from dynamics import Model,C3BoundsError,DEFAULT_MIN_C3,HARD_MIN_C3
 from ephemeris import AU,DAY,JD0,MU_SUN
 from mission_search import normalize,routes_for,job_search
 from cost_refinement import boundary_seed,feasibility_refine,refine
@@ -40,6 +40,16 @@ class HardLaunchC3Tests(unittest.TestCase):
         model.config.update(min_c3=launch['c3']+5,effective_min_c3=launch['c3']+5,max_c3=launch['c3']+10)
         with patch('dynamics.kepler',side_effect=AssertionError('Forbidden DSM coast was propagated')):
             with self.assertRaises(C3BoundsError):model.evaluate(x,branches)
+
+    def test_absolute_floor_cannot_be_bypassed_by_legacy_import_or_export(self):
+        for route in ('EJU','EdvM'):
+            model=self.model(route,min_c3=0)
+            x=np.full(model.dimension,.5);branches=[[0,True]]*(model.n-1)
+            for energy in (0.,4.99,np.nextafter(HARD_MIN_C3,0.),float('nan')):
+                for enforce in (True,False):
+                    with self.subTest(route=route,energy=energy,enforce=enforce):
+                        with patch.object(model,'launch_solution',return_value=dict(c3=energy)),patch.object(model.ep,'state',side_effect=AssertionError('Later planet was evaluated')),patch('dynamics.kepler',side_effect=AssertionError('DSM was propagated')):
+                            with self.assertRaises(C3BoundsError):model.evaluate(x,branches,enforce_c3=enforce)
 
     def test_boundary_seeds_hit_user_minimum_and_maximum(self):
         model=self.model('EM');x=np.array([.4,.5]);branches=[[0,True]]
@@ -94,7 +104,9 @@ class HardLaunchC3Tests(unittest.TestCase):
         self.assertEqual(powered['unresolved_flyby_count'],0)
 
     def test_legacy_zero_request_uses_positive_floor_without_mutating_requested_value(self):
-        c=normalize(dict(min_c3=0));self.assertEqual(c['min_c3'],0);self.assertEqual(c['effective_min_c3'],DEFAULT_MIN_C3)
-        self.assertEqual(normalize(dict(min_c3=0,effective_min_c3=0))['effective_min_c3'],DEFAULT_MIN_C3)
+        c=normalize(dict(min_c3=0));self.assertEqual(c['min_c3'],0);self.assertEqual(c['effective_min_c3'],HARD_MIN_C3)
+        self.assertEqual(normalize(dict(min_c3=0,effective_min_c3=0))['effective_min_c3'],HARD_MIN_C3)
+        self.assertEqual(normalize({})['effective_min_c3'],6.25)
+        self.assertEqual(normalize(dict(min_c3=5,max_c3=5.5))['effective_min_c3'],5.)
 
 if __name__=='__main__':unittest.main()

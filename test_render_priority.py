@@ -11,7 +11,7 @@ from ephemeris import atomic_json
 
 def candidate(identifier='abcdef123456',**extra):
     return dict(id=identifier,sequence='EVEEJ',status='passes_configured_patched_conic_screen',
-        total_dsm_kms=.1,max_vinf_mismatch_mps=0.,max_single_dsm_kms=.1,max_powered_flyby_kms=0.,
+        launch_c3_km2_s2=10.,total_dsm_kms=.1,max_vinf_mismatch_mps=0.,max_single_dsm_kms=.1,max_powered_flyby_kms=0.,
         periapsis_violation=False,**extra)
 
 

@@ -5,7 +5,7 @@ import time
 import json
 from candidate_status import red_reason
 import numpy as np
-from dynamics import kepler
+from dynamics import kepler,supported_launch_energy
 from ephemeris import AU,DAY,atomic_json
 
 
@@ -133,7 +133,9 @@ class LiveGallery:
             return 'failed'
 
     def update(self,summary,progress,final=False):
-        ordered = sorted(summary['candidates']+summary['near_misses'],key=lambda q:q.get('discovered_unix',0),reverse=True)
+        ordered = sorted((q for q in summary['candidates']+summary['near_misses']
+                          if supported_launch_energy(q.get('launch_c3_km2_s2'))),
+                         key=lambda q:q.get('discovered_unix',0),reverse=True)
         keys = ('id','sequence','status','launch_date','arrival_date','duration_years','dates_jd_tdb','bodies',
                 'launch_c3_km2_s2','arrival_vinf_kms','total_dsm_kms','max_vinf_mismatch_mps',
                 'min_turn_margin_deg','screening_residual_norm','pareto_front','discovered_unix',
@@ -148,8 +150,9 @@ class LiveGallery:
             self.placeholder(q)
         def snapshot():
             rows=[summary_fields(q,keys)|plot_status(self.folder,q,self.config) for q in ordered]
+            excluded_passes=sum(not supported_launch_energy(q.get('launch_c3_km2_s2')) for q in summary['candidates'])
             atomic_json(self.output/'live.json',dict(revision=time.time(),progress=progress,candidates=rows,
-                        distinct_accepted=summary['distinct_accepted'],raw_accepted=summary['raw_accepted'],
+                        distinct_accepted=max(0,summary['distinct_accepted']-excluded_passes),raw_accepted=summary['raw_accepted'],
                         model=summary['model'],nbody_validated=False))
         snapshot()
         if self.deferred:return

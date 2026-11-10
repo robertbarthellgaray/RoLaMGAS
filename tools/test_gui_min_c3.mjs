@@ -34,7 +34,15 @@ test('other diagnostic filters still work above the C3 floor',()=>{
 test('the saved run limit is authoritative, not an unsaved form edit',()=>{
  const g=setup();assert.equal(g.run('filtered().map(q=>q.id).join(",")'),'passing,yellow,red');
  g.run('state.limits={};state.rows[0].launch_c3_km2_s2=0');
- assert.equal(g.run('filtered().length'),4);
+ assert.equal(g.run('filtered().length'),3);
+});
+test('absolute floor survives missing or zero legacy run limits',()=>{
+ const g=setup();
+ for(const limits of ['{}','{min_c3:0}','{min_c3:0,effective_min_c3:0}']){
+  g.run(`state.limits=${limits}`);
+  for(const energy of [0,4.99,4.999999999])assert.equal(g.run(`belowC3Minimum({launch_c3_km2_s2:${energy}})`),true);
+  assert.equal(g.run('belowC3Minimum({launch_c3_km2_s2:5})'),false);
+ }
 });
 test('boundary tolerance agrees with solver acceptance',()=>{
  const g=setup();g.run('state.rows[0].launch_c3_km2_s2=150-1e-10');
