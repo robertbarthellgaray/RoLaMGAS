@@ -44,10 +44,14 @@
     const mps=burn.magnitude_mps??(burn.magnitude_kms==null?NaN:burn.magnitude_kms*1000);
     return !(/(?:coast.*targeting correction|targeting correction.*coast)/i.test(kind)&&Number.isFinite(mps)&&mps>=0&&mps<.005);
   }
+  function visibleLaunchVehicle(vehicle) {
+    const name=String(vehicle?.vehicle||'').trim();
+    return !/^Vulcan\s*\(VC0\)$/i.test(name)&&!/^Falcon 9\s*\(Full Thrust,\s*RTLS\s*\)$/i.test(name);
+  }
   function launchCapacities(document,c3) {
     if(!document?.vehicles||!Number.isFinite(c3)||c3<0)return [];
     const grid=(document.queries||[]).map(q=>q.c3);
-    return document.vehicles.map(vehicle=>{
+    return document.vehicles.filter(visibleLaunchVehicle).map(vehicle=>{
       const points=vehicle.points||[],exact=points.find(p=>Math.abs(p[0]-c3)<1e-9);
       if(exact)return {...vehicle,capacity_kg:exact[1],interpolated:false};
       const lower=points.filter(p=>p[0]<c3).at(-1),upper=points.find(p=>p[0]>c3);
@@ -55,5 +59,5 @@
       return {...vehicle,capacity_kg:lower[1]+(upper[1]-lower[1])*(c3-lower[0])/(upper[0]-lower[0]),interpolated:true,bracket_c3:[lower[0],upper[0]]};
     });
   }
-  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,launchCapacities});
+  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,visibleLaunchVehicle,launchCapacities});
 })(globalThis);

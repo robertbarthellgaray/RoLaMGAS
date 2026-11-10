@@ -52,3 +52,23 @@ test('NASA capacities retain configuration, interpolate only inside known adjace
  const r=m.launchCapacities(d,5);assert.equal(r[0].capacity_kg,4000);assert.equal(r[1].capacity_kg,10500);assert.equal(r[2].capacity_kg,null);
  assert.equal(m.launchCapacities(d,15)[0].capacity_kg,null);assert.equal(m.launchCapacities(d,25)[1].capacity_kg,null);assert.equal(m.launchCapacities(d,10)[0].interpolated,false);
 });
+
+test('launch displays exclude VC0 and Falcon 9 RTLS while retaining other configurations',()=>{
+ const names=['Vulcan (VC0)','Falcon 9 (Full Thrust, RTLS )','Vulcan (VC2)','Falcon 9 (Full Thrust, ASDS)','Falcon Heavy (Recovery)'];
+ const d={queries:[{c3:10}],vehicles:names.map(vehicle=>({vehicle,points:[[10,1000]]}))};
+ assert.deepEqual(m.launchCapacities(d,10).map(r=>r.vehicle),names.slice(2));
+ assert.equal(m.visibleLaunchVehicle({vehicle:'Falcon 9 (Full Thrust, RTLS)'}),false);
+});
+
+test('historical missions have continuous playback coverage for every visited planet',()=>{
+ const table=JSON.parse(fs.readFileSync(new URL('../docs/data/planet_playback.json',import.meta.url),'utf8'));
+ const profiles=JSON.parse(fs.readFileSync(new URL('../docs/data/historical_labels.json',import.meta.url),'utf8')).missions;
+ for(const mission of profiles){
+  const lo=Date.parse(mission.dates[0]+'T00:00:00Z')/86400000+2440587.5,hi=Date.parse(mission.dates.at(-1)+'T00:00:00Z')/86400000+2440587.5;
+  for(const body of new Set(mission.bodies))if(table.bodies[body]){
+   const segment=table.bodies[body].segments.find(s=>s.start<=lo&&hi<=s.end);
+   assert.ok(segment,mission.name+' '+body+' continuous playback interval');
+   assert.ok(m.ephemerisPosition(segment,lo));assert.ok(m.ephemerisPosition(segment,hi));
+  }
+ }
+});

@@ -110,7 +110,7 @@ async function renderLaunchPerformance(exact=null){
   catch(e){$('launchPerformanceStatus').textContent=e.message;return;}
  }
  if(state.card?.id!==selected)return;
- const rows=exact?.vehicles||globalThis.MissionMetrics.launchCapacities(launchPerformanceData,q.launch_c3_km2_s2);
+ const rows=(exact?.vehicles||globalThis.MissionMetrics.launchCapacities(launchPerformanceData,q.launch_c3_km2_s2)).filter(globalThis.MissionMetrics.visibleLaunchVehicle);
  $('launchPerformanceStatus').textContent=exact?'NASA response for C3 '+fmt(exact.c3_km2_s2,3)+' · retrieved '+exact.retrieved_at+' · '+(exact.from_cache?'saved exact query':'fresh query'):'Cached NASA high-energy capacities at C3 '+fmt(q.launch_c3_km2_s2,3)+' · ≈ means interpolated; — means no cached coverage.';
  if(exact?.availability==='no_vehicles_listed')$('launchPerformanceStatus').textContent='NASA returned no vehicle capacities at C3 '+fmt(exact.c3_km2_s2,3)+'. This is not a zero-capacity estimate.';
  const table=element('table'),head=element('tr');for(const label of ['Vehicle / configuration','Capacity · kg','Site'])head.append(element('th',label));table.append(head);

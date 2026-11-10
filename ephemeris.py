@@ -63,7 +63,7 @@ def parse_horizons(text, body):
     header, data = text.split('$$SOE', 1)
     descriptor = identity(body)
     checks = [r'Center body name:\s*Sun \(10\)', r'Output units\s*:\s*KM-S',
-              r'GEOMETRIC cartesian states', r'Ecliptic of J2000\.0', r'JDTDB,']
+              r'GEOMETRIC cartesian states', r'Ecliptic of J2000\.0', r'JDTDB(?:\s*,|\s+Calendar Date)']
     if body in BODIES or descriptor.get('kind')!='small_body':
         target_ok=bool(re.search(rf'Target body name:\s*.*?\s+\({re.escape(str(descriptor["id"]))}\)',header))
     else:
@@ -80,6 +80,8 @@ def parse_horizons(text, body):
     if not target_ok or not all(re.search(p, header) for p in checks):
         raise ValueError(f'{body}: require the resolved target ID and geometric Sun/ECLIPJ2000 KM-S TDB CSV vectors')
     rows = list(csv.reader(data.split('$$EOE', 1)[0].strip().splitlines()))
+    if not rows or any(len(r)<8 or any(not v.strip() for v in r[2:8]) for r in rows):
+        raise ValueError(f'{body}: missing position/velocity vector columns in Horizons response')
     # Calendar timestamps retain subsecond precision even in old tables with rounded JDs.
     dates = [datetime.strptime(r[1].strip().removeprefix('A.D. '), '%Y-%b-%d %H:%M:%S.%f') for r in rows]
     times = np.array([(d - EPOCH).total_seconds() for d in dates])
@@ -187,4 +189,19 @@ def fetch(cache, body, start, end, step_days=1.):
     result = request_json(url, timeout=180)
     if result.get('error') or '$$SOE' not in result.get('result', ''):
         raise ValueError(f"Horizons: {result.get('error', result.get('result', 'No vectors'))}")
-    return save_table(cache, body, result['result'], url)
+    try:
+        return save_table(cache, body, result['result'], url)
+    except ValueError as exc:
+        if 'missing position/velocity vector columns' not in str(exc):raise
+        # Some Horizons responses label a table as format 2 but return dates
+        # alone. The documented 2x variant requests the identical state plus
+        # optional uncertainties; only the first six state columns are used.
+        # All target/frame/time/checksum validation still runs on the retry.
+        params['VEC_TABLE']='2x'
+        url = 'https://ssd.jpl.nasa.gov/api/horizons.api?' + urllib.parse.urlencode(
+            {'format': 'json', **{k: "'" + v + "'" for k, v in params.items()}})
+        print(f'{body}: Horizons omitted vectors; retrying state table with optional uncertainty columns',flush=True)
+        result=request_json(url,timeout=180)
+        if result.get('error') or '$$SOE' not in result.get('result',''):
+            raise ValueError(f"Horizons: {result.get('error','Missing vector table on retry')}")
+        return save_table(cache,body,result['result'],url)

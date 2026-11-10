@@ -1,6 +1,6 @@
 import {historicalMatch} from './historical_labels.js?v=20261108b';
 import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261108b';
-import './mission_metrics.js?v=20261108b';
+import './mission_metrics.js?v=20261110a';
 import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261108b';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261108b';
 const $ = (id) => document.getElementById(id);
@@ -138,7 +138,7 @@ async function togglePlanetAnimation(){
  if(animatePlanets){animatePlanets=false;$('animate-planets').textContent='Animate planets';$('animate-planets').setAttribute('aria-pressed','false');updateAnimationStatus();drawSoon();return;}
  const button=$('animate-planets');button.disabled=true;$('planet-animation-status').textContent='Loading compact JPL planet playback data…';
  try{
-  if(!planetLoad)planetLoad=fetchJson('data/planet_playback.json?v=20261108b').catch(error=>{planetLoad=null;throw error});
+  if(!planetLoad)planetLoad=fetchJson('data/planet_playback.json?v=20261110a').catch(error=>{planetLoad=null;throw error});
   planetEphemerides=await planetLoad;animatePlanets=true;button.textContent='Planets animated ✓';button.setAttribute('aria-pressed','true');
   if(selected){attachPlanetContext(selected);renderBodyVisibility(selected);$('planet-arcs').disabled=false;$('planet-arcs').title='Dated JPL ephemeris context, interpolated for display';updateAnimationStatus();if(fraction>=1)fraction=0;setPlaying(true);updateTime();}
  }catch(error){$('planet-animation-status').textContent='Planet animation unavailable: '+error.message;}
@@ -431,7 +431,7 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings,names,historical,annotations,performance]=await Promise.all([fetchJson('data/index.json?v=20261108b'),fetchJson('data/community_seed_catalog.json?v=20261109a').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261108b').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261108b').catch(()=>null)]);
+ const [data,archive,settings,names,historical,annotations,performance]=await Promise.all([fetchJson('data/index.json?v=20261108b'),fetchJson('data/community_seed_catalog.json?v=20261110a').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261108b').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261110a').catch(()=>null)]);
  registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;
  catalog.push(...data.cases.filter(c=>c.c3<=250).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;

@@ -53,6 +53,36 @@ class DownloadCoverageTests(unittest.TestCase):
             self.assertGreaterEqual(len(ep.splines[TARGET['name']].x),4)
             ep.state(TARGET['name'],end)
 
+    def test_date_only_vector_response_retries_and_validates_full_state(self):
+        def response(url,**kwargs):
+            result=self.horizons_response(url,**kwargs)
+            table=parse_qs(urlparse(url).query)['VEC_TABLE'][0].strip("'")
+            if table=='2':
+                header,data=result['result'].split('$$SOE')
+                rows=data.split('$$EOE')[0].strip().splitlines()
+                result['result']=header+'$$SOE\n'+'\n'.join(','.join(r.split(',')[:2])+',' for r in rows)+'\n$$EOE'
+            else:
+                self.assertEqual(table,'2x')
+                result['result']=result['result'].replace('JDTDB,','JDTDB             Calendar Date (TDB),')
+            return result
+        start=jd('1997-10-01');end=start+8
+        with tempfile.TemporaryDirectory() as cache,patch('ephemeris.request_json',side_effect=response) as network:
+            fetch(cache,'Earth',start,end,1.)
+            self.assertEqual(network.call_count,2)
+            ep=Ephemerides(cache,['Earth'],start,end,1.)
+            self.assertTrue(np.isfinite(ep.state('Earth',start+2)).all())
+
+    def test_date_only_retry_cannot_be_saved_as_an_ephemeris(self):
+        def response(url,**kwargs):
+            good=self.horizons_response(url,**kwargs)['result'];header,data=good.split('$$SOE')
+            rows=data.split('$$EOE')[0].strip().splitlines()
+            return dict(result=header+'$$SOE\n'+'\n'.join(','.join(r.split(',')[:2])+',' for r in rows)+'\n$$EOE')
+        with tempfile.TemporaryDirectory() as cache,patch('ephemeris.request_json',side_effect=response) as network:
+            with self.assertRaisesRegex(ValueError,'missing position/velocity'):
+                fetch(cache,'Earth',jd('1997-10-01'),jd('1997-10-09'),1.)
+            self.assertEqual(network.call_count,2)
+            self.assertEqual(list(Path(cache).iterdir()),[])
+
     def test_prepare_handles_fractional_epochs_and_second_pass_is_offline(self):
         with tempfile.TemporaryDirectory() as cache,patch('ephemeris.request_json',side_effect=self.horizons_response) as network:
             c=normalize(dict(target_object=TARGET,sequences=['EX'],cache=cache,launch_start='2004-12-01T00:00:00.8596',launch_end='2004-12-02',custom_leg_days=[120,500]))
