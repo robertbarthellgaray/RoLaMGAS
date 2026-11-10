@@ -1,0 +1,205 @@
+{
+  "format": "rolamgas-search-options",
+  "schema_version": 1,
+  "app_version": "0.2.3",
+  "settings": {
+    "target": "Saturn",
+    "launch_start": "2037-07-01",
+    "launch_end": "2037-07-01",
+    "max_years": 20.0,
+    "vinf_tolerance_mps": 0.1,
+    "min_c3": 6.25,
+    "max_c3": 30.0,
+    "max_arrival_vinf_kms": 12.0,
+    "max_dsm_kms": 0.7,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 6.0,
+    "minimum_altitude_km": {
+      "Mercury": 200.0,
+      "Venus": 300.0,
+      "Earth": 200.0,
+      "Mars": 200.0,
+      "Jupiter": 10000.0,
+      "Saturn": 10000.0,
+      "Uranus": 1000.0,
+      "Neptune": 1000.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EVEES"
+    ],
+    "route_overrides": {
+      "EVEES": {
+        "leg_days": [
+          [
+            222.48904440319166,
+            668.467133209575
+          ],
+          [
+            216.87564882426523,
+            651.6269464727957
+          ],
+          [
+            770.9301448739134,
+            2313.79043462174
+          ],
+          [
+            1105.2877995839808,
+            3316.8633987519424
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              1,
+              false
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              1,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      180,
+      8000
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum"
+  },
+  "trajectory": {
+    "schema_version": 1,
+    "sequence": "EVEES",
+    "body_ids": [
+      "399",
+      "299",
+      "399",
+      "399",
+      "699"
+    ],
+    "dates_jd_tdb": [
+      2465240.5,
+      2465685.4780888064,
+      2466119.2293864554,
+      2467661.089676203,
+      2469871.6652753707
+    ],
+    "branches": [
+      [
+        1,
+        false
+      ],
+      [
+        0,
+        true
+      ],
+      [
+        1,
+        true
+      ],
+      [
+        0,
+        true
+      ]
+    ],
+    "dsm_controls": [],
+    "segments": [
+      {
+        "start_jd": 2465240.5,
+        "end_jd": 2465685.4780888064,
+        "r": [
+          23807261.62235725,
+          -150205676.1024198,
+          12791.92078634351
+        ],
+        "v": [
+          25.646787720315793,
+          4.52471631094194,
+          -1.794535041016208
+        ]
+      },
+      {
+        "start_jd": 2465685.4780888064,
+        "end_jd": 2466119.2293864554,
+        "r": [
+          -98972399.00933133,
+          41622461.41815723,
+          6282888.365374919
+        ],
+        "v": [
+          -17.592129421338772,
+          -37.8558454720636,
+          -0.052658564842628736
+        ]
+      },
+      {
+        "start_jd": 2466119.2293864554,
+        "end_jd": 2467661.089676203,
+        "r": [
+          65277093.19001262,
+          132431743.31874985,
+          -12256.489437680715
+        ],
+        "v": [
+          -37.45806588033288,
+          6.788347086536499,
+          -0.0005344748092864717
+        ]
+      },
+      {
+        "start_jd": 2467661.089676203,
+        "end_jd": 2469871.6652753707,
+        "r": [
+          -122366759.35909507,
+          82786625.85763192,
+          -7286.826052261632
+        ],
+        "v": [
+          -28.556547151323464,
+          -28.61207375896675,
+          -0.49110713149277235
+        ]
+      }
+    ],
+    "metrics": {
+      "launch_c3_km2_s2": 13.99999999947663,
+      "total_dsm_kms": 0.0,
+      "arrival_vinf_kms": 5.323057345632574,
+      "duration_years": 12.67943949451253
+    }
+  }
+}

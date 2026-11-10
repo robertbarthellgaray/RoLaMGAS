@@ -219,16 +219,16 @@ async function selectCandidate(id) {
     $('planet-arcs').title=c.community&&!planetEphemerides?'Enable planet animation to load dated JPL context.':'';
     const files = c.trajectory_files,finite=finiteRadiusDownload(c);
     $('download-csv').textContent=finite?'Trajectory CSV ↓':'Lambert analysis CSV ↓';
-    $('download-xyzv').textContent=finite?'Flyby trajectory XYZV ↓':'Build flyby XYZV in app ↓';
+    $('download-xyzv').textContent='Flyby trajectory XYZV ↓';
     for (const [name,key] of [['download-csv','csv'],['download-xyzv','xyzv'],['download-state-readme','readme']]) {
       const link=$(name); link.hidden=!files?.[key];
       if(files?.[key]) link.href=files[key];
     }
     if(files) $('trajectory-download-note').textContent=`${files.rows.toLocaleString()} saved position/velocity states · ${files.units} · ${files.coordinates}. ${files.note}`;
     else if(c.download) { $('download-xyzv').href=c.download; $('download-xyzv').hidden=false; }
-    if(!finite){$('download-xyzv').hidden=false;$('download-xyzv').href='#desktop-transfer';$('trajectory-download-note').textContent='Preview / analysis CSV uses ideal Lambert coasts joined at planet centers. For Celestia flybys, load this trajectory in the desktop app, then choose Integrate & export to construct finite-radius SOI patches and list their extra burns. Public v0.2.3 imports settings; exact-candidate loading is in the local v0.2.4 preview.';}
+    if(!finite){$('download-xyzv').hidden=true;$('trajectory-download-note').textContent='Preview / analysis CSV uses ideal Lambert coasts joined at planet centers. For Celestia flybys, choose Use in desktop app, load the downloaded file, then choose Integrate & export to construct finite-radius SOI patches and list their extra burns. Public v0.2.3 imports settings; exact-candidate loading is in the local v0.2.4 preview.';}
     if(c.community_record){$('download-csv').hidden=false;$('download-csv').href='#analysis-csv';}
-    if(!finite){$('download-xyzv').removeAttribute('download');$('download-xyzv').href='#desktop-transfer';}else $('download-xyzv').setAttribute('download','');
+    if(!finite){$('download-xyzv').removeAttribute('href');$('download-xyzv').removeAttribute('download');}else $('download-xyzv').setAttribute('download','');
     document.querySelectorAll('.candidate-card').forEach(b => b.setAttribute('aria-pressed', b.dataset.id === c.id));
     canvas.setAttribute('aria-label', `${c.title} heliocentric trajectory in AU. Drag to rotate, scroll to zoom; arrow keys rotate and plus or minus zoom.`);
     $('plot-message').hidden = true;
@@ -431,7 +431,7 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings,names,historical,annotations,performance]=await Promise.all([fetchJson('data/index.json?v=20261108b'),fetchJson('data/community_seed_catalog.json?v=20261108b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261108b').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261108b').catch(()=>null)]);
+ const [data,archive,settings,names,historical,annotations,performance]=await Promise.all([fetchJson('data/index.json?v=20261108b'),fetchJson('data/community_seed_catalog.json?v=20261109a').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261108b').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261108b').catch(()=>null)]);
  registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;
  catalog.push(...data.cases.filter(c=>c.c3<=250).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;

@@ -1,0 +1,1990 @@
+[
+  {
+    "id": "32cc12010d83",
+    "maximum_dop853_endpoint_error_km": 0.0037850592138105573,
+    "maximum_velocity_difference_kms": 6.204479022866673e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "80edc22f78e5",
+    "maximum_dop853_endpoint_error_km": 0.02990009965343314,
+    "maximum_velocity_difference_kms": 6.204479022866673e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "60c78a4041c9",
+    "maximum_dop853_endpoint_error_km": 0.009070148746187305,
+    "maximum_velocity_difference_kms": 1.397234056414665e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c8d2876d1abc",
+    "maximum_dop853_endpoint_error_km": 0.009070148746187305,
+    "maximum_velocity_difference_kms": 1.397234056414665e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "9eaf36cdf19a",
+    "maximum_dop853_endpoint_error_km": 0.007322256022341416,
+    "maximum_velocity_difference_kms": 2.4438606728384084e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f06c74256bc5",
+    "maximum_dop853_endpoint_error_km": 0.027791654087117406,
+    "maximum_velocity_difference_kms": 4.7538676581531015e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "1060d0ca0b25",
+    "maximum_dop853_endpoint_error_km": 0.01318317020764626,
+    "maximum_velocity_difference_kms": 2.2048999656053025e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "5779a10fa7a4",
+    "maximum_dop853_endpoint_error_km": 0.0043938747870685664,
+    "maximum_velocity_difference_kms": 6.695424827221997e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "855788321d2c",
+    "maximum_dop853_endpoint_error_km": 0.004158427862937718,
+    "maximum_velocity_difference_kms": 6.695424827221997e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "93f0824bd89d",
+    "maximum_dop853_endpoint_error_km": 0.035700124881897485,
+    "maximum_velocity_difference_kms": 6.695424827221997e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4e9b59162200",
+    "maximum_dop853_endpoint_error_km": 0.009427316007774812,
+    "maximum_velocity_difference_kms": 1.455405972857214e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "16b32d4e4e2a",
+    "maximum_dop853_endpoint_error_km": 0.03016801271249357,
+    "maximum_velocity_difference_kms": 5.153894301493626e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "5588229ff54c",
+    "maximum_dop853_endpoint_error_km": 0.017266007104807052,
+    "maximum_velocity_difference_kms": 2.8598599056783323e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "8dc4ee15fee9",
+    "maximum_dop853_endpoint_error_km": 0.0085487552150037,
+    "maximum_velocity_difference_kms": 2.699232270208831e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "85ea189ab979",
+    "maximum_dop853_endpoint_error_km": 0.0384202010264843,
+    "maximum_velocity_difference_kms": 6.430592503461854e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "331e3a1ae582",
+    "maximum_dop853_endpoint_error_km": 0.053264540109914896,
+    "maximum_velocity_difference_kms": 4.7908035498264616e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "34607c69aa01",
+    "maximum_dop853_endpoint_error_km": 0.047251673891574655,
+    "maximum_velocity_difference_kms": 7.771803008461738e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "452e26aa2932",
+    "maximum_dop853_endpoint_error_km": 0.011021690600948139,
+    "maximum_velocity_difference_kms": 4.018693657884212e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c09b91d6560b",
+    "maximum_dop853_endpoint_error_km": 0.025917122699080638,
+    "maximum_velocity_difference_kms": 5.294376604238515e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0a99889d0279",
+    "maximum_dop853_endpoint_error_km": 0.05304431753358606,
+    "maximum_velocity_difference_kms": 4.340524095217391e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f9ce750a9716",
+    "maximum_dop853_endpoint_error_km": 0.05218608773644311,
+    "maximum_velocity_difference_kms": 8.553499061131494e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "d7eaa4676294",
+    "maximum_dop853_endpoint_error_km": 0.007804806192682912,
+    "maximum_velocity_difference_kms": 1.1249436774999898e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f55ad172c970",
+    "maximum_dop853_endpoint_error_km": 0.00799812150492161,
+    "maximum_velocity_difference_kms": 1.1718852920634737e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "eb41fb494e82",
+    "maximum_dop853_endpoint_error_km": 0.005480341381357254,
+    "maximum_velocity_difference_kms": 8.947734235389794e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "d79fe13e402b",
+    "maximum_dop853_endpoint_error_km": 0.020060884035964323,
+    "maximum_velocity_difference_kms": 2.8122283915780956e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "d975a33a31a7",
+    "maximum_dop853_endpoint_error_km": 0.04631737512042751,
+    "maximum_velocity_difference_kms": 5.060556771769056e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "24250a2d04eb",
+    "maximum_dop853_endpoint_error_km": 0.013505739736901329,
+    "maximum_velocity_difference_kms": 2.142329692828515e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "92bf980e1ee6",
+    "maximum_dop853_endpoint_error_km": 0.010231727152605952,
+    "maximum_velocity_difference_kms": 2.3241728661945424e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "847274659e09",
+    "maximum_dop853_endpoint_error_km": 0.008584480547785303,
+    "maximum_velocity_difference_kms": 2.5372781721869907e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "6cdee5b83c6d",
+    "maximum_dop853_endpoint_error_km": 0.009364809412900724,
+    "maximum_velocity_difference_kms": 2.5372781721869907e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "8357ee6011a6",
+    "maximum_dop853_endpoint_error_km": 0.007589700187139909,
+    "maximum_velocity_difference_kms": 2.809302484340813e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "8e91d6515f05",
+    "maximum_dop853_endpoint_error_km": 0.0076576124560891485,
+    "maximum_velocity_difference_kms": 9.853371143744576e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "eb9d8c5e2ac8",
+    "maximum_dop853_endpoint_error_km": 0.02331505374976925,
+    "maximum_velocity_difference_kms": 2.20665580378138e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "1640b458bc6c",
+    "maximum_dop853_endpoint_error_km": 0.01624543895875425,
+    "maximum_velocity_difference_kms": 7.460192590222838e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "358a4a92f73b",
+    "maximum_dop853_endpoint_error_km": 0.03693822593251441,
+    "maximum_velocity_difference_kms": 1.998743494235073e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7fa3bb241724",
+    "maximum_dop853_endpoint_error_km": 0.044384009591343754,
+    "maximum_velocity_difference_kms": 1.437654789075605e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "82ff8ad875cc",
+    "maximum_dop853_endpoint_error_km": 0.011449429946027273,
+    "maximum_velocity_difference_kms": 8.514670652196352e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f0d1f12b7a76",
+    "maximum_dop853_endpoint_error_km": 0.03794318336795779,
+    "maximum_velocity_difference_kms": 1.8850625014994345e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ca88b5b16891",
+    "maximum_dop853_endpoint_error_km": 0.044101673619376267,
+    "maximum_velocity_difference_kms": 1.2658097323382485e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7adaf4b9108f",
+    "maximum_dop853_endpoint_error_km": 0.03335307907553731,
+    "maximum_velocity_difference_kms": 3.854624927354582e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "365479f0f1af",
+    "maximum_dop853_endpoint_error_km": 0.046252492538216845,
+    "maximum_velocity_difference_kms": 4.457538515152829e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "11861f435311",
+    "maximum_dop853_endpoint_error_km": 0.031717078618573105,
+    "maximum_velocity_difference_kms": 1.3486605989394295e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a164d903319b",
+    "maximum_dop853_endpoint_error_km": 0.020198123921710855,
+    "maximum_velocity_difference_kms": 1.5383975120095586e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e8d65b93d8d8",
+    "maximum_dop853_endpoint_error_km": 0.012825426508956411,
+    "maximum_velocity_difference_kms": 2.03974080357319e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "8eec09a86cfc",
+    "maximum_dop853_endpoint_error_km": 0.04392825138924823,
+    "maximum_velocity_difference_kms": 3.9347613621158873e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0af91bd6e87c",
+    "maximum_dop853_endpoint_error_km": 0.035123035000594646,
+    "maximum_velocity_difference_kms": 1.215888839275774e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "39be4e2ad326",
+    "maximum_dop853_endpoint_error_km": 0.015017217419650907,
+    "maximum_velocity_difference_kms": 2.5193148898194514e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "b80de5cf4cd3",
+    "maximum_dop853_endpoint_error_km": 0.043331581992242074,
+    "maximum_velocity_difference_kms": 4.79940686767016e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ad6e8a820140",
+    "maximum_dop853_endpoint_error_km": 0.03819129780357681,
+    "maximum_velocity_difference_kms": 1.3045155904971512e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "6dbc677175d8",
+    "maximum_dop853_endpoint_error_km": 0.011366228293040365,
+    "maximum_velocity_difference_kms": 5.292764385593829e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "99a5cb6f7849",
+    "maximum_dop853_endpoint_error_km": 0.03235657717062391,
+    "maximum_velocity_difference_kms": 6.015093241842945e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7e920fa17851",
+    "maximum_dop853_endpoint_error_km": 0.03793401068735827,
+    "maximum_velocity_difference_kms": 1.4642821803819846e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "075af8ded5a5",
+    "maximum_dop853_endpoint_error_km": 0.008959208752213127,
+    "maximum_velocity_difference_kms": 6.165989196222962e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "04f674fdbd07",
+    "maximum_dop853_endpoint_error_km": 0.04550493018032183,
+    "maximum_velocity_difference_kms": 3.2385922573575254e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "9f3deb2b5c70",
+    "maximum_dop853_endpoint_error_km": 0.03737576442823841,
+    "maximum_velocity_difference_kms": 2.2885733842561994e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e8d2b79a0ccb",
+    "maximum_dop853_endpoint_error_km": 0.023299350728416143,
+    "maximum_velocity_difference_kms": 6.464926033605857e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f7d76dc3202a",
+    "maximum_dop853_endpoint_error_km": 0.03793443196712537,
+    "maximum_velocity_difference_kms": 1.6933140361244934e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ec62da9eafc2",
+    "maximum_dop853_endpoint_error_km": 0.021930442189418656,
+    "maximum_velocity_difference_kms": 6.416430262643617e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "d331befde90c",
+    "maximum_dop853_endpoint_error_km": 0.03713458142099499,
+    "maximum_velocity_difference_kms": 1.727962682512239e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "309de45b143f",
+    "maximum_dop853_endpoint_error_km": 0.026726783668390104,
+    "maximum_velocity_difference_kms": 7.898610957093351e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3740d53b3b28",
+    "maximum_dop853_endpoint_error_km": 0.04597246804985395,
+    "maximum_velocity_difference_kms": 4.155460134729882e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4004d55dd03c",
+    "maximum_dop853_endpoint_error_km": 0.033318616507474336,
+    "maximum_velocity_difference_kms": 5.59976986566843e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7ba39ced3519",
+    "maximum_dop853_endpoint_error_km": 0.009245722265057528,
+    "maximum_velocity_difference_kms": 2.7283181363712785e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "585a6ca0e037",
+    "maximum_dop853_endpoint_error_km": 0.033949567337522364,
+    "maximum_velocity_difference_kms": 4.114668638402284e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "9650fe480bb5",
+    "maximum_dop853_endpoint_error_km": 0.044075852757884906,
+    "maximum_velocity_difference_kms": 9.674901873864397e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c1dd965ad82b",
+    "maximum_dop853_endpoint_error_km": 0.03185837176229471,
+    "maximum_velocity_difference_kms": 5.340822304327428e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "9c306378fb98",
+    "maximum_dop853_endpoint_error_km": 0.009883701302789353,
+    "maximum_velocity_difference_kms": 2.8794515418126148e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "1c952f8228f1",
+    "maximum_dop853_endpoint_error_km": 0.029381517534409242,
+    "maximum_velocity_difference_kms": 4.470338586154576e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c82b9c84fb37",
+    "maximum_dop853_endpoint_error_km": 0.022750590122431847,
+    "maximum_velocity_difference_kms": 1.815476032242663e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "396c0653c2c4",
+    "maximum_dop853_endpoint_error_km": 0.04246298721992942,
+    "maximum_velocity_difference_kms": 1.6762454663353386e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2987b50caf9d",
+    "maximum_dop853_endpoint_error_km": 0.008916244499776,
+    "maximum_velocity_difference_kms": 2.233097758026527e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "54b39b62f486",
+    "maximum_dop853_endpoint_error_km": 0.009720788095283706,
+    "maximum_velocity_difference_kms": 1.5554595365152779e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2ba2eb92e25c",
+    "maximum_dop853_endpoint_error_km": 0.03899939375848775,
+    "maximum_velocity_difference_kms": 1.0748169001394677e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e69aac9577d4",
+    "maximum_dop853_endpoint_error_km": 0.016422288786109688,
+    "maximum_velocity_difference_kms": 1.3130427200178993e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "aa05e95a24d0",
+    "maximum_dop853_endpoint_error_km": 0.12536245493243292,
+    "maximum_velocity_difference_kms": 5.018797617099698e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2279122f5f78",
+    "maximum_dop853_endpoint_error_km": 0.047369588866209615,
+    "maximum_velocity_difference_kms": 3.496460756400059e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "bca1a8167bd1",
+    "maximum_dop853_endpoint_error_km": 0.03816897422385576,
+    "maximum_velocity_difference_kms": 1.4117411467777701e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3bdbae71faec",
+    "maximum_dop853_endpoint_error_km": 0.003773569115694744,
+    "maximum_velocity_difference_kms": 7.078300969188091e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "6a5e78ba07d9",
+    "maximum_dop853_endpoint_error_km": 0.00829938923510019,
+    "maximum_velocity_difference_kms": 1.0001624883121768e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "92432a92d165",
+    "maximum_dop853_endpoint_error_km": 0.040234938789127414,
+    "maximum_velocity_difference_kms": 9.475973957827287e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "cb3d969b4655",
+    "maximum_dop853_endpoint_error_km": 0.04511446820773122,
+    "maximum_velocity_difference_kms": 7.078300969188091e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "eade6c6b5ace",
+    "maximum_dop853_endpoint_error_km": 0.01201684100478347,
+    "maximum_velocity_difference_kms": 1.333097977824689e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "9ea49d2899e3",
+    "maximum_dop853_endpoint_error_km": 0.007183978842041216,
+    "maximum_velocity_difference_kms": 8.889416218620993e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3ad7231a4a21",
+    "maximum_dop853_endpoint_error_km": 0.013459731009822931,
+    "maximum_velocity_difference_kms": 9.579623254689289e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ab0565646954",
+    "maximum_dop853_endpoint_error_km": 0.0412801727358517,
+    "maximum_velocity_difference_kms": 8.889416218620993e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "b7b50a213038",
+    "maximum_dop853_endpoint_error_km": 0.004372850176605512,
+    "maximum_velocity_difference_kms": 8.373333089590975e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "56a8f487da63",
+    "maximum_dop853_endpoint_error_km": 0.006391278625410215,
+    "maximum_velocity_difference_kms": 1.0195542909192274e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7e8905df4f8d",
+    "maximum_dop853_endpoint_error_km": 0.018611941712743378,
+    "maximum_velocity_difference_kms": 6.054485133301553e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "702bcc7ed7b4",
+    "maximum_dop853_endpoint_error_km": 0.016855040723232767,
+    "maximum_velocity_difference_kms": 1.115867306637421e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "d6f040c1ec5e",
+    "maximum_dop853_endpoint_error_km": 0.006603293164362675,
+    "maximum_velocity_difference_kms": 1.0388498321603472e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "24f7d2e396fd",
+    "maximum_dop853_endpoint_error_km": 0.049815814336907085,
+    "maximum_velocity_difference_kms": 5.886400850665975e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2fd9fec8ae98",
+    "maximum_dop853_endpoint_error_km": 0.00898429307830962,
+    "maximum_velocity_difference_kms": 3.227909692608224e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a293039ffd73",
+    "maximum_dop853_endpoint_error_km": 0.00898429307830962,
+    "maximum_velocity_difference_kms": 3.227909692608224e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "d0f3efd9a8f7",
+    "maximum_dop853_endpoint_error_km": 0.02213483345355082,
+    "maximum_velocity_difference_kms": 3.227909692608224e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "606e91f93720",
+    "maximum_dop853_endpoint_error_km": 0.016129992716002586,
+    "maximum_velocity_difference_kms": 2.793533876814804e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a49efd85b671",
+    "maximum_dop853_endpoint_error_km": 0.018468877089030406,
+    "maximum_velocity_difference_kms": 3.195504597770121e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e3270f300c9d",
+    "maximum_dop853_endpoint_error_km": 0.004410158559878827,
+    "maximum_velocity_difference_kms": 7.246669057459546e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7f7b57f33906",
+    "maximum_dop853_endpoint_error_km": 0.021443120507681674,
+    "maximum_velocity_difference_kms": 3.703131337412922e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "59f9a9f310bf",
+    "maximum_dop853_endpoint_error_km": 0.014258501654120768,
+    "maximum_velocity_difference_kms": 1.0592443746143025e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "de5810bdace3",
+    "maximum_dop853_endpoint_error_km": 0.021793949901790236,
+    "maximum_velocity_difference_kms": 1.3395332151361432e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "5eade53b6554",
+    "maximum_dop853_endpoint_error_km": 0.014601154715918075,
+    "maximum_velocity_difference_kms": 2.210173839744897e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ca3bef548d3a",
+    "maximum_dop853_endpoint_error_km": 0.03130803948965576,
+    "maximum_velocity_difference_kms": 5.374565534297193e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a6f09d41e876",
+    "maximum_dop853_endpoint_error_km": 0.03203735462083812,
+    "maximum_velocity_difference_kms": 5.2715180559219285e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "62de994fa714",
+    "maximum_dop853_endpoint_error_km": 0.03379285390694631,
+    "maximum_velocity_difference_kms": 5.774002116082627e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "1bf82e40f0cf",
+    "maximum_dop853_endpoint_error_km": 0.0353820363346887,
+    "maximum_velocity_difference_kms": 5.865865335309837e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a162227e51fb",
+    "maximum_dop853_endpoint_error_km": 0.032075165018728535,
+    "maximum_velocity_difference_kms": 5.28272793610329e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "27305c77d23c",
+    "maximum_dop853_endpoint_error_km": 0.02769605320374488,
+    "maximum_velocity_difference_kms": 4.6276284608692285e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f1c30ce9b101",
+    "maximum_dop853_endpoint_error_km": 0.027394195068661947,
+    "maximum_velocity_difference_kms": 4.68680973908195e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e5a5c478fc2f",
+    "maximum_dop853_endpoint_error_km": 0.035545323821014704,
+    "maximum_velocity_difference_kms": 5.885763872784714e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4f390d57e46c",
+    "maximum_dop853_endpoint_error_km": 0.0298272136418928,
+    "maximum_velocity_difference_kms": 3.995035066735961e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ce751d8c460f",
+    "maximum_dop853_endpoint_error_km": 0.040550376811786894,
+    "maximum_velocity_difference_kms": 6.700466333539782e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "89304449037c",
+    "maximum_dop853_endpoint_error_km": 0.035646101004188746,
+    "maximum_velocity_difference_kms": 2.362013190951636e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4192c56ccf73",
+    "maximum_dop853_endpoint_error_km": 0.022827037976523572,
+    "maximum_velocity_difference_kms": 3.5197539789557655e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "09f5fecd4971",
+    "maximum_dop853_endpoint_error_km": 0.02750278144257526,
+    "maximum_velocity_difference_kms": 4.73120451114207e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "01fdb3845dd3",
+    "maximum_dop853_endpoint_error_km": 0.024840406091913996,
+    "maximum_velocity_difference_kms": 1.4078307309474591e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3b66a3a7cbdd",
+    "maximum_dop853_endpoint_error_km": 0.02730762763863907,
+    "maximum_velocity_difference_kms": 1.911124037932209e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "157747dade8f",
+    "maximum_dop853_endpoint_error_km": 0.018842354831806633,
+    "maximum_velocity_difference_kms": 3.2691658340119993e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "1942b12f44bd",
+    "maximum_dop853_endpoint_error_km": 0.02282693153970451,
+    "maximum_velocity_difference_kms": 1.891331107565698e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0b07a48dc09f",
+    "maximum_dop853_endpoint_error_km": 0.037101915677796214,
+    "maximum_velocity_difference_kms": 2.415300042128809e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c6066426efac",
+    "maximum_dop853_endpoint_error_km": 0.018298025508547498,
+    "maximum_velocity_difference_kms": 3.0810062269310787e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "5ec2991a480d",
+    "maximum_dop853_endpoint_error_km": 0.03496822497477092,
+    "maximum_velocity_difference_kms": 2.2565843923992928e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2b1eda939b59",
+    "maximum_dop853_endpoint_error_km": 0.020145643234482778,
+    "maximum_velocity_difference_kms": 3.3449920747150544e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "202d04b8b0a6",
+    "maximum_dop853_endpoint_error_km": 0.030575078279460478,
+    "maximum_velocity_difference_kms": 5.247398779348817e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "566881b65b20",
+    "maximum_dop853_endpoint_error_km": 0.02418818194984865,
+    "maximum_velocity_difference_kms": 1.8417375516123547e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "d136f5cf4219",
+    "maximum_dop853_endpoint_error_km": 0.02537603831987003,
+    "maximum_velocity_difference_kms": 4.372365874798596e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "8bd2726a928d",
+    "maximum_dop853_endpoint_error_km": 0.0207614430334736,
+    "maximum_velocity_difference_kms": 2.3364335025234438e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "61dd74bdccdf",
+    "maximum_dop853_endpoint_error_km": 0.026810580825122804,
+    "maximum_velocity_difference_kms": 1.014702542494626e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0b3c8b198823",
+    "maximum_dop853_endpoint_error_km": 0.026483925904459475,
+    "maximum_velocity_difference_kms": 1.7353951493366005e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7af85417b29f",
+    "maximum_dop853_endpoint_error_km": 0.022940706977522728,
+    "maximum_velocity_difference_kms": 4.054203029836945e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3efef27dcedc",
+    "maximum_dop853_endpoint_error_km": 0.033929898565309764,
+    "maximum_velocity_difference_kms": 1.4373009135015826e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0650f798bc06",
+    "maximum_dop853_endpoint_error_km": 0.030972863031554804,
+    "maximum_velocity_difference_kms": 1.2674762072398452e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "331b6c9b93f9",
+    "maximum_dop853_endpoint_error_km": 0.02669539767176135,
+    "maximum_velocity_difference_kms": 2.79222861982521e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4990794bb327",
+    "maximum_dop853_endpoint_error_km": 0.017190346439621588,
+    "maximum_velocity_difference_kms": 3.5601692655172973e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "201124b7bba8",
+    "maximum_dop853_endpoint_error_km": 0.037583915559391876,
+    "maximum_velocity_difference_kms": 1.399757533121187e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "734dd6c9d7fc",
+    "maximum_dop853_endpoint_error_km": 0.03833388193592551,
+    "maximum_velocity_difference_kms": 1.6778538345209137e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3d8ee9db27d1",
+    "maximum_dop853_endpoint_error_km": 0.011830559473065034,
+    "maximum_velocity_difference_kms": 1.6778538345209137e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e36d692bb100",
+    "maximum_dop853_endpoint_error_km": 0.023467039425992434,
+    "maximum_velocity_difference_kms": 2.7958127068770763e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "69dcdad75eb2",
+    "maximum_dop853_endpoint_error_km": 0.03867358191658464,
+    "maximum_velocity_difference_kms": 6.237540957254837e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0a6f2863b5a4",
+    "maximum_dop853_endpoint_error_km": 0.03929905948318068,
+    "maximum_velocity_difference_kms": 1.951527702487708e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7f1051dab449",
+    "maximum_dop853_endpoint_error_km": 0.011475113009947744,
+    "maximum_velocity_difference_kms": 1.951527702487708e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "5688ceea91cd",
+    "maximum_dop853_endpoint_error_km": 0.02263235883614604,
+    "maximum_velocity_difference_kms": 2.407625193493664e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "dbccdca80754",
+    "maximum_dop853_endpoint_error_km": 0.037089600152264715,
+    "maximum_velocity_difference_kms": 6.07330652623393e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3958d93c2106",
+    "maximum_dop853_endpoint_error_km": 0.03904434431527893,
+    "maximum_velocity_difference_kms": 2.2607718905814155e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "09ae3fe9ac1c",
+    "maximum_dop853_endpoint_error_km": 0.03926089083031803,
+    "maximum_velocity_difference_kms": 6.181426217819671e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "578d78ba5498",
+    "maximum_dop853_endpoint_error_km": 0.024712748408569674,
+    "maximum_velocity_difference_kms": 1.5744153660241077e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "b8e1da435736",
+    "maximum_dop853_endpoint_error_km": 0.01776935645731288,
+    "maximum_velocity_difference_kms": 1.5744153660241077e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "54574f33de99",
+    "maximum_dop853_endpoint_error_km": 0.02803898007013499,
+    "maximum_velocity_difference_kms": 9.55593929558717e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "dc4183b7281c",
+    "maximum_dop853_endpoint_error_km": 0.022700302543932294,
+    "maximum_velocity_difference_kms": 1.1456689600087679e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "713c7dfba36d",
+    "maximum_dop853_endpoint_error_km": 0.02362578996671059,
+    "maximum_velocity_difference_kms": 5.52367859971978e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f58f86c16550",
+    "maximum_dop853_endpoint_error_km": 0.017947034401045992,
+    "maximum_velocity_difference_kms": 1.1874862299183173e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0ca22e533225",
+    "maximum_dop853_endpoint_error_km": 0.022859264644111473,
+    "maximum_velocity_difference_kms": 9.957065617384159e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "201a0a1cdb6a",
+    "maximum_dop853_endpoint_error_km": 0.01845319679899758,
+    "maximum_velocity_difference_kms": 1.2237430192420697e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "cc09fb7aca97",
+    "maximum_dop853_endpoint_error_km": 0.03758662826491685,
+    "maximum_velocity_difference_kms": 6.316235965048678e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f8b647286d50",
+    "maximum_dop853_endpoint_error_km": 0.019735948868250808,
+    "maximum_velocity_difference_kms": 1.1311657245969643e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a8138cf71288",
+    "maximum_dop853_endpoint_error_km": 0.028445447165833086,
+    "maximum_velocity_difference_kms": 2.990834777909134e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0e26e18b43be",
+    "maximum_dop853_endpoint_error_km": 0.021088641850667136,
+    "maximum_velocity_difference_kms": 1.2512122345963838e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "9d814b142835",
+    "maximum_dop853_endpoint_error_km": 0.021088641850667136,
+    "maximum_velocity_difference_kms": 1.2512122345963838e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "edcb37d98039",
+    "maximum_dop853_endpoint_error_km": 0.03519300939954402,
+    "maximum_velocity_difference_kms": 5.9185501634918796e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "b3969d0ad244",
+    "maximum_dop853_endpoint_error_km": 0.02468443466614298,
+    "maximum_velocity_difference_kms": 6.758629919798527e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "8e6cabc285e3",
+    "maximum_dop853_endpoint_error_km": 0.02468443466614298,
+    "maximum_velocity_difference_kms": 6.758629919798527e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "aeca29435f4c",
+    "maximum_dop853_endpoint_error_km": 0.015228086460229127,
+    "maximum_velocity_difference_kms": 1.3493278425844897e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c70b8d993f1e",
+    "maximum_dop853_endpoint_error_km": 0.015228086460229127,
+    "maximum_velocity_difference_kms": 1.3493278425844897e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "b16612db013b",
+    "maximum_dop853_endpoint_error_km": 0.02088864692985366,
+    "maximum_velocity_difference_kms": 3.472497815560781e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "b9a7c16bf586",
+    "maximum_dop853_endpoint_error_km": 0.020102025058313253,
+    "maximum_velocity_difference_kms": 4.03554315379759e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "dfc047a059cd",
+    "maximum_dop853_endpoint_error_km": 0.01669292385280876,
+    "maximum_velocity_difference_kms": 1.2692341208254993e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "03b5ade03ec7",
+    "maximum_dop853_endpoint_error_km": 0.01669292385280876,
+    "maximum_velocity_difference_kms": 1.2692341208254993e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a6314fc2d99e",
+    "maximum_dop853_endpoint_error_km": 0.036321512271905866,
+    "maximum_velocity_difference_kms": 6.112802321294089e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ba764830ddc0",
+    "maximum_dop853_endpoint_error_km": 0.019426488860414166,
+    "maximum_velocity_difference_kms": 1.4396825083247257e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "70681d42b0d1",
+    "maximum_dop853_endpoint_error_km": 0.019426488860414166,
+    "maximum_velocity_difference_kms": 1.4396825083247257e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "1082ec722659",
+    "maximum_dop853_endpoint_error_km": 0.015075991400424482,
+    "maximum_velocity_difference_kms": 1.4396825083247257e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4353b775d5e2",
+    "maximum_dop853_endpoint_error_km": 0.018032399930633318,
+    "maximum_velocity_difference_kms": 7.421483196506325e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f2230db058ea",
+    "maximum_dop853_endpoint_error_km": 0.013051248885480303,
+    "maximum_velocity_difference_kms": 2.1386737112683526e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f246442fa2e4",
+    "maximum_dop853_endpoint_error_km": 0.013531768681206932,
+    "maximum_velocity_difference_kms": 1.8283912496948098e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4c0401b1a440",
+    "maximum_dop853_endpoint_error_km": 0.013531768681206932,
+    "maximum_velocity_difference_kms": 1.8283912496948098e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "743548f3197b",
+    "maximum_dop853_endpoint_error_km": 0.01256683230418368,
+    "maximum_velocity_difference_kms": 1.8283912496948098e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "b48a78c73d33",
+    "maximum_dop853_endpoint_error_km": 0.014894605847744985,
+    "maximum_velocity_difference_kms": 1.413615676727536e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "45248333c680",
+    "maximum_dop853_endpoint_error_km": 0.01875478075384979,
+    "maximum_velocity_difference_kms": 1.2632639707010192e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3f148fc7dfc1",
+    "maximum_dop853_endpoint_error_km": 0.025346254021115615,
+    "maximum_velocity_difference_kms": 1.6510324175819425e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c6612b13a007",
+    "maximum_dop853_endpoint_error_km": 0.025346254021115615,
+    "maximum_velocity_difference_kms": 1.6510324175819425e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "88b962cdb4df",
+    "maximum_dop853_endpoint_error_km": 0.020452089442887404,
+    "maximum_velocity_difference_kms": 3.083631897258512e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "062cacfbe1ff",
+    "maximum_dop853_endpoint_error_km": 0.020452089442887404,
+    "maximum_velocity_difference_kms": 3.083631897258512e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0846ef8fd9e6",
+    "maximum_dop853_endpoint_error_km": 0.015113472316149344,
+    "maximum_velocity_difference_kms": 1.6824949082432473e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e4220819fb86",
+    "maximum_dop853_endpoint_error_km": 0.016509023686163086,
+    "maximum_velocity_difference_kms": 1.4543391662120354e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "1a5690e9f677",
+    "maximum_dop853_endpoint_error_km": 0.016509023686163086,
+    "maximum_velocity_difference_kms": 1.4543391662120354e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e666e5812fe8",
+    "maximum_dop853_endpoint_error_km": 0.019857722356941363,
+    "maximum_velocity_difference_kms": 3.737995966094874e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "96ab8156f0e1",
+    "maximum_dop853_endpoint_error_km": 0.019857722356941363,
+    "maximum_velocity_difference_kms": 3.737995966094874e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "d5c0914a9d16",
+    "maximum_dop853_endpoint_error_km": 0.016935403653735127,
+    "maximum_velocity_difference_kms": 2.2936237953373663e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "624b45daffa2",
+    "maximum_dop853_endpoint_error_km": 0.011023760831665392,
+    "maximum_velocity_difference_kms": 6.537412885254032e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "df5137a4662f",
+    "maximum_dop853_endpoint_error_km": 0.017828552674233968,
+    "maximum_velocity_difference_kms": 2.1138712903165885e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "6f523c4181fb",
+    "maximum_dop853_endpoint_error_km": 0.01497699159169746,
+    "maximum_velocity_difference_kms": 6.118146692394296e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3d7ced0dd1e8",
+    "maximum_dop853_endpoint_error_km": 0.018572285201582037,
+    "maximum_velocity_difference_kms": 1.9416039095447043e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "9f66d5636b0c",
+    "maximum_dop853_endpoint_error_km": 0.01845936220560303,
+    "maximum_velocity_difference_kms": 5.966140166560471e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ad87bff9c398",
+    "maximum_dop853_endpoint_error_km": 0.019784945944014275,
+    "maximum_velocity_difference_kms": 1.5573619447331554e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "003686448e15",
+    "maximum_dop853_endpoint_error_km": 0.01988672550972591,
+    "maximum_velocity_difference_kms": 6.800047001298655e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "797fdb0e7121",
+    "maximum_dop853_endpoint_error_km": 0.019556407420326338,
+    "maximum_velocity_difference_kms": 1.387546537147051e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3077c4c9af3c",
+    "maximum_dop853_endpoint_error_km": 0.01801775239771307,
+    "maximum_velocity_difference_kms": 2.1986642184263043e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "8cb07d5d8689",
+    "maximum_dop853_endpoint_error_km": 0.025365837631326965,
+    "maximum_velocity_difference_kms": 4.142607988935985e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "af9a1037bbbe",
+    "maximum_dop853_endpoint_error_km": 0.016391873668868448,
+    "maximum_velocity_difference_kms": 1.9669738848478766e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "9aa391b7d514",
+    "maximum_dop853_endpoint_error_km": 0.02387729251618333,
+    "maximum_velocity_difference_kms": 4.70351468810022e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "96d38009194a",
+    "maximum_dop853_endpoint_error_km": 0.01590602345648368,
+    "maximum_velocity_difference_kms": 6.167561677217997e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ce4858e5501e",
+    "maximum_dop853_endpoint_error_km": 0.01590602345648368,
+    "maximum_velocity_difference_kms": 6.167561677217997e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "72303c9545a7",
+    "maximum_dop853_endpoint_error_km": 0.026459328842341315,
+    "maximum_velocity_difference_kms": 4.441917119271697e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a7da3f228a90",
+    "maximum_dop853_endpoint_error_km": 0.02781858296460825,
+    "maximum_velocity_difference_kms": 6.730212900198073e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "40f29e8d90ff",
+    "maximum_dop853_endpoint_error_km": 0.02028966531255949,
+    "maximum_velocity_difference_kms": 2.0599601904507043e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "982a5f84d15f",
+    "maximum_dop853_endpoint_error_km": 0.031780882763108996,
+    "maximum_velocity_difference_kms": 5.33834108019576e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7c169622c0e2",
+    "maximum_dop853_endpoint_error_km": 0.01896202860831489,
+    "maximum_velocity_difference_kms": 6.844321103722725e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2789d131565a",
+    "maximum_dop853_endpoint_error_km": 0.01896202860831489,
+    "maximum_velocity_difference_kms": 6.844321103722725e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f16a6542812d",
+    "maximum_dop853_endpoint_error_km": 0.014707363249904553,
+    "maximum_velocity_difference_kms": 6.969693750455177e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "54214444a69c",
+    "maximum_dop853_endpoint_error_km": 0.014707363249904553,
+    "maximum_velocity_difference_kms": 6.969693750455177e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "29613f4bdb53",
+    "maximum_dop853_endpoint_error_km": 0.03268068850094516,
+    "maximum_velocity_difference_kms": 5.482883026334085e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3a645abb76ec",
+    "maximum_dop853_endpoint_error_km": 0.015502328056001938,
+    "maximum_velocity_difference_kms": 3.8151959926287787e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "aca5a021eb88",
+    "maximum_dop853_endpoint_error_km": 0.015502328056001938,
+    "maximum_velocity_difference_kms": 3.8151959926287787e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2c8b97d0d07d",
+    "maximum_dop853_endpoint_error_km": 0.004951088854592735,
+    "maximum_velocity_difference_kms": 6.533207947136226e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e961e60bd93c",
+    "maximum_dop853_endpoint_error_km": 0.004951088854592735,
+    "maximum_velocity_difference_kms": 6.533207947136226e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "152fa915f7ae",
+    "maximum_dop853_endpoint_error_km": 0.03396397852766731,
+    "maximum_velocity_difference_kms": 5.743335626220283e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7f7f1eceb8c0",
+    "maximum_dop853_endpoint_error_km": 0.025284022283599675,
+    "maximum_velocity_difference_kms": 8.545424380508587e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "68d9efa5cff0",
+    "maximum_dop853_endpoint_error_km": 0.015646045221797054,
+    "maximum_velocity_difference_kms": 9.389199864557388e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "b53e43596a97",
+    "maximum_dop853_endpoint_error_km": 0.0032335203661599103,
+    "maximum_velocity_difference_kms": 6.092481568044932e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "fed06ac980c5",
+    "maximum_dop853_endpoint_error_km": 0.0032335203661599103,
+    "maximum_velocity_difference_kms": 6.092481568044932e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f2dfeba6f636",
+    "maximum_dop853_endpoint_error_km": 0.02963203468477559,
+    "maximum_velocity_difference_kms": 5.053662983174749e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "038ad4e18fd9",
+    "maximum_dop853_endpoint_error_km": 0.008540857980538098,
+    "maximum_velocity_difference_kms": 1.3681673533586573e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a8f1eb204bfe",
+    "maximum_dop853_endpoint_error_km": 0.00880744432773978,
+    "maximum_velocity_difference_kms": 1.3681673533586573e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c56ebea5e892",
+    "maximum_dop853_endpoint_error_km": 0.013958645154730023,
+    "maximum_velocity_difference_kms": 2.190235394855251e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "3d77b05a5e1b",
+    "maximum_dop853_endpoint_error_km": 0.013958645154730023,
+    "maximum_velocity_difference_kms": 2.190235394855251e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c7761ab2a426",
+    "maximum_dop853_endpoint_error_km": 0.009105817908699295,
+    "maximum_velocity_difference_kms": 5.404179051243435e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0ed7b35f28d0",
+    "maximum_dop853_endpoint_error_km": 0.003991390337216025,
+    "maximum_velocity_difference_kms": 6.284079780711275e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "654d2e0bc5c4",
+    "maximum_dop853_endpoint_error_km": 0.003991390337216025,
+    "maximum_velocity_difference_kms": 6.284079780711275e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "630b2140a342",
+    "maximum_dop853_endpoint_error_km": 0.010648515280534107,
+    "maximum_velocity_difference_kms": 1.6640670324939947e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "33d0ef834208",
+    "maximum_dop853_endpoint_error_km": 0.010648515280534107,
+    "maximum_velocity_difference_kms": 1.6640670324939947e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "000dacaf2944",
+    "maximum_dop853_endpoint_error_km": 0.017568453259122326,
+    "maximum_velocity_difference_kms": 1.3373518181252681e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "9092d05dc609",
+    "maximum_dop853_endpoint_error_km": 0.013570626982166656,
+    "maximum_velocity_difference_kms": 2.2527405516116444e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "bf6a3bc9ed58",
+    "maximum_dop853_endpoint_error_km": 0.01882201417557171,
+    "maximum_velocity_difference_kms": 2.2335654800624657e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "870bf193095f",
+    "maximum_dop853_endpoint_error_km": 0.008672238488554498,
+    "maximum_velocity_difference_kms": 2.2335654800624657e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ddddb82f2260",
+    "maximum_dop853_endpoint_error_km": 0.005948694710128027,
+    "maximum_velocity_difference_kms": 2.2335654800624657e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a23ba38caa52",
+    "maximum_dop853_endpoint_error_km": 0.005948694710128027,
+    "maximum_velocity_difference_kms": 2.2335654800624657e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2a2caf055222",
+    "maximum_dop853_endpoint_error_km": 0.005948694710128027,
+    "maximum_velocity_difference_kms": 2.2335654800624657e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "a213c6431ffd",
+    "maximum_dop853_endpoint_error_km": 0.014121832771966955,
+    "maximum_velocity_difference_kms": 2.2335654800624657e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "87ae8f6caad0",
+    "maximum_dop853_endpoint_error_km": 0.026770160584110123,
+    "maximum_velocity_difference_kms": 4.51621238830973e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e04ff5ace60e",
+    "maximum_dop853_endpoint_error_km": 0.01971254053972418,
+    "maximum_velocity_difference_kms": 2.786317363803637e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "030a5f1f8204",
+    "maximum_dop853_endpoint_error_km": 0.03176100230875466,
+    "maximum_velocity_difference_kms": 5.167029481741855e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e413ff0df9f8",
+    "maximum_dop853_endpoint_error_km": 0.007517334189389733,
+    "maximum_velocity_difference_kms": 2.786317363803637e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "b8867d9ee5aa",
+    "maximum_dop853_endpoint_error_km": 0.007517334189389733,
+    "maximum_velocity_difference_kms": 2.786317363803637e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7b142bc0a0d3",
+    "maximum_dop853_endpoint_error_km": 0.007517334189389733,
+    "maximum_velocity_difference_kms": 2.786317363803637e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "66ff28b27048",
+    "maximum_dop853_endpoint_error_km": 0.010524664532107557,
+    "maximum_velocity_difference_kms": 2.786317363803637e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "68146645ca6d",
+    "maximum_dop853_endpoint_error_km": 0.02346249120878353,
+    "maximum_velocity_difference_kms": 3.966221345077714e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "aec637dc2828",
+    "maximum_dop853_endpoint_error_km": 0.02146123294116021,
+    "maximum_velocity_difference_kms": 3.5096427089522647e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "29dbe5e6f9ab",
+    "maximum_dop853_endpoint_error_km": 0.01337123958393016,
+    "maximum_velocity_difference_kms": 2.378881127448012e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c73f7ef646a4",
+    "maximum_dop853_endpoint_error_km": 0.015324070968773085,
+    "maximum_velocity_difference_kms": 2.4248318118052148e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "eeb94ac591d2",
+    "maximum_dop853_endpoint_error_km": 0.01418818168172415,
+    "maximum_velocity_difference_kms": 2.1648553703898868e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2aab964e9f32",
+    "maximum_dop853_endpoint_error_km": 0.013851564828361662,
+    "maximum_velocity_difference_kms": 1.5606217319812452e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "6f2d1f5b175d",
+    "maximum_dop853_endpoint_error_km": 0.013851564828361662,
+    "maximum_velocity_difference_kms": 1.5606217319812452e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4fc186926f05",
+    "maximum_dop853_endpoint_error_km": 0.003902390717862084,
+    "maximum_velocity_difference_kms": 1.5606217319812452e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "8dc7db0ed185",
+    "maximum_dop853_endpoint_error_km": 0.04759980128944731,
+    "maximum_velocity_difference_kms": 1.5606217319812452e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4140da8296cd",
+    "maximum_dop853_endpoint_error_km": 0.023768198152612535,
+    "maximum_velocity_difference_kms": 4.078239513347141e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2dd3495c6fd3",
+    "maximum_dop853_endpoint_error_km": 0.01360106212905473,
+    "maximum_velocity_difference_kms": 1.6572991588638623e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "07bd711acc20",
+    "maximum_dop853_endpoint_error_km": 0.01360106212905473,
+    "maximum_velocity_difference_kms": 1.6572991588638623e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "59db15020701",
+    "maximum_dop853_endpoint_error_km": 0.004576176856318608,
+    "maximum_velocity_difference_kms": 1.6572991588638623e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7380db2ef798",
+    "maximum_dop853_endpoint_error_km": 0.02054270166020049,
+    "maximum_velocity_difference_kms": 2.6651942918376072e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "e90d701e2938",
+    "maximum_dop853_endpoint_error_km": 0.02054270166020049,
+    "maximum_velocity_difference_kms": 2.6651942918376072e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "05d832b12460",
+    "maximum_dop853_endpoint_error_km": 0.0147465326359549,
+    "maximum_velocity_difference_kms": 2.823489851263294e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "57902efa5dd7",
+    "maximum_dop853_endpoint_error_km": 0.012327636122191737,
+    "maximum_velocity_difference_kms": 2.367070515797407e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "77d69f62cc52",
+    "maximum_dop853_endpoint_error_km": 0.008142018728527649,
+    "maximum_velocity_difference_kms": 2.367070515797407e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "1daed38de24d",
+    "maximum_dop853_endpoint_error_km": 0.01175359720203502,
+    "maximum_velocity_difference_kms": 2.218209420240011e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7ecb92dec4b5",
+    "maximum_dop853_endpoint_error_km": 0.010277025485499296,
+    "maximum_velocity_difference_kms": 1.926135556038487e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "eb159c6d7a65",
+    "maximum_dop853_endpoint_error_km": 0.009530781827522481,
+    "maximum_velocity_difference_kms": 1.926135556038487e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "db2a1082a629",
+    "maximum_dop853_endpoint_error_km": 0.010571708081013662,
+    "maximum_velocity_difference_kms": 2.68187274252638e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "c2e706a1351c",
+    "maximum_dop853_endpoint_error_km": 0.021934025959663542,
+    "maximum_velocity_difference_kms": 3.745145777403817e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "d4baaadbea4a",
+    "maximum_dop853_endpoint_error_km": 0.021934025959663542,
+    "maximum_velocity_difference_kms": 3.745145777403817e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "0747ad6409cf",
+    "maximum_dop853_endpoint_error_km": 0.013853458729087532,
+    "maximum_velocity_difference_kms": 2.3923939208623225e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "7605975c65c4",
+    "maximum_dop853_endpoint_error_km": 0.014720560983074026,
+    "maximum_velocity_difference_kms": 1.5577781781535347e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ec49c76a9af2",
+    "maximum_dop853_endpoint_error_km": 0.01836733863122101,
+    "maximum_velocity_difference_kms": 2.0349855457541266e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "930b023c7335",
+    "maximum_dop853_endpoint_error_km": 0.01530085077587393,
+    "maximum_velocity_difference_kms": 6.135493039184419e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "62c352527281",
+    "maximum_dop853_endpoint_error_km": 0.01530085077587393,
+    "maximum_velocity_difference_kms": 6.135493039184419e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2afe4ae01f54",
+    "maximum_dop853_endpoint_error_km": 0.012745793598609816,
+    "maximum_velocity_difference_kms": 5.912647251702531e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "220265faf4ca",
+    "maximum_dop853_endpoint_error_km": 0.012745793598609816,
+    "maximum_velocity_difference_kms": 5.912647251702531e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "89b07562631d",
+    "maximum_dop853_endpoint_error_km": 0.014950297689043778,
+    "maximum_velocity_difference_kms": 4.3334920420486993e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4acf658b80af",
+    "maximum_dop853_endpoint_error_km": 0.014950297689043778,
+    "maximum_velocity_difference_kms": 4.3334920420486993e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "f663eef256a0",
+    "maximum_dop853_endpoint_error_km": 0.00990944920113767,
+    "maximum_velocity_difference_kms": 3.1517305393564274e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "2241b1f7adb1",
+    "maximum_dop853_endpoint_error_km": 0.00990944920113767,
+    "maximum_velocity_difference_kms": 3.1517305393564274e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "94e42605bef5",
+    "maximum_dop853_endpoint_error_km": 0.03508013344345284,
+    "maximum_velocity_difference_kms": 6.160987847595411e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "5c14c0d97d17",
+    "maximum_dop853_endpoint_error_km": 0.027805409586973244,
+    "maximum_velocity_difference_kms": 6.09104887208819e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "ba88c7d800ae",
+    "maximum_dop853_endpoint_error_km": 0.00873396775328589,
+    "maximum_velocity_difference_kms": 8.605366335216345e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "4c8178ab744d",
+    "maximum_dop853_endpoint_error_km": 0.026298510253989833,
+    "maximum_velocity_difference_kms": 4.1465305358650905e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  {
+    "id": "35fe12578614",
+    "maximum_dop853_endpoint_error_km": 0.026298510253989833,
+    "maximum_velocity_difference_kms": 4.1465305358650905e-09,
+    "passed": true,
+    "nbody_validated": false
+  }
+]

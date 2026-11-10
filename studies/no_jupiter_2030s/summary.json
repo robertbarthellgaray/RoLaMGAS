@@ -1,0 +1,20 @@
+{
+  "completed_launch_c3_jobs": 750,
+  "launch_dates": 125,
+  "c3_grid": [
+    10.0,
+    12.0,
+    14.0,
+    16.0,
+    23.1,
+    28.0
+  ],
+  "passing_candidates": 284,
+  "by_target": {
+    "Saturn": 256,
+    "Neptune": 28
+  },
+  "audited_candidates": 16,
+  "maximum_dop853_endpoint_error_km": 0.03899939375848775,
+  "minimum_launch_c3": 12.00000000026103
+}
