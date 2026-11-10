@@ -1,0 +1,209 @@
+{
+  "purpose": "First-leg initialization checks only; no accepted trajectories",
+  "checks": [
+    {
+      "name": "Io Observer 2010 study",
+      "reported_c3": 18,
+      "first_leg_has_dsm": false,
+      "trials": [
+        {
+          "branch": [
+            0,
+            true
+          ],
+          "c3_km2_s2": 684.7403108839071
+        },
+        {
+          "branch": [
+            1,
+            true
+          ],
+          "c3_km2_s2": 16.957935546849612
+        },
+        {
+          "branch": [
+            1,
+            false
+          ],
+          "c3_km2_s2": 36.87713021318739
+        }
+      ],
+      "full_chain_validated": false
+    },
+    {
+      "name": "Ganymede Orbiter 2010 study \u2014 table date",
+      "reported_c3": 12.688,
+      "first_leg_has_dsm": false,
+      "trials": [
+        {
+          "branch": [
+            0,
+            true
+          ],
+          "c3_km2_s2": 582.2232151533503
+        },
+        {
+          "branch": [
+            1,
+            true
+          ],
+          "c3_km2_s2": 12.65892630085975
+        },
+        {
+          "branch": [
+            1,
+            false
+          ],
+          "c3_km2_s2": 18.676212823352188
+        }
+      ],
+      "full_chain_validated": false
+    },
+    {
+      "name": "Ganymede Orbiter 2010 study \u2014 plot date",
+      "reported_c3": 12.688,
+      "first_leg_has_dsm": false,
+      "trials": [
+        {
+          "branch": [
+            0,
+            true
+          ],
+          "c3_km2_s2": 582.2232151533503
+        },
+        {
+          "branch": [
+            1,
+            true
+          ],
+          "c3_km2_s2": 12.65892630085975
+        },
+        {
+          "branch": [
+            1,
+            false
+          ],
+          "c3_km2_s2": 18.676212823352188
+        }
+      ],
+      "full_chain_validated": false
+    },
+    {
+      "name": "Saturn Atmospheric Entry Probe 2010 study",
+      "reported_c3": 49,
+      "first_leg_has_dsm": true,
+      "trials": [
+        {
+          "branch": [
+            0,
+            true
+          ],
+          "c3_km2_s2": 66.99651031959208
+        },
+        {
+          "branch": [
+            1,
+            true
+          ],
+          "c3_km2_s2": 1611.0433221242138
+        },
+        {
+          "branch": [
+            1,
+            false
+          ],
+          "c3_km2_s2": 16.532072270602285
+        },
+        {
+          "branch": [
+            2,
+            true
+          ],
+          "c3_km2_s2": 1279.789327195777
+        },
+        {
+          "branch": [
+            2,
+            false
+          ],
+          "c3_km2_s2": 0.00018072527416242154
+        }
+      ],
+      "full_chain_validated": false
+    },
+    {
+      "name": "Enceladus Orbiter 2010 study",
+      "reported_c3": 11.7,
+      "first_leg_has_dsm": false,
+      "trials": [
+        {
+          "branch": [
+            0,
+            true
+          ],
+          "c3_km2_s2": 637.7853219693546
+        },
+        {
+          "branch": [
+            1,
+            true
+          ],
+          "c3_km2_s2": 11.59521917649905
+        },
+        {
+          "branch": [
+            1,
+            false
+          ],
+          "c3_km2_s2": 28.61197288103848
+        }
+      ],
+      "full_chain_validated": false
+    },
+    {
+      "name": "Mercury Lander 2010 chemical study",
+      "reported_c3": 16.5,
+      "first_leg_has_dsm": false,
+      "trials": [
+        {
+          "branch": [
+            0,
+            true
+          ],
+          "c3_km2_s2": 16.563823999649035
+        }
+      ],
+      "full_chain_validated": false
+    },
+    {
+      "name": "Neptune Odyssey 2020 direct chemical baseline",
+      "reported_c3": 148.3,
+      "first_leg_has_dsm": true,
+      "trials": [
+        {
+          "branch": [
+            0,
+            true
+          ],
+          "c3_km2_s2": 159.40194952859815
+        }
+      ],
+      "full_chain_validated": false
+    },
+    {
+      "name": "Trojan Tour 2010 chemical baseline \u2014 Agamemnon",
+      "reported_c3": 73.15,
+      "first_leg_has_dsm": true,
+      "trials": [
+        {
+          "branch": [
+            0,
+            true
+          ],
+          "c3_km2_s2": 1564.4246073145
+        }
+      ],
+      "full_chain_validated": false
+    }
+  ]
+}

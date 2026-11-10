@@ -29,7 +29,15 @@ class SequenceIndependenceTests(unittest.TestCase):
         for sequence in ROUTES:self.assertEqual(self.signature(a,sequence),self.signature(b,sequence))
 
     def test_existing_successful_standalone_seed_is_preserved(self):
-        c=self.config(ROUTES,samples_per_sequence=6000,refinements_per_sequence=72,branch_families=16)
+        # Preserve the saved search definition. New Decadal templates also allow
+        # one-revolution Earth–Venus departures; adding those is a different job
+        # set, so it must not redefine this legacy seed/budget regression.
+        from copy import deepcopy
+        from mission_search import load_database
+        legacy=deepcopy(next(r for r in load_database()['sequences'] if r['id']=='EVEEJ')['branch_options'])
+        legacy[0]=[[0,True]]
+        c=self.config(ROUTES,samples_per_sequence=6000,refinements_per_sequence=72,branch_families=16,
+                      route_overrides={'EVEEJ':{'branch_options':legacy}})
         for sequence in ('EVEEJ','EVdvEEJ'):
             jobs=[j for j in self.plans(c) if j[0]['id']==sequence]
             branch=[[0,True],[0,True],[1,True],[0,True]]

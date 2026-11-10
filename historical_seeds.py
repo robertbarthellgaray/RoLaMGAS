@@ -12,8 +12,10 @@ from earth_return_seeds import rtn_basis
 @lru_cache(maxsize=1)
 def references():
     historical=json.loads((RESOURCE_ROOT/'departure_seeds/historical_missions.json').read_text(encoding='utf-8'))['missions']
-    study_path=RESOURCE_ROOT/'departure_seeds/mission_studies.json'
-    studies=json.loads(study_path.read_text(encoding='utf-8'))['missions'] if study_path.exists() else []
+    studies=[]
+    for filename in ('mission_studies.json','decadal_missions.json'):
+        study_path=RESOURCE_ROOT/'departure_seeds'/filename
+        if study_path.exists():studies.extend(json.loads(study_path.read_text(encoding='utf-8'))['missions'])
     return historical+[m for m in studies if m.get('seed_eligible')]
 
 def matching_references(model):

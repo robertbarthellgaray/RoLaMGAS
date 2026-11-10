@@ -1,0 +1,437 @@
+{
+  "schema_version": 1,
+  "kind": "Source-backed Decadal timing guesses; never preaccepted trajectories",
+  "missions": [
+    {
+      "name": "Io Observer 2010 study",
+      "sequence": "EVVEJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "2021-06-30",
+        "2022-06-28",
+        "2023-09-20",
+        "2025-07-27",
+        "2027-12-30"
+      ],
+      "c3": 18,
+      "report_id": "vv2011_14_io_observer",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2014_Io-Observer.pdf"
+      ],
+      "section": "PDF page 32 / printed page 24, Table 3-14",
+      "note": "Source gives a C3 range of 17–19, not an exact 18. Statistical TCM allocations, optional 25 m/s Earth bias, JOI and the moon tour are not designed heliocentric DSMs.",
+      "reference_kind": "Decadal proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "epoch_precision": "calendar day; source time scale unspecified; initialization uses TDB midnight",
+      "planet_leg_days": [
+        363,
+        449,
+        676,
+        886
+      ],
+      "c3_range": [
+        17,
+        19
+      ]
+    },
+    {
+      "name": "Ganymede Orbiter 2010 study — table date",
+      "sequence": "EVEEJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "2021-05-24",
+        "2022-06-17",
+        "2023-06-30",
+        "2025-10-19",
+        "2028-07-20"
+      ],
+      "c3": 12.688,
+      "report_id": "vv2011_15_ganymede_orbiter",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2015_Ganymede-Orbiter.pdf"
+      ],
+      "section": "PDF page 36 / printed page 28, Figure 3-3",
+      "note": "Conflicting source: table says October 19, plot October 29 for Earth 2. Both retained as alternative timing guesses. A Callisto assist on July 18 precedes JOI; the planet-only chain does not model that assist. Reported post-Callisto arrival speed is not a planet-only target.",
+      "reference_kind": "Decadal proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "epoch_precision": "calendar day; source time scale unspecified; initialization uses TDB midnight",
+      "planet_leg_days": [
+        389,
+        378,
+        842,
+        1005
+      ],
+      "ambiguity_group": "ganymede_2010_earth2",
+      "source_variant": "table"
+    },
+    {
+      "name": "Ganymede Orbiter 2010 study — plot date",
+      "sequence": "EVEEJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "2021-05-24",
+        "2022-06-17",
+        "2023-06-30",
+        "2025-10-29",
+        "2028-07-20"
+      ],
+      "c3": 12.688,
+      "report_id": "vv2011_15_ganymede_orbiter",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2015_Ganymede-Orbiter.pdf"
+      ],
+      "section": "PDF page 36 / printed page 28, Figure 3-3",
+      "note": "Conflicting source: table says October 19, plot October 29 for Earth 2. Both retained as alternative timing guesses. A Callisto assist on July 18 precedes JOI; the planet-only chain does not model that assist. Reported post-Callisto arrival speed is not a planet-only target.",
+      "reference_kind": "Decadal proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "epoch_precision": "calendar day; source time scale unspecified; initialization uses TDB midnight",
+      "planet_leg_days": [
+        389,
+        378,
+        852,
+        995
+      ],
+      "ambiguity_group": "ganymede_2010_earth2",
+      "source_variant": "plot"
+    },
+    {
+      "name": "Saturn Atmospheric Entry Probe 2010 study",
+      "sequence": "EdvES",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Saturn"
+      ],
+      "dates": [
+        "2027-08-30",
+        "2030-07-16",
+        "2034-06-22"
+      ],
+      "c3": 49,
+      "report_id": "vv2011_18a_saturn_probe",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2018a_Saturn-Probe.pdf"
+      ],
+      "section": "PDF pages 23–24 and 30; Figure 3-1",
+      "note": "DSM is 449 m/s in the trajectory diagram (450 m/s rounded in budget). Statistical TCMs and probe/carrier diversion are excluded from the designed cruise burn.",
+      "reference_kind": "Decadal proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "epoch_precision": "calendar day; source time scale unspecified; initialization uses TDB midnight",
+      "planet_leg_days": [
+        1051,
+        1437
+      ],
+      "vinf": 7.1,
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2029-02-12",
+          "magnitude_kms": 0.449,
+          "fraction": 0.5061845861084682
+        }
+      ]
+    },
+    {
+      "name": "Enceladus Orbiter 2010 study",
+      "sequence": "EVEVES",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Venus",
+        "Earth",
+        "Saturn"
+      ],
+      "dates": [
+        "2023-01-28",
+        "2024-02-05",
+        "2025-03-02",
+        "2025-04-16",
+        "2027-08-02",
+        "2031-07-29"
+      ],
+      "c3": 11.7,
+      "report_id": "vv2011_20_enceladus_orbiter",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2020_Enceladus-Orbiter.pdf"
+      ],
+      "section": "PDF page 33 / printed page 24, Table 3-12",
+      "note": "Order follows the dated table: Venus–Earth–Venus–Earth. The 355 m/s Earth-row budget combines bias, deterministic and statistical allocations; it is not an independently specified periapsis burn. Timing seed requires fresh maneuver/feasibility evaluation.",
+      "reference_kind": "Decadal proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "epoch_precision": "calendar day; source time scale unspecified; initialization uses TDB midnight",
+      "planet_leg_days": [
+        373,
+        391,
+        45,
+        838,
+        1457
+      ],
+      "vinf": 7.073
+    },
+    {
+      "name": "Mercury Lander 2010 chemical study",
+      "sequence": "EVVMedvMedvMedvMeMe",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury"
+      ],
+      "dates": [
+        "2020-04-06",
+        "2020-10-14",
+        "2021-08-10",
+        "2021-10-01",
+        "2022-06-24",
+        "2023-06-14",
+        "2025-03-06",
+        "2025-04-22"
+      ],
+      "c3": 16.5,
+      "report_id": "vv2011_01_mercury_lander",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2001_Mercury_Lander.pdf"
+      ],
+      "section": "PDF page 21 / printed page 16, chemical trajectory diagram",
+      "note": "Chemical option only. Three DSMs total 1.238 km/s; individual magnitudes are unspecified. DSM 3 fraction is below the model’s 0.1 lower bound and is clamped during initialization. The low-C3 SEP alternative is excluded. Capture/descent burns excluded.",
+      "reference_kind": "Decadal proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "epoch_precision": "calendar day; source time scale unspecified; initialization uses TDB midnight",
+      "planet_leg_days": [
+        191,
+        300,
+        52,
+        266,
+        355,
+        631,
+        47
+      ],
+      "vinf": 1.4855,
+      "reference_dsm_total_kms": 1.238,
+      "propulsion": "Impulsive chemical",
+      "dsm_events": [
+        {
+          "leg_index": 3,
+          "date": "2021-12-18",
+          "magnitude_kms": null,
+          "fraction": 0.2932330827067669
+        },
+        {
+          "leg_index": 4,
+          "date": "2022-08-27",
+          "magnitude_kms": null,
+          "fraction": 0.18028169014084508
+        },
+        {
+          "leg_index": 5,
+          "date": "2023-08-13",
+          "magnitude_kms": null,
+          "fraction": 0.09508716323296355
+        }
+      ]
+    },
+    {
+      "name": "Neptune Odyssey 2020 direct chemical baseline",
+      "sequence": "EdvN",
+      "bodies": [
+        "Earth",
+        "Neptune"
+      ],
+      "dates": [
+        "2033-05-31",
+        "2049-06-03"
+      ],
+      "c3": 148.3,
+      "report_id": "owl2020_neptune_odyssey_tagged",
+      "sources": [
+        "https://assets.science.nasa.gov/content/dam/science/psd/resources/documents/2020/Neptune_Odyssey_Tagged.pdf"
+      ],
+      "section": "PDF page 38 / printed page 27; launch window PDF page 45",
+      "note": "Direct chemical baseline without Jupiter. Broken-plane maneuver is 245 m/s. C3 up to 160 is the launch-window requirement, not the nominal value. Parking-orbit injection, Neptune insertion and Triton tour are outside cruise DSM accounting.",
+      "reference_kind": "Decadal proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "epoch_precision": "calendar day; source time scale unspecified; initialization uses TDB midnight",
+      "planet_leg_days": [
+        5847
+      ],
+      "vinf": 6.5,
+      "vinf_precision": "approximately 6.5 km/s",
+      "propulsion": "Impulsive chemical",
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2036-11-12",
+          "magnitude_kms": 0.245,
+          "fraction": 0.21566615358303404
+        }
+      ]
+    },
+    {
+      "name": "Trojan Tour 2010 chemical baseline — Agamemnon",
+      "sequence": "EdvJdvX",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "911 Agamemnon (A919 FB)"
+      ],
+      "dates": [
+        "2019-02-21",
+        "2021-10-18",
+        "2029-02-18"
+      ],
+      "c3": 73.15,
+      "report_id": "vv2011_16_trojan_tour_and_rendezvous",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2016_Trojan_Tour_and_Rendezvous.pdf"
+      ],
+      "section": "PDF pages 38–39, Figure 3-8 and Tables 3-15–3-17",
+      "note": "Chemical propulsion with nuclear electrical power, not electric propulsion. DSMs 323 and 204 m/s. Final 1.11 km/s rendezvous maneuver is outside cruise. Target identity confirmed through JPL SBDB SPK 20000911.",
+      "reference_kind": "Decadal proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "epoch_precision": "calendar day; source time scale unspecified; initialization uses TDB midnight",
+      "planet_leg_days": [
+        970,
+        2680
+      ],
+      "target_object": {
+        "name": "911 Agamemnon (A919 FB)",
+        "id": "20000911",
+        "command": "911;",
+        "designation": "911",
+        "query": "SPK=20000911",
+        "kind": "small_body",
+        "orbit_class": "Jupiter Trojan"
+      },
+      "propulsion": "Impulsive chemical",
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2019-11-16",
+          "magnitude_kms": 0.323,
+          "fraction": 0.27628865979381445
+        },
+        {
+          "leg_index": 1,
+          "date": "2024-11-09",
+          "magnitude_kms": 0.204,
+          "fraction": 0.4171641791044776
+        }
+      ]
+    },
+    {
+      "name": "Titan Lake Probe 2010 Option 3 — relative schedule",
+      "sequence": "EVEVES",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Venus",
+        "Earth",
+        "Saturn"
+      ],
+      "launch_start": "2023-01-01",
+      "launch_end": "2023-01-31",
+      "planet_leg_days": [
+        376,
+        389,
+        41,
+        852,
+        1727
+      ],
+      "c3": 13.5,
+      "reference_dsm_total_kms": 0.25,
+      "epoch_precision": "Launch month and relative event days only; no exact launch day",
+      "report_id": "vv2011_21_titan_lake_lander",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2021_Titan-Lake-Lander.pdf"
+      ],
+      "section": "PDF pages 55–56 / printed pages 45–46, Table 3-17",
+      "reference_kind": "Decadal proposed mission study / relative timing initialization",
+      "seed_eligible": true,
+      "note": "Launch stated only as January 2023; do not present January 1 as a reported launch day. Relative days 0,376,765,806,1658,3385. Source allocates 250 m/s DSM with timing unspecified; no burn epoch or per-flyby impulse is invented."
+    },
+    {
+      "name": "Neptune–Triton–KBO 2010 architecture",
+      "sequence": "EEJN",
+      "report_id": "vv2011_24_neptune_triton_kbo",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2024_Neptune-Triton-KBO.pdf"
+      ],
+      "propulsion": "Chemical and SEP alternatives",
+      "seed_eligible": false,
+      "reference_kind": "Architecture reference only",
+      "note": "Topology only: Earth–Earth–Jupiter–Neptune, no complete dated chemical schedule extracted; no numerical timing seed."
+    },
+    {
+      "name": "Mercury Lander 2020 SEP baseline",
+      "sequence": "EEVVMeMeMeMeMeMe",
+      "report_id": "owl2020_mercurylander_2020pmcs_final_v2_tagged",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/05/MercuryLander_2020PMCS_Final_v2_Tagged.pdf"
+      ],
+      "propulsion": "Continuous solar electric",
+      "seed_eligible": false,
+      "reference_kind": "Architecture reference only",
+      "note": "Continuous thrust is essential; dates are not a ballistic Lambert solution."
+    },
+    {
+      "name": "Persephone 2020 baseline",
+      "sequence": "EJP",
+      "report_id": "owl2020_pluto_persephone_study_tagged",
+      "sources": [
+        "https://assets.science.nasa.gov/content/dam/science/psd/resources/documents/2020/Pluto_Persephone_Study_Tagged.pdf"
+      ],
+      "propulsion": "Continuous radioisotope electric",
+      "seed_eligible": false,
+      "reference_kind": "Architecture reference only",
+      "note": "EJP topology includes continuous electric propulsion and optional KBO encounters; do not use as a ballistic low-arrival-speed seed."
+    },
+    {
+      "name": "Titan Saturn System Mission 2010 baseline",
+      "sequence": "EVEES",
+      "report_id": "vv2011_17_titan_saturn_system_mission",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2017_Titan-Saturn-System-Mission.pdf"
+      ],
+      "propulsion": "Continuous solar electric",
+      "seed_eligible": false,
+      "reference_kind": "Architecture reference only",
+      "note": "Gravity-assist SEP baseline; no ballistic timing seed."
+    },
+    {
+      "name": "Chiron Orbiter 2010 study",
+      "sequence": "EX",
+      "report_id": "vv2011_22_chiron_orbiter",
+      "sources": [
+        "https://nap.nationalacademies.org/reports/13117/App%20G%2022_Chiron_Orbiter.pdf"
+      ],
+      "propulsion": "Continuous nuclear electric",
+      "seed_eligible": false,
+      "reference_kind": "Architecture reference only",
+      "note": "Electric propulsion required by the studied architecture; no ballistic timing seed."
+    }
+  ]
+}

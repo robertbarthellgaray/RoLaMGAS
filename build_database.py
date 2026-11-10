@@ -79,19 +79,24 @@ def build():
                'EJ','EdvEJ','EVEEJ','EVdvEEJ','EVVEJ','EVdvVEJ','EMEJ','EEVEEJ',
                'ES','EdvES','EEJS','EVEEJS','EVdvVEJS','EdvEJS',
                'EU','EJU','EdvEJU','EVEEJU','EVdvVEJU','ESU',
-               'EN','EJN','EdvEJN','EVEEJN','EVdvVEJN','ESN']
+               'EN','EJN','EdvEJN','EVEEJN','EVdvVEJN','ESN',
+               'EVEVES','EVVMedvMedvMedvMeMe','EdvN','EEJN']
     routes = []
     for s in strings:
         bodies, dsms = parse(s)
         ranges = [pair_days[a+'-'+b] for a,b in zip(bodies,bodies[1:])]
         if s.startswith('EdvE'):
             ranges[0] = [500,1200]
+        # Source-backed Decadal architectures include short inner-planet legs.
+        if s=='EVEVES':ranges=[[90,500],[45,500],[30,180],[45,1200],[900,3000]]
+        if s=='EVVEJ':ranges[2]=[45,900]  # Io Observer Venus 2 to Earth: 676 days.
+        if s=='EVVMedvMedvMedvMeMe':ranges[2:]=[[30,500]]+[[30,750] for _ in ranges[3:]]
         branches = []
         for a,b,(lo,hi) in zip(bodies,bodies[1:],ranges):
             max_m = 0
             if a == b:
                 max_m = {'Mercury':4,'Venus':2,'Earth':2}.get(a,1)
-            elif a in ('Venus','Mercury') and b in ('Venus','Mercury','Earth'):
+            elif a in ('Earth','Venus','Mercury') and b in ('Venus','Mercury','Earth'):
                 max_m = 1
             branches.append([[0,True]] + [[m,low] for m in range(1,max_m+1) for low in (True,False)])
         routes.append(dict(id=s, bodies=bodies, target=bodies[-1], dsm_legs=dsms,

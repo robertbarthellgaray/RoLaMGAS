@@ -1,0 +1,404 @@
+{
+  "schema_version": 1,
+  "indices": [
+    "https://nap.nationalacademies.org/reports/13117/appendix_g.html",
+    "https://science.nasa.gov/planetary-science/resources/documents/"
+  ],
+  "reports": [
+    {
+      "id": "vv2011_01_mercury_lander",
+      "title": "01 Mercury Lander",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2001_Mercury_Lander.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_02_venus_mobile_explorer",
+      "title": "02 Venus Mobile Explorer",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2002_Venus_Mobile_Explorer.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_03_venus_intrepid_tessera_lander",
+      "title": "03 Venus Intrepid Tessera Lander",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2003_Venus_Intrepid_Tessera_Lander.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_04_venus_climate_mission",
+      "title": "04 Venus Climate Mission",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2004_Venus_Climate_Mission.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_05_lunar_geophysical_network",
+      "title": "05 Lunar Geophysical Network",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2005_Lunar_Geophysical_Network.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_06_lunar_polar_volatiles_explorer",
+      "title": "06 Lunar Polar Volatiles Explorer",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2006_Lunar_Polar_Volatiles_Explorer.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_07_mars_astrobiology_explorer",
+      "title": "07 Mars-Astrobiology-Explorer",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2007_Mars-Astrobiology-Explorer.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_08_mars_sample_return_orbiter",
+      "title": "08 Mars-Sample-Return-Orbiter",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2008_Mars-Sample-Return-Orbiter.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_09_mars_sample_return_lander",
+      "title": "09 Mars-Sample-Return-Lander",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2009_Mars-Sample-Return-Lander.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_10_mars_sky_crane",
+      "title": "10 Mars-Sky-Crane",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2010_Mars-Sky-Crane.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_11a_mars_geophysical_network",
+      "title": "11a Mars-Geophysical-Network",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2011a_Mars-Geophysical-Network.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_11b_mars_geophysical_network_options",
+      "title": "11b Mars-Geophysical Network-Options",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2011b_Mars-Geophysical%20Network-Options.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_12_mars_polar_climate",
+      "title": "12 Mars-Polar-Climate",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2012_Mars-Polar-Climate.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_13_jupiter_europa_orbiter",
+      "title": "13 Jupiter-Europa-Orbiter",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2013_Jupiter-Europa-Orbiter.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_14_io_observer",
+      "title": "14 Io-Observer",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2014_Io-Observer.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_15_ganymede_orbiter",
+      "title": "15 Ganymede-Orbiter",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2015_Ganymede-Orbiter.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_16_trojan_tour_and_rendezvous",
+      "title": "16 Trojan Tour and Rendezvous",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2016_Trojan_Tour_and_Rendezvous.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_17_titan_saturn_system_mission",
+      "title": "17 Titan-Saturn-System-Mission",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2017_Titan-Saturn-System-Mission.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_18a_saturn_probe",
+      "title": "18a Saturn-Probe",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2018a_Saturn-Probe.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_18b_saturn_probe_options",
+      "title": "18b Saturn-Probe-Options",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2018b_Saturn-Probe-Options.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_19_enceladus_rma",
+      "title": "19 Enceladus-RMA",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2019_Enceladus-RMA.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_20_enceladus_orbiter",
+      "title": "20 Enceladus-Orbiter",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2020_Enceladus-Orbiter.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_21_titan_lake_lander",
+      "title": "21 Titan-Lake-Lander",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2021_Titan-Lake-Lander.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_22_chiron_orbiter",
+      "title": "22 Chiron Orbiter",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2022_Chiron_Orbiter.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_23_uranus_orbiter_and_probe",
+      "title": "23 Uranus Orbiter and Probe",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2023_Uranus_Orbiter_and_Probe.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_24_neptune_triton_kbo",
+      "title": "24 Neptune-Triton-KBO",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2024_Neptune-Triton-KBO.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_25_comet_surface_sample_return",
+      "title": "25 Comet Surface Sample Return",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%2025_Comet_Surface_Sample_Return.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_tech_1_decadal_neo_target_assessment",
+      "title": "Tech 1 Decadal NEO Target Assessment",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%20Tech%201%20Decadal_NEO%20Target%20Assessment.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_tech_2_small_fission_power_system",
+      "title": "Tech 2 Small Fission Power System",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%20Tech%202%20Small%20Fission%20Power%20System.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_tech_3_saturn_ring_observer",
+      "title": "Tech 3 Saturn Ring Observer",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%20Tech%203%20Saturn%20Ring%20Observer.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "vv2011_tech_4_comet_cryogenic_sample_return",
+      "title": "Tech 4 Comet Cryogenic Sample Return",
+      "cycle": "2013–2022",
+      "url": "https://nap.nationalacademies.org/reports/13117/App%20G%20Tech%204%20Comet_Cryogenic_Sample_Return.pdf",
+      "index_url": "https://nap.nationalacademies.org/reports/13117/appendix_g.html"
+    },
+    {
+      "id": "owl2020_mercurylander_2020pmcs_final_v2_tagged",
+      "title": "Mercury Lander: Transformative Science from the Surface of the Innermost Planet",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/05/MercuryLander_2020PMCS_Final_v2_Tagged.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2020_venus_flagship_mission",
+      "title": "Venus Flagship Mission: A Mission to Explore the Habitability of Venus and the Origins of Earth-sized Planets Both Near and Far",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/11/venus-flagship-mission.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2020_the_lunar_geophysical_network_tagged",
+      "title": "The Lunar Geophysical Network",
+      "cycle": "2023–2032",
+      "url": "https://assets.science.nasa.gov/content/dam/science/psd/resources/documents/2020/The_Lunar_Geophysical_Network_TAGGED.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2020_lunar_intrepid",
+      "title": "Intrepid Planetary Mission Concept Study Report",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/11/lunar-intrepid.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2020_geochronology_report_tagged",
+      "title": "In Situ Geochronology for the Next Decade",
+      "cycle": "2023–2032",
+      "url": "https://assets.science.nasa.gov/content/dam/science/psd/resources/documents/2020/Geochronology_Report_Tagged.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2020_mars_morie_tagged",
+      "title": "Mars MORIE: Mars Orbiter for Resources, Ices, and Environments",
+      "cycle": "2023–2032",
+      "url": "https://assets.science.nasa.gov/content/dam/science/psd/resources/documents/2020/Mars_MORIE_Tagged.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2020_mars_mosaic",
+      "title": "Mars MOSAIC: Mars Orbiters for Surface Atmosphere-Ionosphere Connections",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/11/mars-mosaic.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2020_exploration_of_ceres_habitability_tagged",
+      "title": "Exploration of Ceres Habitability",
+      "cycle": "2023–2032",
+      "url": "https://assets.science.nasa.gov/content/dam/science/psd/resources/documents/2020/Exploration_of_Ceres_Habitability_TAGGED.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2020_enceladus_orbilander_tagged",
+      "title": "Enceladus Orbilander: A Flagship Mission Concept for Astrobiology",
+      "cycle": "2023–2032",
+      "url": "https://assets.science.nasa.gov/content/dam/science/psd/resources/documents/2020/Enceladus_Orbilander_Tagged.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/",
+      "alternate_urls": [
+        "https://ntrs.nasa.gov/api/citations/20205008712/downloads/enceladusorbilander_2020pmcs.pdf"
+      ]
+    },
+    {
+      "id": "owl2020_neptune_odyssey_tagged",
+      "title": "Neptune Odyssey: Mission to the Neptune-Triton System",
+      "cycle": "2023–2032",
+      "url": "https://assets.science.nasa.gov/content/dam/science/psd/resources/documents/2020/Neptune_Odyssey_Tagged.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2020_pluto_persephone_study_tagged",
+      "title": "Persephone: A Pluto-System Orbiter and Kuiper Belt Orbiter",
+      "cycle": "2023–2032",
+      "url": "https://assets.science.nasa.gov/content/dam/science/psd/resources/documents/2020/Pluto_Persephone_Study_Tagged.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_advents_venus_orbiter_aerobot_and_dropsonde",
+      "title": "ADVENTS: Assessment and Discovery of Venus Past Evolution and Near-term climactic and Geophysical State",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/advents-venus-orbiter-aerobot-and-dropsonde.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_calypso_ariel_kbo_flyby",
+      "title": "Calypso: In Search of Ocean Worlds in the Uranian System and Kuiper Belt",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/calypso-ariel-kbo-flyby.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_coral_centaur_orbiter_and_lander",
+      "title": "CORAL: Centaur ORbiter And Lander",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/coral-centaur-orbiter-and-lander.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_crocodile_cryogenic_comet_surface_sample_return",
+      "title": "CROCODILE: Cryogenic Return Of Cometary Organics, Dust, and Ice for Laboratory Exploration",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/crocodile-cryogenic-comet-surface-sample-return.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_enceladus_multiple_flybys",
+      "title": "Enceladus Multiple Flybys: Is There Life Beyond Earth?",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/enceladus-multiple-flybys.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_endurance_spa_traverse_and_sample_return",
+      "title": "Endurance: Lunar South Pole-Altken Basin Traverse and Sample Return Rover",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/11/endurance-spa-traverse-and-sample-return.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_inspire_lunar_polar_volatiles_rover",
+      "title": "INSPIRE: In Situ Solar System Polar Ice Roving Explorer",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/inspire-lunar-polar-volatiles-rover.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_intrepid_endurance_inspire_comparison",
+      "title": "Intrepid-Endurance-Inspire Comparisons",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/intrepid-endurance-inspire-comparison.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_mars_life_explorer",
+      "title": "Mars Life Explorer",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/mars-life-explorer.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_planetary_defense_rapid_mission_architecture_study",
+      "title": "Planetary Defense Missions: Rapid Mission Architecture Study",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/planetary-defense-rapid-mission-architecture-study.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_titan_orbiter_and_probe",
+      "title": "Titan Orbiter and Probe",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/titan-orbiter-and-probe.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_t_ows_triton_ocean_worlds_surveyor",
+      "title": "Triton Ocean World Surveyor: A Neptune Orbiter and Triton Explorer",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/t-ows-triton-ocean-worlds-surveyor.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_uranus_orbiter_and_probe",
+      "title": "Uranus Orbiter and Probe: Journey to an Ice Giant System",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    },
+    {
+      "id": "owl2022_uranus_orbiter_and_probe_appendix_c",
+      "title": "Uranus Orbiter and Probe: Appendix C, Additional Details",
+      "cycle": "2023–2032",
+      "url": "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe-appendix-c.pdf",
+      "index_url": "https://science.nasa.gov/planetary-science/resources/documents/"
+    }
+  ]
+}
