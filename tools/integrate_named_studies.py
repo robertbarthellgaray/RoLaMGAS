@@ -7,8 +7,30 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor,as_completed
 import argparse,hashlib,json,os,shutil,subprocess,sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from ephemeris import atomic_json
+from ephemeris import atomic_json,Ephemerides,DAY
+from dynamics import kepler
+import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
+
+def interpolation_error(output,report,cache):
+    """Independent exact two-body midpoint check of the serialized XYZV."""
+    points=np.loadtxt(output/'trajectory.xyzv');segments=report['force_segments']
+    bodies=sorted({s['center'] for s in segments if s['center']!='Sun'})
+    ep=Ephemerides(cache,bodies,points[0,0],points[-1,0],1.) if bodies else None
+    errors=[];index=0
+    for a,b in zip(points,points[1:]):
+        middle=(a[0]+b[0])/2;dt=(b[0]-a[0])*DAY
+        while index<len(segments)-1 and middle>segments[index]['end_jd_tdb']:index+=1
+        segment=segments[index];center=segment['center'];r,v=a[1:4],a[4:]
+        if center!='Sun':
+            origin=ep.state(center,a[0]);r=r-origin[:3];v=v-origin[3:]
+        exact,_=kepler(r,v,dt/2,segment['gm_km3_s2'])
+        if center!='Sun':exact+=ep.state(center,middle)[:3]
+        estimate=.5*(a[1:4]+b[1:4])+dt/8*(a[4:]-b[4:])
+        errors.append(float(np.linalg.norm(exact-estimate)))
+    maximum=max(errors,default=0.)
+    if maximum>1:raise ValueError(f'Serialized trajectory midpoint error exceeds 1 km: {maximum}')
+    return maximum
 
 def integrate(row,cache):
     identifier=row['id']
@@ -30,7 +52,7 @@ def integrate(row,cache):
         raise ValueError('Numerical or planet/Sun clearance check failed; not publishing')
     return row,folder,output,report
 
-def publish(row,folder,output,report):
+def publish(row,folder,output,report,cache=None):
     identifier=row['id'];base=identifier+'-patched';downloads=ROOT/'docs/downloads'
     for source,suffix in [('trajectory.csv','.csv'),('trajectory.xyzv','.xyzv'),
             ('integration_report.json','-integration.json'),('burns.csv','-burns.csv'),('encounters.csv','-encounters.csv')]:
@@ -45,12 +67,16 @@ def publish(row,folder,output,report):
     readme=row['title']+'\n\n'+note+'\n\nColumns: JD TDB, X Y Z (km), VX VY VZ (km/s). Sun-centered Ecliptic J2000.\n'
     (downloads/(base+'-README.txt')).write_text(readme,encoding='utf-8')
     path=ROOT/'docs/data/cases'/(identifier+'.json');case=json.loads(path.read_text(encoding='utf-8'))
+    cache=cache or Path(json.loads((folder/'run_manifest.json').read_text(encoding='utf-8'))['config']['cache'])
+    error=interpolation_error(output,report,cache)
     case['trajectory_files']=dict(csv='downloads/'+base+'.csv',xyzv='downloads/'+base+'.xyzv',
         readme='downloads/'+base+'-README.txt',integration_report='downloads/'+base+'-integration.json',
         burns='downloads/'+base+'-burns.csv',rows=report['rows'],finite_radius=True,
         units='JD(TDB), km, km/s',coordinates='Sun-centered Ecliptic J2000',
         source='Numerically propagated finite-radius patched conics',note=note,
         total_onboard_delta_v_kms=report['total_onboard_delta_v_kms'],passes_original_onboard_budget=report['passes_original_onboard_budget'],
+        max_checked_hermite_position_error_km=error,
+        interpolation_check='All serialized interval midpoints against exact two-body propagation in the reported force center; JPL frame translation inside planet patches.',
         csv_sha256=hashlib.sha256((downloads/(base+'.csv')).read_bytes()).hexdigest(),
         xyzv_sha256=hashlib.sha256((output/'trajectory.xyzv').read_bytes()).hexdigest())
     path.write_text(json.dumps(case,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
@@ -72,7 +98,7 @@ def main():
     with ThreadPoolExecutor(max_workers=2) as pool:
         futures={pool.submit(integrate,row,args.cache):row for row in rows}
         for future in as_completed(futures):
-            try:summary=publish(*future.result());summaries.append(summary);print(json.dumps(summary),flush=True)
+            try:summary=publish(*future.result(),cache=args.cache);summaries.append(summary);print(json.dumps(summary),flush=True)
             except Exception as exc:
                 failure=dict(name=futures[future]['title'],error=str(exc));failures.append(failure);print(json.dumps(failure),flush=True)
     atomic_json(ROOT/'studies/mission_report_recreations/integrated_exports.json',dict(trajectories=summaries,failures=failures))
