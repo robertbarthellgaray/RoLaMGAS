@@ -1,0 +1,77 @@
+{
+  "trajectories": [
+    {
+      "id": "f53fc65c9329",
+      "name": "Trident date-match \u2014 added maneuvers",
+      "rows": 6745,
+      "numerical_validation_passed": true,
+      "clearance_passed": true,
+      "patch_join_delta_v_kms": 1.3207434723483782,
+      "total_onboard_delta_v_kms": 2.0803896852216877,
+      "passes_original_onboard_budget": false,
+      "csv": "../../docs/downloads/f53fc65c9329-patched.csv",
+      "xyzv": "../../docs/downloads/f53fc65c9329-patched.xyzv"
+    },
+    {
+      "id": "0fc1f2bcd586",
+      "name": "Mars Life Explorer 2035",
+      "rows": 445,
+      "numerical_validation_passed": true,
+      "clearance_passed": true,
+      "patch_join_delta_v_kms": 0.09629915850194808,
+      "total_onboard_delta_v_kms": 0.09629915850194808,
+      "passes_original_onboard_budget": true,
+      "csv": "../../../docs/downloads/0fc1f2bcd586-patched.csv",
+      "xyzv": "../../../docs/downloads/0fc1f2bcd586-patched.xyzv"
+    },
+    {
+      "id": "dd67c26fd41f",
+      "name": "Mars Life Explorer 2037",
+      "rows": 379,
+      "numerical_validation_passed": true,
+      "clearance_passed": true,
+      "patch_join_delta_v_kms": 0.11944056232422046,
+      "total_onboard_delta_v_kms": 0.11944056232422046,
+      "passes_original_onboard_budget": true,
+      "csv": "../../../docs/downloads/dd67c26fd41f-patched.csv",
+      "xyzv": "../../../docs/downloads/dd67c26fd41f-patched.xyzv"
+    },
+    {
+      "id": "9ca55df1c55c",
+      "name": "Mars Life Explorer 2039",
+      "rows": 499,
+      "numerical_validation_passed": true,
+      "clearance_passed": true,
+      "patch_join_delta_v_kms": 0.08907745995400539,
+      "total_onboard_delta_v_kms": 0.08907745995400539,
+      "passes_original_onboard_budget": true,
+      "csv": "../../../docs/downloads/9ca55df1c55c-patched.csv",
+      "xyzv": "../../../docs/downloads/9ca55df1c55c-patched.xyzv"
+    },
+    {
+      "id": "35bd4d9c6e03",
+      "name": "CALYPSO Ariel / KBO concept \u2014 Uranus cruise",
+      "rows": 4015,
+      "numerical_validation_passed": true,
+      "clearance_passed": true,
+      "patch_join_delta_v_kms": 0.6417060153090387,
+      "total_onboard_delta_v_kms": 0.6812018875255854,
+      "passes_original_onboard_budget": true,
+      "csv": "../../../docs/downloads/35bd4d9c6e03-patched.csv",
+      "xyzv": "../../../docs/downloads/35bd4d9c6e03-patched.xyzv"
+    },
+    {
+      "id": "552363ae7812",
+      "name": "T-OWS 2030 concept \u2014 operations-table schedule",
+      "rows": 9590,
+      "numerical_validation_passed": true,
+      "clearance_passed": true,
+      "patch_join_delta_v_kms": 1.1744587910722344,
+      "total_onboard_delta_v_kms": 1.3192555925178826,
+      "passes_original_onboard_budget": false,
+      "csv": "../../../docs/downloads/552363ae7812-patched.csv",
+      "xyzv": "../../../docs/downloads/552363ae7812-patched.xyzv"
+    }
+  ],
+  "failures": []
+}

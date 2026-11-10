@@ -1,0 +1,12 @@
+{
+  "id": "35bd4d9c6e03",
+  "name": "CALYPSO Ariel / KBO concept \u2014 Uranus cruise",
+  "rows": 4015,
+  "numerical_validation_passed": true,
+  "clearance_passed": true,
+  "patch_join_delta_v_kms": 0.6417060153090387,
+  "total_onboard_delta_v_kms": 0.6812018875255854,
+  "passes_original_onboard_budget": true,
+  "csv": "../../../docs/downloads/35bd4d9c6e03-patched.csv",
+  "xyzv": "../../../docs/downloads/35bd4d9c6e03-patched.xyzv"
+}

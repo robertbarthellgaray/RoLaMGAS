@@ -20,7 +20,8 @@ def self_check():
     if not numpy.isfinite(error) or error>=1. or not compiled:
         raise RuntimeError('Compiled Lambert/Kepler self-check failed: '+str(error)+' km')
     required=('gui.html','gui.js','mission_metrics.js','gui.css','sequence_database.json','gui_assets/launch_mass_c3.png','gui_assets/rolamgas-icon.png','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json','departure_seeds/historical_missions.json',
-              'model_assets/LowPolySatPanels.3ds','model_assets/LowPolySatRTG.3ds','LICENSE')
+              'departure_seeds/mission_studies.json','departure_seeds/decadal_missions.json',
+              'celestia_assets/dwarf_planet_orbits.json','model_assets/LowPolySatPanels.3ds','model_assets/LowPolySatRTG.3ds','LICENSE')
     missing=[name for name in required if not (RESOURCE_ROOT/name).is_file()]
     if missing:raise RuntimeError('Bundled resources missing: '+', '.join(missing))
     with zipfile.ZipFile(RESOURCE_ROOT/'baseline_ephemerides.zip') as archive:
@@ -38,7 +39,8 @@ def self_check():
     return dict(name='RoLaMGAS',numpy=numpy.__version__,scipy=scipy.__version__,numba=numba.__version__,
         data_root=str(DATA_ROOT),scientific_self_check=dict(endpoint_error_km=error,
         numba_kernels_compiled=compiled),bundled_resource_count=len(required),baseline_planets=len(BODIES),
-        certificate_verification=True,certificate_context=type(context).__module__+'.'+type(context).__name__)
+        certificate_verification=True,certificate_context=type(context).__module__+'.'+type(context).__name__,
+        decadal_timing_seeds=sum(bool(r.get('seed_eligible')) for r in json.loads((RESOURCE_ROOT/'departure_seeds/decadal_missions.json').read_text(encoding='utf-8'))['missions']))
 
 
 def main():

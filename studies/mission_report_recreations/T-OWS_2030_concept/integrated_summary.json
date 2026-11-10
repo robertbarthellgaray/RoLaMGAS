@@ -1,0 +1,12 @@
+{
+  "id": "552363ae7812",
+  "name": "T-OWS 2030 concept \u2014 operations-table schedule",
+  "rows": 9590,
+  "numerical_validation_passed": true,
+  "clearance_passed": true,
+  "patch_join_delta_v_kms": 1.1744587910722344,
+  "total_onboard_delta_v_kms": 1.3192555925178826,
+  "passes_original_onboard_budget": false,
+  "csv": "../../../docs/downloads/552363ae7812-patched.csv",
+  "xyzv": "../../../docs/downloads/552363ae7812-patched.xyzv"
+}

@@ -34,8 +34,13 @@ class ArrivalGuiOptionsTests(unittest.TestCase):
                 with self.subTest(endpoint=endpoint,desired=desired):
                     app=SimpleNamespace(token='arrival-token',integrate=Mock(return_value={'started':True}),package=Mock(return_value={'state':'finished'}))
                     self.request(app,endpoint,dict(run='saved',candidate=ID,arrival_inclination_deg=desired))
-                    expected=('saved',ID,None,None,0.,desired) if method=='integrate' else ('saved',ID,'auto',None,None,0.,desired)
+                    expected=('saved',ID,None,None,0.,desired) if method=='integrate' else ('saved',ID,'auto',None,None,0.,desired,False,None)
                     getattr(app,method).assert_called_once_with(*expected)
+
+    def test_http_api_forwards_optional_dwarf_patch_catalog(self):
+        app=SimpleNamespace(token='arrival-token',package=Mock(return_value={'state':'finished'}))
+        self.request(app,'/api/package',dict(run='saved',candidate=ID,patch_dwarf_planet=True,dwarf_catalog_path='/opt/celestia/data/dwarfplanets.ssc'))
+        app.package.assert_called_once_with('saved',ID,'auto',None,None,0.,None,True,'/opt/celestia/data/dwarfplanets.ssc')
 
     def test_worker_flags_keep_zero_and_omit_unspecified_inclination(self):
         for desired in (None,0.,90.):

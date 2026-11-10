@@ -53,7 +53,8 @@ def texture_references(path):
     return list(dict.fromkeys(references))
 
 
-def build_package(output,candidate,config,override='auto'):
+def build_package(output,candidate,config,override='auto',patch_dwarf_planet=False,dwarf_catalog_path=None):
+    if not isinstance(patch_dwarf_planet,bool):raise ValueError('Patch dwarf planet must be a boolean')
     output=Path(output)
     report=json.loads((output/'integration_report.json').read_text(encoding='utf-8'))
     if not report.get('numerical_validation_passed'):
@@ -73,10 +74,17 @@ def build_package(output,candidate,config,override='auto'):
     identifier=candidate['id']
     if not re.fullmatch(r'[a-f0-9]{12}',identifier):
         raise ValueError('Invalid candidate ID')
-    addon_name=f'Trajectory_{identifier}_{selected}'
+    addon_name=f'Trajectory_{identifier}_{selected}'+('_JPL' if patch_dwarf_planet else '')
     root=output/'celestia_package'/addon_name
     for sub in ('data','models','reports'):
         (root/sub).mkdir(parents=True,exist_ok=True)
+    old_manifest=root/'package_manifest.json'
+    if old_manifest.is_file():
+        previous=json.loads(old_manifest.read_text(encoding='utf-8')).get('dwarf_planet_patch') or {}
+        for name in previous.get('files',[]):
+            stale=(root/name).resolve()
+            if not stale.is_relative_to(root.resolve()):raise ValueError('Invalid previous patch artifact path')
+            if stale.is_file():stale.unlink()
     trajectory_name='trajectory_'+identifier+'.xyzv'
     shutil.copy2(output/'trajectory.xyzv',root/'data'/trajectory_name)
     shutil.copy2(source,root/'models'/filename)
@@ -109,6 +117,10 @@ def build_package(output,candidate,config,override='auto'):
     (root/(addon_name+'.ssc')).write_text(ssc,encoding='utf-8')
     for name in ('integration_report.json','burns.csv','encounters.csv','planet_clearances.csv','trajectory.csv','arrival_state.json','arrival_state.csv'):
         if (output/name).is_file():shutil.copy2(output/name,root/'reports'/name)
+    patch=None
+    if patch_dwarf_planet:
+        from dwarf_planet_patch import create_patch
+        patch=create_patch(root,candidate,config,report,dwarf_catalog_path)
     from app_paths import APP_VERSION
     manifest=dict(engine_version=APP_VERSION,candidate_id=identifier,model=selected,model_filename=filename,model_selection_reason=reason,
                   source_model_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
@@ -122,7 +134,8 @@ def build_package(output,candidate,config,override='auto'):
                   source_candidate_status=report.get('source_candidate_status',candidate.get('status')),
                   candidate_passes_requested_limits=report.get('candidate_passes_requested_limits'),
                   requirement_violations=report.get('requirement_violations',[]),
-                  passes_original_onboard_budget=report['passes_original_onboard_budget'])
+                  passes_original_onboard_budget=report['passes_original_onboard_budget'],
+                  dwarf_planet_patch=patch)
     atomic_json(root/'package_manifest.json',manifest)
     (root/'README.txt').write_text(
         f'CELESTIA TRAJECTORY PACKAGE\n\nExtract the ZIP and copy this entire {addon_name} folder into Celestia/extras.\n'
@@ -135,7 +148,10 @@ def build_package(output,candidate,config,override='auto'):
         f'Source candidate status: {candidate.get("status","unknown")}.\n'
         f'Requested-limit violations: {"; ".join(report.get("requirement_violations",[])) or "See integration report and source search."}\n'
         'Numerical conic validation is not an optimized fuel budget or continuous n-body validation.\n'
-        'See reports/integration_report.json and reports/burns.csv for all maneuvers and limitations.\n',encoding='utf-8')
+        'See reports/integration_report.json and reports/burns.csv for all maneuvers and limitations.\n'+
+        (f'\nOPTIONAL JPL DWARF-PLANET PATCH\n{patch["celestia_object"]}: {patch["start_date"]} through {patch["end_date"]}.\n'
+         +patch['limitations']+'\nOriginal Celestia orbit fields are GPL-2.0-or-later; attribution is bundled in the app Celestia orbit catalog.\n'
+         'Remove jpl_dwarf_planet_patch.ssc to disable this override. See reports/dwarf_planet_patch.json.\n' if patch else ''),encoding='utf-8')
     zip_name=addon_name+'.zip'
     temporary=output/(zip_name+'.tmp')
     with zipfile.ZipFile(temporary,'w',compression=zipfile.ZIP_DEFLATED) as archive:

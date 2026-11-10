@@ -184,7 +184,7 @@ async function selectCandidate(id) {
   $('plot-message').hidden = false; $('plot-message').textContent = 'Loading saved flight…';
   try {
     let c = cache.get(id);
-    if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json`); cache.set(id, c); }
+    if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json?v=20261110d`); cache.set(id, c); }
     if (token !== requestVersion) return;
     annotateMission(c);selected = c; attachPlanetContext(c); renderBodyVisibility(c); fraction = 0; zoom = 1; setView('3d');
     updateLocation(c.id);
@@ -224,7 +224,7 @@ async function selectCandidate(id) {
     const files = c.trajectory_files,finite=finiteRadiusDownload(c);
     $('download-csv').textContent=finite?'Trajectory CSV ↓':'Lambert analysis CSV ↓';
     $('download-xyzv').textContent='Flyby trajectory XYZV ↓';
-    for (const [name,key] of [['download-csv','csv'],['download-xyzv','xyzv'],['download-state-readme','readme']]) {
+    for (const [name,key] of [['download-csv','csv'],['download-xyzv','xyzv'],['download-state-readme','readme'],['download-integration-report','integration_report'],['download-burns','burns']]) {
       const link=$(name); link.hidden=!files?.[key];
       if(files?.[key]) link.href=files[key];
     }

@@ -9,10 +9,10 @@ import argparse,hashlib,json,os,platform,re,shutil,subprocess,sys,tempfile,zipfi
 ROOT=Path(__file__).resolve().parent
 MODULES=['app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search','sequence_timing','dynamics','ephemeris',
          'horizons_targets','network','search_options','candidate_archive','community','candidate_status','earth_return_seeds','historical_seeds','launch_performance','trajectory_transfer','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
-         'presentation','live_gallery','integrate_export','celestia_package','moon_screen','baseline_cache',
+         'presentation','live_gallery','integrate_export','celestia_package','dwarf_planet_patch','moon_screen','baseline_cache',
          'build_database','build_release','restore_diagnostics']
-DOCS=['MISSION_STUDIES.md','RESONANT_TRANSFERS.md','LAUNCH_PERFORMANCE.md','WEBSITE_HANDOFF.md','GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md','JUICE_DEPARTURE_SEEDS.md','PREVIEW_AND_RESULTS.md','HISTORICAL_SEEDS.md']
-DATA_FILES=('departure_seeds','community_seed_catalog.json','community_config.json','gui.html','gui.js','mission_metrics.js','gui.css','gallery.html','sequence_database.json','examples','model_assets',
+DOCS=['MISSION_STUDIES.md','RESONANT_TRANSFERS.md','LAUNCH_PERFORMANCE.md','WEBSITE_HANDOFF.md','GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md','JUICE_DEPARTURE_SEEDS.md','PREVIEW_AND_RESULTS.md','HISTORICAL_SEEDS.md','CELESTIA_DWARF_PATCH.md']
+DATA_FILES=('departure_seeds','celestia_assets','community_seed_catalog.json','community_config.json','gui.html','gui.js','mission_metrics.js','gui.css','gallery.html','sequence_database.json','examples','model_assets',
             'gui_assets','baseline_ephemerides.zip','LICENSE','THIRD_PARTY_NOTICES.md','third_party_licenses')
 
 
@@ -53,7 +53,7 @@ def source_release(baseline):
     files += list((ROOT/'examples').glob('*.json'))
     files += list((ROOT/'model_assets').glob('*'))
     files += [p for p in (ROOT/'.github').rglob('*') if p.is_file()]
-    files += [p for folder in ('docs','tools','gui_assets','departure_seeds','third_party_licenses','mission_comparison') for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts]
+    files += [p for folder in ('docs','tools','gui_assets','departure_seeds','celestia_assets','third_party_licenses','mission_comparison') for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts]
     files += [ROOT/name for name in ('LICENSE','THIRD_PARTY_NOTICES.md') if (ROOT/name).is_file()]
     with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
         for path in sorted(set(files)):

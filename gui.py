@@ -558,7 +558,7 @@ class App:
             status['report']=read_json(output/'integration_report.json',{})
         return status
 
-    def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None):
+    def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,patch_dwarf_planet=False,dwarf_catalog_path=None):
         from integrate_export import validate_post_flyby_months
         from arrival_geometry import validate_inclination
         arrival_inclination_deg=validate_inclination(arrival_inclination_deg)
@@ -581,7 +581,7 @@ class App:
         root=self.folder(name)
         candidate=read_json(root/'candidates'/(identifier+'.json'))
         config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{})['config']
-        return build_package(root/'exports'/identifier,candidate,config,model)
+        return build_package(root/'exports'/identifier,candidate,config,model,patch_dwarf_planet,dwarf_catalog_path)
 
     def open_package_folder(self,name,identifier):
         if not re.fullmatch(r'[a-f0-9]{12}',identifier):
@@ -713,7 +713,12 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/api/integrate':
                 return self.json(self.app.integrate(value['run'],value['candidate'],value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg')))
             if self.path=='/api/package':
-                return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg')))
+                return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('patch_dwarf_planet',False),value.get('dwarf_catalog_path')))
+            if self.path=='/api/dwarf-patch-info':
+                from dwarf_planet_patch import patch_info
+                root=self.app.folder(value['run'])
+                config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{})['config']
+                return self.json(patch_info(config,value.get('dwarf_catalog_path')))
             if self.path=='/api/open-package-folder':
                 return self.json(self.app.open_package_folder(value['run'],value['candidate']))
             if self.path=='/api/shutdown':

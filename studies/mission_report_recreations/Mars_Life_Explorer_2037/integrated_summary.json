@@ -1,0 +1,12 @@
+{
+  "id": "dd67c26fd41f",
+  "name": "Mars Life Explorer 2037",
+  "rows": 379,
+  "numerical_validation_passed": true,
+  "clearance_passed": true,
+  "patch_join_delta_v_kms": 0.11944056232422046,
+  "total_onboard_delta_v_kms": 0.11944056232422046,
+  "passes_original_onboard_budget": true,
+  "csv": "../../../docs/downloads/dd67c26fd41f-patched.csv",
+  "xyzv": "../../../docs/downloads/dd67c26fd41f-patched.xyzv"
+}

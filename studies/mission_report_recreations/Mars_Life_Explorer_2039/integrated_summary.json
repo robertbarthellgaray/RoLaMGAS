@@ -1,0 +1,12 @@
+{
+  "id": "9ca55df1c55c",
+  "name": "Mars Life Explorer 2039",
+  "rows": 499,
+  "numerical_validation_passed": true,
+  "clearance_passed": true,
+  "patch_join_delta_v_kms": 0.08907745995400539,
+  "total_onboard_delta_v_kms": 0.08907745995400539,
+  "passes_original_onboard_budget": true,
+  "csv": "../../../docs/downloads/9ca55df1c55c-patched.csv",
+  "xyzv": "../../../docs/downloads/9ca55df1c55c-patched.xyzv"
+}

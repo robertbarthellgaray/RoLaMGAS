@@ -1,0 +1,179 @@
+{
+  "source": "Celestia data/dwarfplanets.ssc, installed snapshot 2026-11-10",
+  "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+  "license": "GPL-2.0-or-later",
+  "attribution": [
+    "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+    "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+    "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+    "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+    "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+    "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+    "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+  ],
+  "objects": [
+    {
+      "name": "Pluto-Charon",
+      "aliases": [
+        "Pluto-Charon"
+      ],
+      "parent": "Sol",
+      "item_type": "ReferencePoint",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tPeriod\t248.0553249511832\n\t\tSemiMajorAxis\t39.47846297299562\n\t\tEccentricity\t0.2501751659981197\n\t\tInclination\t17.16199308367073\n\t\tAscendingNode\t110.287823984409\n\t\tArgOfPericenter\t113.3692019799804\n\t\tMeanAnomaly\t37.59869705192153\n\t}"
+      }
+    },
+    {
+      "name": "Pluto",
+      "aliases": [
+        "Pluto",
+        "134340 Pluto"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Pluto-Charon\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tPeriod\t6.387221  # mean\n\t\tSemiMajorAxis\t2130.734  # separation = 19595.764 km, mass ratio = 0.1220\n\t\tEccentricity\t0.000161  # mean\n\t\tInclination\t112.888628\n\t\tAscendingNode\t227.392167\n\t\tArgOfPericenter\t352.410172\n\t\tMeanAnomaly\t213.475686\n\t}",
+        "BodyFrame": "BodyFrame\t{ EclipticJ2000 {} }",
+        "UniformRotation": "UniformRotation  # to match orbit\n\t{\n    Period 153.293304\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tInclination\t112.888628\n\t\tAscendingNode\t227.392167\n\t\tMeridianAngle\t25.885858\n\t}"
+      }
+    },
+    {
+      "name": "Ceres",
+      "aliases": [
+        "Ceres",
+        "1 Ceres",
+        "1943 XB",
+        "A899 OF"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457087.5  # 2015 Mar 06 (Dawn arrival)\n\t\tPeriod\t4.604489842389347\n\t\tSemiMajorAxis\t2.767677892029369\n\t\tEccentricity\t0.075823549018329\n\t\tInclination\t10.59298957835918\n\t\tAscendingNode\t80.32901951983351\n\t\tArgOfPericenter\t72.57244735702379\n\t\tMeanAnomaly\t114.5600765346728\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\t# C. Raymond, JPL and T. Roatsch, DLR (28-Jun-2018)\n\t\t# https://sbnarchive.psi.edu/pds3/dawn/fc/DWNCSPC_4_01/DOCUMENT/CERES_COORD_SYS_180628.HTM\n\t\tEpoch\t2451545.0         # J2000\n\t\tPeriod\t9.074169392       # Omega = 952.1532635 +/- 0.000002 deg/day\n\t\tInclination\t23.23967  # Dec   = 66.76033 deg\n\t\tAscendingNode\t21.42763  # RA    = 291.42763 deg\n\t\tMeridianAngle\t170.309\n\t}"
+      }
+    },
+    {
+      "name": "Orcus-Vanth",
+      "aliases": [
+        "Orcus-Vanth"
+      ],
+      "parent": "Sol",
+      "item_type": "ReferencePoint",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit  # system barycenter solution\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t246.0132195236034\n\t\tSemiMajorAxis\t39.27904760862676\n\t\tEccentricity\t0.2238649605977904\n\t\tInclination\t20.56778532527048\n\t\tAscendingNode\t268.5847818676822\n\t\tArgOfPericenter\t73.02144541087628\n\t\tMeanAnomaly\t151.0612392132629\n\t}"
+      }
+    },
+    {
+      "name": "Orcus",
+      "aliases": [
+        "Orcus",
+        "90482 Orcus",
+        "2004 DW"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEquatorJ2000\t{ Center \"Sol/Orcus-Vanth\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2454000  # 2006 Sept 21 12:00 UT\n\t\tPeriod\t9.539154\n\t\tSemiMajorAxis\t1233.0  # semi-major axis: 8999.8 km, mass ratio: 0.16 ± 0.02\n\t\tEccentricity\t0.00091\n\t\tInclination\t105.03\n\t\tMeanLongitude\t8.52\n\t\tAscendingNode\t53.49\n\t\tLongOfPericenter\t148\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # to match orbit\n\t{\n    Period 228.939696\n\t\tEpoch\t2454000  # 2006 Sept 21 12:00 UT\n\t\tInclination\t105.03\n\t\tAscendingNode\t53.49\n\t\tMeridianAngle\t135.03\n\t}"
+      }
+    },
+    {
+      "name": "Haumea",
+      "aliases": [
+        "Haumea",
+        "136108 Haumea",
+        "2003 EL61"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit  # primary body solution\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t282.8118121472361\n\t\tSemiMajorAxis\t43.1042753471461\n\t\tEccentricity\t0.1949599020093612\n\t\tInclination\t28.20394234125633\n\t\tAscendingNode\t121.9427805095287\n\t\tArgOfPericenter\t239.9675582432638\n\t\tMeanAnomaly\t190.4008296173513\n\t}",
+        "UniformRotation": "UniformRotation  # ring pole\n\t{\n\t\tEpoch\t2457774.6321  # 2017 Jan 21 03:09 UT\n\t\tPeriod\t3.915341\n\t\tInclination\t77.9  # B_ring = 13.8° ± 0.5°\n\t\tAscendingNode\t15.1  # P_ring = -74.3° ± 1.3°\n\t\tMeridianAngle\t243.9  # ψ = 13.3° (light-time corrected)\n\t}"
+      }
+    },
+    {
+      "name": "Quaoar",
+      "aliases": [
+        "Quaoar",
+        "50000 Quaoar",
+        "2002 LM60"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit  # primary body solution\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t285.0867252438612\n\t\tSemiMajorAxis\t43.33511791963463\n\t\tEccentricity\t0.03694047272837633\n\t\tInclination\t7.990872665933034\n\t\tAscendingNode\t188.9141632759559\n\t\tArgOfPericenter\t157.5485109164584\n\t\tMeanAnomaly\t265.1494956186123\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tEpoch\t2459800.7744  # 2022 Aug 09 06:34 UT\n\t\tPeriod\t17.6999  # Table 34 (1 σ)\n\t\tInclination\t35.0\n\t\tAscendingNode\t349.5\n\t\tMeridianAngle\t-2  # Table 34 (1 σ)\n\t}"
+      }
+    },
+    {
+      "name": "Makemake",
+      "aliases": [
+        "Makemake",
+        "136472 Makemake",
+        "2005 FY9"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t306.7031483189599\n\t\tSemiMajorAxis\t45.49889074848782\n\t\tEccentricity\t0.1603866059337173\n\t\tInclination\t29.001993091243\n\t\tAscendingNode\t79.44279066059018\n\t\tArgOfPericenter\t296.0687622301867\n\t\tMeanAnomaly\t140.1043006005143\n\t}",
+        "UniformRotation": "UniformRotation  # assume alignment with moon orbit\n\t{\n\t\tPeriod\t22.8266  # Hromakina et al. (2019), 2019A&A...625A..46H\n\t\tInclination\t82\n\t\tAscendingNode\t15\n\t}"
+      }
+    },
+    {
+      "name": "Gonggong",
+      "aliases": [
+        "Gonggong",
+        "225088 Gonggong",
+        "2007 OR10"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t548.8820241583734\n\t\tSemiMajorAxis\t67.06686274245513\n\t\tEccentricity\t0.5034169656629447\n\t\tInclination\t30.80270792355379\n\t\tAscendingNode\t336.8395047941726\n\t\tArgOfPericenter\t206.9913021996599\n\t\tMeanAnomaly\t93.64998094826905\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # assume alignment with moon orbit\n\t{\n\t\tPeriod\t22.40\n\t\tInclination\t83.08\n\t\tAscendingNode\t31.99\n\t}"
+      }
+    },
+    {
+      "name": "Eris",
+      "aliases": [
+        "Eris",
+        "136199 Eris",
+        "2003 UB313"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit  # primary body solution\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t558.3543963112093\n\t\tSemiMajorAxis\t67.83626725354715\n\t\tEccentricity\t0.4384168372720811\n\t\tInclination\t43.99289883118324\n\t\tAscendingNode\t35.97649812597815\n\t\tArgOfPericenter\t151.2203644343608\n\t\tMeanAnomaly\t193.8445766876322\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # to match mutual orbit\n\t{\n\t\tEpoch\t2453979.0  # 2006 Aug 31 12:00\n\t\t# Period\t378.504  # measured\n\t\tPeriod\t378.861576\n\t\tInclination\t45.49\n\t\tAscendingNode\t126.17\n\t\tMeridianAngle\t359.61\n\t}"
+      }
+    },
+    {
+      "name": "Sedna",
+      "aliases": [
+        "Sedna",
+        "90377 Sedna",
+        "2003 VB12"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t11389.43852390799\n\t\tSemiMajorAxis\t506.4347864859337\n\t\tEccentricity\t0.8495533299295479\n\t\tInclination\t11.92852404300244\n\t\tAscendingNode\t144.4016491162131\n\t\tArgOfPericenter\t311.2847593268618\n\t\tMeanAnomaly\t357.5939832662714\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t10.273\n\t}"
+      }
+    }
+  ]
+}

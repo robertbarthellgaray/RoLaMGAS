@@ -24,3 +24,10 @@ The script saves successful and unsuccessful attempts, search settings, full can
 [Trident](../trident_reconstruction/README.md) is published separately with its added maneuvers explicitly identified. All six admitted cases were independently integrated coast by coast and reloaded through the desktop app's exact-candidate importer. [Website links](website_links.json), [public-library receipt](upload_receipt.json), and individual `validation.json` files retain the evidence.
 
 Enceladus Multiple Flybys and Titan Orbiter/Probe references provide useful broad cruise durations, but no complete dated encounter chain was recovered here, so they are reference-only entries. CROCODILE uses continuous solar electric propulsion and is intentionally excluded from ballistic Lambert seeds. No rejected case is presented as an accepted trajectory.
+
+Finite-radius patched-conic versions of the six named reconstructions are now
+available in the [named download index](../../docs/downloads/NAMED_MISSION_TRAJECTORIES.md),
+with CSV, XYZV, full integration reports and burn tables. All six pass the
+numerical and planet/Sun clearance checks. Trident and T-OWS exceed their original
+onboard budgets after patch retargeting; this is explicitly disclosed. The nine
+new Decadal references remain initialization data, not additional solved missions.

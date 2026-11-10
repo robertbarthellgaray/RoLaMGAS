@@ -1,0 +1,451 @@
+{
+  "target": "Mercury",
+  "launch_start": "2020-04-06",
+  "launch_end": "2020-04-06T23:59:59",
+  "max_years": 15.0,
+  "vinf_tolerance_mps": 20.0,
+  "min_c3": 5.0,
+  "max_c3": 30.0,
+  "max_arrival_vinf_kms": 15.0,
+  "max_dsm_kms": 1.238,
+  "max_single_dsm_kms": 0.7,
+  "max_powered_flyby_kms": 0.2,
+  "dsm_velocity_box_kms": 6.0,
+  "minimum_altitude_km": {
+    "Mercury": 200.0,
+    "Venus": 300.0,
+    "Earth": 200.0,
+    "Mars": 200.0,
+    "Jupiter": 10000.0,
+    "Saturn": 10000.0,
+    "Uranus": 1000.0,
+    "Neptune": 1000.0
+  },
+  "samples_per_sequence": 3000,
+  "refinements_per_sequence": 36,
+  "max_nfev": 250,
+  "branch_families": 16,
+  "batches": 1,
+  "seed": 502,
+  "keep": 100,
+  "max_ephemeris_step_days": 1.0,
+  "sequences": [
+    "EVVMedvMedvMedvMeMe"
+  ],
+  "route_overrides": {
+    "EVVMedvMedvMedvMeMe": {
+      "leg_days": [
+        [
+          45,
+          500
+        ],
+        [
+          180,
+          650
+        ],
+        [
+          30,
+          500
+        ],
+        [
+          30,
+          750
+        ],
+        [
+          30,
+          750
+        ],
+        [
+          30,
+          750
+        ],
+        [
+          30,
+          750
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ]
+      ]
+    }
+  },
+  "target_object": null,
+  "custom_leg_days": [
+    30.0,
+    18262.5
+  ],
+  "search_objective": "feasibility",
+  "cost_refinements": 3,
+  "powered_flybys": false,
+  "mercury_resonant_seeds": true,
+  "earth_return_seeds": true,
+  "historical_mission_seeds": true,
+  "arrival_date": null,
+  "arrival_tolerance_days": 0.0,
+  "transfer_direction": "prograde",
+  "mission_profile": "custom",
+  "c3_seed_boundary": "minimum",
+  "event_windows": [
+    [
+      "2020-04-06T00:00:00",
+      "2020-04-06T23:59:59"
+    ],
+    [
+      "2020-10-14T00:00:00",
+      "2020-10-14T23:59:59"
+    ],
+    [
+      "2021-08-10T00:00:00",
+      "2021-08-10T23:59:59"
+    ],
+    [
+      "2021-10-01T00:00:00",
+      "2021-10-01T23:59:59"
+    ],
+    [
+      "2022-06-24T00:00:00",
+      "2022-06-24T23:59:59"
+    ],
+    [
+      "2023-06-14T00:00:00",
+      "2023-06-14T23:59:59"
+    ],
+    [
+      "2025-03-06T00:00:00",
+      "2025-03-06T23:59:59"
+    ],
+    [
+      "2025-04-22T00:00:00",
+      "2025-04-22T23:59:59"
+    ]
+  ]
+}

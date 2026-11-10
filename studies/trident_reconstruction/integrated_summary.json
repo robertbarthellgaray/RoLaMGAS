@@ -1,0 +1,12 @@
+{
+  "id": "f53fc65c9329",
+  "name": "Trident date-match \u2014 added maneuvers",
+  "rows": 6745,
+  "numerical_validation_passed": true,
+  "clearance_passed": true,
+  "patch_join_delta_v_kms": 1.3207434723483782,
+  "total_onboard_delta_v_kms": 2.0803896852216877,
+  "passes_original_onboard_budget": false,
+  "csv": "../../docs/downloads/f53fc65c9329-patched.csv",
+  "xyzv": "../../docs/downloads/f53fc65c9329-patched.xyzv"
+}

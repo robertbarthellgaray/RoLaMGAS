@@ -25,3 +25,9 @@ Ephemerides are geometric vectors from JPL Horizons. JPL and NASA do not endorse
 Build-tool notices: `third_party_licenses/pyinstaller/`,
 `third_party_licenses/pyinstaller_hooks_contrib/`, and `third_party_licenses/altgraph/`.
 PyInstaller’s bootloader exception is retained in its license text.
+
+`celestia_assets/dwarf_planet_orbits.json` contains orbital/frame/rotation fields
+derived from Celestia's `data/dwarfplanets.ssc` (GPL-2.0-or-later). Its original
+SPDX copyright notices and source checksum are retained in that JSON. The
+derived snapshot is distributed under GPLv3, permitted by the original
+"or later" license grant; the GPLv3 text is included as `LICENSE`.

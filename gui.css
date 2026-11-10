@@ -30,3 +30,4 @@ td.failure{color:#ff9fad}
 @media(max-width:600px){.departure-estimate,.sequence-comparison{padding:14px}.chart-axis{width:100%}}
 
 .mission-name-editor{padding:16px 24px;border-top:1px solid #294052;display:flex;gap:12px;align-items:end;flex-wrap:wrap}.mission-name-editor label{flex:1;min-width:200px}.mission-name-editor input{display:block;width:100%;margin-top:6px}.mission-name-editor p{flex-basis:100%;margin:0}.card-title{overflow-wrap:anywhere}#candidateSearch{min-width:210px;max-width:330px}
+.dwarf-patch-controls{max-width:310px}.dwarf-patch-controls .hint{margin:7px 0}#dwarfPatchDialog{max-width:680px}#dwarfPatchDialog p{line-height:1.6}#dwarfPatchDialog input{display:block;width:100%;margin:8px 0}#dwarfPatchDialog .modal-head{padding:0 0 12px}
