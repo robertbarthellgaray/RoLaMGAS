@@ -13,10 +13,11 @@ from build_trajectory_downloads import sample_coasts
 ROOT=Path(__file__).resolve().parents[1]
 def read(p):return json.loads(p.read_text(encoding='utf-8'))
 def save(p,value):p.write_text(json.dumps(value,separators=(',',':'),ensure_ascii=False,allow_nan=False)+'\n',encoding='utf-8')
-def add(run,cache,docs):
+def add(run,cache,docs,all_candidates=False,title=None,note=None):
     cfg=read(run/'run_manifest.json')['config'];index=read(docs/'data/index.json')
     # One representative per identical encounter-day string, as in the shared library.
-    for seed in [min(read(run/'results.json')['candidates'],key=lambda q:q['launch_c3_km2_s2'])]:
+    rows=read(run/'results.json')['candidates']
+    for seed in (rows if all_candidates else [min(rows,key=lambda q:q['launch_c3_km2_s2'])]):
         ident=seed['id'];q=read(run/'candidates'/(ident+'.json'));card=read(run/'candidates'/(ident+'.card.json'))
         audit=audit_candidate(q,cfg,BODIES)
         if not audit['passed']:raise ValueError(audit['reasons'])
@@ -36,14 +37,18 @@ def add(run,cache,docs):
         burns=[dict(kind='DSM',jd=b['julian_date_tdb'],date=b['date'],magnitude_mps=b['magnitude_kms']*1000,position_au=(np.array(b['position_km'])/AU).tolist()) for b in q['dsms']]
         flybys=[dict(body=f['body'],jd=f['julian_date_tdb'],date=f['date'],mismatch_mps=f['speed_mismatch_mps'],altitude_km=f['conservative_equal_speed_altitude_km'],altitude_floor_km=f['minimum_altitude_km']) for f in q['flybys']]
         paths=[dict(start=s['start_jd'],end=s['end_jd'],points=points) for s,points in zip(q['segments'],card['paths'])]
-        note='Solver-built low-launch-energy EdvEVEEJ family, not the flown JUICE mission. Sun-only Lambert/Kepler arcs join at planet centers. Flyby altitudes are inferred from asymptotic turns, not resolved closest approaches. The first-leg DSM trades against C3. Finite-radius flyby targeting, lunar assists, launch injection and Jupiter capture are excluded.'
-        c=dict(id=ident,title='Low-energy Jupiter · '+q['sequence'],target='Jupiter',target_id='599',sequence=q['sequence'],bodies=q['bodies'],model='Lambert candidate',spotlight=False,featured_priority=2 if ident=='4d76acaf1f6f' else 0,start=q['dates_jd_tdb'][0],end=q['dates_jd_tdb'][-1],launch_date=q['launch_date'][:10],arrival_date=q['arrival_date'][:10],years=q['duration_years'],c3=q['launch_c3_km2_s2'],vinf=q['arrival_vinf_kms'],burns_mps=q['total_dsm_kms']*1000,paths=paths,coasts=q['segments'],planet_paths=card['planet_paths'],events=events,burns=burns,flybys=flybys,validation=audit,note=note,provenance=dict(source='Recomputed complete RoLaMGAS seed family',candidate_id=ident,coordinates='Heliocentric Ecliptic J2000',time_scale='TDB',plot_units='AU',ephemerides='JPL Horizons geometric vectors',target_horizons_id='599'))
+        case_note=note or 'Solver-built low-launch-energy EdvEVEEJ family, not the flown JUICE mission. Sun-only Lambert/Kepler arcs join at planet centers. Flyby altitudes are inferred from asymptotic turns, not resolved closest approaches. The first-leg DSM trades against C3. Finite-radius flyby targeting, lunar assists, launch injection and Jupiter capture are excluded.'
+        c=dict(id=ident,title=(title or 'Low-energy Jupiter')+' · '+q['sequence'],target=q['bodies'][-1],target_id=str(BODIES[q['bodies'][-1]][0]),sequence=q['sequence'],bodies=q['bodies'],model='Lambert candidate',spotlight=False,featured_priority=2 if ident=='4d76acaf1f6f' else 0,start=q['dates_jd_tdb'][0],end=q['dates_jd_tdb'][-1],launch_date=q['launch_date'][:10],arrival_date=q['arrival_date'][:10],years=q['duration_years'],c3=q['launch_c3_km2_s2'],vinf=q['arrival_vinf_kms'],burns_mps=q['total_dsm_kms']*1000,paths=paths,coasts=q['segments'],planet_paths=card['planet_paths'],events=events,burns=burns,flybys=flybys,validation=audit,note=case_note,provenance=dict(source='Recomputed complete RoLaMGAS seed family',candidate_id=ident,coordinates='Heliocentric Ecliptic J2000',time_scale='TDB',plot_units='AU',ephemerides='JPL Horizons geometric vectors',target_horizons_id=str(BODIES[q['bodies'][-1]][0])))
         data,error=sample_coasts(q['segments']);stem=docs/'downloads'/ident;csvpath=stem.with_suffix('.csv');xyzvpath=stem.with_suffix('.xyzv');readmepath=docs/'downloads'/(ident+'-README.txt')
         np.savetxt(csvpath,data,delimiter=',',fmt=['%.12f']+['%.9f']*6,header='jd_tdb,x_km,y_km,z_km,vx_km_s,vy_km_s,vz_km_s',comments='')
-        np.savetxt(xyzvpath,data,fmt=['%.12f']+['%.9f']*6,header=f'RoLaMGAS {ident} | IDEAL LAMBERT COASTS\nJD(TDB) x_km y_km z_km vx_km_s vy_km_s vz_km_s | Sun-centered Ecliptic J2000\n{note}\nBegin {data[0,0]:.12f} End {data[-1,0]:.12f}')
+        np.savetxt(xyzvpath,data,fmt=['%.12f']+['%.9f']*6,header=f'RoLaMGAS {ident} | IDEAL LAMBERT COASTS\nJD(TDB) x_km y_km z_km vx_km_s vy_km_s vz_km_s | Sun-centered Ecliptic J2000\n{case_note}\nBegin {data[0,0]:.12f} End {data[-1,0]:.12f}')
         for p in [csvpath,xyzvpath]:p.write_bytes(p.read_bytes().replace(b'\r\n',b'\n'))
-        readmepath.write_text(note+'\nColumns: JD(TDB), x_km, y_km, z_km, vx_km_s, vy_km_s, vz_km_s. Sun-centered Ecliptic J2000.\n',encoding='utf-8')
-        c['trajectory_files']=dict(csv='downloads/'+csvpath.name,xyzv='downloads/'+xyzvpath.name,readme='downloads/'+readmepath.name,rows=len(data),units='JD(TDB), km, km/s',coordinates='Sun-centered Ecliptic J2000',source='Saved full-precision solar coast initial conditions',note=note,csv_sha256=hashlib.sha256(csvpath.read_bytes()).hexdigest(),xyzv_sha256=hashlib.sha256(xyzvpath.read_bytes()).hexdigest(),max_checked_hermite_position_error_km=error)
+        readmepath.write_text(case_note+'\nColumns: JD(TDB), x_km, y_km, z_km, vx_km_s, vy_km_s, vz_km_s. Sun-centered Ecliptic J2000.\n',encoding='utf-8')
+        c['trajectory_files']=dict(csv='downloads/'+csvpath.name,xyzv='downloads/'+xyzvpath.name,readme='downloads/'+readmepath.name,rows=len(data),units='JD(TDB), km, km/s',coordinates='Sun-centered Ecliptic J2000',source='Saved full-precision solar coast initial conditions',note=case_note,csv_sha256=hashlib.sha256(csvpath.read_bytes()).hexdigest(),xyzv_sha256=hashlib.sha256(xyzvpath.read_bytes()).hexdigest(),max_checked_hermite_position_error_km=error)
+        from study_resonant_transfers import physical_record
+        record=physical_record(q,cfg)
+        save(docs/'data/desktop'/(ident+'.json'),record)
+        c['desktop_record_url']='data/desktop/'+ident+'.json'
         save(docs/'data/cases'/(ident+'.json'),c)
         summary={key:c[key] for key in ['id','title','target','target_id','sequence','bodies','model','spotlight','featured_priority','start','end','launch_date','arrival_date','years','c3','vinf','burns_mps']};index['cases']=[r for r in index['cases'] if r['id']!=ident]+[summary]
         points=np.array([p for path in paths for p in path['points']]);extent=max(float(np.max(abs(points[:,:2]))),1)*1.15

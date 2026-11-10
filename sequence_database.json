@@ -292,7 +292,7 @@
   ],
   "pair_days": {
     "Earth-Venus": [
-      90,
+      45,
       500
     ],
     "Venus-Earth": [
@@ -687,6 +687,38 @@
           [
             4,
             false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
           ]
         ]
       ],
@@ -778,6 +810,38 @@
           [
             4,
             false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
           ]
         ],
         [
@@ -815,6 +879,38 @@
           ],
           [
             4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
             false
           ]
         ]
@@ -939,43 +1035,37 @@
           [
             4,
             false
-          ]
-        ],
-        [
+          ],
           [
-            0,
+            5,
             true
           ],
           [
-            1,
-            true
-          ],
-          [
-            1,
+            5,
             false
           ],
           [
-            2,
+            6,
             true
           ],
           [
-            2,
+            6,
             false
           ],
           [
-            3,
+            7,
             true
           ],
           [
-            3,
+            7,
             false
           ],
           [
-            4,
+            8,
             true
           ],
           [
-            4,
+            8,
             false
           ]
         ],
@@ -1014,6 +1104,108 @@
           ],
           [
             4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
             false
           ]
         ]
@@ -1180,43 +1372,37 @@
           [
             4,
             false
-          ]
-        ],
-        [
+          ],
           [
-            0,
+            5,
             true
           ],
           [
-            1,
-            true
-          ],
-          [
-            1,
+            5,
             false
           ],
           [
-            2,
+            6,
             true
           ],
           [
-            2,
+            6,
             false
           ],
           [
-            3,
+            7,
             true
           ],
           [
-            3,
+            7,
             false
           ],
           [
-            4,
+            8,
             true
           ],
           [
-            4,
+            8,
             false
           ]
         ],
@@ -1256,43 +1442,37 @@
           [
             4,
             false
-          ]
-        ],
-        [
+          ],
           [
-            0,
+            5,
             true
           ],
           [
-            1,
-            true
-          ],
-          [
-            1,
+            5,
             false
           ],
           [
-            2,
+            6,
             true
           ],
           [
-            2,
+            6,
             false
           ],
           [
-            3,
+            7,
             true
           ],
           [
-            3,
+            7,
             false
           ],
           [
-            4,
+            8,
             true
           ],
           [
-            4,
+            8,
             false
           ]
         ],
@@ -1332,6 +1512,38 @@
           [
             4,
             false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
           ]
         ],
         [
@@ -1369,6 +1581,178 @@
           ],
           [
             4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
             false
           ]
         ]
@@ -1520,43 +1904,37 @@
           [
             4,
             false
-          ]
-        ],
-        [
+          ],
           [
-            0,
+            5,
             true
           ],
           [
-            1,
-            true
-          ],
-          [
-            1,
+            5,
             false
           ],
           [
-            2,
+            6,
             true
           ],
           [
-            2,
+            6,
             false
           ],
           [
-            3,
+            7,
             true
           ],
           [
-            3,
+            7,
             false
           ],
           [
-            4,
+            8,
             true
           ],
           [
-            4,
+            8,
             false
           ]
         ],
@@ -1595,6 +1973,108 @@
           ],
           [
             4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
             false
           ]
         ]
@@ -1753,43 +2233,37 @@
           [
             4,
             false
-          ]
-        ],
-        [
+          ],
           [
-            0,
+            5,
             true
           ],
           [
-            1,
-            true
-          ],
-          [
-            1,
+            5,
             false
           ],
           [
-            2,
+            6,
             true
           ],
           [
-            2,
+            6,
             false
           ],
           [
-            3,
+            7,
             true
           ],
           [
-            3,
+            7,
             false
           ],
           [
-            4,
+            8,
             true
           ],
           [
-            4,
+            8,
             false
           ]
         ],
@@ -1828,6 +2302,108 @@
           ],
           [
             4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
             false
           ]
         ]
@@ -3579,6 +4155,1046 @@
         ]
       ],
       "provenance": "Analyst template; future feasibility must be searched"
+    },
+    {
+      "id": "EVEEU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Uranus"
+      ],
+      "target": "Uranus",
+      "dsm_legs": [],
+      "leg_days": [
+        [
+          45,
+          700
+        ],
+        [
+          45,
+          700
+        ],
+        [
+          300,
+          1450
+        ],
+        [
+          2800,
+          6500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "UOP 2021 Exhibit 3-24 family; report gives launch/C3/total DSM, not individual burn/flyby dates. Explicit dv variants explore DSM placement; not exact report reproductions."
+    },
+    {
+      "id": "EVEdvEU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Uranus"
+      ],
+      "target": "Uranus",
+      "dsm_legs": [
+        2
+      ],
+      "leg_days": [
+        [
+          45,
+          700
+        ],
+        [
+          45,
+          700
+        ],
+        [
+          300,
+          1450
+        ],
+        [
+          2800,
+          6500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "UOP 2021 Exhibit 3-24 family; report gives launch/C3/total DSM, not individual burn/flyby dates. Explicit dv variants explore DSM placement; not exact report reproductions."
+    },
+    {
+      "id": "EVEEdvU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Uranus"
+      ],
+      "target": "Uranus",
+      "dsm_legs": [
+        3
+      ],
+      "leg_days": [
+        [
+          45,
+          700
+        ],
+        [
+          45,
+          700
+        ],
+        [
+          300,
+          1450
+        ],
+        [
+          2800,
+          6500
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ]
+      ],
+      "provenance": "UOP 2021 Exhibit 3-24 family; report gives launch/C3/total DSM, not individual burn/flyby dates. Explicit dv variants explore DSM placement; not exact report reproductions."
+    },
+    {
+      "id": "EVVMedvMe",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Mercury",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [
+        3
+      ],
+      "leg_days": [
+        [
+          45,
+          500
+        ],
+        [
+          180,
+          750
+        ],
+        [
+          60,
+          500
+        ],
+        [
+          80,
+          750
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Original Mercury flyby-plus-DSM resonance ladder inspired by MESSENGER; not a flown mission recreation. Capture burn excluded."
+    },
+    {
+      "id": "EVVMedvMedvMe",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Mercury",
+        "Mercury",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [
+        3,
+        4
+      ],
+      "leg_days": [
+        [
+          45,
+          500
+        ],
+        [
+          180,
+          750
+        ],
+        [
+          60,
+          500
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Original Mercury flyby-plus-DSM resonance ladder inspired by MESSENGER; not a flown mission recreation. Capture burn excluded."
+    },
+    {
+      "id": "EVVMedvMedvMedvMedvMe",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Venus",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury",
+        "Mercury"
+      ],
+      "target": "Mercury",
+      "dsm_legs": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "leg_days": [
+        [
+          45,
+          500
+        ],
+        [
+          180,
+          750
+        ],
+        [
+          60,
+          500
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ],
+        [
+          80,
+          750
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ],
+          [
+            1,
+            true
+          ],
+          [
+            1,
+            false
+          ],
+          [
+            2,
+            true
+          ],
+          [
+            2,
+            false
+          ],
+          [
+            3,
+            true
+          ],
+          [
+            3,
+            false
+          ],
+          [
+            4,
+            true
+          ],
+          [
+            4,
+            false
+          ],
+          [
+            5,
+            true
+          ],
+          [
+            5,
+            false
+          ],
+          [
+            6,
+            true
+          ],
+          [
+            6,
+            false
+          ],
+          [
+            7,
+            true
+          ],
+          [
+            7,
+            false
+          ],
+          [
+            8,
+            true
+          ],
+          [
+            8,
+            false
+          ]
+        ]
+      ],
+      "provenance": "Original Mercury flyby-plus-DSM resonance ladder inspired by MESSENGER; not a flown mission recreation. Capture burn excluded."
     }
   ]
 }

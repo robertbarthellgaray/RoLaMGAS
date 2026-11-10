@@ -13,7 +13,7 @@ test('every curated Lambert handoff preserves saved dates, branches and physical
   assert.equal(d.settings.launch_start,d.settings.launch_end);assert.equal(d.display_name,'Selected mission');assert.ok(d.settings.max_c3>=c.c3);
   if(!['Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uranus','Neptune'].includes(c.target))assert.equal(String(d.settings.target_object.id),c.desktop_record.body_ids.at(-1));
   count++;
- }assert.equal(count,91);
+ }assert.equal(count,catalog.cases.filter(c=>c.model==='Lambert candidate').length);assert.ok(count>=91);
 });
 test('integrated concepts retain direct downloads and export only honest search settings',()=>{
  const c=load('data/cases/claudius-uop-2045.json'),d=transferDocument(c);assert.ok(finiteRadiusDownload(c));assert.equal(d.trajectory,undefined);assert.equal(d.settings.event_windows,undefined);

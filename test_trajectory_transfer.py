@@ -25,7 +25,8 @@ class WebsiteTransferTests(unittest.TestCase):
         cls.documents=documents()
         cls.document=next(d for d in cls.documents if d['source_candidate_id']=='4d76acaf1f6f')
     def test_all_curated_downloads_are_valid_portable_options(self):
-        self.assertEqual(len(self.documents),94)
+        expected=json.loads((ROOT/'docs/data/index.json').read_text(encoding='utf-8'))['cases']
+        self.assertEqual(len(self.documents),len(expected));self.assertGreaterEqual(len(expected),94)
         for d in self.documents:
             with self.subTest(id=d['source_candidate_id']):
                 result=import_options(d);self.assertEqual(len(result['config']['sequences']),1)

@@ -1,0 +1,24 @@
+{
+  "target": "Uranus",
+  "sequences": [
+    "EVEdvEU",
+    "EVEEU",
+    "EVEEdvU"
+  ],
+  "launch_start": "2034-05-01",
+  "launch_end": "2034-06-15",
+  "min_c3": 20.0,
+  "max_c3": 30.0,
+  "max_dsm_kms": 0.7,
+  "max_single_dsm_kms": 0.7,
+  "max_arrival_vinf_kms": 7.0,
+  "max_years": 17.0,
+  "vinf_tolerance_mps": 1.0,
+  "samples_per_sequence": 6000,
+  "refinements_per_sequence": 48,
+  "branch_families": 16,
+  "cost_refinements": 8,
+  "search_objective": "dsm",
+  "cache": "cache",
+  "workers": 2
+}

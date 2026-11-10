@@ -33,6 +33,14 @@ def load_database():
     return json.loads(DATABASE.read_text(encoding='utf-8'))
 
 
+def default_branch_options(a,b,maximum_days):
+    if a==b=='Mercury':
+        from mercury_returns import branch_options
+        return branch_options(maximum_days)
+    maximum=2 if a==b else (1 if a in ('Earth','Venus','Mercury') and b in ('Earth','Venus','Mercury') else 0)
+    return [[0,True]]+[[m,low] for m in range(1,maximum+1) for low in (True,False)]
+
+
 def resolve_route(sequence, db, target_object=None, custom_leg_days=None):
     if sequence.endswith('X'):
         if not target_object:
@@ -57,7 +65,7 @@ def resolve_route(sequence, db, target_object=None, custom_leg_days=None):
                 if pair not in db['pair_days']:
                     raise ValueError('No duration range for '+pair)
                 ranges.append(db['pair_days'][pair])
-            options.append([[0,True]]+([[1,True],[1,False],[2,True],[2,False]] if a==b else []))
+            options.append(default_branch_options(a,b,ranges[-1][1]))
         return dict(id=sequence,bodies=bodies,dsm_legs=dsms,leg_days=ranges,branch_options=options,
                     target=target_object['name'],provenance='Planet assists to a resolved Horizons terminal target')
     for route in db['sequences']:
@@ -82,9 +90,9 @@ def resolve_route(sequence, db, target_object=None, custom_leg_days=None):
         if pair not in db['pair_days']:
             raise ValueError(f'No timing bounds for {pair}; add them to sequence_database.json first')
         ranges.append(db['pair_days'][pair])
+    options=[default_branch_options(a,b,bounds[1]) for a,b,bounds in zip(bodies,bodies[1:],ranges)]
     return dict(id=sequence, bodies=bodies, target=bodies[-1], dsm_legs=dsms, leg_days=ranges,
-                branch_options=[[[0,True]]+([[1,True],[1,False],[2,True],[2,False]] if a == b else [])
-                                for a,b in zip(bodies,bodies[1:])], provenance='Custom user route')
+                branch_options=options, provenance='Custom user route')
 
 
 def normalize(config, config_dir=HERE):
@@ -295,8 +303,11 @@ def branch_families(route, limit, seed, preferred=None):
         if preferred is not None:families.sort(key=lambda b:b!=preferred)
         return families
     rng = np.random.default_rng(seed)
-    # Always include a resonant-return family and the all-first-choice family.
-    selected = [tuple(tuple(o[0]) for o in options)]
+    # Keep complete Mercury resonance ladders together instead of selecting
+    # unrelated revolution counts independently on every return.
+    from mercury_returns import coherent_families
+    selected = [tuple(tuple(b) for b in family) for family in coherent_families(route)]
+    selected.append(tuple(tuple(o[0]) for o in options))
     if preferred is not None:selected.insert(0,tuple(tuple(b) for b in preferred))
     selected=list(dict.fromkeys(selected))
     resonant = tuple(tuple(next((v for v in o if v[0] == 1 and v[1]),o[0])) for o in options)
@@ -517,6 +528,9 @@ def planned_jobs(c, routes):
             if preferred is None:
                 from earth_return_seeds import preferred_chain_branch
                 preferred=preferred_chain_branch(c,route)
+            if preferred is None:
+                from mercury_returns import preferred_resonant_branch
+                preferred=preferred_resonant_branch(c,route)
             families = branch_families(route,c['branch_families'],c['seed'],preferred=preferred)
             nsamples = max(8,math.ceil(c['samples_per_sequence']/len(families)))
             nstarts = max(1,math.ceil(c['refinements_per_sequence']/len(families)))
@@ -546,6 +560,11 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
         from earth_return_seeds import verified_chain_seeds
         chain_seeds=verified_chain_seeds(c,routes,ep)
         archive['accepted'].extend(chain_seeds['accepted']);archive['chain_seed_stats']=chain_seeds['stats']
+        from mercury_returns import verified_resonant_seeds
+        resonant_seeds=verified_resonant_seeds(c,routes,ep)
+        archive['accepted'].extend(resonant_seeds['accepted']);archive['resonant_seed_stats']=resonant_seeds['stats']
+        if resonant_seeds['accepted']:
+            print(f"Revalidated {len(resonant_seeds['accepted'])} bundled resonant-transfer starters under the current limits.",flush=True)
         if chain_seeds['accepted']:
             print(f"Revalidated {len(chain_seeds['accepted'])} complete EdvEVEEJ C3/DSM starters under the current limits.",flush=True)
         archive['database_status']=online.get('online_status','unknown');archive['downloaded_records']=online.get('downloaded_records',0)

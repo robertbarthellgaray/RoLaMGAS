@@ -58,7 +58,10 @@ def extension_request(config,route,candidate,parent_run,body=None,count=1,minimu
     bodies=list(candidate['bodies'])+[body]*count
     for a,b in zip(bodies[n0-1:],bodies[n0:]):
         max_m=(4 if b=='Mercury' else 2) if a==b else (1 if a in ('Mercury','Venus') and b in ('Mercury','Venus','Earth') else 0)
-        branches.append([[0,True]]+[[m,low] for m in range(1,max_m+1) for low in (True,False)])
+        if a==b=='Mercury':
+            from mercury_returns import branch_options
+            branches.append(branch_options(maximum_days))
+        else:branches.append([[0,True]]+[[m,low] for m in range(1,max_m+1) for low in (True,False)])
     new_route=dict(id=sequence,bodies=bodies,target=body,dsm_legs=dsms,
         leg_days=deepcopy(route['leg_days'])+[[minimum_days,maximum_days] for _ in range(count)],
         branch_options=branches,provenance='Appended encounters; selected earlier cruise and dates frozen')
