@@ -1,0 +1,162 @@
+{
+  "Earth": [
+    {
+      "body": "Earth",
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27399%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2440771.5000000000%27&STOP_TIME=%27JD2443768.5000000000%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+      "sha256": "1e395bc3ae73bd054814c96523476d152c7b1c3b2d956df1c4cdec48c4b196c1",
+      "raw_file": "Earth_1e395bc3ae73bd05.txt",
+      "target_identity": {
+        "name": "Earth",
+        "id": "399",
+        "command": "399",
+        "kind": "planet"
+      },
+      "npz_sha256": "a6c24fccc98f71f57366950e3265c8e41b6a4ae065c7a9e4c235f00fa8bd9f76",
+      "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+      "start_jd": 2440771.5,
+      "end_jd": 2443768.5,
+      "max_step_days": 1.0,
+      "records": 2998
+    }
+  ],
+  "Venus": [
+    {
+      "body": "Venus",
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27299%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2440892.5000000000%27&STOP_TIME=%27JD2442935.5000000000%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+      "sha256": "253ebd92c5d0a9384d9415e08c36d928e46aef2605f55f4467b4126745817348",
+      "raw_file": "Venus_253ebd92c5d0a938.txt",
+      "target_identity": {
+        "name": "Venus",
+        "id": "299",
+        "command": "299",
+        "kind": "planet"
+      },
+      "npz_sha256": "474af0a6a7b269fbc342065f4f330b508e5058f70d882cfb1a5736dd1000d68e",
+      "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+      "start_jd": 2440892.5,
+      "end_jd": 2442935.5,
+      "max_step_days": 1.0,
+      "records": 2044
+    }
+  ],
+  "Mars": [
+    {
+      "body": "Mars",
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27499%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2441151.5000000000%27&STOP_TIME=%27JD2441233.5000000000%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+      "sha256": "606c1b790f7e2714688376c3dfa11806a22813ae88cf4cca1de841e33c657776",
+      "raw_file": "Mars_606c1b790f7e2714.txt",
+      "target_identity": {
+        "name": "Mars",
+        "id": "499",
+        "command": "499",
+        "kind": "planet"
+      },
+      "npz_sha256": "ee78dbf09d4e158a602a58d9c6081ae1bdab9dc7572eeda3986c4b1ae4fec535",
+      "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+      "start_jd": 2441151.5,
+      "end_jd": 2441233.5,
+      "max_step_days": 1.0,
+      "records": 83
+    }
+  ],
+  "Mercury": [
+    {
+      "body": "Mercury",
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27199%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2442214.0000000000%27&STOP_TIME=%27JD2442294.7500000000%27&STEP_SIZE=%27360+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+      "sha256": "8ab16c970db461eb81b54e3eedfaaba5223f3a148f2a5820c9e9155ca58dd78a",
+      "raw_file": "Mercury_8ab16c970db461eb.txt",
+      "target_identity": {
+        "name": "Mercury",
+        "id": "199",
+        "command": "199",
+        "kind": "planet"
+      },
+      "npz_sha256": "2f3e60d88ade3a12a1c2d73b12ee772a5c632399dbffb5baaa1a35e86ccc95f8",
+      "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+      "start_jd": 2442214.0,
+      "end_jd": 2442294.75,
+      "max_step_days": 0.25,
+      "records": 324
+    }
+  ],
+  "Jupiter": [
+    {
+      "body": "Jupiter",
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27599%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2444245.5000000000%27&STOP_TIME=%27JD2444327.5000000000%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+      "sha256": "8ea87192afafc739e91ea24c7a01b2fd3adac5882bef003b754d586014e4d4cb",
+      "raw_file": "Jupiter_8ea87192afafc739.txt",
+      "target_identity": {
+        "name": "Jupiter",
+        "id": "599",
+        "command": "599",
+        "kind": "planet"
+      },
+      "npz_sha256": "a81edbb0baaf2f03ec65488d60cb0424a54318d05948594cd1849de01b6914fe",
+      "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+      "start_jd": 2444245.5,
+      "end_jd": 2444327.5,
+      "max_step_days": 1.0,
+      "records": 83
+    }
+  ],
+  "Saturn": [
+    {
+      "body": "Saturn",
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27699%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2444787.5000000000%27&STOP_TIME=%27JD2444869.5000000000%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+      "sha256": "719ac9e082b27dd9aac6dd2c9262915475f6974748471f6c819ee6eda4f2335b",
+      "raw_file": "Saturn_719ac9e082b27dd9.txt",
+      "target_identity": {
+        "name": "Saturn",
+        "id": "699",
+        "command": "699",
+        "kind": "planet"
+      },
+      "npz_sha256": "74e5bb1a77546752a02501e3f5a879d5626b1cad9688464efe592676a6c0ed9e",
+      "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+      "start_jd": 2444787.5,
+      "end_jd": 2444869.5,
+      "max_step_days": 1.0,
+      "records": 83
+    }
+  ],
+  "Uranus": [
+    {
+      "body": "Uranus",
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27799%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2446103.5000000000%27&STOP_TIME=%27JD2446185.5000000000%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+      "sha256": "8b5dfab61f187d7b5012dd0744be6c681a7937e21b650b3275be78cbc2157893",
+      "raw_file": "Uranus_8b5dfab61f187d7b.txt",
+      "target_identity": {
+        "name": "Uranus",
+        "id": "799",
+        "command": "799",
+        "kind": "planet"
+      },
+      "npz_sha256": "2026a40595a6c496d074ccbfecad12a79ead6c1db8819bdef96e4fc93ac7df2d",
+      "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+      "start_jd": 2446103.5,
+      "end_jd": 2446185.5,
+      "max_step_days": 1.0,
+      "records": 83
+    }
+  ],
+  "Neptune": [
+    {
+      "body": "Neptune",
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27899%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2447204.5000000000%27&STOP_TIME=%27JD2447286.5000000000%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+      "sha256": "52020c2c7879387f1bfc207932553303559ca80fe40e3945309fa5c9adfcb67b",
+      "raw_file": "Neptune_52020c2c7879387f.txt",
+      "target_identity": {
+        "name": "Neptune",
+        "id": "899",
+        "command": "899",
+        "kind": "planet"
+      },
+      "npz_sha256": "b0b99cd18d66204cf7b3e8c396a98d23cba123a22c485468f2d9a6a4c069c845",
+      "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+      "start_jd": 2447204.5,
+      "end_jd": 2447286.5,
+      "max_step_days": 1.0,
+      "records": 83
+    }
+  ]
+}

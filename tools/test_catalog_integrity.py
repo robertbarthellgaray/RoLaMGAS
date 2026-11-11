@@ -53,5 +53,18 @@ class PublicCatalogTests(unittest.TestCase):
         ids={c['id'] for c in self.index};self.assertEqual(len(ids),len(self.index))
         self.assertEqual(ids,{p.stem for p in (DOCS/'data/cases').glob('*.json')})
         for id in ids:self.assertTrue((DOCS/'images'/(id+'.svg')).is_file())
+    def test_reachstar_recreation_keeps_credit_and_explicit_research_exceptions(self):
+        c=next(c for c in self.cases if c['id']=='c16155480c4d')
+        self.assertEqual(c['model'],'Research patched-conic recreation')
+        self.assertEqual(len(set(c['bodies'])),8)
+        self.assertIn('ReachStar on Bilibili',c['provenance']['credit'])
+        self.assertIn('not an n-body navigation budget',c['note'])
+        self.assertTrue(c['validation']['passed'])
+        self.assertTrue(c['independent_solar_audit']['passed'])
+        self.assertFalse(c['standard_catalog_audit']['passed'])
+        self.assertIn('130 km',c['research_altitude_exception'])
+        self.assertIn('250 km',c['research_altitude_exception'])
+        self.assertGreaterEqual(c['featured_priority'],10)
+        self.assertFalse(c['spotlight'])
 
 if __name__=='__main__':unittest.main()

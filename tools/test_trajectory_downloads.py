@@ -20,7 +20,7 @@ class DownloadTests(unittest.TestCase):
                     file=DOCS/files[key];self.assertEqual(hashlib.sha256(file.read_bytes()).hexdigest(),files[key+'_sha256'])
                 a=np.loadtxt(DOCS/files['csv'],delimiter=',',skiprows=1);b=np.loadtxt(DOCS/files['xyzv'],comments='#')
                 self.assertEqual(a.shape,(files['rows'],7));self.assertTrue(np.isfinite(a).all());np.testing.assert_allclose(a,b,rtol=0,atol=1e-5)
-                if c['model']=='Lambert candidate':
+                if c['model'] in ('Lambert candidate','Research patched-conic recreation'):
                     self.assertTrue(np.all(np.diff(a[:,0])>0));self.assertLessEqual(files['max_checked_hermite_position_error_km'],10.000001)
                 else:self.assertEqual(files['xyzv_sha256'],c['provenance']['sha256'])
                 self.assertTrue((DOCS/files['readme']).is_file())

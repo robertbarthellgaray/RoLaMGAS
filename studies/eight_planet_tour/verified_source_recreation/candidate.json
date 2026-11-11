@@ -1,0 +1,1147 @@
+{
+  "sequence": "EVMEVdvVMeVdvVVEJSUN",
+  "bodies": [
+    "Earth",
+    "Venus",
+    "Mars",
+    "Earth",
+    "Venus",
+    "Venus",
+    "Mercury",
+    "Venus",
+    "Venus",
+    "Venus",
+    "Earth",
+    "Jupiter",
+    "Saturn",
+    "Uranus",
+    "Neptune"
+  ],
+  "x": [
+    0.5000022267922759,
+    0.500022036023438,
+    0.5000100927427411,
+    0.5000014360994101,
+    0.5000061886385083,
+    0.5000073034316301,
+    0.500014684163034,
+    0.5000056019052863,
+    0.5000140778720379,
+    0.5000204257667065,
+    0.5000026244670153,
+    0.5000133002176881,
+    0.5000103851780295,
+    0.5000171735882759,
+    0.5000125356018543,
+    0.5,
+    0.49999823563034895,
+    0.5000277879359009,
+    0.5001658407640157,
+    0.5,
+    0.49806916994208245,
+    0.5090391394655592,
+    0.5201141282107686
+  ],
+  "branches": [
+    [
+      0,
+      true
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      1,
+      true
+    ],
+    [
+      2,
+      false
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      0,
+      true
+    ],
+    [
+      0,
+      true
+    ]
+  ],
+  "extension_source": null,
+  "dates_jd_tdb": [
+    2440812.817524262,
+    2440943.9977540737,
+    2441193.100734213,
+    2441402.9011465516,
+    2441624.3673757794,
+    2441849.068788374,
+    2442254.4330744715,
+    2442295.854435671,
+    2442520.5551227797,
+    2442895.2424754906,
+    2443728.390730479,
+    2444291.4166038726,
+    2444840.3397852853,
+    2446160.966918309,
+    2447265.553628953
+  ],
+  "launch_date": "1970-08-14T07:37:14 TDB",
+  "arrival_date": "1988-04-14T01:17:13 TDB",
+  "duration_years": 17.666628623385083,
+  "launch_c3_km2_s2": 13.43529043464682,
+  "launch_vinf_kms": 3.6654181800507866,
+  "requested_min_c3": 5.0,
+  "effective_min_c3": 5.0,
+  "effective_max_c3": 20.0,
+  "launch_c3_definition": "Squared Sun-centered departure velocity relative to launch body; km^2/s^2",
+  "requested_arrival_window_jd": null,
+  "arrival_vinf_kms": 20.52675150289363,
+  "total_dsm_kms": 2.7265652288749514e-05,
+  "cruise_dsm_kms": 2.7265652288749514e-05,
+  "powered_flyby_delta_v_kms": 0.0,
+  "modeled_maneuver_total_kms": 2.7265652288749514e-05,
+  "maneuver_budget_complete": true,
+  "budget_complete": true,
+  "unresolved_flyby_count": 0,
+  "unresolved_speed_mismatch_total_mps": 0,
+  "total_unresolved_vinf_mismatch_mps": 0.0006072541092194683,
+  "modeled_plus_unresolved_mismatch_kms": 2.7872906397968983e-05,
+  "mismatch_screening_budget_exceeded": false,
+  "mismatch_screening_note": "Modeled burns plus unresolved excess-speed mismatch sum is a screening criterion, not an actual periapsis burn estimate. Construct powered flybys for physical burn vectors and costs.",
+  "maneuver_budget_note": "Explicit designed DSM, target-turnaround impulses and full powered-periapsis vector burns only; unresolved flybys require physical retargeting or a powered-flyby construction, not a scalar mismatch sum.",
+  "max_single_dsm_kms": 2.688867645702661e-05,
+  "max_powered_flyby_kms": 0.0,
+  "periapsis_violation": false,
+  "powered_geometry_valid": null,
+  "flybys": [
+    {
+      "body": "Venus",
+      "vinf_in_kms": 5.854405055522651,
+      "vinf_out_kms": 5.854405055782634,
+      "speed_mismatch_mps": 2.5998314612252216e-07,
+      "incoming_vinf_vector_kms": [
+        -1.3850087254995813,
+        -2.8168630181944962,
+        -4.941770140460541
+      ],
+      "outgoing_vinf_vector_kms": [
+        -3.681133022983218,
+        -4.208064460779031,
+        -1.7365228815665477
+      ],
+      "turn_angle_deg": 41.84274094161829,
+      "max_turn_deg": 73.83264551358207,
+      "turn_margin_deg": 31.989904571963777,
+      "minimum_altitude_km": 250.0,
+      "conservative_equal_speed_periapsis_km": 17065.07064531405,
+      "conservative_equal_speed_altitude_km": 11013.270645314049,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 1,
+      "julian_date_tdb": 2440943.9977540737,
+      "date": "1970-12-23T11:56:45 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Mars",
+      "vinf_in_kms": 6.332236425280011,
+      "vinf_out_kms": 6.332236425233603,
+      "speed_mismatch_mps": 4.6408210607751244e-08,
+      "incoming_vinf_vector_kms": [
+        -5.494461298598935,
+        -3.119795947014005,
+        0.418313797090737
+      ],
+      "outgoing_vinf_vector_kms": [
+        -6.135748613450371,
+        -1.2384873314740972,
+        0.9570560210224188
+      ],
+      "turn_angle_deg": 18.716422511822177,
+      "max_turn_deg": 26.47610451391113,
+      "turn_margin_deg": 7.759682002088953,
+      "minimum_altitude_km": 200.0,
+      "conservative_equal_speed_periapsis_km": 5500.592692032353,
+      "conservative_equal_speed_altitude_km": 2104.4026920323527,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 2,
+      "julian_date_tdb": 2441193.100734213,
+      "date": "1971-08-29T14:25:03 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Earth",
+      "vinf_in_kms": 7.563186217850138,
+      "vinf_out_kms": 7.563186217941657,
+      "speed_mismatch_mps": 9.15187925443206e-08,
+      "incoming_vinf_vector_kms": [
+        -7.148372648641982,
+        -1.8391755184343985,
+        -1.6492385074382205
+      ],
+      "outgoing_vinf_vector_kms": [
+        -6.522404806933253,
+        3.570693550710452,
+        -1.3820885892993227
+      ],
+      "turn_angle_deg": 42.25738414967431,
+      "max_turn_deg": 62.27232257110964,
+      "turn_margin_deg": 20.014938421435332,
+      "minimum_altitude_km": 130.0,
+      "conservative_equal_speed_periapsis_km": 12363.213158799072,
+      "conservative_equal_speed_altitude_km": 5985.076158799072,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 3,
+      "julian_date_tdb": 2441402.9011465516,
+      "date": "1972-03-26T09:37:39 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Venus",
+      "vinf_in_kms": 11.448704969553035,
+      "vinf_out_kms": 11.448704990697603,
+      "speed_mismatch_mps": 2.114456876256554e-05,
+      "incoming_vinf_vector_kms": [
+        -7.176690363743393,
+        8.736491476078424,
+        -1.8004659372590595
+      ],
+      "outgoing_vinf_vector_kms": [
+        -5.452273466429364,
+        10.063146768635953,
+        0.2804231163551294
+      ],
+      "turn_angle_deg": 15.110505895768311,
+      "max_turn_deg": 32.792210506898485,
+      "turn_margin_deg": 17.681704611130176,
+      "minimum_altitude_km": 250.0,
+      "conservative_equal_speed_periapsis_km": 16371.68147826607,
+      "conservative_equal_speed_altitude_km": 10319.88147826607,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 4,
+      "julian_date_tdb": 2441624.3673757794,
+      "date": "1972-11-02T20:49:01 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Venus",
+      "vinf_in_kms": 11.449038337723929,
+      "vinf_out_kms": 11.449038285509506,
+      "speed_mismatch_mps": 5.221442300751278e-05,
+      "incoming_vinf_vector_kms": [
+        -5.452581500967405,
+        10.063357643918721,
+        0.2804759607577032
+      ],
+      "outgoing_vinf_vector_kms": [
+        0.3486825674592673,
+        11.421237121178251,
+        0.717105816482049
+      ],
+      "turn_angle_deg": 30.246586845975784,
+      "max_turn_deg": 32.790801307581255,
+      "turn_margin_deg": 2.5442144616054687,
+      "minimum_altitude_km": 250.0,
+      "conservative_equal_speed_periapsis_km": 7020.890907218482,
+      "conservative_equal_speed_altitude_km": 969.0909072184822,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 5,
+      "julian_date_tdb": 2441849.068788374,
+      "date": "1973-06-15T13:39:03 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Mercury",
+      "vinf_in_kms": 21.172874917670192,
+      "vinf_out_kms": 21.172874917636506,
+      "speed_mismatch_mps": 3.368683110238635e-08,
+      "incoming_vinf_vector_kms": [
+        17.720051215136273,
+        10.101948798485296,
+        -5.678120083710505
+      ],
+      "outgoing_vinf_vector_kms": [
+        17.52150808660894,
+        10.503313545042516,
+        -5.564871177601951
+      ],
+      "turn_angle_deg": 1.2499305323261158,
+      "max_turn_deg": 2.0946066959008878,
+      "turn_margin_deg": 0.8446761635747717,
+      "minimum_altitude_km": 200.0,
+      "conservative_equal_speed_periapsis_km": 4456.602981351069,
+      "conservative_equal_speed_altitude_km": 2016.9029813510688,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 6,
+      "julian_date_tdb": 2442254.4330744715,
+      "date": "1974-07-25T22:23:37 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Venus",
+      "vinf_in_kms": 12.881734929324157,
+      "vinf_out_kms": 12.881735075796524,
+      "speed_mismatch_mps": 0.00014647236667997277,
+      "incoming_vinf_vector_kms": [
+        -0.0455551712957174,
+        12.860069551648815,
+        0.7454063606471992
+      ],
+      "outgoing_vinf_vector_kms": [
+        -5.047554831537525,
+        11.850295993087474,
+        0.17825168118027812
+      ],
+      "turn_angle_deg": 22.990543674342163,
+      "max_turn_deg": 27.421900324217237,
+      "turn_margin_deg": 4.4313566498750765,
+      "minimum_altitude_km": 250.0,
+      "conservative_equal_speed_periapsis_km": 7865.80824962161,
+      "conservative_equal_speed_altitude_km": 1814.00824962161,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 7,
+      "julian_date_tdb": 2442295.854435671,
+      "date": "1974-09-05T08:30:23 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Venus",
+      "vinf_in_kms": 12.881962560163783,
+      "vinf_out_kms": 12.881962173502817,
+      "speed_mismatch_mps": 0.0003866609663560894,
+      "incoming_vinf_vector_kms": [
+        -5.047652323323529,
+        11.850500934417154,
+        0.17830599453243012
+      ],
+      "outgoing_vinf_vector_kms": [
+        -9.91352847715137,
+        8.197520077099513,
+        0.6837888254546602
+      ],
+      "turn_angle_deg": 27.416347874517673,
+      "max_turn_deg": 27.42114695121347,
+      "turn_margin_deg": 0.004799076695793884,
+      "minimum_altitude_km": 250.0,
+      "conservative_equal_speed_periapsis_km": 6303.218067051205,
+      "conservative_equal_speed_altitude_km": 251.41806705120507,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 8,
+      "julian_date_tdb": 2442520.5551227797,
+      "date": "1975-04-18T01:19:22 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Venus",
+      "vinf_in_kms": 12.894553532397374,
+      "vinf_out_kms": 12.894553532212049,
+      "speed_mismatch_mps": 1.8532553269778873e-07,
+      "incoming_vinf_vector_kms": [
+        -12.522586215758373,
+        2.9785202483970252,
+        0.7633887598392558
+      ],
+      "outgoing_vinf_vector_kms": [
+        -10.282154431928682,
+        7.456720801442906,
+        -2.223539053486643
+      ],
+      "turn_angle_deg": 26.13356009862913,
+      "max_turn_deg": 27.37949312436228,
+      "turn_margin_deg": 1.245933025733151,
+      "minimum_altitude_km": 250.0,
+      "conservative_equal_speed_periapsis_km": 6688.047982537757,
+      "conservative_equal_speed_altitude_km": 636.2479825377568,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 9,
+      "julian_date_tdb": 2442895.2424754906,
+      "date": "1976-04-26T17:49:09 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Earth",
+      "vinf_in_kms": 17.357680119368098,
+      "vinf_out_kms": 17.35768011948275,
+      "speed_mismatch_mps": 1.1465317584224977e-07,
+      "incoming_vinf_vector_kms": [
+        -11.267168800261523,
+        12.99399678875383,
+        -2.3443578665756157
+      ],
+      "outgoing_vinf_vector_kms": [
+        -6.282781812687597,
+        16.05964571539454,
+        -1.9757255174893007
+      ],
+      "turn_angle_deg": 19.44729849273743,
+      "max_turn_deg": 19.45229849300104,
+      "turn_margin_deg": 0.005000000263610422,
+      "minimum_altitude_km": 130.0,
+      "conservative_equal_speed_periapsis_km": 6510.131046818201,
+      "conservative_equal_speed_altitude_km": 131.99404681820124,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 10,
+      "julian_date_tdb": 2443728.390730479,
+      "date": "1978-08-07T21:22:39 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Jupiter",
+      "vinf_in_kms": 11.889150290278582,
+      "vinf_out_kms": 11.889150290296666,
+      "speed_mismatch_mps": 1.808331262509455e-08,
+      "incoming_vinf_vector_kms": [
+        -7.051578950391924,
+        9.564727252613995,
+        0.3783140419333384
+      ],
+      "outgoing_vinf_vector_kms": [
+        -11.786376173635835,
+        -1.2814388162287216,
+        0.8894638154939669
+      ],
+      "turn_angle_deg": 59.75795794562098,
+      "max_turn_deg": 132.8830946710973,
+      "turn_margin_deg": 73.12513672547631,
+      "minimum_altitude_km": 10000.0,
+      "conservative_equal_speed_periapsis_km": 902835.1613159494,
+      "conservative_equal_speed_altitude_km": 831343.1613159494,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 11,
+      "julian_date_tdb": 2444291.4166038726,
+      "date": "1980-02-21T21:59:54 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Saturn",
+      "vinf_in_kms": 13.911224160041881,
+      "vinf_out_kms": 13.911224160047139,
+      "speed_mismatch_mps": 5.258016244624741e-09,
+      "incoming_vinf_vector_kms": [
+        -13.389894251749347,
+        -3.6919081977941595,
+        0.7763397561396927
+      ],
+      "outgoing_vinf_vector_kms": [
+        2.4832121705674193,
+        -13.675818243647491,
+        -0.5725472152963003
+      ],
+      "turn_angle_deg": 85.0211428403799,
+      "max_turn_deg": 94.8013212713949,
+      "turn_margin_deg": 9.780178431014999,
+      "minimum_altitude_km": 10000.0,
+      "conservative_equal_speed_periapsis_km": 94060.43933855387,
+      "conservative_equal_speed_altitude_km": 33792.43933855387,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 12,
+      "julian_date_tdb": 2444840.3397852853,
+      "date": "1981-08-23T20:09:17 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    },
+    {
+      "body": "Uranus",
+      "vinf_in_kms": 18.2886064097825,
+      "vinf_out_kms": 18.288606409775632,
+      "speed_mismatch_mps": 6.867395541121368e-09,
+      "incoming_vinf_vector_kms": [
+        0.3821418787529991,
+        -18.27846879727335,
+        -0.4739941176271522
+      ],
+      "outgoing_vinf_vector_kms": [
+        7.903084468285979,
+        -16.467778804363522,
+        0.9091983003606627
+      ],
+      "turn_angle_deg": 24.813164801980896,
+      "max_turn_deg": 46.50176128635887,
+      "turn_margin_deg": 21.68859648437797,
+      "minimum_altitude_km": 1000.0,
+      "conservative_equal_speed_periapsis_km": 63304.881036579034,
+      "conservative_equal_speed_altitude_km": 37745.881036579034,
+      "speed_matched_to_1_mm_s": true,
+      "passes_speed_tolerance": true,
+      "passes_turn_screen": true,
+      "event_index": 13,
+      "julian_date_tdb": 2446160.966918309,
+      "date": "1985-04-05T11:12:21 TDB",
+      "maneuver_status": "unpowered_exact_speed_match"
+    }
+  ],
+  "dsms": [
+    {
+      "leg_index": 4,
+      "julian_date_tdb": 2441736.718082077,
+      "date": "1973-02-23T05:14:02 TDB",
+      "magnitude_kms": 3.7697583172290334e-07,
+      "delta_v_ecliptic_j2000_kms": [
+        4.838582867705554e-09,
+        3.1507235931371724e-08,
+        3.756256912179623e-07
+      ],
+      "position_km": [
+        -60909292.59250002,
+        -112440557.0753566,
+        1389475.021495623
+      ]
+    },
+    {
+      "leg_index": 7,
+      "julian_date_tdb": 2442408.2047792254,
+      "date": "1974-12-26T16:54:52 TDB",
+      "magnitude_kms": 2.688867645702661e-05,
+      "delta_v_ecliptic_j2000_kms": [
+        2.9720732683813367e-06,
+        -1.4775464300953445e-06,
+        -2.6683038782060464e-05
+      ],
+      "position_km": [
+        -83468429.54259512,
+        -102213754.03158388,
+        2379318.3836827367
+      ]
+    }
+  ],
+  "event_burns": [],
+  "turnaround_delta_v_kms": 0,
+  "mercury_returns": [],
+  "max_vinf_mismatch_mps": 0.0003866609663560894,
+  "min_turn_margin_deg": 0.004799076695793884,
+  "launch_vinf_vector_kms": [
+    -1.5781023203652644,
+    -2.107154376016407,
+    2.5504477914161456
+  ],
+  "arrival_vinf_vector_kms": [
+    9.173273436844216,
+    -18.33843097757285,
+    0.9489631158432121
+  ],
+  "departure_velocities_kms": [
+    [
+      16.46068440527159,
+      21.09777809691515,
+      2.5512724903669786
+    ],
+    [
+      -34.84866467567129,
+      -20.60228106009184,
+      -0.15946142010537373
+    ],
+    [
+      7.0486038153204635,
+      21.72900990734504,
+      1.1130906818271291
+    ],
+    [
+      -3.7726205508811974,
+      -26.143531163789586,
+      -1.3829384029114518
+    ],
+    [
+      -33.27289324569198,
+      -11.55908580841978,
+      1.5930911495835913
+    ],
+    [
+      -27.47116355770834,
+      -10.20180821482991,
+      2.0296856203312443
+    ],
+    [
+      -2.2940843952127263,
+      60.283097244657355,
+      0.3200084166064898
+    ],
+    [
+      -34.37638556525509,
+      -7.665140596530802,
+      1.6064035282297964
+    ],
+    [
+      -39.24251856764441,
+      -11.317712309867664,
+      2.1119284108406524
+    ],
+    [
+      -12.476257991823474,
+      42.25714277177123,
+      -1.623512765843706
+    ],
+    [
+      14.184385969698388,
+      37.13719238922572,
+      -1.9756931669298725
+    ],
+    [
+      -17.398710898916555,
+      -12.563287406705765,
+      1.0615678856541524
+    ],
+    [
+      3.923996861533812,
+      -23.167913134797615,
+      -0.46359980775358056
+    ],
+    [
+      14.45634377693246,
+      -18.491767607668308,
+      0.8165563555911783
+    ]
+  ],
+  "arrival_velocities_kms": [
+    [
+      -32.55254037818765,
+      -19.211079617507306,
+      -3.3647086789993668
+    ],
+    [
+      7.689891130171899,
+      19.847701291805134,
+      0.5743484578954473
+    ],
+    [
+      -4.398588392589926,
+      -31.553400232934436,
+      -1.6500883210503496
+    ],
+    [
+      -34.99731014300601,
+      -12.88574110097731,
+      -0.48779790403059753
+    ],
+    [
+      -33.27242762613501,
+      -11.55968769208944,
+      1.5930557646068986
+    ],
+    [
+      -2.095541266685391,
+      59.881732498100135,
+      0.20675951049793517
+    ],
+    [
+      -29.374385905013284,
+      -6.6553670379694605,
+      2.1735582076967175
+    ],
+    [
+      -34.37664241381657,
+      -7.664731452550024,
+      1.6064455799184223
+    ],
+    [
+      -14.716689775653165,
+      37.77894221872535,
+      1.3634150474821927
+    ],
+    [
+      9.199998982124463,
+      34.071543462585005,
+      -2.3443255160161875
+    ],
+    [
+      -12.663913675672644,
+      -1.7171213378630483,
+      0.5504181120935239
+    ],
+    [
+      -11.949109560782954,
+      -13.184003088944284,
+      0.8852871636824124
+    ],
+    [
+      6.9354011873994805,
+      -20.302457600578137,
+      -0.5666360623966367
+    ],
+    [
+      14.508884828559648,
+      -17.49553288360155,
+      0.8080932789007855
+    ]
+  ],
+  "segments": [
+    {
+      "start_jd": 2440812.817524262,
+      "end_jd": 2440943.9977540737,
+      "r": [
+        118617679.1867959,
+        -94291653.70821889,
+        -5217.30327563091
+      ],
+      "v": [
+        16.46068440527159,
+        21.09777809691515,
+        2.5512724903669786
+      ]
+    },
+    {
+      "start_jd": 2440943.9977540737,
+      "end_jd": 2441193.100734213,
+      "r": [
+        -49687562.167999856,
+        95234438.81093338,
+        4163353.4256803417
+      ],
+      "v": [
+        -34.84866467567129,
+        -20.60228106009184,
+        -0.15946142010537373
+      ]
+    },
+    {
+      "start_jd": 2441193.100734213,
+      "end_jd": 2441402.9011465516,
+      "r": [
+        178283648.60215926,
+        -104546283.99753319,
+        -6581838.049893102
+      ],
+      "v": [
+        7.0486038153204635,
+        21.72900990734504,
+        1.1130906818271291
+      ]
+    },
+    {
+      "start_jd": 2441402.9011465516,
+      "end_jd": 2441624.3673757794,
+      "r": [
+        -148384180.31957358,
+        -16185403.235916102,
+        -1902.019854335112
+      ],
+      "v": [
+        -3.7726205508811974,
+        -26.143531163789586,
+        -1.3829384029114518
+      ]
+    },
+    {
+      "start_jd": 2441624.3673757794,
+      "end_jd": 2441736.718082077,
+      "r": [
+        -65696686.39831665,
+        84911513.29237492,
+        4947588.803679368
+      ],
+      "v": [
+        -33.27289324569198,
+        -11.55908580841978,
+        1.5930911495835913
+      ]
+    },
+    {
+      "start_jd": 2441736.718082077,
+      "end_jd": 2441849.068788374,
+      "r": [
+        -60909292.59250002,
+        -112440557.0753566,
+        1389475.021495623
+      ],
+      "v": [
+        28.355538233220273,
+        -6.5069354634606835,
+        -1.6312629717327807
+      ]
+    },
+    {
+      "start_jd": 2441849.068788374,
+      "end_jd": 2442254.4330744715,
+      "r": [
+        -65698892.561340444,
+        84910746.61456095,
+        4947693.114471875
+      ],
+      "v": [
+        -27.47116355770834,
+        -10.20180821482991,
+        2.0296856203312443
+      ]
+    },
+    {
+      "start_jd": 2442254.4330744715,
+      "end_jd": 2442295.854435671,
+      "r": [
+        49765869.82847626,
+        10869747.902977357,
+        -3683429.0645512515
+      ],
+      "v": [
+        -2.2940843952127263,
+        60.283097244657355,
+        0.3200084166064898
+      ]
+    },
+    {
+      "start_jd": 2442295.854435671,
+      "end_jd": 2442408.2047792254,
+      "r": [
+        -59246680.52961775,
+        89556544.03056687,
+        4638446.204510353
+      ],
+      "v": [
+        -34.37638556525509,
+        -7.665140596530802,
+        1.6064035282297964
+      ]
+    },
+    {
+      "start_jd": 2442408.2047792254,
+      "end_jd": 2442520.5551227797,
+      "r": [
+        -83468429.54259512,
+        -102213754.03158388,
+        2379318.3836827367
+      ],
+      "v": [
+        25.85928005545821,
+        -10.657811157961273,
+        -1.507259927439327
+      ]
+    },
+    {
+      "start_jd": 2442520.5551227797,
+      "end_jd": 2442895.2424754906,
+      "r": [
+        -59245225.43982978,
+        89556916.89830574,
+        4638480.606997603
+      ],
+      "v": [
+        -39.24251856764441,
+        -11.317712309867664,
+        2.1119284108406524
+      ]
+    },
+    {
+      "start_jd": 2442895.2424754906,
+      "end_jd": 2443728.390730479,
+      "r": [
+        108299497.01832832,
+        6354618.651149911,
+        -6166684.133476462
+      ],
+      "v": [
+        -12.476257991823474,
+        42.25714277177123,
+        -1.623512765843706
+      ]
+    },
+    {
+      "start_jd": 2443728.390730479,
+      "end_jd": 2444291.4166038726,
+      "r": [
+        107837319.90899315,
+        -106687537.58397886,
+        -4676.358605188328
+      ],
+      "v": [
+        14.184385969698388,
+        37.13719238922572,
+        -1.9756931669298725
+      ]
+    },
+    {
+      "start_jd": 2444291.4166038726,
+      "end_jd": 2444840.3397852853,
+      "r": [
+        -732898446.1137614,
+        336357073.8262915,
+        15035909.051019356
+      ],
+      "v": [
+        -17.398710898916555,
+        -12.563287406705765,
+        1.0615678856541524
+      ]
+    },
+    {
+      "start_jd": 2444840.3397852853,
+      "end_jd": 2446160.966918309,
+      "r": [
+        -1405354090.9988408,
+        -290264253.9497745,
+        60902104.40609972
+      ],
+      "v": [
+        3.923996861533812,
+        -23.167913134797615,
+        -0.46359980775358056
+      ]
+    },
+    {
+      "start_jd": 2446160.966918309,
+      "end_jd": 2447265.553628953,
+      "r": [
+        -716541476.9626583,
+        -2761277113.299733,
+        -940677.9270812415
+      ],
+      "v": [
+        14.45634377693246,
+        -18.491767607668308,
+        0.8165563555911783
+      ]
+    }
+  ],
+  "events": [
+    {
+      "body": "Earth",
+      "julian_date_tdb": 2440812.817524262,
+      "date": "1970-08-14T07:37:14 TDB",
+      "planet_state_km_kms": [
+        118617679.1867959,
+        -94291653.70821889,
+        -5217.30327563091,
+        18.038786725636854,
+        23.204932472931556,
+        0.0008246989508328708
+      ]
+    },
+    {
+      "body": "Venus",
+      "julian_date_tdb": 2440943.9977540737,
+      "date": "1970-12-23T11:56:45 TDB",
+      "planet_state_km_kms": [
+        -49687562.167999856,
+        95234438.81093338,
+        4163353.4256803417,
+        -31.16753165268807,
+        -16.39421659931281,
+        1.577061461461174
+      ]
+    },
+    {
+      "body": "Mars",
+      "julian_date_tdb": 2441193.100734213,
+      "date": "1971-08-29T14:25:03 TDB",
+      "planet_state_km_kms": [
+        178283648.60215926,
+        -104546283.99753319,
+        -6581838.049893102,
+        13.184352428770834,
+        22.96749723881914,
+        0.15603466080471026
+      ]
+    },
+    {
+      "body": "Earth",
+      "julian_date_tdb": 2441402.9011465516,
+      "date": "1972-03-26T09:37:39 TDB",
+      "planet_state_km_kms": [
+        -148384180.31957358,
+        -16185403.235916102,
+        -1902.019854335112,
+        2.749784256052056,
+        -29.714224714500038,
+        -0.0008498136121292125
+      ]
+    },
+    {
+      "body": "Venus",
+      "julian_date_tdb": 2441624.3673757794,
+      "date": "1972-11-02T20:49:01 TDB",
+      "planet_state_km_kms": [
+        -65696686.39831665,
+        84911513.29237492,
+        4947588.803679368,
+        -27.820619779262618,
+        -21.622232577055733,
+        1.312668033228462
+      ]
+    },
+    {
+      "body": "Venus",
+      "julian_date_tdb": 2441849.068788374,
+      "date": "1973-06-15T13:39:03 TDB",
+      "planet_state_km_kms": [
+        -65698892.561340444,
+        84910746.61456095,
+        4947693.114471875,
+        -27.819846125167608,
+        -21.62304533600816,
+        1.3125798038491954
+      ]
+    },
+    {
+      "body": "Mercury",
+      "julian_date_tdb": 2442254.4330744715,
+      "date": "1974-07-25T22:23:37 TDB",
+      "planet_state_km_kms": [
+        49765869.82847626,
+        10869747.902977357,
+        -3683429.0645512515,
+        -19.815592481821664,
+        49.77978369961484,
+        5.88487959420844
+      ]
+    },
+    {
+      "body": "Venus",
+      "julian_date_tdb": 2442295.854435671,
+      "date": "1974-09-05T08:30:23 TDB",
+      "planet_state_km_kms": [
+        -59246680.52961775,
+        89556544.03056687,
+        4638446.204510353,
+        -29.328830733717567,
+        -19.515436589618275,
+        1.4281518470495183
+      ]
+    },
+    {
+      "body": "Venus",
+      "julian_date_tdb": 2442520.5551227797,
+      "date": "1975-04-18T01:19:22 TDB",
+      "planet_state_km_kms": [
+        -59245225.43982978,
+        89556916.89830574,
+        4638480.606997603,
+        -29.32899009049304,
+        -19.515232386967178,
+        1.4281395853859922
+      ]
+    },
+    {
+      "body": "Venus",
+      "julian_date_tdb": 2442895.2424754906,
+      "date": "1976-04-26T17:49:09 TDB",
+      "planet_state_km_kms": [
+        108299497.01832832,
+        6354618.651149911,
+        -6166684.133476462,
+        -2.194103559894792,
+        34.80042197032832,
+        0.6000262876429369
+      ]
+    },
+    {
+      "body": "Earth",
+      "julian_date_tdb": 2443728.390730479,
+      "date": "1978-08-07T21:22:39 TDB",
+      "planet_state_km_kms": [
+        107837319.90899315,
+        -106687537.58397886,
+        -4676.358605188328,
+        20.467167782385985,
+        21.077546673831176,
+        3.235055942828195e-05
+      ]
+    },
+    {
+      "body": "Jupiter",
+      "julian_date_tdb": 2444291.4166038726,
+      "date": "1980-02-21T21:59:54 TDB",
+      "planet_state_km_kms": [
+        -732898446.1137614,
+        336357073.8262915,
+        15035909.051019356,
+        -5.61233472528072,
+        -11.281848590477043,
+        0.1721040701601855
+      ]
+    },
+    {
+      "body": "Saturn",
+      "julian_date_tdb": 2444840.3397852853,
+      "date": "1981-08-23T20:09:17 TDB",
+      "planet_state_km_kms": [
+        -1405354090.9988408,
+        -290264253.9497745,
+        60902104.40609972,
+        1.4407846909663928,
+        -9.492094891150124,
+        0.10894740754271971
+      ]
+    },
+    {
+      "body": "Uranus",
+      "julian_date_tdb": 2446160.966918309,
+      "date": "1985-04-05T11:12:21 TDB",
+      "planet_state_km_kms": [
+        -716541476.9626583,
+        -2761277113.299733,
+        -940677.9270812415,
+        6.553259308646481,
+        -2.0239888033047846,
+        -0.09264194476948445
+      ]
+    },
+    {
+      "body": "Neptune",
+      "julian_date_tdb": 2447265.553628953,
+      "date": "1988-04-14T01:17:13 TDB",
+      "planet_state_km_kms": [
+        669125957.1303097,
+        -4471384647.359598,
+        76657436.83257025,
+        5.335611391715433,
+        0.8428980939712996,
+        -0.1408698369424266
+      ]
+    }
+  ],
+  "id": "c16155480c4d",
+  "status": "passes_configured_patched_conic_screen",
+  "reference_note": "RSS/Principia all-eight-planet itinerary reconstruction; solar patched-conic screen only. Research altitude floors Earth 130 km, Venus 250 km; atmosphere and moons excluded."
+}

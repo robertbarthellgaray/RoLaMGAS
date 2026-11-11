@@ -326,6 +326,11 @@
       "label": "EVEEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+    },
+    "c16155480c4d": {
+      "label": "ReachStar’s Eight-Planet Grand Tour",
+      "featured_priority": 12,
+      "note": "Original RSS/Principia trajectory design by ReachStar on Bilibili; date-adjusted JPL patched-conic recreation in RoLaMGAS."
     }
   }
 }

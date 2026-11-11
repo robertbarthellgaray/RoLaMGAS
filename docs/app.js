@@ -1,6 +1,6 @@
 import {historicalMatch} from './historical_labels.js?v=20261108b';
 import {publicationDate} from './publication_dates.js?v=20261110b';
-import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261110b';
+import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261111c';
 import './mission_metrics.js?v=20261110a';
 import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261111a';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261108b';
@@ -139,7 +139,7 @@ async function togglePlanetAnimation(){
  if(animatePlanets){animatePlanets=false;$('animate-planets').textContent='Animate planets';$('animate-planets').setAttribute('aria-pressed','false');updateAnimationStatus();drawSoon();return;}
  const button=$('animate-planets');button.disabled=true;$('planet-animation-status').textContent='Loading compact JPL planet playback data…';
  try{
-  if(!planetLoad)planetLoad=fetchJson('data/planet_playback.json?v=20261110a').catch(error=>{planetLoad=null;throw error});
+  if(!planetLoad)planetLoad=fetchJson('data/planet_playback.json?v=20261111c').catch(error=>{planetLoad=null;throw error});
   planetEphemerides=await planetLoad;animatePlanets=true;button.textContent='Planets animated ✓';button.setAttribute('aria-pressed','true');
   if(selected){attachPlanetContext(selected);renderBodyVisibility(selected);$('planet-arcs').disabled=false;$('planet-arcs').title='Dated JPL ephemeris context, interpolated for display';updateAnimationStatus();if(fraction>=1)fraction=0;setPlaying(true);updateTime();}
  }catch(error){$('planet-animation-status').textContent='Planet animation unavailable: '+error.message;}
@@ -199,7 +199,7 @@ async function selectCandidate(id) {
     const publication=publicationDate(c,publicationHistory);
     $('mission-added').textContent='Added to repository: '+publication.text;
     $('mission-added').title='Source: '+publication.basis+'. First encounter-sequence publication is retained when a better same-day candidate replaces it.';
-    const metrics = [ ['Launch C3', fmt(c.c3), 'km²/s²'], ['Cruise Δv', fmt(c.burns_mps,1), 'm/s'], ['Arrival V∞', fmt(c.vinf), 'km/s'], ['Flight time', fmt(c.years), 'years'] ];
+    const metrics = [ ['Launch C3', fmt(c.c3), 'km²/s²'], ['Cruise Δv', fmt(c.burns_mps,c.burns_mps>0&&c.burns_mps<.1?3:1), 'm/s'], ['Arrival V∞', fmt(c.vinf), 'km/s'], ['Flight time', fmt(c.years), 'years'] ];
     $('metrics').innerHTML = metrics.map(([label,value,unit]) => `<div class="metric"><p>${label}</p><strong>${value}</strong><small>${unit}</small></div>`).join('');
     const events = [...c.events.map(e => ({...e, burn:false})), ...c.burns.filter(globalThis.MissionMetrics.visibleManeuver).map(b => ({...b, burn:true}))].sort((a,b) => a.jd - b.jd);
     $('events').innerHTML = events.map(e => {
@@ -210,11 +210,12 @@ async function selectCandidate(id) {
       return `<tr><td><i class="event-dot ${e.burn?'burn-dot':''}"></i>${escapeHtml(e.burn ? e.kind : e.body)}</td><td>${escapeHtml(e.date.replace('T',' ').replace(/\.[0-9]+(?= TDB)/,'').replace(' TDB',''))}</td><td>${e.jd.toFixed(6)}</td><td>${escapeHtml(detail)}</td></tr>`;
     }).join('');
     $('model-note').textContent = [c.mission_note,c.note].filter(Boolean).join(' ');renderLaunchPerformance();updateParkingEstimate();renderSequenceComparison();updateAnimationStatus();
-    const labels = {source:'Data source', coordinates:'Coordinates', time_scale:'Time scale', plot_units:'Preview units', candidate_id:'Candidate', speed_tolerance_mps:'Saved speed tolerance (m/s)', sha256:'XYZV SHA-256', export_units:'Export columns', ephemerides:'Ephemerides', planet_arcs:'Planet context',target_horizons_id:'Horizons target ID',target_ephemeris:'Target representation'};
+    const labels = {source:'Data source', credit:'Original trajectory credit', coordinates:'Coordinates', time_scale:'Time scale', plot_units:'Preview units', candidate_id:'Candidate', speed_tolerance_mps:'Saved speed tolerance (m/s)', sha256:'XYZV SHA-256', export_units:'Export columns', ephemerides:'Ephemerides', planet_arcs:'Planet context',target_horizons_id:'Horizons target ID',target_ephemeris:'Target representation'};
     $('provenance').innerHTML = Object.entries(labels).filter(([key]) => c.provenance[key] != null).map(([key,label]) => `<dt>${label}</dt><dd>${escapeHtml(c.provenance[key])}</dd>`).join('');
     if(c.validation) {
       const v=c.validation;
-      $('provenance').innerHTML += `<dt>Gallery admission</dt><dd>${v.passed?'Passed independent vector and coast checks':'Not admitted'}</dd><dt>Worst |ΔV∞|</dt><dd>${fmt(v.max_vinf_mismatch_mps,6)} m/s ${c.powered_flybys?'(powered joins audited from full periapsis vectors)':'(unpowered limit 1 m/s)'}</dd><dt>Largest DSM</dt><dd>${fmt(v.max_single_dsm_mps,3)} m/s (limit 700 m/s)</dd><dt>Coast endpoint error</dt><dd>${fmt(v.max_coast_endpoint_error_km*1000,3)} m maximum</dd>`;
+      $('provenance').innerHTML += `<dt>${c.research_altitude_exception?'Research validation':'Gallery admission'}</dt><dd>${v.passed?(c.research_altitude_exception?'Passed independent vector and coast checks with disclosed altitude exceptions':'Passed independent vector and coast checks'):'Not admitted'}</dd><dt>Worst |ΔV∞|</dt><dd>${fmt(v.max_vinf_mismatch_mps,6)} m/s ${c.powered_flybys?'(powered joins audited from full periapsis vectors)':'(unpowered limit 1 m/s)'}</dd><dt>Largest DSM</dt><dd>${fmt(v.max_single_dsm_mps,3)} m/s (limit 700 m/s)</dd><dt>Coast endpoint error</dt><dd>${fmt(v.max_coast_endpoint_error_km*1000,3)} m maximum</dd>`;
+      if(c.research_altitude_exception)$('provenance').innerHTML+=`<dt>Altitude exceptions</dt><dd>${escapeHtml(c.research_altitude_exception)}</dd><dt>Standard altitude floors</dt><dd>${c.standard_catalog_audit?.passed?'Met':'Not met; published separately as an attributed research recreation'}</dd>`;
     }
     if(c.integration_validation) {
       $('provenance').innerHTML += `<dt>JPL clearance audit</dt><dd>Passed · Sun and eight planetary surfaces</dd><dt>Audit scope</dt><dd>${escapeHtml(c.integration_validation.scope)}</dd>`;
@@ -440,7 +441,7 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings,names,historical,annotations,performance,publications]=await Promise.all([fetchJson('data/index.json?v=20261111b'),fetchJson('data/community_seed_catalog.json?v=20261110b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261111b').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261110a').catch(()=>null),fetchJson('data/publication_dates.json?v=20261110b').catch(()=>({candidates:{}}))]);
+ const [data,archive,settings,names,historical,annotations,performance,publications]=await Promise.all([fetchJson('data/index.json?v=20261111c'),fetchJson('data/community_seed_catalog.json?v=20261110b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261111c').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261110a').catch(()=>null),fetchJson('data/publication_dates.json?v=20261111c').catch(()=>({candidates:{}}))]);
  registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  catalog.push(...data.cases.filter(c=>c.c3<=250).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;

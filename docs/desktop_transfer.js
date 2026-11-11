@@ -21,6 +21,6 @@ export function transferDocument(c,label=''){
  settings.powered_flybys=powered;
  if(!record){delete settings.event_windows;settings.launch_end=iso(dates[0]+1);settings.arrival_date=iso(c.end);settings.arrival_tolerance_days=1;}
  if(branches)settings.route_overrides={[sequence]:{leg_days:dates.slice(1).map((d,i)=>[Math.max(1,(d-dates[i])*.5),(d-dates[i])*1.5+1]),branch_options:branches.map(b=>[b])}};
- return {format:'rolamgas-search-options',schema_version:1,app_version:'0.2.4-test3',settings,...(record?{trajectory:record}:{}),display_name:String(label||c.title||c.sequence).slice(0,100),source_candidate_id:c.id};
+ return {format:'rolamgas-search-options',schema_version:1,app_version:'0.2.4-test3',settings,...(record?{trajectory:record}:{}),display_name:String(label||c.title||c.sequence).slice(0,100),source_candidate_id:c.id,...(c.provenance?.credit?{attribution:c.provenance.credit}:{})};
 }
 export function finiteRadiusDownload(c){return c.model==='Integrated concept'||c.model==='Patched-conic export'||c.trajectory_files?.finite_radius===true;}

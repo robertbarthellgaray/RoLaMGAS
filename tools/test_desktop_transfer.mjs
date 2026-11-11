@@ -4,6 +4,14 @@ import {transferDocument,finiteRadiusDownload} from '../docs/desktop_transfer.js
 import {historicalMatch} from '../docs/historical_labels.js';
 const root=new URL('../docs/',import.meta.url),load=p=>JSON.parse(fs.readFileSync(new URL(p,root),'utf8'));
 
+test('ReachStar research handoff preserves attribution, resonance controls and disclosed floors',()=>{
+ const c=load('data/cases/c16155480c4d.json');c.desktop_record=load(c.desktop_record_url);
+ const d=transferDocument(c);
+ assert.equal(d.attribution,'ReachStar on Bilibili');assert.equal(d.trajectory.body_ids.length,15);
+ assert.equal(d.trajectory.dsm_controls.length,2);assert.equal(d.settings.minimum_altitude_km.Earth,130);
+ assert.equal(d.settings.minimum_altitude_km.Venus,250);assert.equal(finiteRadiusDownload(c),false);
+});
+
 test('curated shared aliases keep the server timestamp for Newest shared ordering',()=>{
  const source=fs.readFileSync(new URL('app.js',root),'utf8'),snippet=source.slice(source.indexOf('function addShared(records)'),source.indexOf('function updateCounts()'));
  const curated={id:'featured',mission_label:'Named mission'},context=vm.createContext({catalog:[curated],sharedRecords:new Map(),curatedAliases:{shared:'featured'},encounterDays:new Map(),displayAliases:{},historicalProfiles:[],annotateMission:x=>x,historicalMatch:()=>null,summaryFor:r=>({id:r.id,received:Date.parse(r.received_at)}),encounterDayKey:()=> 'key',carryMissionLabel:(a,b)=>b,betterDuplicate:()=>true});
