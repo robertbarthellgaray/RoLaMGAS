@@ -428,6 +428,20 @@ def job_search(job):
             ranked.append((float(res@res),x))
             if np.linalg.norm(res) < 1:
                 record(x)
+    # Every retained historical/proposal guess gets its own short refinement.
+    # Otherwise a useful reference can be crowded out by random samples or
+    # by the small number of full-refinement slots assigned to this branch.
+    historical_stats.update(refinement_attempted=0,refinement_evaluated=0,refinement_passing=0,
+                            refinement_maxiter=min(60,c['max_nfev']))
+    for name,x in zip(historical_stats['missions'],historical_points):
+        historical_stats['refinement_attempted']+=1
+        refined=feasibility_refine(model,x,branch,maxiter=historical_stats['refinement_maxiter'])
+        if refined is None:continue
+        q=record(refined['x'],known_source=dict(initialization_reference=name))
+        if q is None:continue
+        historical_stats['refinement_evaluated']+=1
+        historical_stats['refinement_passing']+=int(model.accepted(q))
+        ranked.append((q['screening_residual_norm']**2,np.asarray(q['x'])))
     ranked.sort(key=lambda row:row[0])
     # Spread refinements across the good random starts, avoid identical basins.
     starts = [np.asarray(local['seed_x'])] if local and model.c3_in_bounds(model.launch_c3(local['seed_x'],branch)) else []
@@ -459,7 +473,7 @@ def job_search(job):
                 if polished['cost_refinement']['objective_after']<=polished['cost_refinement']['objective_before']:
                     record(polished['x'],polished['cost_refinement'])
     return dict(job_id=identifier,sequence=route['id'],branch=branch,seed=seed,
-                random_evaluations=nsamples,valid_random_evaluations=valid,refinements=len(starts)+len(warm_starts),known_seed_refinements=len(warm_starts),mercury_resonant_seed_rows=resonant_rows,
+                random_evaluations=nsamples,valid_random_evaluations=valid,refinements=len(starts)+len(warm_starts)+historical_stats['refinement_attempted'],known_seed_refinements=len(warm_starts),mercury_resonant_seed_rows=resonant_rows,
                 appended_return_roots=len(root_seeds),earth_return_departure_seeds=departure_seed_stats,historical_mission_seeds=historical_stats,
                 c3_seed_boundary=c.get('c3_seed_boundary','minimum'),c3_boundary_seed_count=len(boundary_seeds),
                 effective_min_c3=model.c3_minimum,c3_preflight_evaluations=model.c3_preflight_evaluations,

@@ -1,6 +1,7 @@
 """Historical references remain reproducible, bounded, and first-leg-only."""
 import bootstrap
 import unittest,math
+from unittest.mock import patch
 import numpy as np
 from dynamics import Model
 from ephemeris import AU,MU_SUN,DAY,JD0,BODIES
@@ -44,10 +45,37 @@ class HistoricalSeedTests(unittest.TestCase):
         dates=m.dates(point);m.config['event_windows_jd']=[[d,d] for d in dates];np.testing.assert_allclose(m.dates(timing_guess(m,x,ref)),dates)
     def test_seed_projection_obeys_energy_bounds_uses_only_first_leg_and_is_deterministic(self):
         m=model();x=np.random.default_rng(14).random((16,m.dimension));original=x.copy();branches=[(0,True)]*4
-        points,stats=seed_missions(x,m,branches);self.assertGreater(stats['retained'],0);self.assertLessEqual(stats['retained'],3)
+        points,stats=seed_missions(x,m,branches);self.assertGreater(stats['retained'],0)
+        self.assertEqual(stats['attempted'],len(matching_references(m)))
+        self.assertEqual(stats['attempted'],stats['retained']+stats['c3_rejected']+stats['duplicates'])
         for p in points:self.assertTrue(m.c3_in_bounds(m.launch_c3(p,branches)));self.assertTrue(np.all((p>=0)&(p<=1)))
         self.assertEqual(set(m.ep.queried),{'Earth','Venus'});np.testing.assert_array_equal(x,original)
         again,_=seed_missions(x,model(),branches);np.testing.assert_allclose(points,again)
+    def test_all_references_are_tried_even_with_one_sample_and_valid_timing_is_preserved(self):
+        m=model();sample=np.full((1,m.dimension),.5)
+        refs=[dict(name=f'reference {i}',bodies=m.bodies,dates=['2030-01-01'],
+                   planet_leg_days=[100+i,240+i,700+i,1000+i]) for i in range(8)]
+        with patch('historical_seeds.matching_references',return_value=refs),patch.object(m,'launch_c3',return_value=25.),patch('cost_refinement.boundary_seed',side_effect=AssertionError('An in-range reference must keep its dates')):
+            points,stats=seed_missions(sample,m,[(0,True)]*4)
+        self.assertEqual(stats['eligible'],8);self.assertEqual(stats['attempted'],8)
+        self.assertEqual(stats['retained'],8)
+        for point,ref in zip(points,refs):np.testing.assert_allclose(np.diff(m.dates(point)),ref['planet_leg_days'])
+    def test_worker_refines_every_reference_even_when_normal_refinement_budget_is_one(self):
+        from mission_search import normalize,routes_for,planned_jobs,job_search
+        from test_hard_c3_generation import CircularStates
+        c=normalize(dict(target='Jupiter',sequences=['EJ'],samples_per_sequence=8,
+                         refinements_per_sequence=1,max_nfev=8,branch_families=1,max_c3=1e5))
+        job=list(planned_jobs(c,routes_for(c)))[0]
+        points=[np.array([.1+i*.1,.5]) for i in range(6)]
+        names=[f'reference {i}' for i in range(6)]
+        stats=dict(missions=names,retained=len(points))
+        def refine(model,x,branches,maxiter):return model.evaluate(x,branches)
+        with patch('mission_search._WORKER_EP',CircularStates()),patch('mission_search._PROGRESS_QUEUE',None),patch('historical_seeds.seed_missions',return_value=(points,stats)),patch('cost_refinement.feasibility_refine',side_effect=refine) as solver:
+            result=job_search(job)
+        self.assertEqual(result['historical_mission_seeds']['refinement_attempted'],6)
+        self.assertEqual(result['historical_mission_seeds']['refinement_evaluated'],6)
+        self.assertEqual({q['initialization_reference'] for q in result['accepted']+result['near_misses'] if 'initialization_reference' in q},set(names))
+        for point in points:self.assertTrue(any(np.array_equal(point,call.args[1]) for call in solver.call_args_list))
     def test_opt_out_and_frozen_cruises_skip_historical_guesses(self):
         for option in ['off','local','extension']:
             m=model()

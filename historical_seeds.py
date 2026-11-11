@@ -63,17 +63,23 @@ def timing_guess(model,x,mission):
     return point
 
 def seed_missions(samples,model,branches):
-    stats=dict(source='NASA mission timing + JPL Horizons Earth-RTN departures',attempted=0,retained=0,missions=[])
+    stats=dict(source='NASA mission timing + JPL Horizons Earth-RTN departures',eligible=0,attempted=0,retained=0,c3_rejected=0,duplicates=0,missions=[])
     if len(samples)==0:return [],stats
     from cost_refinement import boundary_seed
     seeds=[]
-    for i,mission in enumerate(matching_references(model)[:min(3,len(samples))]):
+    missions=matching_references(model);stats['eligible']=len(missions)
+    for i,mission in enumerate(missions):
         stats['attempted']+=1
-        point=timing_guess(model,samples[i],mission)
+        point=timing_guess(model,samples[i%len(samples)],mission)
         if 0 in model.dsm_legs:
             k=model.n+4*model.dsm_legs.index(0);point[k+1:k+4]=.5
-        point=boundary_seed(model,point,branches)
-        if point is None:continue
+        # Keep a valid reference departure. Forcing an already permitted C3
+        # onto the user's boundary destroys the report's encounter timing.
+        try:in_range=model.c3_in_bounds(model.launch_c3(point,branches))
+        except (ValueError,RuntimeError,AssertionError,OverflowError,FloatingPointError,ZeroDivisionError):in_range=False
+        if not in_range:point=boundary_seed(model,point,branches)
+        if point is None:
+            stats['c3_rejected']+=1;continue
         departure=mission.get('departure')
         free=[index for index in (0,1) if index in model.free_indices]
         if departure and free:
@@ -98,8 +104,10 @@ def seed_missions(samples,model,branches):
             fit=minimize(objective,point[free],method='SLSQP',bounds=[(0.,1.)]*len(free),constraints=[dict(type='ineq',fun=constraints)],options=dict(maxiter=18,ftol=1e-8,eps=2e-6))
             candidate=expanded(np.clip(fit.x,0,1))
             if model.c3_in_bounds(model.launch_c3(candidate,branches)) and objective(candidate[free])<objective(point[free]):point=candidate
-        if not model.c3_in_bounds(model.launch_c3(point,branches)):continue
-        if any(np.linalg.norm(point-p)<1e-9 for p in seeds):continue
+        if not model.c3_in_bounds(model.launch_c3(point,branches)):
+            stats['c3_rejected']+=1;continue
+        if any(np.linalg.norm(point-p)<1e-9 for p in seeds):
+            stats['duplicates']+=1;continue
         seeds.append(point);stats['missions'].append(mission['name'])
     stats['retained']=len(seeds)
     return seeds,stats

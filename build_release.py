@@ -188,7 +188,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--exe',action='store_true',help='Build the native application on this operating system')
     parser.add_argument('--native',action='store_true',help='Also wrap it in a macOS DMG or Linux DEB; Windows outputs EXE')
-    parser.add_argument('--version',default='0.2.3',help='Package version, for example 0.2.0')
+    parser.add_argument('--version',default='0.2.4',help='Package version, for example 0.2.0')
     args=parser.parse_args();validate_version(args.version)
     baseline=baseline_archive();source_release(baseline)
     if args.exe or args.native:

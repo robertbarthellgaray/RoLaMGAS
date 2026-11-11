@@ -37,8 +37,10 @@ def resonance_grid(period,maximum):
 
 
 def worker(job):
-    date,energy,output=job;started=time.monotonic();t0=jd(date)
-    ep=Ephemerides(ROOT/'cache',['Earth','Venus','Jupiter','Saturn'],jd('2029-01-01'),jd('2075-01-01'),1.)
+    date,energy,output,*options=job;settings=options[0] if options else {}
+    max_years=settings.get('max_years',8.99999);max_c3=settings.get('max_c3',29.999)
+    started=time.monotonic();t0=jd(date)
+    ep=Ephemerides(Path(settings.get('cache',ROOT/'cache')),['Earth','Venus','Jupiter','Saturn'],t0-2,t0+max_years*365.25+2,1.)
     answers=[];counts=dict(first_venus=0,inner_returns=0,earth_departures=0,saturn=0)
     @lru_cache(maxsize=4096)
     def coast(a,t,b,days,branch):
@@ -50,8 +52,8 @@ def worker(job):
     def candidate(bodies,dates,branches):
         seq=''.join(dict(Earth='E',Venus='V',Saturn='S',Jupiter='J')[b] for b in bodies)
         durations=np.diff(dates).tolist();target=bodies[-1]
-        c=normalize(dict(target=target,sequences=[seq],launch_start=date,launch_end=date,min_c3=6.25,max_c3=29.999,max_dsm_kms=.7,
-                         max_single_dsm_kms=.7,max_arrival_vinf_kms=12.,max_years=8.99999,vinf_tolerance_mps=.1,
+        c=normalize(dict(target=target,sequences=[seq],launch_start=date,launch_end=date,min_c3=6.25,max_c3=max_c3,max_dsm_kms=.7,
+                         max_single_dsm_kms=.7,max_arrival_vinf_kms=12.,max_years=max_years,vinf_tolerance_mps=.1,
                          route_overrides={seq:dict(leg_days=[[max(1.,d*.5),d*1.5+1] for d in durations],branch_options=[[list(b)] for b in branches])}))
         route=routes_for(c)[0];model=Model(route,c,ep)
         record=dict(schema_version=1,sequence=seq,body_ids=[str(BODIES[b][0]) for b in bodies],dates_jd_tdb=dates,branches=[list(b) for b in branches],dsm_controls=[])
@@ -63,12 +65,12 @@ def worker(job):
     def outer_legs(bodies,dates,branches,incoming):
         t=dates[-1];speed=np.linalg.norm(incoming)
         if t-t0>2200:return
-        end=min(1300.,t0+8.99999*365.25-t-650.)
+        end=min(1300.,t0+max_years*365.25-t-650.)
         fun=lambda d:np.linalg.norm(coast('Earth',t,'Jupiter',d,(0,True))[0])-speed
         for days in bracket_roots(fun,300.,end,10.):
             vo,jupiter_in=coast('Earth',t,'Jupiter',days,(0,True))
             if not safe_turn('Earth',incoming,vo):continue
-            jt=t+days;u=np.linalg.norm(jupiter_in);upper=min(2500.,t0+8.99999*365.25-jt)
+            jt=t+days;u=np.linalg.norm(jupiter_in);upper=min(2500.,t0+max_years*365.25-jt)
             for js_days in bracket_roots(lambda d:np.linalg.norm(coast('Jupiter',jt,'Saturn',d,(0,True))[0])-u,650.,upper,12.):
                 exit_velocity,_=coast('Jupiter',jt,'Saturn',js_days,(0,True))
                 if safe_turn('Jupiter',jupiter_in,exit_velocity):candidate(bodies+['Jupiter','Saturn'],dates+[jt,jt+js_days],branches+[(0,True),(0,True)])
@@ -97,26 +99,35 @@ def worker(job):
                                 if not safe_turn(middle,next_in,out):continue
                                 counts['earth_departures']+=1
                                 outer_legs(['Earth','Venus',middle,'Earth'],[t0,t1,t2,t2+d2],[first_branch,middle_branch,b2],last_in)
-    report=dict(date=date,c3_requested=energy,counts=counts,elapsed_seconds=time.monotonic()-started,candidates=answers)
+    report=dict(date=date,c3_requested=energy,max_c3=max_c3,max_years=max_years,counts=counts,elapsed_seconds=time.monotonic()-started,candidates=answers)
     atomic_json(Path(output)/f'{date}_c3_{energy:g}.json',report)
     print(date,'C3',energy,counts,'seconds',round(report['elapsed_seconds'],1),flush=True)
     return {k:v for k,v in report.items() if k!='candidates'}
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,default=ROOT/'runs/fast_saturn');p.add_argument('--date',action='append');p.add_argument('--c3',type=float,action='append');p.add_argument('--workers',type=int,default=2);p.add_argument('--monthly',action='store_true',help='Survey the first of every month in the selected years');p.add_argument('--start-year',type=int,default=2030);p.add_argument('--end-year',type=int,default=2039);a=p.parse_args();a.output.mkdir(parents=True,exist_ok=True)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,default=ROOT/'runs/fast_saturn');p.add_argument('--date',action='append');p.add_argument('--c3',type=float,action='append');p.add_argument('--workers',type=int,default=2);p.add_argument('--monthly',action='store_true',help='Survey the first of every month in the selected years');p.add_argument('--start-year',type=int,default=2030);p.add_argument('--end-year',type=int,default=2039);p.add_argument('--max-years',type=float,default=8.99999);p.add_argument('--max-c3',type=float,default=29.999);p.add_argument('--cache',type=Path,default=ROOT/'cache');a=p.parse_args();a.output.mkdir(parents=True,exist_ok=True)
+    if not math.isfinite(a.max_years) or not 1<=a.max_years<=20:raise ValueError('Flight-time limit must be between 1 and 20 years')
+    if not math.isfinite(a.max_c3) or not 6.25<=a.max_c3<=30:raise ValueError('This survey needs 6.25 <= maximum C3 <= 30')
     if not 2030<=a.start_year<=a.end_year<=2065:raise ValueError('Launch years must be ordered within 2030–2065 for the configured ephemeris coverage')
     dates=a.date or ([] if a.monthly else ['2033-01-01','2033-02-01','2033-03-01','2033-04-01']);energies=a.c3 or [12.,16.,23.1,28.]
     if a.monthly:dates=list(dict.fromkeys(dates+[f'{y}-{m:02d}-01' for y in range(a.start_year,a.end_year+1) for m in range(1,13)]))
-    if any(not math.isfinite(e) or not 6.25<=e<30 for e in energies):raise ValueError('This low-C3 survey requires 6.25 <= C3 < 30')
-    jobs=[(d,e,str(a.output.resolve())) for d in dates for e in energies if not (a.output/f'{d}_c3_{e:g}.json').exists()]
+    if any(not math.isfinite(e) or not 6.25<=e<=a.max_c3 for e in energies):raise ValueError('Requested seed C3 must be between 6.25 and the maximum C3')
+    settings=dict(max_years=a.max_years,max_c3=a.max_c3,cache=str(a.cache.resolve()))
+    def matching_checkpoint(d,e):
+        try:report=json.loads((a.output/f'{d}_c3_{e:g}.json').read_text(encoding='utf-8'))
+        except (OSError,ValueError):return None
+        if report.get('date')!=d or report.get('c3_requested')!=e:return None
+        if report.get('max_c3',29.999)!=a.max_c3 or report.get('max_years',8.99999)!=a.max_years:return None
+        return report
+    jobs=[(d,e,str(a.output.resolve()),settings) for d in dates for e in energies if matching_checkpoint(d,e) is None]
     if a.workers==1:
         for job in jobs:worker(job)
     else:
         from concurrent.futures import ProcessPoolExecutor,as_completed
         with ProcessPoolExecutor(max_workers=max(1,min(4,a.workers))) as pool:
             for future in as_completed([pool.submit(worker,job) for job in jobs]):future.result()
-    reports=[json.loads(f.read_text(encoding='utf-8')) for f in a.output.glob('*_c3_*.json')];answers=[q for r in reports for q in r['candidates']]
+    reports=[matching_checkpoint(d,e) for d in dates for e in energies];answers=[q for r in reports if r is not None for q in r['candidates']]
     atomic_json(a.output/'all_candidates.json',answers);print('TOTAL PASSING',len(answers),flush=True)
 
 if __name__=='__main__':main()

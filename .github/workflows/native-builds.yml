@@ -7,7 +7,7 @@ on:
     inputs:
       version:
         description: Package version (manual runs create downloadable Actions artifacts only)
-        default: '0.2.3'
+        default: '0.2.4'
         required: true
         type: string
 
@@ -57,7 +57,7 @@ jobs:
           python - <<'PY'
           import os, subprocess, sys
           from build_release import validate_version
-          version = os.environ['MANUAL_VERSION'] or '0.2.3'
+          version = os.environ['MANUAL_VERSION'] or '0.2.4'
           if os.environ['IS_TAG'] == 'true':
               tag = os.environ['RELEASE_TAG']
               version = tag.removeprefix('rolamgas-').removeprefix('v')
