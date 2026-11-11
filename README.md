@@ -4,7 +4,7 @@
 
 ![RoLaMGAS orbital artwork](docs/images/RoLaMGAS.png)
 
-[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.3) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
+[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.4) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
 
 ## Browse before downloading
 
@@ -24,7 +24,7 @@ API key or subscription is required.
 
 ## Desktop app
 
-Download the v0.2.3 package for your platform: Windows ZIP, Apple Silicon or
+Download the v0.2.4 package for your platform: Windows ZIP, Apple Silicon or
 Intel Mac DMG, or Debian/Ubuntu x64 DEB. They open the same local browser GUI.
 On Windows, extract the ZIP and open RoLaMGAS.exe inside the folder.
 The Mac preview is unsigned/not notarized. See [platform instructions](SHARING.md).
@@ -36,6 +36,20 @@ Searches, exports and extra Horizons downloads are stored in
 `%LOCALAPPDATA%/RoLaMGAS`, separate from the executable. Updating the executable
 preserves your work. An internet connection is needed for targets or epochs not
 already cached. `ROLAMGAS_DATA_DIR` can select another data directory.
+
+## New in v0.2.4
+
+Proposal initialization now tries every matching historical/study reference and
+gives each retained reference its own feasibility refinement. In-range
+reference departures keep their timing instead of being forced onto a C3
+boundary. New cited Decadal Survey presets expand route coverage. These are
+initial guesses, not a guarantee of a feasible mission in a different decade.
+
+The release also fixes hidden-field validation blocking Start Search, loads
+exact website candidates for local revalidation, and offers optional JPL
+dwarf-planet patches when exporting Celestia packages. Named finite-radius
+study downloads include clearance, interpolation and burn reports. See
+[the release notes](RELEASE_NOTES_0.2.4.md).
 
 ## New in v0.2.3
 
@@ -121,7 +135,7 @@ See `GUI_GUIDE.md`, `SHARING.md` and the original JPL response metadata for deta
 `python -m unittest discover -p "test_*.py"`
 
 Install `requirements-build.txt` and run
-`python build_release.py --native --version 0.2.3` on the target OS to build
+`python build_release.py --native --version 0.2.4` on the target OS to build
 the native EXE, DMG or DEB plus matching GPL source. GitHub Actions can build all
 three platforms; see [SHARING.md](SHARING.md).
 

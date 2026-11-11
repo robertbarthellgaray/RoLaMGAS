@@ -1,0 +1,162 @@
+# Dispatch only after the user has tried and explicitly approved a local build.
+# Reuses successful native artifacts and tests the Windows folder package.
+name: Publish approved release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Approved release version
+        default: '0.2.4'
+        required: true
+        type: string
+      source_sha:
+        description: Exact approved solver commit
+        required: true
+        type: string
+      artifact_run_id:
+        description: Successful Build native downloads run for that commit
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  ROLAMGAS_COMMUNITY_URL: ''
+  RELEASE_VERSION: ${{ inputs.version }}
+  SOURCE_SHA: ${{ inputs.source_sha }}
+  ARTIFACT_RUN: ${{ inputs.artifact_run_id }}
+
+jobs:
+  publish:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify source and successful native build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, re, subprocess
+          from build_release import validate_version
+          version = os.environ['RELEASE_VERSION']; validate_version(version)
+          sha = os.environ['SOURCE_SHA']; run = os.environ['ARTIFACT_RUN']
+          assert re.fullmatch(r'[0-9a-f]{40}', sha) and run.isdigit()
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == sha
+          from app_paths import APP_VERSION
+          assert APP_VERSION == version, (APP_VERSION, version)
+          repo = os.environ['GITHUB_REPOSITORY']
+          result = json.loads(subprocess.check_output(['gh', 'api', f'repos/{repo}/actions/runs/{run}'], text=True))
+          assert result['conclusion'] == 'success' and result['head_sha'] == sha, result
+          assert result['path'] == '.github/workflows/native-builds.yml', result['path']
+          release = json.loads(subprocess.check_output(['gh', 'release', 'view', 'rolamgas-v'+version, '--json', 'isDraft'], text=True))
+          assert release['isDraft'], 'Existing public releases must not be overwritten'
+          PY
+      - name: Download verified native and source artifacts
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ inputs.artifact_run_id }}
+          github-token: ${{ github.token }}
+          pattern: rolamgas-*
+          merge-multiple: true
+          path: .build/approved-native-artifacts
+      - name: Install packaging dependencies
+        run: python -m pip install -r requirements-build.txt
+      - name: Build Windows folder package
+        shell: bash
+        run: |
+          python - <<'PY'
+          import pathlib
+          from build_release import executable, ROOT
+          executable(ROOT/'baseline_ephemerides.zip', windows_folder=True,
+                     output_directory=ROOT/'releases/approved/windows-folder')
+          PY
+      - name: Check compiled kernels and complete-chain search
+        env:
+          ROLAMGAS_DATA_DIR: ${{ runner.temp }}/rolamgas-publish-check
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, subprocess, sys
+          app = pathlib.Path('releases/approved/windows-folder/RoLaMGAS/RoLaMGAS.exe').resolve()
+          qa = pathlib.Path(os.environ['ROLAMGAS_DATA_DIR']); qa.mkdir(parents=True, exist_ok=True)
+          output = qa/'self-check.json'
+          subprocess.run([str(app), '--self-check-file', str(output)], check=True, timeout=180)
+          check = json.loads(output.read_text())
+          assert check['scientific_self_check']['endpoint_error_km'] < 1
+          assert check['scientific_self_check']['numba_kernels_compiled']
+          assert check['baseline_planets'] == 8 and check['certificate_verification']
+          subprocess.run([sys.executable, 'tools/smoke_full_chain_seed.py', '--app', str(app),
+                          '--directory', str(qa/'full-chain')], check=True, timeout=300)
+          print(json.dumps(check, indent=2))
+          PY
+      - name: Assemble and verify release files
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, pathlib, shutil, zipfile
+          from build_release import MODULES
+          root = pathlib.Path.cwd(); version = os.environ['RELEASE_VERSION']
+          artifacts = root/'.build/approved-native-artifacts'
+          out = root/'releases/approved/assets'; out.mkdir(parents=True, exist_ok=True)
+          files = [f'RoLaMGAS-{version}-macos-arm64.dmg', f'RoLaMGAS-{version}-macos-amd64.dmg',
+                   f'rolamgas_{version}_amd64.deb', 'RoLaMGAS-source.zip']
+          for name in files: shutil.copy2(artifacts/name, out/name)
+          for platform in ('macos-arm64', 'macos-amd64', 'linux-amd64'):
+              manifest = json.loads((artifacts/f'release_manifest-{platform}.json').read_text())
+              for name, metadata in manifest.items():
+                  if name in files and name != 'RoLaMGAS-source.zip':
+                      assert hashlib.sha256((out/name).read_bytes()).hexdigest() == metadata['sha256'], name
+                      assert (out/name).stat().st_size == metadata['bytes'], name
+          with zipfile.ZipFile(out/'RoLaMGAS-source.zip') as z:
+              assert z.testzip() is None
+              for module in MODULES:
+                  assert z.read('RoLaMGAS/'+module+'.py').decode('utf-8').replace('\r\n', '\n') == (root/(module+'.py')).read_text(encoding='utf-8'), module
+          app = root/'releases/approved/windows-folder/RoLaMGAS'
+          windows = f'RoLaMGAS-{version}-Windows.zip'
+          with zipfile.ZipFile(out/windows, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as z:
+              for path in sorted(app.rglob('*')):
+                  if path.is_file(): z.write(path, pathlib.Path('RoLaMGAS')/path.relative_to(app))
+              z.writestr('RoLaMGAS/START_HERE.txt', f'RoLaMGAS {version}\nExtract the entire ZIP, then open RoLaMGAS.exe. Keep _internal alongside it.\nSaved searches remain in your existing RoLaMGAS data directory.\n')
+          files.insert(0, windows)
+          metadata = {name: dict(bytes=(out/name).stat().st_size, sha256=hashlib.sha256((out/name).read_bytes()).hexdigest()) for name in files}
+          (out/'SHA256SUMS.txt').write_text(''.join(item['sha256']+'  '+name+'\n' for name,item in metadata.items()), encoding='utf-8')
+          (out/'release_verification.json').write_text(json.dumps(dict(version=version, solver_commit=os.environ['SOURCE_SHA'],
+              native_build_run=int(os.environ['ARTIFACT_RUN']), publisher_run=int(os.environ['GITHUB_RUN_ID']),
+              source_modules_checked=len(MODULES), assets=metadata), indent=2)+'\n', encoding='utf-8')
+          print(json.dumps(metadata, indent=2))
+          PY
+      - name: Upload verified packages and publish draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, subprocess
+          tag = 'rolamgas-v'+os.environ['RELEASE_VERSION']
+          release = json.loads(subprocess.check_output(['gh', 'release', 'view', tag, '--json', 'isDraft'], text=True))
+          assert release['isDraft'], 'Do not overwrite public releases'
+          files = sorted(pathlib.Path('releases/approved/assets').iterdir())
+          subprocess.run(['gh', 'release', 'upload', tag, *map(str, files), '--clobber'], check=True)
+          subprocess.run(['gh', 'release', 'edit', tag, '--draft=false', '--latest'], check=True)
+          subprocess.run(['gh', 'release', 'view', tag, '--json', 'url,assets,isDraft'], check=True)
+          PY
+      - name: Retain publication verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-publication-verification
+          path: |
+            releases/approved/assets/release_verification.json
+            releases/approved/assets/SHA256SUMS.txt
+            .build/executable_build.log
+          if-no-files-found: ignore
