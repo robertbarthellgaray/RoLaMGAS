@@ -44,7 +44,11 @@ def main():
         if abs(independent-q['launch_c3_km2_s2'])>1e-5:raise ValueError('Launch-energy discrepancy')
         folder=a.output/q['id'];folder.mkdir(exist_ok=True)
         atomic_json(folder/'full.json',q);atomic_json(folder/'audit.json',dict(independent_launch_c3=independent,coasts=coast))
-        title=('Low-C3 Jupiter '+q['launch_date'][:10] if q['bodies'][-1]=='Jupiter' else 'Fast Saturn '+q['launch_date'][:10])
+        title = q['sequence']
+        if q['bodies'][-1] == 'Jupiter' and q['launch_c3_km2_s2'] < 20:
+            title = 'Low-C3 Jupiter ' + q['launch_date'][:10]
+        elif q['bodies'][-1] == 'Saturn' and q['duration_years'] <= 8:
+            title = 'Fast Saturn ' + q['launch_date'][:10]
         note='Original solver-built trajectory, not a historical mission reconstruction. Solar two-body Lambert coasts with unpowered flyby-speed and turn screening, independently checked against numerical solar propagation. Zero designed DSM excludes launch injection, finite-radius targeting corrections and arrival capture.'
         if a.publish:
             from publish_report_recreations import prepare

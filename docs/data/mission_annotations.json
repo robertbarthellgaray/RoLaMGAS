@@ -13,7 +13,7 @@
       "note": "User-identified Dragonfly-style Saturn transfer. Titan targeting, atmospheric entry and landing are not modeled; this is not a verified operational Dragonfly trajectory."
     },
     "f768b32a4c2d1122865aa5e7c7a284c498588ff1772e21de9a9634d3d9da76e2": {
-      "label": "New Horizons recreation \u00b7 near match",
+      "label": "New Horizons recreation · near match",
       "featured_priority": 10,
       "note": "User-identified New Horizons near reconstruction; launch is two calendar days later than the actual mission. It is not an exact historical-date or flown-state match."
     },
@@ -23,12 +23,12 @@
       "note": "Original Uranus Orbiter and Probe concept with December 2045 arrival. The assist sequence remains EdvEJU."
     },
     "4fed974cbffb": {
-      "label": "Cassini recreation \u00b7 later arrival",
+      "label": "Cassini recreation · later arrival",
       "featured_priority": 7,
       "note": "Cassini-inspired reconstruction with a later Saturn arrival; not an exact historical-date match."
     },
     "f53fc65c9329": {
-      "label": "Trident date-match \u2014 added maneuvers",
+      "label": "Trident date-match — added maneuvers",
       "featured_priority": 8,
       "note": "Proposed mission concept reconstruction; see validation and study report for differences."
     },
@@ -48,17 +48,17 @@
       "note": "Proposed mission concept reconstruction; see validation and study report for differences."
     },
     "35bd4d9c6e03": {
-      "label": "CALYPSO \u2014 Uranus cruise",
+      "label": "CALYPSO — Uranus cruise",
       "featured_priority": 3,
       "note": "Proposed mission concept reconstruction; see validation and study report for differences."
     },
     "552363ae7812": {
-      "label": "T-OWS 2030 \u2014 operations-table recreation",
+      "label": "T-OWS 2030 — operations-table recreation",
       "featured_priority": 3,
       "note": "Proposed mission concept reconstruction; see validation and study report for differences."
     },
     "f6a3008ac24c2458dc784351382194e4db6f275329be4a29184374a77e9c56f7": {
-      "label": "Trident date-match \u2014 added maneuvers",
+      "label": "Trident date-match — added maneuvers",
       "featured_priority": 8,
       "note": "Proposed mission concept reconstruction; see validation and study report for differences."
     },
@@ -78,142 +78,142 @@
       "note": "Proposed mission concept reconstruction; see validation and study report for differences."
     },
     "917cb46a1443b95e5cf59862af7e23d30394b3be25d7a03d1642525bf58f6b31": {
-      "label": "CALYPSO \u2014 Uranus cruise",
+      "label": "CALYPSO — Uranus cruise",
       "featured_priority": 3,
       "note": "Proposed mission concept reconstruction; see validation and study report for differences."
     },
     "6e96d6b564fde4ab44d2b8754693292d44df64180a078928349c6f7639c7b3d7": {
-      "label": "T-OWS 2030 \u2014 operations-table recreation",
+      "label": "T-OWS 2030 — operations-table recreation",
       "featured_priority": 3,
       "note": "Proposed mission concept reconstruction; see validation and study report for differences."
     },
     "a602d9b0bc52": {
-      "label": "Low-C3 Jupiter 2031-04-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "1e6256286f2255a15803e02a47d340d3fcbbbbdf54129a290033e6bd0a65624f": {
-      "label": "Low-C3 Jupiter 2031-04-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "a29e6a582250": {
-      "label": "Low-C3 Jupiter 2031-04-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "6d639d8f425d8b928de83a30decbe40c74cbd0d018f0abf2d02f490b70029681": {
-      "label": "Low-C3 Jupiter 2031-04-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "34799f4dd0f0": {
-      "label": "Low-C3 Jupiter 2031-04-15",
+      "label": "EVVEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "b7d6d4f4b80e15ba46427833225d3698a45347930bdf60bbcafa2fc2834a90c2": {
-      "label": "Low-C3 Jupiter 2031-04-15",
+      "label": "EVVEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "fd54bf2484be": {
-      "label": "Low-C3 Jupiter 2031-05-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "5668741e717f02bfa435b43371c5cbe7f7d3640b2298c1dc3228c5719a7b9351": {
-      "label": "Low-C3 Jupiter 2031-05-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "6825e717ab9a": {
-      "label": "Low-C3 Jupiter 2031-05-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "981b2e30a30989f09a0a2c3770cd3a542c570bfb1a128122a8348b60f0a74b43": {
-      "label": "Low-C3 Jupiter 2031-05-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "8a5fdc72fe2c": {
-      "label": "Low-C3 Jupiter 2031-05-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "ab325b13eb16c5e7b97975c3934e631279799a08a6825ad9609d01159183f01d": {
-      "label": "Low-C3 Jupiter 2031-05-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "90157970b87b": {
-      "label": "Low-C3 Jupiter 2031-05-31",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "4fc54b0666719d39a3068d5f4cd73025bc07f4e3be90bda4091c82916d8ddcf7": {
-      "label": "Low-C3 Jupiter 2031-05-31",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "b720420bbb11": {
-      "label": "Low-C3 Jupiter 2031-05-31",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "de2ebc7dda890210d1c2a5bac83bb4197189996d85d37dc9d46fcaad3f855e58": {
-      "label": "Low-C3 Jupiter 2031-05-31",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "ba1cfb4c18d8": {
-      "label": "Low-C3 Jupiter 2031-05-31",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "d4beef25b03ebb0533f2b5e9b121b3b47122ee285d79558d82d57350719ede46": {
-      "label": "Low-C3 Jupiter 2031-05-31",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "7f5a2b89c818": {
-      "label": "Low-C3 Jupiter 2031-06-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "e55d95592708fae70f4e1a04a3e2aec24ac7aa220e705b063c440556f810b74c": {
-      "label": "Low-C3 Jupiter 2031-06-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "f7328d340de1": {
-      "label": "Low-C3 Jupiter 2031-06-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "51f7de9a19e5df1ebc71bd3ec84773dfc3e7ebbb861c442787ae78a28e4ea9c8": {
-      "label": "Low-C3 Jupiter 2031-06-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "773b1d982ede": {
-      "label": "Low-C3 Jupiter 2031-06-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "117f35154156675e64d8dcade6e074e919107b9f80f7c22245a2590365a5b2b6": {
-      "label": "Low-C3 Jupiter 2031-06-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "e27f7e68d479": {
-      "label": "Low-C3 Jupiter 2031-06-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "087fceb72e6cbccf0a4cabf87ea82c30f83c24517a4ca9f2e69c83a3a902127d": {
-      "label": "Low-C3 Jupiter 2031-06-15",
+      "label": "EVEEJ",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
@@ -258,12 +258,12 @@
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "b64e734031ee": {
-      "label": "Fast Saturn 2033-01-01",
+      "label": "EVEEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "88e68c5444c0993f5915800ab1375d8ae4e0a90b731e4d1e3825ff7b268900bd": {
-      "label": "Fast Saturn 2033-01-01",
+      "label": "EVEEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
@@ -278,32 +278,32 @@
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "7c37a5ed4b83": {
-      "label": "Fast Saturn 2033-02-01",
+      "label": "EVVEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "f001454c5099d65bd1bc02de46394657fe4b4ee00b1eb11564329aaa46883b4b": {
-      "label": "Fast Saturn 2033-02-01",
+      "label": "EVVEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "43ae5640d01a": {
-      "label": "Fast Saturn 2033-03-01",
+      "label": "EVVEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "228b72d04f0743ef0dce54c59d097c29b4cf295ed176ada709897d09af18c656": {
-      "label": "Fast Saturn 2033-03-01",
+      "label": "EVVEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "a5c3c026107a": {
-      "label": "Fast Saturn 2033-03-01",
+      "label": "EVEEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "26faa477739b0ded2a5856ba3a8a36a4d038571606704b1be0568e89a567be47": {
-      "label": "Fast Saturn 2033-03-01",
+      "label": "EVEEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
@@ -318,12 +318,12 @@
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "e67fbcbb4ae7": {
-      "label": "Fast Saturn 2033-04-01",
+      "label": "EVEEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     },
     "461dd13a4bb4fa8bde7f0e40e42a29d3e2e2a9dd67349d6a7222d1ed4b8cd4c9": {
-      "label": "Fast Saturn 2033-04-01",
+      "label": "EVEEJS",
       "featured_priority": 1,
       "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
     }
