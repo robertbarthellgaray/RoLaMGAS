@@ -1,0 +1,50 @@
+{
+  "submitted": 24,
+  "verified_encounter_slots": 24,
+  "responses": [
+    {
+      "accepted": 10,
+      "ids": [
+        "1e6256286f2255a15803e02a47d340d3fcbbbbdf54129a290033e6bd0a65624f",
+        "6d639d8f425d8b928de83a30decbe40c74cbd0d018f0abf2d02f490b70029681",
+        "b7d6d4f4b80e15ba46427833225d3698a45347930bdf60bbcafa2fc2834a90c2",
+        "5668741e717f02bfa435b43371c5cbe7f7d3640b2298c1dc3228c5719a7b9351",
+        "981b2e30a30989f09a0a2c3770cd3a542c570bfb1a128122a8348b60f0a74b43",
+        "ab325b13eb16c5e7b97975c3934e631279799a08a6825ad9609d01159183f01d",
+        "4fc54b0666719d39a3068d5f4cd73025bc07f4e3be90bda4091c82916d8ddcf7",
+        "de2ebc7dda890210d1c2a5bac83bb4197189996d85d37dc9d46fcaad3f855e58",
+        "d4beef25b03ebb0533f2b5e9b121b3b47122ee285d79558d82d57350719ede46",
+        "e55d95592708fae70f4e1a04a3e2aec24ac7aa220e705b063c440556f810b74c"
+      ]
+    },
+    {
+      "accepted": 10,
+      "ids": [
+        "51f7de9a19e5df1ebc71bd3ec84773dfc3e7ebbb861c442787ae78a28e4ea9c8",
+        "117f35154156675e64d8dcade6e074e919107b9f80f7c22245a2590365a5b2b6",
+        "087fceb72e6cbccf0a4cabf87ea82c30f83c24517a4ca9f2e69c83a3a902127d",
+        "09867b4a4139de8c3b15824c7839648b13984f267210cc2d479424ba720ac567",
+        "8ebe947660ba1477c8376f5dce0c3a933b9374c98d9099fecd9daea7324f559e",
+        "e87ea304ae29eeae001a8d43a0a14ad3f33218bd6728fe8a5990d6dbff2c42b8",
+        "09e6a1e5d469f48af000352acf1d3658c394db4e7c55c9c127ccd73e862171b1",
+        "88e68c5444c0993f5915800ab1375d8ae4e0a90b731e4d1e3825ff7b268900bd",
+        "a14cfe46da37987ac282e773ce009c6c2e32e442b3e2d2111e13c30bbc8020f2",
+        "f001454c5099d65bd1bc02de46394657fe4b4ee00b1eb11564329aaa46883b4b"
+      ]
+    },
+    {
+      "accepted": 4,
+      "ids": [
+        "228b72d04f0743ef0dce54c59d097c29b4cf295ed176ada709897d09af18c656",
+        "26faa477739b0ded2a5856ba3a8a36a4d038571606704b1be0568e89a567be47",
+        "fc5a1597b9a55f53fef844080a8ea5e757837c0b7d1b941aecc2676ef0086450",
+        "461dd13a4bb4fa8bde7f0e40e42a29d3e2e2a9dd67349d6a7222d1ed4b8cd4c9"
+      ]
+    }
+  ],
+  "missing": [],
+  "endpoint": "https://rolamgas-community.corigarayv.workers.dev/v1/candidates",
+  "above_cap_submission_rejected": true,
+  "above_cap_submission_http_status": 400,
+  "remaining_above_cap_venus_records": 0
+}

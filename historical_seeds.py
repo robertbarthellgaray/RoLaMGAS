@@ -83,7 +83,7 @@ def seed_missions(samples,model,branches):
         departure=mission.get('departure')
         free=[index for index in (0,1) if index in model.free_indices]
         if departure and free:
-            lo,hi=model.c3_minimum,model.config['max_c3'];margin=min(.01,(hi-lo)*.1)
+            lo,hi=model.c3_minimum,model.c3_maximum;margin=min(.01,(hi-lo)*.1)
             energy=float(np.clip(departure['selected']['c3_km2_s2'],lo+margin,hi-margin))
             direction=np.array(departure['direction_rtn'])
             def expanded(z):

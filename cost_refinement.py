@@ -15,7 +15,7 @@ def energy_constraints(model,x,branches,interior=False):
     """Cheap preflight only: never construct later legs for an invalid energy."""
     try:
         energy=model.launch_c3(x,branches)
-        lo,hi=model.c3_minimum,model.config['max_c3']
+        lo,hi=model.c3_minimum,model.c3_maximum
         margin=min(.001*max(hi,1.),max(0.,hi-lo)*.01) if interior else 0.
         return np.array([(energy-lo-margin)/10,(hi-margin-energy)/10])
     except (ValueError,RuntimeError,AssertionError,OverflowError,ZeroDivisionError,FloatingPointError):
@@ -29,7 +29,8 @@ def boundary_seed(model,x,branches):
     Fixed historical epochs remain fixed: if the exact boundary cannot be
     attained, an existing in-range point is used instead of moving its bounds.
     """
-    x=np.asarray(x,dtype=float).copy();lo=model.c3_minimum;hi=model.config['max_c3']
+    x=np.asarray(x,dtype=float).copy();lo=model.c3_minimum;hi=model.c3_maximum
+    if hi<lo:return None
     if model.extension:
         if not model.c3_in_bounds(model.launch_c3(x,branches)):
             raise ValueError('Frozen earlier cruise has launch C3 outside the requested energy range; its launch cannot be changed by adding a flyby')

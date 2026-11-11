@@ -1,0 +1,9 @@
+{
+  "independent_launch_c3": 22.99999999928676,
+  "coasts": {
+    "maximum_dop853_endpoint_error_km": 0.020365892947667427,
+    "maximum_velocity_difference_kms": 3.289447735848312e-09,
+    "passed": true,
+    "nbody_validated": false
+  }
+}

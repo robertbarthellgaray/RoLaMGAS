@@ -9,6 +9,7 @@ from mission_search import normalize
 class BurnLimitTests(unittest.TestCase):
     def model_and_candidate(self):
         model=object.__new__(Model);model.config=normalize(dict(powered_flybys=True,max_dsm_kms=10))
+        model.bodies=['Earth','Jupiter']
         q=dict(launch_c3_km2_s2=20,arrival_vinf_kms=3,duration_years=2,total_dsm_kms=.9,
                dsms=[dict(magnitude_kms=.7)],flybys=[dict(passes_powered_geometry=True,powered_flyby=dict(magnitude_kms=.2))])
         return model,q

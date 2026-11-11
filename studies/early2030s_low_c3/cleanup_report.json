@@ -1,0 +1,17 @@
+{
+  "remote_selected": 45,
+  "local": [
+    {
+      "file": "community_seed_catalog.json",
+      "removed": 45,
+      "remaining": 5250
+    },
+    {
+      "file": "docs\\data\\community_seed_catalog.json",
+      "removed": 45,
+      "remaining": 5250
+    }
+  ],
+  "backed_up": true,
+  "public_policy": "max 30 km2/s2 for Venus-assisted outer-planet examples"
+}

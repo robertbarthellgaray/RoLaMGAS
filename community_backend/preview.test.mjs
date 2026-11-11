@@ -2,6 +2,12 @@ import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {position,missionTiming,mergeLibrary,state,caseFor,summaryFor,trajectoryText,fetchUpdates} from '../docs/community.js';
+
+test('public previews apply the Venus-assisted outer-planet policy to legacy records',()=>{
+ const r={id:'old',sequence:'EVJ',body_ids:['399','299','599'],dates_jd_tdb:[2460000,2460300,2461000],metrics:{launch_c3_km2_s2:30,total_dsm_kms:0,arrival_vinf_kms:7},classification:'pass'};
+ assert.doesNotThrow(()=>summaryFor(r));assert.throws(()=>summaryFor({...r,metrics:{...r.metrics,launch_c3_km2_s2:31}}),/Venus-assisted/);
+ assert.doesNotThrow(()=>summaryFor({...r,body_ids:['399','299','199'],metrics:{...r.metrics,launch_c3_km2_s2:31}}));
+});
 test('public gallery samples two-body arcs with correct circular geometry',()=>{const AU=149597870.7,mu=132712440041.27942,speed=Math.sqrt(mu/AU),period=2*Math.PI*Math.sqrt(AU**3/mu);const r=position([AU,0,0],[0,speed,0],period/4);assert.ok(Math.abs(r[0])<.01);assert.ok(Math.abs(r[1]-AU)<.01);});
 test('public gallery handles outbound hyperbolic trajectories',()=>{const r=position([149597870.7,0,0],[0,55,1],60*365.25*86400);assert.ok(r.every(Number.isFinite));assert.ok(Math.hypot(...r)>149597870.7*100);});
 

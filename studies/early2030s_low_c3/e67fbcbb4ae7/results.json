@@ -1,0 +1,424 @@
+{
+  "candidates": [
+    {
+      "sequence": "EVEEJS",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Saturn"
+      ],
+      "x": [
+        0.5,
+        0.4968374268712778,
+        0.4984602088812949,
+        0.49931648129366407,
+        0.49948946151198875,
+        0.49953337648920737
+      ],
+      "branches": [
+        [
+          0,
+          true
+        ],
+        [
+          0,
+          true
+        ],
+        [
+          0,
+          true
+        ],
+        [
+          0,
+          true
+        ],
+        [
+          0,
+          true
+        ]
+      ],
+      "extension_source": null,
+      "dates_jd_tdb": [
+        2463688.5,
+        2463845.599110961,
+        2464169.3184796637,
+        2464899.8273554714,
+        2465878.1854493404,
+        2466948.713113294
+      ],
+      "launch_date": "2033-04-01T00:00:00 TDB",
+      "arrival_date": "2042-03-05T05:06:52 TDB",
+      "duration_years": 8.92597703845033,
+      "launch_c3_km2_s2": 23.000000000023558,
+      "launch_vinf_kms": 4.795831523315176,
+      "requested_min_c3": 6.25,
+      "effective_min_c3": 6.25,
+      "effective_max_c3": 29.999,
+      "launch_c3_definition": "Squared Sun-centered departure velocity relative to launch body; km^2/s^2",
+      "requested_arrival_window_jd": null,
+      "arrival_vinf_kms": 7.2650333032202985,
+      "total_dsm_kms": 0.0,
+      "cruise_dsm_kms": 0,
+      "powered_flyby_delta_v_kms": 0.0,
+      "modeled_maneuver_total_kms": 0.0,
+      "maneuver_budget_complete": true,
+      "budget_complete": true,
+      "unresolved_flyby_count": 0,
+      "unresolved_speed_mismatch_total_mps": 0,
+      "total_unresolved_vinf_mismatch_mps": 0.001139019405904662,
+      "modeled_plus_unresolved_mismatch_kms": 1.1390194059046621e-06,
+      "mismatch_screening_budget_exceeded": false,
+      "mismatch_screening_note": "Modeled burns plus unresolved excess-speed mismatch sum is a screening criterion, not an actual periapsis burn estimate. Construct powered flybys for physical burn vectors and costs.",
+      "maneuver_budget_note": "Explicit designed DSM, target-turnaround impulses and full powered-periapsis vector burns only; unresolved flybys require physical retargeting or a powered-flyby construction, not a scalar mismatch sum.",
+      "max_single_dsm_kms": 0.0,
+      "max_powered_flyby_kms": 0.0,
+      "periapsis_violation": false,
+      "powered_geometry_valid": null,
+      "flybys": [
+        {
+          "body": "Venus",
+          "vinf_in_kms": 9.824049227081051,
+          "vinf_out_kms": 9.824049227000577,
+          "speed_mismatch_mps": 8.047429389534955e-08,
+          "incoming_vinf_vector_kms": [
+            -0.005622074847615011,
+            9.653723566150544,
+            -1.8214095960919412
+          ],
+          "outgoing_vinf_vector_kms": [
+            -4.427191971753359,
+            8.352951456477427,
+            -2.672099628663735
+          ],
+          "turn_angle_deg": 27.600342493981934,
+          "max_turn_deg": 40.53141775693193,
+          "turn_margin_deg": 12.931075262949998,
+          "minimum_altitude_km": 300.0,
+          "conservative_equal_speed_periapsis_km": 10745.036130344939,
+          "conservative_equal_speed_altitude_km": 4693.236130344939,
+          "speed_matched_to_1_mm_s": true,
+          "passes_speed_tolerance": true,
+          "passes_turn_screen": true,
+          "event_index": 1,
+          "julian_date_tdb": 2463845.599110961,
+          "date": "2033-09-05T02:22:43 TDB",
+          "maneuver_status": "unpowered_exact_speed_match"
+        },
+        {
+          "body": "Earth",
+          "vinf_in_kms": 11.475994881139552,
+          "vinf_out_kms": 11.475994366672946,
+          "speed_mismatch_mps": 0.0005144666062051328,
+          "incoming_vinf_vector_kms": [
+            -7.0809365349545885,
+            9.009150243971806,
+            0.6277007100754891
+          ],
+          "outgoing_vinf_vector_kms": [
+            -2.939753635135286,
+            10.758737104711997,
+            -2.7029375095091215
+          ],
+          "turn_angle_deg": 28.21808428106785,
+          "max_turn_deg": 36.73567720508036,
+          "turn_margin_deg": 8.517592924012506,
+          "minimum_altitude_km": 200.0,
+          "conservative_equal_speed_periapsis_km": 9389.344426451677,
+          "conservative_equal_speed_altitude_km": 3011.207426451677,
+          "speed_matched_to_1_mm_s": true,
+          "passes_speed_tolerance": true,
+          "passes_turn_screen": true,
+          "event_index": 2,
+          "julian_date_tdb": 2464169.3184796637,
+          "date": "2034-07-25T19:38:36 TDB",
+          "maneuver_status": "unpowered_exact_speed_match"
+        },
+        {
+          "body": "Earth",
+          "vinf_in_kms": 11.474763745938384,
+          "vinf_out_kms": 11.474764370405152,
+          "speed_mismatch_mps": 0.0006244667680732618,
+          "incoming_vinf_vector_kms": [
+            -2.9572404524124423,
+            10.752838523068206,
+            -2.702109477526346
+          ],
+          "outgoing_vinf_vector_kms": [
+            2.479808181795171,
+            11.113270666714165,
+            -1.4198534523576043
+          ],
+          "turn_angle_deg": 28.235887797790884,
+          "max_turn_deg": 36.741266010162235,
+          "turn_margin_deg": 8.505378212371348,
+          "minimum_altitude_km": 200.0,
+          "conservative_equal_speed_periapsis_km": 9383.686970338304,
+          "conservative_equal_speed_altitude_km": 3005.549970338304,
+          "speed_matched_to_1_mm_s": true,
+          "passes_speed_tolerance": true,
+          "passes_turn_screen": true,
+          "event_index": 3,
+          "julian_date_tdb": 2464899.8273554714,
+          "date": "2036-07-25T07:51:23 TDB",
+          "maneuver_status": "unpowered_exact_speed_match"
+        },
+        {
+          "body": "Jupiter",
+          "vinf_in_kms": 5.593463069868549,
+          "vinf_out_kms": 5.593463069862992,
+          "speed_mismatch_mps": 5.5573323720636836e-09,
+          "incoming_vinf_vector_kms": [
+            2.392815519817346,
+            5.055462995816912,
+            0.05963975209894787
+          ],
+          "outgoing_vinf_vector_kms": [
+            -5.464905477871544,
+            -1.0680423202883258,
+            0.5300215409998368
+          ],
+          "turn_angle_deg": 126.12326443514422,
+          "max_turn_deg": 157.20023021670502,
+          "turn_margin_deg": 31.07696578156079,
+          "minimum_altitude_km": 10000.0,
+          "conservative_equal_speed_periapsis_km": 492836.2140643434,
+          "conservative_equal_speed_altitude_km": 421344.2140643434,
+          "speed_matched_to_1_mm_s": true,
+          "passes_speed_tolerance": true,
+          "passes_turn_screen": true,
+          "event_index": 4,
+          "julian_date_tdb": 2465878.1854493404,
+          "date": "2039-03-30T16:27:02 TDB",
+          "maneuver_status": "unpowered_exact_speed_match"
+        }
+      ],
+      "dsms": [],
+      "event_burns": [],
+      "turnaround_delta_v_kms": 0,
+      "mercury_returns": [],
+      "max_vinf_mismatch_mps": 0.0006244667680732618,
+      "min_turn_margin_deg": 8.505378212371348,
+      "launch_vinf_vector_kms": [
+        1.1465655580714982,
+        4.6453502320346125,
+        -0.3257432160517296
+      ],
+      "arrival_vinf_vector_kms": [
+        -6.41890308111361,
+        -3.379215490738048,
+        0.3991175257067088
+      ],
+      "departure_velocities_kms": [
+        [
+          6.413209238740992,
+          -24.708185245521996,
+          -0.322354395926964
+        ],
+        [
+          -39.55806823199466,
+          9.026121967396634,
+          -0.6360520855003995
+        ],
+        [
+          21.69879746068653,
+          26.642507431734067,
+          -2.7048078122106065
+        ],
+        [
+          27.137351740613884,
+          27.000572981500618,
+          -1.42255161024103
+        ],
+        [
+          -12.294533415411845,
+          -11.712106499791613,
+          0.7269964543690572
+        ]
+      ],
+      "arrival_velocities_kms": [
+        [
+          -35.136498335088916,
+          10.32689407706975,
+          0.21463794707139439
+        ],
+        [
+          17.55761456086723,
+          24.892920570993876,
+          0.6258304073740041
+        ],
+        [
+          21.70030310640627,
+          26.64014083785466,
+          -2.7048076354097716
+        ],
+        [
+          -4.436812417722955,
+          -5.588601183686375,
+          0.2566146654681683
+        ],
+        [
+          -1.9334930364122096,
+          -11.67423114659098,
+          0.3637933113236034
+        ]
+      ],
+      "segments": [
+        {
+          "start_jd": 2463688.5,
+          "end_jd": 2463845.599110961,
+          "r": [
+            -146669641.4109515,
+            -28832872.54332972,
+            3366.767329579219
+          ],
+          "v": [
+            6.413209238740992,
+            -24.708185245521996,
+            -0.322354395926964
+          ]
+        },
+        {
+          "start_jd": 2463845.599110961,
+          "end_jd": 2464169.3184796637,
+          "r": [
+            2635620.8314602682,
+            107626949.65309262,
+            1328883.350432124
+          ],
+          "v": [
+            -39.55806823199466,
+            9.026121967396634,
+            -0.6360520855003995
+          ]
+        },
+        {
+          "start_jd": 2464169.3184796637,
+          "end_jd": 2464899.8273554714,
+          "r": [
+            81568806.09659636,
+            -128196107.39413077,
+            8917.670768101152
+          ],
+          "v": [
+            21.69879746068653,
+            26.642507431734067,
+            -2.7048078122106065
+          ]
+        },
+        {
+          "start_jd": 2464899.8273554714,
+          "end_jd": 2465878.1854493404,
+          "r": [
+            81558216.97380905,
+            -128209108.04384035,
+            10237.584808342448
+          ],
+          "v": [
+            27.137351740613884,
+            27.000572981500618,
+            -1.42255161024103
+          ]
+        },
+        {
+          "start_jd": 2465878.1854493404,
+          "end_jd": 2466948.713113294,
+          "r": [
+            -691050798.2011937,
+            410061722.44207317,
+            13756537.313523963
+          ],
+          "v": [
+            -12.294533415411845,
+            -11.712106499791613,
+            0.7269964543690572
+          ]
+        }
+      ],
+      "events": [
+        {
+          "body": "Earth",
+          "julian_date_tdb": 2463688.5,
+          "date": "2033-04-01T00:00:00 TDB",
+          "planet_state_km_kms": [
+            -146669641.4109515,
+            -28832872.54332972,
+            3366.767329579219,
+            5.266643680669493,
+            -29.35353547755661,
+            0.003388820124765601
+          ]
+        },
+        {
+          "body": "Venus",
+          "julian_date_tdb": 2463845.599110961,
+          "date": "2033-09-05T02:22:43 TDB",
+          "planet_state_km_kms": [
+            2635620.8314602682,
+            107626949.65309262,
+            1328883.350432124,
+            -35.1308762602413,
+            0.6731705109192061,
+            2.0360475431633356
+          ]
+        },
+        {
+          "body": "Earth",
+          "julian_date_tdb": 2464169.3184796637,
+          "date": "2034-07-25T19:38:36 TDB",
+          "planet_state_km_kms": [
+            81568806.09659636,
+            -128196107.39413077,
+            8917.670768101152,
+            24.638551095821818,
+            15.88377032702207,
+            -0.001870302701485063
+          ]
+        },
+        {
+          "body": "Earth",
+          "julian_date_tdb": 2464899.8273554714,
+          "date": "2036-07-25T07:51:23 TDB",
+          "planet_state_km_kms": [
+            81558216.97380905,
+            -128209108.04384035,
+            10237.584808342448,
+            24.657543558818713,
+            15.887302314786453,
+            -0.0026981578834256803
+          ]
+        },
+        {
+          "body": "Jupiter",
+          "julian_date_tdb": 2465878.1854493404,
+          "date": "2039-03-30T16:27:02 TDB",
+          "planet_state_km_kms": [
+            -691050798.2011937,
+            410061722.44207317,
+            13756537.313523963,
+            -6.829627937540301,
+            -10.644064179503287,
+            0.19697491336922043
+          ]
+        },
+        {
+          "body": "Saturn",
+          "julian_date_tdb": 2466948.713113294,
+          "date": "2042-03-05T05:06:52 TDB",
+          "planet_state_km_kms": [
+            -1250196477.5742347,
+            -755060678.3258338,
+            62866450.3533425,
+            4.485410044701401,
+            -8.295015655852932,
+            -0.03532421438310543
+          ]
+        }
+      ],
+      "id": "e67fbcbb4ae7",
+      "status": "passes_configured_patched_conic_screen"
+    }
+  ]
+}

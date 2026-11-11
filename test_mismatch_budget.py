@@ -5,6 +5,7 @@ from dynamics import Model
 class CombinedMismatchTests(unittest.TestCase):
     def model(self,powered=False):
         m=Model.__new__(Model);m.config=dict(min_c3=6.25,max_c3=100,max_arrival_vinf_kms=10,max_dsm_kms=.5,max_years=10,powered_flybys=powered);m.extension=None
+        m.bodies=['Earth','Jupiter']
         return m
 
     def candidate(self,powered=False):

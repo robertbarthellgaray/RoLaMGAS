@@ -169,8 +169,13 @@ class Model:
     @property
     def c3_minimum(self):return max(HARD_MIN_C3,float(self.config.get('effective_min_c3',self.config.get('min_c3',DEFAULT_MIN_C3))))
 
+    @property
+    def c3_maximum(self):
+        from trajectory_policy import c3_ceiling
+        return c3_ceiling(self.bodies,self.config)
+
     def c3_in_bounds(self,energy):
-        return (math.isfinite(energy) and self.c3_minimum-1e-8<=energy<=self.config['max_c3']+1e-8)
+        return (math.isfinite(energy) and self.c3_minimum-1e-8<=energy<=self.c3_maximum+1e-8)
 
     def launch_solution(self,x,branches):
         """Only the launch leg; no later ephemerides, DSM shooting or flyby work."""
@@ -212,7 +217,7 @@ class Model:
                 or (enforce_c3 and not self.c3_in_bounds(launch_preflight['c3']))):
             self.c3_pruned_evaluations+=1
             raise C3BoundsError(launch_preflight['c3'],self.c3_minimum if enforce_c3 else HARD_MIN_C3,
-                                self.config['max_c3'] if enforce_c3 else float('inf'))
+                                self.c3_maximum if enforce_c3 else float('inf'))
         if self.extension:
             states=[self.ep.state(body,date) for body,date in zip(self.bodies,dates)]
         else:
@@ -304,7 +309,7 @@ class Model:
                     extension_source=extension_source,
                     dates_jd_tdb=dates, launch_date=calendar(dates[0]), arrival_date=calendar(dates[-1]),
                     duration_years=(dates[-1]-dates[0])/365.25, launch_c3_km2_s2=c3,
-                    launch_vinf_kms=float(np.sqrt(c3)),requested_min_c3=self.config.get('min_c3',DEFAULT_MIN_C3),effective_min_c3=self.c3_minimum,
+                    launch_vinf_kms=float(np.sqrt(c3)),requested_min_c3=self.config.get('min_c3',DEFAULT_MIN_C3),effective_min_c3=self.c3_minimum,effective_max_c3=self.c3_maximum,
                     launch_c3_definition='Squared Sun-centered departure velocity relative to launch body; km^2/s^2',
                     requested_arrival_window_jd=self.config.get('arrival_window_jd'),
                     arrival_vinf_kms=vinf, total_dsm_kms=total_dsm, cruise_dsm_kms=cruise_dsm,powered_flyby_delta_v_kms=powered_dv,
@@ -346,7 +351,7 @@ class Model:
                     res.extend([(f['vinf_in_kms']-f['vinf_out_kms'])/speed_scale,min(f['turn_margin_deg']-.01, 0.)/5])
             # Tiny interior margins avoid converging infinitesimally outside a
             # hard bound and incorrectly publishing that near miss as accepted.
-            min_c3=self.c3_minimum;max_c3=self.config['max_c3']
+            min_c3=self.c3_minimum;max_c3=self.c3_maximum
             margin=min(.001*max(max_c3,1.),max(0.,max_c3-min_c3)*.1)
             res.extend([max(min_c3+margin-q['launch_c3_km2_s2'],0.)/10 if min_c3>0 else 0.,
                         max(q['launch_c3_km2_s2']-(max_c3-margin), 0.)/10,
@@ -367,7 +372,7 @@ class Model:
 
     def accepted(self, q,allow_arrival_overrun=False):
         return (all(f.get('passes_powered_geometry',False) if self.config.get('powered_flybys') else f['passes_speed_tolerance'] and f['passes_turn_screen'] for f in q['flybys'])
-                and self.c3_minimum-1e-8 <= q['launch_c3_km2_s2'] <= self.config['max_c3']+1e-8
+                and self.c3_minimum-1e-8 <= q['launch_c3_km2_s2'] <= self.c3_maximum+1e-8
                 and (not self.config.get('arrival_window_jd') or
                      self.config['arrival_window_jd'][0]-1e-8 <= q['dates_jd_tdb'][-1] <= self.config['arrival_window_jd'][1]+1e-8)
                 and ((allow_arrival_overrun and self.extension) or q['arrival_vinf_kms'] <= self.config['max_arrival_vinf_kms']+1e-9)

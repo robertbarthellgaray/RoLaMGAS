@@ -8,6 +8,14 @@ const record=()=>({schema_version:1,engine_version:'0.2.1-test7',sequence:'EJ',b
 const post=(env,records)=>worker.fetch(new Request('https://example.test/v1/candidates',{method:'POST',headers:{'Content-Type':'application/json','User-Agent':'private computer name','CF-Connecting-IP':'192.0.2.1'},body:JSON.stringify({candidates:records})}),env);
 const get=(env,query='target=599&min_c3=10&max_c3=15')=>worker.fetch(new Request('https://example.test/v1/candidates?'+query),env);
 
+test('Venus-assisted outer-planet library policy caps C3 at 30 without restricting other routes',async()=>{
+ const a={...record(),sequence:'EVJ',body_ids:['399','299','599'],dates_jd_tdb:[2460000,2460300,2461000],branches:[[0,true],[0,true]]};
+ a.metrics.launch_c3_km2_s2=30;await assert.doesNotReject(()=>validate(a));
+ a.metrics.launch_c3_km2_s2=30.000001;await assert.rejects(()=>validate(a),/Venus-assisted/);
+ a.body_ids=['399','299','199'];await assert.doesNotReject(()=>validate(a));
+ const b=record();b.metrics.launch_c3_km2_s2=100;await assert.doesNotReject(()=>validate(b));
+});
+
 test('first publication survives a better same-day candidate replacing the original',async()=>{
  const env=localEnv(),a=record();await post(env,[a]);
  env.database.prepare("UPDATE candidates SET added_at='2026-01-02T03:04:05.000Z'").run();

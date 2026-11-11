@@ -1,0 +1,2 @@
+Original solver-built trajectory, not a historical mission reconstruction. Solar two-body Lambert coasts with unpowered flyby-speed and turn screening, independently checked against numerical solar propagation. Zero designed DSM excludes launch injection, finite-radius targeting corrections and arrival capture.
+Columns: JD(TDB), x_km, y_km, z_km, vx_km_s, vy_km_s, vz_km_s. Sun-centered Ecliptic J2000.

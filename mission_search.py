@@ -101,7 +101,7 @@ def normalize(config, config_dir=HERE):
              seed=502, keep=100, cache='cache', max_ephemeris_step_days=1., sequences=[],
              route_overrides={},target_object=None,custom_leg_days=list(OTHER_DEFAULT_DAYS),search_objective='feasibility',cost_refinements=3,powered_flybys=False,
              local_refinement=None,mercury_resonant_seeds=True,earth_return_seeds=True,historical_mission_seeds=True,append_flyby=None,
-             arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom',c3_seed_boundary='minimum')
+             arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom',c3_seed_boundary='minimum',max_venus_c3=30.)
     unknown = set(config)-set(c)-{'event_windows','launch_jd','event_windows_jd','arrival_window_jd','effective_min_c3'}
     if unknown:
         raise ValueError(f'Unknown configuration keys: {sorted(unknown)}')
@@ -141,6 +141,10 @@ def normalize(config, config_dir=HERE):
         if not math.isfinite(c[name]) or c[name] < 0 or (c[name] == 0 and name not in ('min_c3','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms')):
             raise ValueError(f'{name} must be positive and finite')
     c['effective_min_c3']=max(HARD_MIN_C3,c['min_c3'])
+    if c['max_venus_c3'] is not None:
+        if isinstance(c['max_venus_c3'],bool):raise ValueError('Venus-assist C3 ceiling must be at least 5, or null to disable')
+        c['max_venus_c3']=float(c['max_venus_c3'])
+        if not math.isfinite(c['max_venus_c3']) or c['max_venus_c3']<HARD_MIN_C3:raise ValueError('Venus-assist C3 ceiling must be at least 5, or null to disable')
     if c['c3_seed_boundary'] not in ('minimum','maximum'):raise ValueError('C3 seed boundary must be minimum or maximum')
     if c['effective_min_c3']>c['max_c3']:raise ValueError(f'Maximum C3 must be at least the effective search floor {c["effective_min_c3"]:g} km²/s²')
     if c['min_c3'] > c['max_c3']:
@@ -203,6 +207,9 @@ def routes_for(c):
     if not routes:
         raise ValueError('No routes selected')
     for r in routes:
+        from trajectory_policy import c3_ceiling
+        if c['effective_min_c3']>c3_ceiling(r['bodies'],c):
+            raise ValueError(f"{r['id']}: minimum C3 exceeds the Venus-assisted route ceiling; raise or clear the advanced Venus C3 limit")
         if r['target'] != c['target']:
             raise ValueError(f"{r['id']} does not end at {c['target']}")
         override = c['route_overrides'].get(r['id'],{})
@@ -310,6 +317,13 @@ def branch_families(route, limit, seed, preferred=None):
     resonant = tuple(tuple(next((v for v in o if v[0] == 1 and v[1]),o[0])) for o in options)
     if resonant not in selected:
         selected.append(resonant)
+    # The May-2031 low-energy EVEEJ family needs the high-path one-revolution
+    # Venus–Earth leg, followed by an Earth return. Do not leave that coherent
+    # combination to chance when selecting a subset of all branch products.
+    if route['bodies'][:4]==['Earth','Venus','Earth','Earth']:
+        for return_branch in ((1,True),(0,True)):
+            family=tuple([(0,True),(1,False),return_branch]+[tuple(o[0]) for o in options[3:]])
+            if all(list(b) in [list(v) for v in opts] for b,opts in zip(family,options)) and family not in selected:selected.append(family)
     while len(selected) < limit:
         b = tuple(tuple(o[int(rng.integers(len(o)))]) for o in options)
         if b not in selected:
@@ -476,7 +490,7 @@ def job_search(job):
                 random_evaluations=nsamples,valid_random_evaluations=valid,refinements=len(starts)+len(warm_starts)+historical_stats['refinement_attempted'],known_seed_refinements=len(warm_starts),mercury_resonant_seed_rows=resonant_rows,
                 appended_return_roots=len(root_seeds),earth_return_departure_seeds=departure_seed_stats,historical_mission_seeds=historical_stats,
                 c3_seed_boundary=c.get('c3_seed_boundary','minimum'),c3_boundary_seed_count=len(boundary_seeds),
-                effective_min_c3=model.c3_minimum,c3_preflight_evaluations=model.c3_preflight_evaluations,
+                effective_min_c3=model.c3_minimum,effective_max_c3=model.c3_maximum,c3_preflight_evaluations=model.c3_preflight_evaluations,
                 c3_pruned_evaluations=model.c3_pruned_evaluations,
                 elapsed_seconds=time.monotonic()-start,accepted=accepted,near_misses=near)
 
@@ -587,7 +601,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     archive_hash=hashlib.sha256(archive_path.read_bytes()).hexdigest()
     if reused:print(f'Revalidated {len(reused)} compatible saved candidates against all current limits.',flush=True)
     engine_hashes = {name:hashlib.sha256((RESOURCE_ROOT/name).read_bytes()).hexdigest()
-                     for name in ('mission_search.py','dynamics.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','historical_seeds.py','departure_seeds/historical_missions.json','departure_seeds/mission_studies.json','departure_seeds/decadal_missions.json','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
+                     for name in ('mission_search.py','dynamics.py','trajectory_policy.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','historical_seeds.py','departure_seeds/historical_missions.json','departure_seeds/mission_studies.json','departure_seeds/decadal_missions.json','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
     signature = hashlib.sha256(json.dumps([c,routes,ep.manifest,engine_hashes,archive_hash],sort_keys=True).encode()).hexdigest()
     manifest_path = output/'run_manifest.json'
     if resume:

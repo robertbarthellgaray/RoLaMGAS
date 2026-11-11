@@ -118,6 +118,8 @@ def build(entries,output,report,existing=None,private_report=None):
     projected+=previous.get('candidates',[])
     excluded=sum(r['metrics']['launch_c3_km2_s2']>250 for r in projected)
     projected=[r for r in projected if r['metrics']['launch_c3_km2_s2']<=250]
+    from trajectory_policy import public_energy_reason
+    projected=[r for r in projected if not public_energy_reason(r)]
     def long_small_body(r):
         target=int(r['body_ids'][-1]);return (target==999 or target>=1000) and (r['dates_jd_tdb'][-1]-r['dates_jd_tdb'][0])/365.25>=60
     excluded_long=sum(long_small_body(r) for r in projected)

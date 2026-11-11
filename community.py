@@ -99,6 +99,8 @@ def public_record(q,c,route):
     """Never serialize a request, candidate wholesale, paths, names or run IDs."""
     from dynamics import supported_launch_energy
     if not supported_launch_energy(q.get('launch_c3_km2_s2')):return None
+    from trajectory_policy import public_energy_reason
+    if public_energy_reason(dict(bodies=route['bodies'],c3=q['launch_c3_km2_s2'])):return None
     classification=quality(q,c)
     if classification=='red':return None
     ids=body_ids(c,route)

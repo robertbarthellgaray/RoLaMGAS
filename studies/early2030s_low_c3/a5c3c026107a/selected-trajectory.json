@@ -1,0 +1,238 @@
+{
+  "format": "rolamgas-search-options",
+  "schema_version": 1,
+  "app_version": "0.2.4",
+  "settings": {
+    "target": "Saturn",
+    "launch_start": "2033-03-01",
+    "launch_end": "2033-03-01",
+    "max_years": 8.99999,
+    "vinf_tolerance_mps": 0.1,
+    "min_c3": 6.25,
+    "max_c3": 29.999,
+    "max_arrival_vinf_kms": 12.0,
+    "max_dsm_kms": 0.7,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 6.0,
+    "minimum_altitude_km": {
+      "Mercury": 200.0,
+      "Venus": 300.0,
+      "Earth": 200.0,
+      "Mars": 200.0,
+      "Jupiter": 10000.0,
+      "Saturn": 10000.0,
+      "Uranus": 1000.0,
+      "Neptune": 1000.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EVEEJS"
+    ],
+    "route_overrides": {
+      "EVEEJS": {
+        "leg_days": [
+          [
+            74.38601053738967,
+            224.158031612169
+          ],
+          [
+            153.32252753945068,
+            460.967582618352
+          ],
+          [
+            420.11728668771684,
+            1261.3518600631505
+          ],
+          [
+            441.0096405320801,
+            1324.0289215962403
+          ],
+          [
+            516.4616356526967,
+            1550.3849069580901
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              1,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "max_venus_c3": 30.0
+  },
+  "trajectory": {
+    "schema_version": 1,
+    "sequence": "EVEEJS",
+    "body_ids": [
+      "399",
+      "299",
+      "399",
+      "399",
+      "599",
+      "699"
+    ],
+    "dates_jd_tdb": [
+      2463657.5,
+      2463806.272021075,
+      2464112.9170761537,
+      2464953.151649529,
+      2465835.1709305933,
+      2466868.094201899
+    ],
+    "branches": [
+      [
+        0,
+        true
+      ],
+      [
+        0,
+        true
+      ],
+      [
+        1,
+        true
+      ],
+      [
+        0,
+        true
+      ],
+      [
+        0,
+        true
+      ]
+    ],
+    "dsm_controls": [],
+    "segments": [
+      {
+        "start_jd": 2463657.5,
+        "end_jd": 2463806.272021075,
+        "r": [
+          -139502151.6539692,
+          50078233.59161261,
+          -2891.306062504649
+        ],
+        "v": [
+          -6.679898018829783,
+          -25.931718113793785,
+          1.7366627322733295
+        ]
+      },
+      {
+        "start_jd": 2463806.272021075,
+        "end_jd": 2464112.9170761537,
+        "r": [
+          97793102.66173448,
+          46515159.05173746,
+          -5001882.109443924
+        ],
+        "v": [
+          -11.800179954858685,
+          38.255516382228315,
+          1.6791533712650388
+        ]
+      },
+      {
+        "start_jd": 2464112.9170761537,
+        "end_jd": 2464953.151649529,
+        "r": [
+          -55296033.77033014,
+          -141195411.2035978,
+          11183.506125579497
+        ],
+        "v": [
+          34.577529045102025,
+          -3.2048829194783917,
+          7.467476418594786e-05
+        ]
+      },
+      {
+        "start_jd": 2464953.151649529,
+        "end_jd": 2465835.1709305933,
+        "r": [
+          149518605.10064408,
+          -16120518.664070472,
+          497.64775441617354
+        ],
+        "v": [
+          9.911217109930627,
+          37.26300843761388,
+          1.321284615342225
+        ]
+      },
+      {
+        "start_jd": 2465835.1709305933,
+        "end_jd": 2466868.094201899,
+        "r": [
+          -664463697.5858234,
+          448864456.2534724,
+          13000339.255258635
+        ],
+        "v": [
+          -12.970203827309014,
+          -11.642085438824015,
+          0.7503416307203035
+        ]
+      }
+    ],
+    "metrics": {
+      "launch_c3_km2_s2": 23.000000000105132,
+      "total_dsm_kms": 0.0,
+      "arrival_vinf_kms": 7.835579193943661,
+      "duration_years": 8.790127862831303
+    }
+  },
+  "display_name": "Fast Saturn 2033-03-01",
+  "source_candidate_id": "a5c3c026107a"
+}

@@ -28,6 +28,14 @@ Public library policy: C3 must be at most 250 km²/s². On 2026-11-03,
 25 historical trajectories above that ceiling were purged from the public archive
 and production database. New submissions and history imports enforce the same ceiling.
 
+Venus-assisted routes that also visit Jupiter, Saturn, Uranus or Neptune have
+an additional public-example ceiling of C3 30 km²/s². On 2026-11-11, 45 records
+above that preference were archived with restoration backups and removed from
+D1 and the bundled catalogs. This is a library policy, not a physical limit;
+advanced local searches can override `max_venus_c3`. The worker rejects new
+above-policy submissions, and the website filters legacy copies. See
+`studies/early2030s_low_c3/README.md` for the audit and replacement examples.
+
 Public small-body flights must be shorter than 60 Julian years (365.25 days each),
 measured from their actual encounter epochs. Another 234 historical records at
 or above that duration were purged on 2026-11-03. Eight-planet targets are exempt.

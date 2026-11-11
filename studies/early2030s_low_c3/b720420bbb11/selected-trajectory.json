@@ -1,0 +1,208 @@
+{
+  "format": "rolamgas-search-options",
+  "schema_version": 1,
+  "app_version": "0.2.4",
+  "settings": {
+    "target": "Jupiter",
+    "launch_start": "2031-05-31",
+    "launch_end": "2031-05-31",
+    "max_years": 9.999,
+    "vinf_tolerance_mps": 0.1,
+    "min_c3": 6.25,
+    "max_c3": 29.999,
+    "max_arrival_vinf_kms": 12.0,
+    "max_dsm_kms": 0.7,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 6.0,
+    "minimum_altitude_km": {
+      "Mercury": 200.0,
+      "Venus": 300.0,
+      "Earth": 200.0,
+      "Mars": 200.0,
+      "Jupiter": 10000.0,
+      "Saturn": 10000.0,
+      "Uranus": 1000.0,
+      "Neptune": 1000.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EVEEJ"
+    ],
+    "route_overrides": {
+      "EVEEJ": {
+        "leg_days": [
+          [
+            39.08504023915157,
+            118.2551207174547
+          ],
+          [
+            157.6228226092644,
+            473.8684678277932
+          ],
+          [
+            365.25727853691205,
+            1096.7718356107362
+          ],
+          [
+            806.2663632228505,
+            2419.7990896685515
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              1,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "max_venus_c3": 30.0
+  },
+  "trajectory": {
+    "schema_version": 1,
+    "sequence": "EVEEJ",
+    "body_ids": [
+      "399",
+      "299",
+      "399",
+      "399",
+      "599"
+    ],
+    "dates_jd_tdb": [
+      2463017.5,
+      2463095.6700804783,
+      2463410.915725697,
+      2464141.4302827707,
+      2465753.963009217
+    ],
+    "branches": [
+      [
+        0,
+        true
+      ],
+      [
+        0,
+        true
+      ],
+      [
+        1,
+        true
+      ],
+      [
+        0,
+        true
+      ]
+    ],
+    "dsm_controls": [],
+    "segments": [
+      {
+        "start_jd": 2463017.5,
+        "end_jd": 2463095.6700804783,
+        "r": [
+          -54468122.82354929,
+          -141533446.8651848,
+          10613.73791021854
+        ],
+        "v": [
+          22.75883384225547,
+          -8.498177667052826,
+          -1.3892766009445336
+        ]
+      },
+      {
+        "start_jd": 2463095.6700804783,
+        "end_jd": 2463410.915725697,
+        "r": [
+          91626249.9753489,
+          -58561223.716073185,
+          -6091697.099992865
+        ],
+        "v": [
+          10.813359799452318,
+          37.67075673983289,
+          -1.0477117760076173
+        ]
+      },
+      {
+        "start_jd": 2463410.915725697,
+        "end_jd": 2464141.4302827707,
+        "r": [
+          15523142.374888062,
+          -151282670.28608307,
+          10504.791578769244
+        ],
+        "v": [
+          31.41012427741181,
+          14.079920129445576,
+          1.2779933906459031
+        ]
+      },
+      {
+        "start_jd": 2464141.4302827707,
+        "end_jd": 2465753.963009217,
+        "r": [
+          15542702.57520901,
+          -151273901.06176755,
+          11300.648011856389
+        ],
+        "v": [
+          36.84705847878212,
+          11.36304827966117,
+          -0.7880889827928387
+        ]
+      }
+    ],
+    "metrics": {
+      "launch_c3_km2_s2": 28.000000001108393,
+      "total_dsm_kms": 0.0,
+      "arrival_vinf_kms": 7.624698344815219,
+      "duration_years": 7.492027403742156
+    }
+  },
+  "display_name": "Low-C3 Jupiter 2031-05-31",
+  "source_candidate_id": "b720420bbb11"
+}
