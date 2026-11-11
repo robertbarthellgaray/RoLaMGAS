@@ -66,6 +66,7 @@ def main():
     data,error=sample_coasts(q['segments']);csvpath=docs/'downloads'/f'{ident}.csv';xyzvpath=docs/'downloads'/f'{ident}-analysis.xyzv';readmepath=docs/'downloads'/f'{ident}-README.txt'
     np.savetxt(csvpath,data,delimiter=',',fmt=['%.12f']+['%.9f']*6,header='jd_tdb,x_km,y_km,z_km,vx_km_s,vy_km_s,vz_km_s',comments='')
     np.savetxt(xyzvpath,data,fmt=['%.12f']+['%.9f']*6,header=TITLE+' | ANALYSIS ONLY: ideal planet-center joins, not finite-radius flybys\n'+NOTE+'\nJD(TDB) x_km y_km z_km vx_km_s vy_km_s vz_km_s; heliocentric Ecliptic J2000')
+    for p in (csvpath,xyzvpath):p.write_bytes(p.read_bytes().replace(b'\r\n',b'\n'))
     readmepath.write_text(TITLE+'\n'+NOTE+'\n\nAnalysis CSV: JD(TDB), x/y/z km, vx/vy/vz km/s, heliocentric Ecliptic J2000. Ideal center-node solar coasts, not a collision-free Celestia export.\n',encoding='utf-8')
     c['trajectory_files']=dict(csv='downloads/'+csvpath.name,xyzv='downloads/'+xyzvpath.name,readme='downloads/'+readmepath.name,rows=len(data),units='JD(TDB), km, km/s',coordinates='Sun-centered Ecliptic J2000',note=NOTE,csv_sha256=hashlib.sha256(csvpath.read_bytes()).hexdigest(),xyzv_sha256=hashlib.sha256(xyzvpath.read_bytes()).hexdigest(),max_checked_hermite_position_error_km=error)
     save(docs/'data/desktop'/f'{ident}.json',record);c['desktop_record_url']=f'data/desktop/{ident}.json'
