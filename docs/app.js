@@ -230,7 +230,7 @@ async function selectCandidate(id) {
     }
     if(files) $('trajectory-download-note').textContent=`${files.rows.toLocaleString()} saved position/velocity states · ${files.units} · ${files.coordinates}. ${files.note}`;
     else if(c.download) { $('download-xyzv').href=c.download; $('download-xyzv').hidden=false; }
-    if(!finite){$('download-xyzv').hidden=true;$('trajectory-download-note').textContent='Preview / analysis CSV uses ideal Lambert coasts joined at planet centers. For Celestia flybys, choose Use in desktop app, load the downloaded file, then choose Integrate & export to construct finite-radius SOI patches and list their extra burns. Public v0.2.3 imports settings; exact-candidate loading is in the local v0.2.4 preview.';}
+    if(!finite){$('download-xyzv').hidden=true;$('trajectory-download-note').textContent='Preview / analysis CSV uses ideal Lambert coasts joined at planet centers. For Celestia flybys, choose Use in desktop app, load the downloaded file, then choose Integrate & export to construct finite-radius SOI patches and list their extra burns. RoLaMGAS v0.2.4 loads exact candidates; older clients import the search settings.';}
     if(c.community_record){$('download-csv').hidden=false;$('download-csv').href='#analysis-csv';}
     if(!finite){$('download-xyzv').removeAttribute('href');$('download-xyzv').removeAttribute('download');}else $('download-xyzv').setAttribute('download','');
     document.querySelectorAll('.candidate-card').forEach(b => b.setAttribute('aria-pressed', b.dataset.id === c.id));
@@ -402,7 +402,7 @@ async function exportDesktopCandidate(){
   const c=selected;if(c.desktop_record_url&&!c.desktop_record)c.desktop_record=await fetchJson(c.desktop_record_url);
   const document=transferDocument(c,missionName(c)||c.title);
   downloadBlob(new Blob([JSON.stringify(document,null,2)],{type:'application/json'}),`RoLaMGAS-${c.id}.json`);
-  $('trajectory-download-note').textContent=document.trajectory?'In the desktop app, choose Import options / website trajectory and select this JSON. The selected dates, branches and burns are loaded and checked without another search. Then choose Integrate & export for a finite-radius Celestia XYZV. Exact-candidate loading is in the local v0.2.4 preview, pending release. The public v0.2.3 can import its search settings.':'Search options downloaded. This is an integrated concept, so the original CSV/XYZV files remain the authoritative trajectory; these settings start a new Lambert search.';
+  $('trajectory-download-note').textContent=document.trajectory?'In the desktop app, choose Import options / website trajectory and select this JSON. The selected dates, branches and burns are loaded and checked without another search. Then choose Integrate & export for a finite-radius Celestia XYZV. Exact-candidate loading is available in RoLaMGAS v0.2.4. Older clients can import its search settings.':'Search options downloaded. This is an integrated concept, so the original CSV/XYZV files remain the authoritative trajectory; these settings start a new Lambert search.';
  }catch(error){$('trajectory-download-note').textContent='Could not prepare desktop transfer: '+error.message;}
 }
 $('download-json').addEventListener('click',exportDesktopCandidate);
