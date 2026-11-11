@@ -1,0 +1,162 @@
+{
+  "format": "rolamgas-search-options",
+  "schema_version": 1,
+  "app_version": "0.2.5-test1",
+  "settings": {
+    "target": "Mars",
+    "launch_start": "1970-08-14T07:37:14",
+    "launch_end": "1970-08-14T07:37:14",
+    "max_years": 19.0,
+    "vinf_tolerance_mps": 0.1,
+    "min_c3": 5.0,
+    "max_c3": 20.0,
+    "max_arrival_vinf_kms": 30.0,
+    "max_dsm_kms": 0.005,
+    "max_single_dsm_kms": 0.005,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 6.0,
+    "minimum_altitude_km": {
+      "Mercury": 200.0,
+      "Venus": 300.0,
+      "Earth": 200.0,
+      "Mars": 200.0,
+      "Jupiter": 10000.0,
+      "Saturn": 10000.0,
+      "Uranus": 1000.0,
+      "Neptune": 1000.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EVM"
+    ],
+    "route_overrides": {
+      "EVM": {
+        "leg_days": [
+          [
+            104.94418384954334,
+            158.41627577431498
+          ],
+          [
+            199.28238411135973,
+            299.9235761670396
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "max_venus_c3": 30.0,
+    "event_windows": [
+      [
+        "1970-08-14T07:35:47",
+        "1970-08-14T07:38:40"
+      ],
+      [
+        "1970-12-23T11:55:19",
+        "1970-12-23T11:58:12"
+      ],
+      [
+        "1971-08-29T14:23:37",
+        "1971-08-29T14:26:29"
+      ]
+    ]
+  },
+  "trajectory": {
+    "schema_version": 1,
+    "sequence": "EVM",
+    "body_ids": [
+      "399",
+      "299",
+      "499"
+    ],
+    "dates_jd_tdb": [
+      2440812.817524262,
+      2440943.9977540737,
+      2441193.100734213
+    ],
+    "branches": [
+      [
+        0,
+        true
+      ],
+      [
+        0,
+        true
+      ]
+    ],
+    "dsm_controls": [],
+    "segments": [
+      {
+        "start_jd": 2440812.817524262,
+        "end_jd": 2440943.9977540737,
+        "r": [
+          118617679.1867959,
+          -94291653.70821889,
+          -5217.30327563091
+        ],
+        "v": [
+          16.46068440527159,
+          21.09777809691515,
+          2.5512724903669786
+        ]
+      },
+      {
+        "start_jd": 2440943.9977540737,
+        "end_jd": 2441193.100734213,
+        "r": [
+          -49687562.167999856,
+          95234438.81093338,
+          4163353.4256803417
+        ],
+        "v": [
+          -34.84866467567129,
+          -20.60228106009184,
+          -0.15946142010537373
+        ]
+      }
+    ],
+    "metrics": {
+      "launch_c3_km2_s2": 13.43529043464682,
+      "total_dsm_kms": 0.0,
+      "arrival_vinf_kms": 6.332236425280011,
+      "duration_years": 1.04115868569782
+    }
+  },
+  "display_name": "ReachStar recreation \u00b7 EVM",
+  "attribution": "Original RSS/Principia trajectory by ReachStar on Bilibili; date-adjusted JPL recreation in RoLaMGAS."
+}

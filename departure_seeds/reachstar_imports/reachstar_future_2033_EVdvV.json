@@ -1,0 +1,186 @@
+{
+  "format": "rolamgas-search-options",
+  "schema_version": 1,
+  "app_version": "0.2.5-test1",
+  "settings": {
+    "target": "Venus",
+    "launch_start": "2033-01-01T00:00:00",
+    "launch_end": "2033-01-01T00:00:00",
+    "max_years": 3.0,
+    "vinf_tolerance_mps": 0.1,
+    "min_c3": 5.0,
+    "max_c3": 20.0,
+    "max_arrival_vinf_kms": 30.0,
+    "max_dsm_kms": 0.01,
+    "max_single_dsm_kms": 0.01,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 6.0,
+    "minimum_altitude_km": {
+      "Mercury": 200.0,
+      "Venus": 300.0,
+      "Earth": 200.0,
+      "Mars": 200.0,
+      "Jupiter": 10000.0,
+      "Saturn": 10000.0,
+      "Uranus": 1000.0,
+      "Neptune": 1000.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EVdvV"
+    ],
+    "route_overrides": {
+      "EVdvV": {
+        "leg_days": [
+          [
+            45,
+            250
+          ],
+          [
+            200,
+            250
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              1,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "max_venus_c3": 30.0,
+    "event_windows": [
+      [
+        "2033-01-01T00:00:00",
+        "2033-01-01T00:00:00"
+      ],
+      [
+        "2033-04-21T00:00:00",
+        "2033-04-21T00:00:00"
+      ],
+      [
+        "2033-12-01T16:49:26",
+        "2033-12-01T16:49:26"
+      ]
+    ]
+  },
+  "trajectory": {
+    "schema_version": 1,
+    "sequence": "EVdvV",
+    "body_ids": [
+      "399",
+      "299",
+      "299"
+    ],
+    "dates_jd_tdb": [
+      2463598.5,
+      2463708.5,
+      2463933.2009953703
+    ],
+    "branches": [
+      [
+        0,
+        true
+      ],
+      [
+        1,
+        true
+      ]
+    ],
+    "dsm_controls": [
+      {
+        "leg_index": 1,
+        "fraction": 0.5,
+        "departure_offset_kms": [
+          4.0492224100236385,
+          5.125467633114297,
+          1.868017633758197
+        ]
+      }
+    ],
+    "segments": [
+      {
+        "start_jd": 2463598.5,
+        "end_jd": 2463708.5,
+        "r": [
+          -26591683.92984516,
+          144679423.1708821,
+          -10701.6259072721
+        ],
+        "v": [
+          -26.75291965228226,
+          -5.322671839334212,
+          0.9319325567228498
+        ]
+      },
+      {
+        "start_jd": 2463708.5,
+        "end_jd": 2463820.8504976854,
+        "r": [
+          -69161885.78454293,
+          -83312833.46725479,
+          2843807.347032547
+        ],
+        "v": [
+          29.604447895072486,
+          -18.630582068758688,
+          -0.6975554546534211
+        ]
+      },
+      {
+        "start_jd": 2463820.8504976854,
+        "end_jd": 2463933.2009953703,
+        "r": [
+          19725871.882532343,
+          109965942.49999034,
+          -1636296.8348227215
+        ],
+        "v": [
+          -32.318704017740984,
+          10.190637775061306,
+          0.8584446463225328
+        ]
+      }
+    ],
+    "metrics": {
+      "launch_c3_km2_s2": 10.162409196880521,
+      "total_dsm_kms": 0.0006769433982698474,
+      "arrival_vinf_kms": 4.999527171022579,
+      "duration_years": 0.9163613836284189
+    }
+  },
+  "display_name": "ReachStar-inspired Venus return 2033",
+  "attribution": "ReachStar-inspired resonance initializer; fresh JPL solution by RoLaMGAS"
+}

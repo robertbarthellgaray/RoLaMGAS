@@ -1,0 +1,69 @@
+{
+  "requested_years": [
+    2029,
+    2031,
+    2033,
+    2035,
+    2039
+  ],
+  "attempted_in_range": 10,
+  "passing": [
+    {
+      "launch": "2029-10-01T00:00:00 TDB",
+      "c3": 18.025527055006936,
+      "dsm_mps": 0.7247878528307194,
+      "altitude_km": 30581.93516270637,
+      "maximum_speed_mismatch_mps": 1.7763568394002505e-12,
+      "independent_coasts": {
+        "maximum_dop853_endpoint_error_km": 0.0012832887713824066,
+        "maximum_velocity_difference_kms": 1.9743201779115041e-10,
+        "passed": true,
+        "nbody_validated": false
+      },
+      "source": "Fresh JPL epochs; not a shifted historical spacecraft state"
+    },
+    {
+      "launch": "2031-06-01T00:00:00 TDB",
+      "c3": 13.059453982393622,
+      "dsm_mps": 0.7732455670501964,
+      "altitude_km": 6710.418449956996,
+      "maximum_speed_mismatch_mps": 0.0,
+      "independent_coasts": {
+        "maximum_dop853_endpoint_error_km": 0.0007577359041766798,
+        "maximum_velocity_difference_kms": 8.05632918166613e-11,
+        "passed": true,
+        "nbody_validated": false
+      },
+      "source": "Fresh JPL epochs; not a shifted historical spacecraft state"
+    },
+    {
+      "launch": "2033-01-01T00:00:00 TDB",
+      "c3": 10.162409196880521,
+      "dsm_mps": 0.6769433982698474,
+      "altitude_km": 34581.28346622114,
+      "maximum_speed_mismatch_mps": 0.0,
+      "independent_coasts": {
+        "maximum_dop853_endpoint_error_km": 0.0010675567645476334,
+        "maximum_velocity_difference_kms": 1.1079975338200178e-10,
+        "passed": true,
+        "nbody_validated": false
+      },
+      "source": "Fresh JPL epochs; not a shifted historical spacecraft state"
+    },
+    {
+      "launch": "2039-06-01T00:00:00 TDB",
+      "c3": 13.885976299307114,
+      "dsm_mps": 5.913879760088929,
+      "altitude_km": 17309.810608016076,
+      "maximum_speed_mismatch_mps": 0.0,
+      "independent_coasts": {
+        "maximum_dop853_endpoint_error_km": 0.0009736412206657262,
+        "maximum_velocity_difference_kms": 9.599157974561577e-11,
+        "passed": true,
+        "nbody_validated": false
+      },
+      "source": "Fresh JPL epochs; not a shifted historical spacecraft state"
+    }
+  ],
+  "note": "A limited EVdvV starter check, not complete outer-planet missions or an infeasibility proof for missing years."
+}

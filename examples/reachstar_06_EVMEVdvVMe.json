@@ -1,0 +1,150 @@
+{
+  "target": "Mercury",
+  "launch_start": "1970-08-14T07:37:14",
+  "launch_end": "1970-08-14T07:37:14",
+  "max_years": 19.0,
+  "vinf_tolerance_mps": 0.1,
+  "min_c3": 5.0,
+  "max_c3": 20.0,
+  "max_arrival_vinf_kms": 30.0,
+  "max_dsm_kms": 0.005,
+  "max_single_dsm_kms": 0.005,
+  "max_powered_flyby_kms": 0.2,
+  "dsm_velocity_box_kms": 6.0,
+  "minimum_altitude_km": {
+    "Mercury": 200.0,
+    "Venus": 300.0,
+    "Earth": 200.0,
+    "Mars": 200.0,
+    "Jupiter": 10000.0,
+    "Saturn": 10000.0,
+    "Uranus": 1000.0,
+    "Neptune": 1000.0
+  },
+  "samples_per_sequence": 3000,
+  "refinements_per_sequence": 36,
+  "max_nfev": 250,
+  "branch_families": 16,
+  "batches": 1,
+  "seed": 502,
+  "keep": 100,
+  "max_ephemeris_step_days": 1.0,
+  "sequences": [
+    "EVMEVdvVMe"
+  ],
+  "route_overrides": {
+    "EVMEVdvVMe": {
+      "leg_days": [
+        [
+          104.94418384954334,
+          158.41627577431498
+        ],
+        [
+          199.28238411135973,
+          299.9235761670396
+        ],
+        [
+          167.84032987095418,
+          252.7604948064312
+        ],
+        [
+          177.17298338226976,
+          266.7594750734046
+        ],
+        [
+          179.76113007552922,
+          270.6416951132938
+        ],
+        [
+          324.29142887815834,
+          487.4371433172375
+        ]
+      ],
+      "branch_options": [
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            0,
+            true
+          ]
+        ],
+        [
+          [
+            1,
+            true
+          ]
+        ],
+        [
+          [
+            2,
+            false
+          ]
+        ]
+      ]
+    }
+  },
+  "target_object": null,
+  "custom_leg_days": [
+    30.0,
+    18262.5
+  ],
+  "search_objective": "feasibility",
+  "cost_refinements": 3,
+  "powered_flybys": false,
+  "mercury_resonant_seeds": true,
+  "earth_return_seeds": true,
+  "historical_mission_seeds": true,
+  "arrival_date": null,
+  "arrival_tolerance_days": 0.0,
+  "transfer_direction": "prograde",
+  "mission_profile": "custom",
+  "c3_seed_boundary": "minimum",
+  "max_venus_c3": 30.0,
+  "event_windows": [
+    [
+      "1970-08-14T07:35:47",
+      "1970-08-14T07:38:40"
+    ],
+    [
+      "1970-12-23T11:55:19",
+      "1970-12-23T11:58:12"
+    ],
+    [
+      "1971-08-29T14:23:37",
+      "1971-08-29T14:26:29"
+    ],
+    [
+      "1972-03-26T09:36:12",
+      "1972-03-26T09:39:05"
+    ],
+    [
+      "1972-11-02T20:47:34",
+      "1972-11-02T20:50:27"
+    ],
+    [
+      "1973-06-15T13:37:36",
+      "1973-06-15T13:40:29"
+    ],
+    [
+      "1974-07-25T22:22:11",
+      "1974-07-25T22:25:04"
+    ]
+  ]
+}

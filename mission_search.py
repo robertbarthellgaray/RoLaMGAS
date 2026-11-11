@@ -39,6 +39,7 @@ def default_branch_options(a,b,maximum_days):
         from mercury_returns import branch_options
         return branch_options(maximum_days)
     maximum=2 if a==b else (1 if a in ('Earth','Venus','Mercury') and b in ('Earth','Venus','Mercury') else 0)
+    if a=='Venus' and b=='Mercury' and maximum_days>=350:maximum=max(maximum,2)
     return [[0,True]]+[[m,low] for m in range(1,maximum+1) for low in (True,False)]
 
 
@@ -146,7 +147,7 @@ def normalize(config, config_dir=HERE):
         c['max_venus_c3']=float(c['max_venus_c3'])
         if not math.isfinite(c['max_venus_c3']) or c['max_venus_c3']<HARD_MIN_C3:raise ValueError('Venus-assist C3 ceiling must be at least 5, or null to disable')
     if c['c3_seed_boundary'] not in ('minimum','maximum'):raise ValueError('C3 seed boundary must be minimum or maximum')
-    if c['effective_min_c3']>c['max_c3']:raise ValueError(f'Maximum C3 must be at least the effective search floor {c["effective_min_c3"]:g} km²/s²')
+    if c['effective_min_c3']>c['max_c3']:raise ValueError(f'Maximum C3 must be at least the effective search floor {c["effective_min_c3"]:g} kmÂ²/sÂ²')
     if c['min_c3'] > c['max_c3']:
         raise ValueError('Minimum launch C3 cannot exceed maximum launch C3')
     for name in ('samples_per_sequence','refinements_per_sequence','max_nfev','branch_families',
@@ -311,6 +312,8 @@ def branch_families(route, limit, seed, preferred=None):
     # unrelated revolution counts independently on every return.
     from mercury_returns import coherent_families
     selected = [tuple(tuple(b) for b in family) for family in coherent_families(route)]
+    from resonant_shooting_seeds import coherent_families as venus_families
+    selected.extend(tuple(tuple(b) for b in family) for family in venus_families(route))
     selected.append(tuple(tuple(o[0]) for o in options))
     if preferred is not None:selected.insert(0,tuple(tuple(b) for b in preferred))
     selected=list(dict.fromkeys(selected))
@@ -318,7 +321,7 @@ def branch_families(route, limit, seed, preferred=None):
     if resonant not in selected:
         selected.append(resonant)
     # The May-2031 low-energy EVEEJ family needs the high-path one-revolution
-    # Venus–Earth leg, followed by an Earth return. Do not leave that coherent
+    # Venusâ€“Earth leg, followed by an Earth return. Do not leave that coherent
     # combination to chance when selecting a subset of all branch products.
     if route['bodies'][:4]==['Earth','Venus','Earth','Earth']:
         for return_branch in ((1,True),(0,True)):
@@ -379,6 +382,8 @@ def job_search(job):
     departure_seeds,departure_seed_stats=seed_departures(samples,model,branch)
     from historical_seeds import seed_missions
     historical_points,historical_stats=seed_missions(samples,model,branch)
+    from resonant_shooting_seeds import seed_venus_returns
+    venus_points,venus_stats=seed_venus_returns(historical_points+list(samples[:4]),model,branch)
     departure_seeds=departure_seeds+historical_points
     for i,point in enumerate(departure_seeds[:len(samples)]):samples[i]=point
     from cost_refinement import boundary_seed,feasibility_refine
@@ -456,6 +461,15 @@ def job_search(job):
         historical_stats['refinement_evaluated']+=1
         historical_stats['refinement_passing']+=int(model.accepted(q))
         ranked.append((q['screening_residual_norm']**2,np.asarray(q['x'])))
+    venus_stats.update(refinement_attempted=0,refinement_passing=0)
+    for x in venus_points:
+        venus_stats['refinement_attempted']+=1
+        refined=feasibility_refine(model,x,branch,maxiter=min(60,c['max_nfev']))
+        if refined is None:continue
+        q=record(refined['x'],known_source=dict(initialization_reference='ReachStar-informed Venus resonant shooting'))
+        if q is not None:
+            venus_stats['refinement_passing']+=int(model.accepted(q))
+            ranked.append((q['screening_residual_norm']**2,np.asarray(q['x'])))
     ranked.sort(key=lambda row:row[0])
     # Spread refinements across the good random starts, avoid identical basins.
     starts = [np.asarray(local['seed_x'])] if local and model.c3_in_bounds(model.launch_c3(local['seed_x'],branch)) else []
@@ -487,8 +501,9 @@ def job_search(job):
                 if polished['cost_refinement']['objective_after']<=polished['cost_refinement']['objective_before']:
                     record(polished['x'],polished['cost_refinement'])
     return dict(job_id=identifier,sequence=route['id'],branch=branch,seed=seed,
-                random_evaluations=nsamples,valid_random_evaluations=valid,refinements=len(starts)+len(warm_starts)+historical_stats['refinement_attempted'],known_seed_refinements=len(warm_starts),mercury_resonant_seed_rows=resonant_rows,
+                random_evaluations=nsamples,valid_random_evaluations=valid,refinements=len(starts)+len(warm_starts)+historical_stats['refinement_attempted']+venus_stats['refinement_attempted'],known_seed_refinements=len(warm_starts),mercury_resonant_seed_rows=resonant_rows,
                 appended_return_roots=len(root_seeds),earth_return_departure_seeds=departure_seed_stats,historical_mission_seeds=historical_stats,
+                venus_resonant_shooting_seeds=venus_stats,
                 c3_seed_boundary=c.get('c3_seed_boundary','minimum'),c3_boundary_seed_count=len(boundary_seeds),
                 effective_min_c3=model.c3_minimum,effective_max_c3=model.c3_maximum,c3_preflight_evaluations=model.c3_preflight_evaluations,
                 c3_pruned_evaluations=model.c3_pruned_evaluations,
@@ -556,6 +571,9 @@ def planned_jobs(c, routes):
             if preferred is None:
                 from mercury_returns import preferred_resonant_branch
                 preferred=preferred_resonant_branch(c,route)
+            if preferred is None:
+                from resonant_shooting_seeds import preferred_branch
+                preferred=preferred_branch(c,route)
             families = branch_families(route,c['branch_families'],c['seed'],preferred=preferred)
             nsamples = max(8,math.ceil(c['samples_per_sequence']/len(families)))
             nstarts = max(1,math.ceil(c['refinements_per_sequence']/len(families)))
@@ -588,6 +606,11 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
         from mercury_returns import verified_resonant_seeds
         resonant_seeds=verified_resonant_seeds(c,routes,ep)
         archive['accepted'].extend(resonant_seeds['accepted']);archive['resonant_seed_stats']=resonant_seeds['stats']
+        from resonant_shooting_seeds import verified_seeds as verified_tour_seeds
+        tour_seeds=verified_tour_seeds(c,routes,ep)
+        archive['accepted'].extend(tour_seeds['accepted']);archive['reachstar_seed_stats']=tour_seeds['stats']
+        if tour_seeds['accepted']:
+            print(f"Revalidated {len(tour_seeds['accepted'])} ReachStar-informed starters under the current limits.",flush=True)
         if resonant_seeds['accepted']:
             print(f"Revalidated {len(resonant_seeds['accepted'])} bundled resonant-transfer starters under the current limits.",flush=True)
         if chain_seeds['accepted']:
@@ -601,7 +624,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     archive_hash=hashlib.sha256(archive_path.read_bytes()).hexdigest()
     if reused:print(f'Revalidated {len(reused)} compatible saved candidates against all current limits.',flush=True)
     engine_hashes = {name:hashlib.sha256((RESOURCE_ROOT/name).read_bytes()).hexdigest()
-                     for name in ('mission_search.py','dynamics.py','trajectory_policy.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','historical_seeds.py','departure_seeds/historical_missions.json','departure_seeds/mission_studies.json','departure_seeds/decadal_missions.json','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
+                     for name in ('mission_search.py','dynamics.py','trajectory_policy.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','historical_seeds.py','resonant_shooting_seeds.py','departure_seeds/reachstar_tour.json','departure_seeds/historical_missions.json','departure_seeds/mission_studies.json','departure_seeds/decadal_missions.json','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
     signature = hashlib.sha256(json.dumps([c,routes,ep.manifest,engine_hashes,archive_hash],sort_keys=True).encode()).hexdigest()
     manifest_path = output/'run_manifest.json'
     if resume:
@@ -652,7 +675,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
         else:
             jobs.append(job)
     total = len(jobs)+len(done)
-    if c['min_c3']<c['effective_min_c3']:print(f"Requested minimum C3 {c['min_c3']:g}; applying supported search floor {c['effective_min_c3']:g} km²/s².",flush=True)
+    if c['min_c3']<c['effective_min_c3']:print(f"Requested minimum C3 {c['min_c3']:g}; applying supported search floor {c['effective_min_c3']:g} kmÂ²/sÂ².",flush=True)
     print(f'{len(routes)} routes; {total} branch jobs; {c["workers"]} CPU workers; {len(done)} completed checkpoints.',flush=True)
     initial = summarize(done,c,reused,reused_near)
     atomic_json(output/'results.json',initial)

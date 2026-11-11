@@ -1,0 +1,101 @@
+{
+  "credit": "Original RSS/Principia trajectory by ReachStar on Bilibili; date-adjusted JPL recreation in RoLaMGAS.",
+  "starters": [
+    {
+      "sequence": "EV",
+      "target": "Venus",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_01_EV.json",
+      "preset": "examples/reachstar_01_EV.json",
+      "standard_altitude_screen_passed": true,
+      "max_endpoint_error_km": 0.00015746682085658457
+    },
+    {
+      "sequence": "EVM",
+      "target": "Mars",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_02_EVM.json",
+      "preset": "examples/reachstar_02_EVM.json",
+      "standard_altitude_screen_passed": true,
+      "max_endpoint_error_km": 0.0007643642807897772
+    },
+    {
+      "sequence": "EVMEV",
+      "target": "Venus",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_04_EVMEV.json",
+      "preset": "examples/reachstar_04_EVMEV.json",
+      "standard_altitude_screen_passed": true,
+      "max_endpoint_error_km": 0.0007643642807897772
+    },
+    {
+      "sequence": "EVMEVdvV",
+      "target": "Venus",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_05_EVMEVdvV.json",
+      "preset": "examples/reachstar_05_EVMEVdvV.json",
+      "standard_altitude_screen_passed": true,
+      "max_endpoint_error_km": 0.0009771606852063636
+    },
+    {
+      "sequence": "EVMEVdvVMe",
+      "target": "Mercury",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_06_EVMEVdvVMe.json",
+      "preset": "examples/reachstar_06_EVMEVdvVMe.json",
+      "standard_altitude_screen_passed": true,
+      "max_endpoint_error_km": 0.02286746394424362
+    },
+    {
+      "sequence": "EVMEVdvVMeV",
+      "target": "Venus",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_07_EVMEVdvVMeV.json",
+      "preset": "examples/reachstar_07_EVMEVdvVMeV.json",
+      "standard_altitude_screen_passed": true,
+      "max_endpoint_error_km": 0.02286746394424362
+    },
+    {
+      "sequence": "EVMEVdvVMeVdvV",
+      "target": "Venus",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_08_EVMEVdvVMeVdvV.json",
+      "preset": "examples/reachstar_08_EVMEVdvVMeVdvV.json",
+      "standard_altitude_screen_passed": true,
+      "max_endpoint_error_km": 0.02286746394424362
+    },
+    {
+      "sequence": "EVMEVdvVMeVdvVV",
+      "target": "Venus",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_09_EVMEVdvVMeVdvVV.json",
+      "preset": "examples/reachstar_09_EVMEVdvVMeVdvVV.json",
+      "standard_altitude_screen_passed": false,
+      "max_endpoint_error_km": 0.02286746394424362
+    },
+    {
+      "sequence": "EVMEVdvVMeVdvVVEJ",
+      "target": "Jupiter",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_11_EVMEVdvVMeVdvVVEJ.json",
+      "preset": "examples/reachstar_11_EVMEVdvVMeVdvVVEJ.json",
+      "standard_altitude_screen_passed": false,
+      "max_endpoint_error_km": 0.02286746394424362
+    },
+    {
+      "sequence": "EVMEVdvVMeVdvVVEJS",
+      "target": "Saturn",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_12_EVMEVdvVMeVdvVVEJS.json",
+      "preset": "examples/reachstar_12_EVMEVdvVMeVdvVVEJS.json",
+      "standard_altitude_screen_passed": false,
+      "max_endpoint_error_km": 0.02286746394424362
+    },
+    {
+      "sequence": "EVMEVdvVMeVdvVVEJSU",
+      "target": "Uranus",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_13_EVMEVdvVMeVdvVVEJSU.json",
+      "preset": "examples/reachstar_13_EVMEVdvVMeVdvVVEJSU.json",
+      "standard_altitude_screen_passed": false,
+      "max_endpoint_error_km": 0.02286746394424362
+    },
+    {
+      "sequence": "EVMEVdvVMeVdvVVEJSUN",
+      "target": "Neptune",
+      "file": "departure_seeds\\reachstar_imports\\reachstar_14_EVMEVdvVMeVdvVVEJSUN.json",
+      "preset": "examples/reachstar_14_EVMEVdvVMeVdvVVEJSUN.json",
+      "standard_altitude_screen_passed": false,
+      "max_endpoint_error_km": 0.02286746394424362
+    }
+  ]
+}

@@ -13,7 +13,7 @@ from earth_return_seeds import rtn_basis
 def references():
     historical=json.loads((RESOURCE_ROOT/'departure_seeds/historical_missions.json').read_text(encoding='utf-8'))['missions']
     studies=[]
-    for filename in ('mission_studies.json','decadal_missions.json'):
+    for filename in ('mission_studies.json','decadal_missions.json','reachstar_tour.json'):
         study_path=RESOURCE_ROOT/'departure_seeds'/filename
         if study_path.exists():studies.extend(json.loads(study_path.read_text(encoding='utf-8'))['missions'])
     return historical+[m for m in studies if m.get('seed_eligible')]
