@@ -1,0 +1,3045 @@
+{
+  "source": "Orbit/rotation-only snapshots of installed Celestia data catalogs, 2026-11-12",
+  "license": "GPL-2.0-or-later",
+  "sources": [
+    {
+      "file": "dwarfplanets.ssc",
+      "sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "objects": 11
+    },
+    {
+      "file": "asteroids.ssc",
+      "sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "objects": 40
+    },
+    {
+      "file": "comets.ssc",
+      "sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "objects": 24
+    },
+    {
+      "file": "interstellar.ssc",
+      "sha256": "4f2c1aba0bdcdd53a343c45e4e95fe98ac87590195198e1f751327fa4254a9cd",
+      "objects": 3
+    },
+    {
+      "file": "outersys.ssc",
+      "sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "objects": 29
+    }
+  ],
+  "objects": [
+    {
+      "name": "Pluto-Charon",
+      "aliases": [
+        "Pluto-Charon"
+      ],
+      "parent": "Sol",
+      "item_type": "ReferencePoint",
+      "classification": null,
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tPeriod\t248.0553249511832\n\t\tSemiMajorAxis\t39.47846297299562\n\t\tEccentricity\t0.2501751659981197\n\t\tInclination\t17.16199308367073\n\t\tAscendingNode\t110.287823984409\n\t\tArgOfPericenter\t113.3692019799804\n\t\tMeanAnomaly\t37.59869705192153\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Pluto",
+      "aliases": [
+        "Pluto",
+        "134340 Pluto"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "dwarfplanet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Pluto-Charon\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tPeriod\t6.387221  # mean\n\t\tSemiMajorAxis\t2130.734  # separation = 19595.764 km, mass ratio = 0.1220\n\t\tEccentricity\t0.000161  # mean\n\t\tInclination\t112.888628\n\t\tAscendingNode\t227.392167\n\t\tArgOfPericenter\t352.410172\n\t\tMeanAnomaly\t213.475686\n\t}",
+        "BodyFrame": "BodyFrame\t{ EclipticJ2000 {} }",
+        "UniformRotation": "UniformRotation  # to match orbit\n\t{\n    Period 153.293304\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tInclination\t112.888628\n\t\tAscendingNode\t227.392167\n\t\tMeridianAngle\t25.885858\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Ceres",
+      "aliases": [
+        "Ceres",
+        "1 Ceres",
+        "1943 XB",
+        "A899 OF"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "dwarfplanet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457087.5  # 2015 Mar 06 (Dawn arrival)\n\t\tPeriod\t4.604489842389347\n\t\tSemiMajorAxis\t2.767677892029369\n\t\tEccentricity\t0.075823549018329\n\t\tInclination\t10.59298957835918\n\t\tAscendingNode\t80.32901951983351\n\t\tArgOfPericenter\t72.57244735702379\n\t\tMeanAnomaly\t114.5600765346728\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\t# C. Raymond, JPL and T. Roatsch, DLR (28-Jun-2018)\n\t\t# https://sbnarchive.psi.edu/pds3/dawn/fc/DWNCSPC_4_01/DOCUMENT/CERES_COORD_SYS_180628.HTM\n\t\tEpoch\t2451545.0         # J2000\n\t\tPeriod\t9.074169392       # Omega = 952.1532635 +/- 0.000002 deg/day\n\t\tInclination\t23.23967  # Dec   = 66.76033 deg\n\t\tAscendingNode\t21.42763  # RA    = 291.42763 deg\n\t\tMeridianAngle\t170.309\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Orcus-Vanth",
+      "aliases": [
+        "Orcus-Vanth"
+      ],
+      "parent": "Sol",
+      "item_type": "ReferencePoint",
+      "classification": null,
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit  # system barycenter solution\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t246.0132195236034\n\t\tSemiMajorAxis\t39.27904760862676\n\t\tEccentricity\t0.2238649605977904\n\t\tInclination\t20.56778532527048\n\t\tAscendingNode\t268.5847818676822\n\t\tArgOfPericenter\t73.02144541087628\n\t\tMeanAnomaly\t151.0612392132629\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Orcus",
+      "aliases": [
+        "Orcus",
+        "90482 Orcus",
+        "2004 DW"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "dwarfplanet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEquatorJ2000\t{ Center \"Sol/Orcus-Vanth\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2454000  # 2006 Sept 21 12:00 UT\n\t\tPeriod\t9.539154\n\t\tSemiMajorAxis\t1233.0  # semi-major axis: 8999.8 km, mass ratio: 0.16 \u00b1 0.02\n\t\tEccentricity\t0.00091\n\t\tInclination\t105.03\n\t\tMeanLongitude\t8.52\n\t\tAscendingNode\t53.49\n\t\tLongOfPericenter\t148\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # to match orbit\n\t{\n    Period 228.939696\n\t\tEpoch\t2454000  # 2006 Sept 21 12:00 UT\n\t\tInclination\t105.03\n\t\tAscendingNode\t53.49\n\t\tMeridianAngle\t135.03\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Haumea",
+      "aliases": [
+        "Haumea",
+        "136108 Haumea",
+        "2003 EL61"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "dwarfplanet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit  # primary body solution\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t282.8118121472361\n\t\tSemiMajorAxis\t43.1042753471461\n\t\tEccentricity\t0.1949599020093612\n\t\tInclination\t28.20394234125633\n\t\tAscendingNode\t121.9427805095287\n\t\tArgOfPericenter\t239.9675582432638\n\t\tMeanAnomaly\t190.4008296173513\n\t}",
+        "UniformRotation": "UniformRotation  # ring pole\n\t{\n\t\tEpoch\t2457774.6321  # 2017 Jan 21 03:09 UT\n\t\tPeriod\t3.915341\n\t\tInclination\t77.9  # B_ring = 13.8\u00b0 \u00b1 0.5\u00b0\n\t\tAscendingNode\t15.1  # P_ring = -74.3\u00b0 \u00b1 1.3\u00b0\n\t\tMeridianAngle\t243.9  # \u03c8 = 13.3\u00b0 (light-time corrected)\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Quaoar",
+      "aliases": [
+        "Quaoar",
+        "50000 Quaoar",
+        "2002 LM60"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "dwarfplanet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit  # primary body solution\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t285.0867252438612\n\t\tSemiMajorAxis\t43.33511791963463\n\t\tEccentricity\t0.03694047272837633\n\t\tInclination\t7.990872665933034\n\t\tAscendingNode\t188.9141632759559\n\t\tArgOfPericenter\t157.5485109164584\n\t\tMeanAnomaly\t265.1494956186123\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tEpoch\t2459800.7744  # 2022 Aug 09 06:34 UT\n\t\tPeriod\t17.6999  # Table 34 (1 \u03c3)\n\t\tInclination\t35.0\n\t\tAscendingNode\t349.5\n\t\tMeridianAngle\t-2  # Table 34 (1 \u03c3)\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Makemake",
+      "aliases": [
+        "Makemake",
+        "136472 Makemake",
+        "2005 FY9"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "dwarfplanet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t306.7031483189599\n\t\tSemiMajorAxis\t45.49889074848782\n\t\tEccentricity\t0.1603866059337173\n\t\tInclination\t29.001993091243\n\t\tAscendingNode\t79.44279066059018\n\t\tArgOfPericenter\t296.0687622301867\n\t\tMeanAnomaly\t140.1043006005143\n\t}",
+        "UniformRotation": "UniformRotation  # assume alignment with moon orbit\n\t{\n\t\tPeriod\t22.8266  # Hromakina et al. (2019), 2019A&A...625A..46H\n\t\tInclination\t82\n\t\tAscendingNode\t15\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Gonggong",
+      "aliases": [
+        "Gonggong",
+        "225088 Gonggong",
+        "2007 OR10"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "dwarfplanet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t548.8820241583734\n\t\tSemiMajorAxis\t67.06686274245513\n\t\tEccentricity\t0.5034169656629447\n\t\tInclination\t30.80270792355379\n\t\tAscendingNode\t336.8395047941726\n\t\tArgOfPericenter\t206.9913021996599\n\t\tMeanAnomaly\t93.64998094826905\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # assume alignment with moon orbit\n\t{\n\t\tPeriod\t22.40\n\t\tInclination\t83.08\n\t\tAscendingNode\t31.99\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Eris",
+      "aliases": [
+        "Eris",
+        "136199 Eris",
+        "2003 UB313"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "dwarfplanet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit  # primary body solution\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t558.3543963112093\n\t\tSemiMajorAxis\t67.83626725354715\n\t\tEccentricity\t0.4384168372720811\n\t\tInclination\t43.99289883118324\n\t\tAscendingNode\t35.97649812597815\n\t\tArgOfPericenter\t151.2203644343608\n\t\tMeanAnomaly\t193.8445766876322\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # to match mutual orbit\n\t{\n\t\tEpoch\t2453979.0  # 2006 Aug 31 12:00\n\t\t# Period\t378.504  # measured\n\t\tPeriod\t378.861576\n\t\tInclination\t45.49\n\t\tAscendingNode\t126.17\n\t\tMeridianAngle\t359.61\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Sedna",
+      "aliases": [
+        "Sedna",
+        "90377 Sedna",
+        "2003 VB12"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "dwarfplanet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t11389.43852390799\n\t\tSemiMajorAxis\t506.4347864859337\n\t\tEccentricity\t0.8495533299295479\n\t\tInclination\t11.92852404300244\n\t\tAscendingNode\t144.4016491162131\n\t\tArgOfPericenter\t311.2847593268618\n\t\tMeanAnomaly\t357.5939832662714\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t10.273\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "2 Pallas",
+      "aliases": [
+        "2 Pallas",
+        "Pallas"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t4.610604140279951\n\t\tSemiMajorAxis\t2.770127481405055\n\t\tEccentricity\t0.2302291418027128\n\t\tInclination\t34.92583508111117\n\t\tAscendingNode\t172.9188058415808\n\t\tArgOfPericenter\t310.8728944588669\n\t\tMeanAnomaly\t40.59806832021348\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # from DAMIT model 4395\n\t{\n\t\tPeriod\t7.81322\n\t\tInclination\t89\n\t\tAscendingNode\t134\n\t\tMeridianAngle\t41.7\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "3 Juno",
+      "aliases": [
+        "3 Juno",
+        "Juno"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t4.361092302470355\n\t\tSemiMajorAxis\t2.669263108802283\n\t\tEccentricity\t0.2562134612917888\n\t\tInclination\t12.9905522351009\n\t\tAscendingNode\t169.8391668701912\n\t\tArgOfPericenter\t247.7379377753803\n\t\tMeanAnomaly\t37.02310816908956\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t7.209531\n\t\tInclination\t50\n\t\tAscendingNode\t199\n\t\tMeridianAngle\t290.3  # from DAMIT model 786\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "4 Vesta",
+      "aliases": [
+        "4 Vesta",
+        "Vesta"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # major body version\n\t{\n\t\tEpoch\t2455758.5  # 2011 Jul 16 (Dawn arrival)\n\t\tPeriod\t3.628360077272586\n\t\tSemiMajorAxis\t2.361210930693959\n\t\tEccentricity\t0.08832828997246957\n\t\tInclination\t7.134622054675508\n\t\tAscendingNode\t103.904308659809\n\t\tArgOfPericenter\t149.8717483228352\n\t\tMeanAnomaly\t45.00136554856663\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t5.3421282479\n\t\tInclination\t47.765\n\t\tAscendingNode\t39.031\n\t\tMeridianAngle\t75.39\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "7 Iris",
+      "aliases": [
+        "7 Iris",
+        "Iris"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t3.687351731720197\n\t\tSemiMajorAxis\t2.386735224876513\n\t\tEccentricity\t0.2297678850612325\n\t\tInclination\t5.518704224953987\n\t\tAscendingNode\t259.4983776174604\n\t\tArgOfPericenter\t145.4437082806831\n\t\tMeanAnomaly\t207.8984567898204\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t7.138843\n\t\tInclination\t61\n\t\tAscendingNode\t99\n\t\tMeridianAngle\t217.5  # from DAMIT model 1854\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "10 Hygiea",
+      "aliases": [
+        "10 Hygiea",
+        "Hygiea",
+        "A900 GA"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t5.564048142612810\n\t\tSemiMajorAxis\t3.139943146104073\n\t\tEccentricity\t0.1110224699444766\n\t\tInclination\t3.831824852338094\n\t\tAscendingNode\t283.1735822202232\n\t\tArgOfPericenter\t312.4833682032628\n\t\tMeanAnomaly\t75.17820822199755\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # from DAMIT model 4392\n\t{\n\t\tPeriod\t13.82559\n\t\tInclination\t136\n\t\tAscendingNode\t49\n\t\tMeridianAngle\t116.5\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "16 Psyche",
+      "aliases": [
+        "16 Psyche",
+        "Psyche"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t4.999182317265353\n\t\tSemiMajorAxis\t2.923662128456563\n\t\tEccentricity\t0.1341931447944021\n\t\tInclination\t3.096815244138823\n\t\tAscendingNode\t150.02696940\n\t\tArgOfPericenter\t229.4104409693524\n\t\tMeanAnomaly\t243.1552879097505\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t4.195948\n\t\tInclination\t83.9\n\t\tAscendingNode\t126.3\n\t\tMeridianAngle\t270.4\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "44 Nysa",
+      "aliases": [
+        "44 Nysa",
+        "Nysa",
+        "1977 CE"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2461200.5  # 2026 Jun 09\n\t\tPeriod\t3.770541974531025\n\t\tSemiMajorAxis\t2.422499624292143\n\t\tEccentricity\t0.1496735116405386\n\t\tInclination\t3.713137130620973\n\t\tAscendingNode\t131.4762396518531\n\t\tArgOfPericenter\t343.8930847472048\n\t\tMeanAnomaly\t41.45745492537208\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # from DAMIT model 16324\n\t{\n\t\tPeriod\t6.421418\n\t\tInclination\t13\n\t\tAscendingNode\t214\n\t\tMeridianAngle\t249.8\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "45 Eugenia",
+      "aliases": [
+        "45 Eugenia",
+        "Eugenia",
+        "1941 BN"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t4.486962887167529\n\t\tSemiMajorAxis\t2.72037964582147\n\t\tEccentricity\t0.08319376065918045\n\t\tInclination\t6.605134973013918\n\t\tAscendingNode\t147.5872525087751\n\t\tArgOfPericenter\t87.48925400055647\n\t\tMeanAnomaly\t30.53633191069684\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t5.699151\n\t\tInclination\t110.90\n\t\tAscendingNode\t211.11\n\t\tMeridianAngle\t7.2  # from DAMIT model 1812\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "87 Sylvia",
+      "aliases": [
+        "87 Sylvia",
+        "Sylvia",
+        "A909 GA"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t6.483690492144261\n\t\tSemiMajorAxis\t3.477037558039971\n\t\tEccentricity\t0.09389234196453734\n\t\tInclination\t10.88029344765754\n\t\tAscendingNode\t73.01217364218917\n\t\tArgOfPericenter\t264.4030328527093\n\t\tMeanAnomaly\t334.8192615156582\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t5.183641\n\t\tInclination\t6.5\n\t\tAscendingNode\t104.3\n\t\tMeridianAngle\t169.7  # from DAMIT model 719\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "130 Elektra",
+      "aliases": [
+        "130 Elektra",
+        "Elektra"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t5.527107049307030\n\t\tSemiMajorAxis\t3.126029815266054\n\t\tEccentricity\t0.209667410193861\n\t\tInclination\t22.77754756941516\n\t\tAscendingNode\t144.9889230573203\n\t\tArgOfPericenter\t237.7477091724604\n\t\tMeanAnomaly\t230.8768973136703\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # pole orientation from orbital model\n\t{\n\t\tPeriod\t5.224663\n\t\tInclination\t156.8\n\t\tAscendingNode\t184.5\n\t\tMeridianAngle\t177.2  # from DAMIT model 1856\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "216 Kleopatra",
+      "aliases": [
+        "216 Kleopatra",
+        "Kleopatra",
+        "A905 OA",
+        "A910 RA"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t4.668221155087945\n\t\tSemiMajorAxis\t2.793157852317082\n\t\tEccentricity\t0.2509986364100729\n\t\tInclination\t13.12108303620164\n\t\tAscendingNode\t215.3137706682851\n\t\tArgOfPericenter\t179.6897916073022\n\t\tMeanAnomaly\t48.92084097660603\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # MPCD model\n\t{\n\t\tPeriod\t5.385282\n\t\tInclination\t46.1\n\t\tAscendingNode\t159.3\n\t\tMeridianAngle\t42.2  # from DAMIT model 1826\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "704 Interamnia",
+      "aliases": [
+        "704 Interamnia",
+        "Interamnia",
+        "1910 KU",
+        "1952 MW"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t5.348580216638409\n\t\tSemiMajorAxis\t3.058347812128694\n\t\tEccentricity\t0.1559418886160162\n\t\tInclination\t17.30804365401011\n\t\tAscendingNode\t280.1747411007504\n\t\tArgOfPericenter\t94.41013154878203\n\t\tMeanAnomaly\t36.27237669780099\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # from DAMIT model 4393\n\t{\n\t\tPeriod\t8.712337\n\t\tInclination\t4\n\t\tAscendingNode\t163\n\t\tMeridianAngle\t36.4\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "21 Lutetia",
+      "aliases": [
+        "21 Lutetia",
+        "Lutetia"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2455388.156939  # 2010 Jul 10 15:44:53.3 UT (Rosetta encounter)\n\t\tPeriod\t3.801937284798546\n\t\tSemiMajorAxis\t2.435928281038471\n\t\tEccentricity\t0.1628637246254306\n\t\tInclination\t3.063732671372809\n\t\tAscendingNode\t80.90012439238676\n\t\tArgOfPericenter\t250.1879988966936\n\t\tMeanAnomaly\t230.8546557844331\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t8.168270\n\t\tInclination\t79.17\n\t\tAscendingNode\t141.80\n\t\tMeridianAngle\t289.50\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "243 Ida",
+      "aliases": [
+        "243 Ida",
+        "Ida",
+        "1988 DB1",
+        "A910 CD"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2449228.203529  # 1993 Aug 28 16:52:04.7 UT (Galileo encounter)\n\t\tPeriod\t4.846254968888159\n\t\tSemiMajorAxis\t2.863729794821305\n\t\tEccentricity\t0.0431099558008663\n\t\tInclination\t1.137108514043375\n\t\tAscendingNode\t324.5863812051677\n\t\tArgOfPericenter\t113.0168835472141\n\t\tMeanAnomaly\t131.6361442500825\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t4.633632\n\t\tInclination\t177.12\n\t\tAscendingNode\t258.76\n\t\tMeridianAngle\t274.05\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "253 Mathilde",
+      "aliases": [
+        "253 Mathilde",
+        "Mathilde",
+        "1949 OL1",
+        "A915 TN"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # special solution (ID 2000253)\n\t{\n\t\tEpoch\t2450627.039545  # 1997 Jun 27 12:55:54.5 UT (NEAR Shoemaker encounter)\n\t\tPeriod\t4.303410663251732\n\t\tSemiMajorAxis\t2.645674387134766\n\t\tEccentricity\t0.2661814983802213\n\t\tInclination\t6.708942895919493\n\t\tAscendingNode\t179.8684813252993\n\t\tArgOfPericenter\t156.2069957415946\n\t\tMeanAnomaly\t15.64430798187906\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tEpoch\t2450627.039545  # 1997 Jun 27 12:55:54.5 UT\n\t\tPeriod\t417.744\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "433 Eros",
+      "aliases": [
+        "433 Eros",
+        "Eros",
+        "1898 DQ",
+        "1956 PC"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # special solution (ID 2000433)\n\t{\n\t\tEpoch\t2451171.278738426  # 1998 Dec 23 18:41:23 TDB (NEAR Shoemaker encounter)\n\t\tPeriod\t1.76100734552858\n\t\tSemiMajorAxis\t1.458261164736658\n\t\tEccentricity\t0.2228850204316418\n\t\tInclination\t10.83013994994736\n\t\tAscendingNode\t304.4308766975156\n\t\tArgOfPericenter\t178.6131593709767\n\t\tMeanAnomaly\t208.5594716712877\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t5.27025527\n\t\tInclination\t72.768\n\t\tAscendingNode\t101.363\n\t\tMeridianAngle\t326.08\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "951 Gaspra",
+      "aliases": [
+        "951 Gaspra",
+        "Gaspra",
+        "1916 S45",
+        "1955 MG1",
+        "A913 YA"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2448559.443035  # 1991 Oct 29 22:37 UT (Galileo encounter)\n\t\tPeriod\t3.284649836170897\n\t\tSemiMajorAxis\t2.209635220657096\n\t\tEccentricity\t0.1738751722120656\n\t\tInclination\t4.097580278581171\n\t\tAscendingNode\t253.4455078747746\n\t\tArgOfPericenter\t129.0458605783739\n\t\tMeanAnomaly\t280.902236295622\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t7.042024  # Simonelli et al., 1995Icar..114..387S\n\t\tInclination\t63.30\n\t\tAscendingNode\t99.47\n\t\tMeridianAngle\t109.06  # offset from original to keep orientation at encounter\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "2867 Steins",
+      "aliases": [
+        "2867 Steins",
+        "Steins",
+        "1969 VC",
+        "1954 QL",
+        "1979 FJ4",
+        "1980 VV1",
+        "1980 WB"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2454715.277375  # 2008 Sept 05 18:38:20 UT (Rosetta encounter)\n\t\tPeriod\t3.633242254119409\n\t\tSemiMajorAxis\t2.363328556809945\n\t\tEccentricity\t0.1462223082920988\n\t\tInclination\t9.94493286133457\n\t\tAscendingNode\t55.52931588000944\n\t\tArgOfPericenter\t250.5164928896344\n\t\tMeanAnomaly\t317.5210498791791\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t6.04679  # Keller et al., 2010Sci...327..190K\n\t\tInclination\t152\n\t\tAscendingNode\t181\n\t\tMeridianAngle\t78.31  # offset from original to keep orientation at encounter\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "4179 Toutatis",
+      "aliases": [
+        "4179 Toutatis",
+        "Toutatis",
+        "1989 AC",
+        "1934 CT"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2456274.854944  # 2012 Dec 13 08:30 UT (Chang'e-2 encounter)\n\t\tPeriod\t4.032791881598598\n\t\tSemiMajorAxis\t2.533563178471555\n\t\tEccentricity\t0.6300686358837205\n\t\tInclination\t0.4466021121443737\n\t\tAscendingNode\t124.3993767073358\n\t\tArgOfPericenter\t278.6907443034261\n\t\tMeanAnomaly\t6.763415127463227\n\t}",
+        "BodyFrame": "BodyFrame\n\t{\n\t\t# Angular momentum vector points towards \u03bb = 180.2\u00b0, \u03b2 = -54.75\u00b0\n\t\tTwoVector\n\t\t{\n\t\t\tPrimary\n\t\t\t{\n\t\t\t\tAxis\t\"x\"\n\t\t\t\tConstantVector\t{ Vector [ 0.8166 0.0029 -0.5771 ] Frame { EclipticJ2000 {} } }\n\t\t\t}\n\t\t\tSecondary\n\t\t\t{\n\t\t\t\tAxis\t\"z\"\n\t\t\t\tConstantVector\t{ Vector [ -0.5771 -0.002 -0.8166 ] Frame { EclipticJ2000 {} } }\n\t\t\t}\n\t\t}\n\t}",
+        "PrecessingRotation": "PrecessingRotation\n\t{\n\t\tEpoch\t2456274.854944     # 2012 Dec 13 08:30 UT\n\t\tPeriod<d>\t-5.38          # clockwise\n\t\tInclination\t129.1          # beta = 27.6\u00b0\n\t\tAscendingNode\t235.7      # alpha = -20.1\u00b0\n\t\tMeridianAngle\t266.5      # gamma = 42.2\u00b0\n\t\tPrecessionPeriod<d>\t-7.40  # clockwise\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "25143 Itokawa",
+      "aliases": [
+        "25143 Itokawa",
+        "Itokawa",
+        "1998 SF36"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2453625.5  # 2005 Sept 12 (Hayabusa arrival)\n\t\tPeriod\t1.523231388645978\n\t\tSemiMajorAxis\t1.32384900129156\n\t\tEccentricity\t0.2801215960660662\n\t\tInclination\t1.622265724980934\n\t\tAscendingNode\t69.09459064367297\n\t\tArgOfPericenter\t162.7594790402028\n\t\tMeanAnomaly\t310.6795031514429\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t12.132381791\n\t\tInclination\t157.02704\n\t\tAscendingNode\t180.02564\n\t\tMeridianAngle\t129.73\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "52246 Donaldjohanson",
+      "aliases": [
+        "52246 Donaldjohanson",
+        "Donaldjohanson",
+        "1981 EQ5",
+        "1998 YF26"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # special solution (ID 20052246)\n\t{\n\t\tEpoch\t2460786.244736  # 2025 Apr 20 17:51:16 UT (Lucy encounter)\n\t\tPeriod\t3.679187898778141\n\t\tSemiMajorAxis\t2.383211086846854\n\t\tEccentricity\t0.186953475156367\n\t\tInclination\t4.42555397916343\n\t\tAscendingNode\t262.7769932947548\n\t\tArgOfPericenter\t212.7955985288054\n\t\tMeanAnomaly\t36.98377287770851\n\t}",
+        "BodyFrame": "BodyFrame\n\t{\n\t\t# Angular momentum vector points towards RA = 272.0\u00b0, Dec = 66.7\u00b0\n\t\tTwoVector\n\t\t{\n\t\t\tPrimary\n\t\t\t{\n\t\t\t\tAxis\t\"x\"\n\t\t\t\tConstantVector\t{ Vector [ 0.9994 0.0349 0 ] Frame { EquatorJ2000 {} } }\n\t\t\t}\n\t\t\tSecondary\n\t\t\t{\n\t\t\t\tAxis\t\"z\"\n\t\t\t\tConstantVector\t{ Vector [ 0.0138 -0.3953 0.9184 ] Frame { EquatorJ2000 {} } }\n\t\t\t}\n\t\t}\n\t}",
+        "PrecessingRotation": "PrecessingRotation\n\t{\n\t\t# Rotation and precession have opposite directions for short-axis mode\n\t\t# (SAM); rotation rate is negative\n\t\tEpoch\t2460786.244736  # 2025 Apr 20 17:51:16 UT\n\t\tPeriod\t-637.0\n\t\tInclination\t30.2      # Dec = 50.95721 deg\n\t\tAscendingNode\t86.9  # RA = 324.66115 deg\n\t\tMeridianAngle\t1.6   # W0 = 293.17865 deg (epoch J2000)\n\t\tPrecessionPeriod<h>\t-180.7\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "98943 Torifune",
+      "aliases": [
+        "98943 Torifune",
+        "Torifune",
+        "2001 CC21",
+        "1982 VE13"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2461226.896638  # 2026 Jul 05 09:30:00.31 UT (Hayabusa2# encounter)\n\t\tPeriod\t1.048677564043263\n\t\tSemiMajorAxis\t1.032180974013007\n\t\tEccentricity\t0.219169623431516\n\t\tInclination\t4.808321374729034\n\t\tAscendingNode\t75.35575774781594\n\t\tArgOfPericenter\t179.4153260259591\n\t\tMeanAnomaly\t353.512690765627\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t5.0215221\n\t\tInclination\t6\n\t\tAscendingNode\t44\n\t\tMeridianAngle\t180  # approximate\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "101955 Bennu",
+      "aliases": [
+        "101955 Bennu",
+        "Bennu",
+        "1999 RQ36"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # special solution\n\t{\n\t\tEpoch\t2458455.5  # 2018 Dec 03 (OSIRIS-REx arrival)\n\t\tPeriod\t1.194708319285171\n\t\tSemiMajorAxis\t1.12590683885532\n\t\tEccentricity\t0.2037294643265029\n\t\tInclination\t6.034298802514162\n\t\tAscendingNode\t2.018428729432062\n\t\tArgOfPericenter\t66.30469211029241\n\t\tMeanAnomaly\t328.0138356636153\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tEpoch\t2458485.0  # 2019 Jan 01 12:00\n\t\tPeriod\t4.296005  # at epoch\n\t\tInclination\t150.365\n\t\tAscendingNode\t175.459\n\t\tMeridianAngle\t19.64457  # at epoch\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "152830 Dinkinesh",
+      "aliases": [
+        "152830 Dinkinesh",
+        "Dinkinesh",
+        "1999 VD57",
+        "2004 HJ78",
+        "2007 CB63"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # special solution (ID 20152830)\n\t{\n\t\tEpoch\t2460250.205446  # 2023 Nov 01 16:54:41.3 UT (Lucy encounter)\n\t\tPeriod\t3.244570891590554\n\t\tSemiMajorAxis\t2.191623979418157\n\t\tEccentricity\t0.1121271866985999\n\t\tInclination\t2.093525419125051\n\t\tAscendingNode\t21.38251489191842\n\t\tArgOfPericenter\t66.78493869410404\n\t\tMeanAnomaly\t101.0215751498539\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t3.7387\n\t\tInclination\t177.05\n\t\tAscendingNode\t185.53\n\t\tMeridianAngle 310  # approximate\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "162173 Ryugu",
+      "aliases": [
+        "162173 Ryugu",
+        "Ryugu",
+        "1999 JU3"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2458296.5  # 2018 Jun 27 (Hayabusa2 arrival)\n\t\tPeriod\t1.297450864089996\n\t\tSemiMajorAxis\t1.189565823285059\n\t\tEccentricity\t0.1902806796171645\n\t\tInclination\t5.884020404884225\n\t\tAscendingNode\t251.5891716646982\n\t\tArgOfPericenter\t211.4360584980608\n\t\tMeanAnomaly\t18.89661040321024\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # PCK ryugu_v10.tpc\n\t{\n\t\tPeriod\t7.63262478738\n\t\tInclination\t156.38741\n\t\tAscendingNode\t186.43112\n\t\tMeridianAngle\t274.16225\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "469219 Kamo'oalewa",
+      "aliases": [
+        "469219 Kamo'oalewa",
+        "Kamo'oalewa",
+        "2016 HO3"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2461225.5  # 2026 Jul 04 (Tianwen-2 arrival)\n\t\tPeriod\t1.0000174  # Earth's mean period from Horizons\n\t\tSemiMajorAxis\t1.000852143334589\n\t\tEccentricity\t0.1022278506717837\n\t\tInclination\t7.802369832033272\n\t\tAscendingNode\t65.59292048267373\n\t\tArgOfPericenter\t304.3405001333282\n\t\tMeanAnomaly\t268.0202400918531\n\t}",
+        "BodyFrame": "BodyFrame\n\t{\n\t\t# Angular momentum vector points towards \u03bb = 225\u00b0, \u03b2 = -43\u00b0\n\t\tTwoVector\n\t\t{\n\t\t\tPrimary\n\t\t\t{\n\t\t\t\tAxis\t\"x\"\n\t\t\t\tConstantVector\t{ Vector [ 0.482 0.482 -0.731 ] Frame { EclipticJ2000 {} } }\n\t\t\t}\n\t\t\tSecondary\n\t\t\t{\n\t\t\t\tAxis\t\"z\"\n\t\t\t\tConstantVector\t{ Vector [ -0.517 -0.517 -0.682 ] Frame { EclipticJ2000 {} } }\n\t\t\t}\n\t\t}\n\t}",
+        "PrecessingRotation": "PrecessingRotation\n\t{\n\t\tEpoch\t2461150.8\n\t\tPeriod<min>\t49.66\n\t\tInclination\t66  # mean\n\t\tAscendingNode\t8\n\t\tMeridianAngle\t82\n\t\tPrecessionPeriod<min>\t-27.90  # rotation and precession have the same direction for LAM\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "1620 Geographos",
+      "aliases": [
+        "1620 Geographos",
+        "Geographos",
+        "1951 RA",
+        "1983 CY3"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2449589.5  # 1994 Aug 25\n\t\tPeriod\t1.389829007000085\n\t\tSemiMajorAxis\t1.245380647823397\n\t\tEccentricity\t0.3356987384528171\n\t\tInclination\t13.3381548131213\n\t\tAscendingNode\t337.3726393602307\n\t\tArgOfPericenter\t276.6737669762798\n\t\tMeanAnomaly\t41.96421450274698\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t5.2233360\n\t\tInclination\t141.2\n\t\tAscendingNode\t146.7\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "2063 Bacchus",
+      "aliases": [
+        "2063 Bacchus",
+        "Bacchus",
+        "1977 HB"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2450173.5  # 1996 Mar 31\n\t\tPeriod\t1.119388192756165\n\t\tSemiMajorAxis\t1.078073439055428\n\t\tEccentricity\t0.3497083234789753\n\t\tInclination\t9.429152863317489\n\t\tAscendingNode\t33.27410274045599\n\t\tArgOfPericenter\t55.12694074821335\n\t\tMeanAnomaly\t61.22614295070247\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t14.904\n\t\tInclination\t116\n\t\tAscendingNode\t114\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "4769 Castalia",
+      "aliases": [
+        "4769 Castalia",
+        "Castalia",
+        "1989 PB"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2447763.5  # 1989 Aug 25\n\t\tPeriod\t1.096970002690643\n\t\tSemiMajorAxis\t1.063631113640056\n\t\tEccentricity\t0.483378947369016\n\t\tInclination\t8.905669257591137\n\t\tAscendingNode\t325.836394669335\n\t\tArgOfPericenter\t121.1062224169844\n\t\tMeanAnomaly\t303.1484546966428\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t4.089\n\t\tInclination\t146\n\t\tAscendingNode\t343\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "6489 Golevka",
+      "aliases": [
+        "6489 Golevka",
+        "Golevka",
+        "1991 JX"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # special solution\n\t{\n\t\tEpoch\t2451331.5  # 1999 Jun 02\n\t\tPeriod\t3.995005034616632\n\t\tSemiMajorAxis\t2.517712208378444\n\t\tEccentricity\t0.5980884060228665\n\t\tInclination\t2.292827818188318\n\t\tAscendingNode\t212.4089957518962\n\t\tArgOfPericenter\t65.01286636336501\n\t\tMeanAnomaly\t354.8522458378336\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t6.0289\n\t\tInclination\t135\n\t\tAscendingNode\t292\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "66391 Moshup",
+      "aliases": [
+        "66391 Moshup",
+        "Moshup",
+        "1999 KW4"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2452054.5  # 2001 May 25\n\t\tPeriod\t0.5147181433037254\n\t\tSemiMajorAxis\t0.6422550332821519\n\t\tEccentricity\t0.6884855237534168\n\t\tInclination\t38.90665345475585\n\t\tAscendingNode\t244.9429654329871\n\t\tArgOfPericenter\t192.5915636575895\n\t\tMeanAnomaly\t133.9872599035312\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tEpoch\t2452055.016958  # 2001 May 25 12:23:21\n\t\tPeriod\t2.7645\n\t\tInclination\t155\n\t\tAscendingNode\t56\n\t\tMeridianAngle\t216  # x-axis on the plane of sky at epoch\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "(153591) 2001 SN263",
+      "aliases": [
+        "(153591) 2001 SN263",
+        "2001 SN263"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2454516.5  # 2008 Feb 20\n\t\tPeriod\t2.800865601119042\n\t\tSemiMajorAxis\t1.986961162340068\n\t\tEccentricity\t0.4781158989286026\n\t\tInclination\t6.688986823219282\n\t\tAscendingNode\t325.9155246760698\n\t\tArgOfPericenter\t172.476149906999\n\t\tMeanAnomaly\t3.140599599455283\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t3.4256\n\t\tInclination\t170\n\t\tAscendingNode\t39\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "1998 KY26",
+      "aliases": [
+        "1998 KY26"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460462.5  # 2024 Jun 01\n\t\tPeriod\t1.367230440292655\n\t\tSemiMajorAxis\t1.231843901681903\n\t\tEccentricity\t0.2017508043349842\n\t\tInclination\t1.488664134463548\n\t\tAscendingNode\t84.24110682307111\n\t\tArgOfPericenter\t209.7556568309453\n\t\tMeanAnomaly\t331.9806886194114\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod<min>\t5.3516\n\t\tInclination\t134\n\t\tAscendingNode\t126\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "1252 Celestia",
+      "aliases": [
+        "1252 Celestia",
+        "Celestia",
+        "1933 DG",
+        "1934 PA1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460200.5  # 2023 Sept 13\n\t\tPeriod\t4.425204448094248\n\t\tSemiMajorAxis\t2.695359873717218\n\t\tEccentricity\t0.2063036018297214\n\t\tInclination\t33.82979408884524\n\t\tAscendingNode\t140.8897489493486\n\t\tArgOfPericenter\t63.54846434912628\n\t\tMeanAnomaly\t133.6317661275864\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t10.639\n\t\tInclination\t26.48\n\t\tAscendingNode\t313.33\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "Patroclus-Menoetius",
+      "aliases": [
+        "Patroclus-Menoetius"
+      ],
+      "parent": "Sol",
+      "item_type": "ReferencePoint",
+      "classification": null,
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # system barycenter solution\n\t{\n\t\tEpoch\t2463660.225801  # 2033 Mar 03 17:24 UT (Lucy encounter)\n\t\tPeriod\t11.861982204  # Jupiter's mean period from Horizons\n\t\tSemiMajorAxis\t5.203228743646149\n\t\tEccentricity\t0.1386927768261267\n\t\tInclination\t22.06844257385398\n\t\tAscendingNode\t44.3392040756123\n\t\tArgOfPericenter\t308.3657828220281\n\t\tMeanAnomaly\t263.6579417545673\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "617 Patroclus",
+      "aliases": [
+        "617 Patroclus",
+        "Patroclus",
+        "1906 VY",
+        "1941 XC",
+        "1962 NB"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEquatorJ2000\t{ Center \"Sol/Patroclus-Menoetius\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2453427.5  # 2005 Feb 26\n\t\tPeriod\t4.282753\n\t\tSemiMajorAxis\t303.7  # separation = 692.5 km, mass ratio approximate\n\t\tEccentricity\t0.004\n\t\tInclination\t164.1\n\t\tAscendingNode\t268.0\n\t\tArgOfPericenter\t89.1  # from state vectors\n\t\tMeanAnomaly\t181.7     # from state vectors\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # to match orbit\n\t{\n    Period 102.786072\n\t\tEpoch\t2453427.5  # 2005 Feb 26\n\t\tInclination\t164.1\n\t\tAscendingNode\t268.0\n\t\tMeridianAngle\t90.8\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "3548 Eurybates",
+      "aliases": [
+        "3548 Eurybates",
+        "Eurybates",
+        "1973 SO",
+        "1954 CB",
+        "1957 JX",
+        "1978 EE5",
+        "1985 TZ"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # special solution (ID 920003548)\n\t{\n\t\tEpoch\t2461629.345245  # 2027 Aug 11 20:16 UT (Lucy encounter)\n\t\tPeriod\t11.861982204  # Jupiter's mean period from Horizons\n\t\tSemiMajorAxis\t5.220172776342067\n\t\tEccentricity\t0.08996513167619305\n\t\tInclination\t8.049062363711673\n\t\tAscendingNode\t43.55939463204749\n\t\tArgOfPericenter\t28.76118246169308\n\t\tMeanAnomaly\t161.1711737864129\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t8.7027283\n\t\tInclination\t157\n\t\tAscendingNode\t97\n\t\tMeridianAngle\t229.156\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "11351 Leucus",
+      "aliases": [
+        "11351 Leucus",
+        "Leucus",
+        "1997 TS25",
+        "1996 VP39"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # special solution (ID 20011351)\n\t{\n\t\tEpoch\t2461880.314690  # 2028 Apr 18 19:32 UT (Lucy encounter)\n\t\tPeriod\t11.861982204  # Jupiter's mean period from Horizons\n\t\tSemiMajorAxis\t5.315877037962474\n\t\tEccentricity\t0.06417427623115948\n\t\tInclination\t11.53980206012952\n\t\tAscendingNode\t251.0897492031716\n\t\tArgOfPericenter\t162.0489891238311\n\t\tMeanAnomaly\t194.2816839734231\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t445.683\n\t\tInclination\t32\n\t\tAscendingNode\t338\n\t\tMeridianAngle\t60.014\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "15094 Polymele",
+      "aliases": [
+        "15094 Polymele",
+        "Polymele",
+        "1999 WB2",
+        "1997 WR57"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # special solution (ID 920015094)\n\t{\n\t\tEpoch\t2461663.638995  # 2027 Sept 15 03:19 UT (Lucy encounter)\n\t\tPeriod\t11.861982204  # Jupiter's mean period from Horizons\n\t\tSemiMajorAxis\t5.19449307450493\n\t\tEccentricity\t0.09524548451836148\n\t\tInclination\t12.9731299847972\n\t\tAscendingNode\t50.33387278001979\n\t\tArgOfPericenter\t5.795272480894892\n\t\tMeanAnomaly\t182.0986826593164\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t5.762  # Alarcon et al., 2026RNAAS..10..143A\n\t\tInclination\t170.9\n\t\tAscendingNode\t321.8\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "21900 Orus",
+      "aliases": [
+        "21900 Orus",
+        "Orus",
+        "1999 VQ10",
+        "1998 VD18"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit  # special solution (ID 20021900)\n\t{\n\t\tEpoch\t2462087.368162  # 2028 Nov 11 20:49 UT (Lucy encounter)\n\t\tPeriod\t11.861982204  # Jupiter's mean period from Horizons\n\t\tSemiMajorAxis\t5.123402434934738\n\t\tEccentricity\t0.03603636536437799\n\t\tInclination\t8.468655186041673\n\t\tAscendingNode\t258.5489254511374\n\t\tArgOfPericenter\t181.7509255304257\n\t\tMeanAnomaly\t173.4557707949972\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t13.486190\n\t\tInclination\t132\n\t\tAscendingNode\t144\n\t\tMeridianAngle\t17.413\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/asteroids.ssc",
+      "source_sha256": "b6be35c9bb605623047c90ee072d0a6f9e603faa9eedf9620fab4c57810f4b7d",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2005, 2007-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2006-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2024-2026 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2025 domi9",
+        "# SPDX-FileCopyrightText: 2025-2026 SpaceExplorer"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "1P Halley",
+      "aliases": [
+        "1P Halley",
+        "Halley",
+        "P 1682 Q1",
+        "P 1758 Y1",
+        "P 1835 P1",
+        "P 1909 R1",
+        "P 1982 U1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        2446490.500000\t# 1986-03-01, 00:00\n\t\tPeriod            76.045514385599119578\n\t\tSemiMajorAxis     17.94094685179662\n\t\tEccentricity       0.9672757898726535\n\t\tInclination      162.2421962391025\n\t\tAscendingNode     58.86005589158905\n\t\tArgOfPericenter  111.8655597748925\n\t\tMeanAnomaly        0.2534454506522262\n\t}",
+        "PrecessingRotation": "PrecessingRotation\n\t{\n\t\tPeriod\t\t\t170.00\t# P = 7.1 days\n\t\tPrecessionPeriod\t  0.01\t# W = 3.7 days\n\t\tInclination\t\t 66.00\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "2P Encke",
+      "aliases": [
+        "2P Encke",
+        "Encke",
+        "P 1786 B1",
+        "P 1795 V1",
+        "P 1805 U1",
+        "P 1818 W1",
+        "P 1822 L1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        \t2459778.500000\t# 2022-Jul-18, 00:00\n\t\tPeriod                3.306929418200257\n\t\tSemiMajorAxis\t      2.219615840608303\n\t\tEccentricity\t      0.8482725906683406\n\t\tInclination\t         11.47161933834569\n\t\tAscendingNode\t    334.2766853943025\n\t\tArgOfPericenter\t    187.0513231009979\n\t\tMeanAnomaly\t        222.6741878267107\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "17P Holmes",
+      "aliases": [
+        "17P Holmes",
+        "Holmes",
+        "P 1892 V1",
+        "P 1899 L1",
+        "P 1964 O1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        \t2457680.500000\t# 2016-Oct-19, 00:00\n\t\tPeriod                6.905135023562981\n\t\tSemiMajorAxis\t      3.62612397801147\n\t\tEccentricity\t      0.4301548244810638\n\t\tInclination\t         19.07035853006311\n\t\tAscendingNode\t    326.7738104542646\n\t\tArgOfPericenter\t     24.7385060050165\n\t\tMeanAnomaly\t        133.7855814366874\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "19P Borrelly",
+      "aliases": [
+        "19P Borrelly",
+        "Borrelly",
+        "P 1904 Y2",
+        "P 1911 S1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        \t2459279.500000\t# 2021-Mar-06, 00:00\n\t\tPeriod                6.850480548747891\n\t\tSemiMajorAxis\t      3.606964684326838\n\t\tEccentricity\t      0.6379142835777641\n\t\tInclination\t         29.3186623395529\n\t\tAscendingNode\t     74.30084258786506\n\t\tArgOfPericenter\t    351.8616063839783\n\t\tMeanAnomaly\t        312.1229200779977\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod         25\n\t\tInclination    90 \n\t\tAscendingNode 315 \n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "21P Giacobini-Zinner",
+      "aliases": [
+        "21P Giacobini-Zinner",
+        "Giacobini-Zinner",
+        "P 1900 Y1",
+        "P 1913 U1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        \t2458070.500000\t# 2017-Nov-13, 00:00\n\t\tPeriod                6.548873995488635\n\t\tSemiMajorAxis\t      3.500302848567133\n\t\tEccentricity\t      0.7104704806622166\n\t\tInclination\t         32.00259232473731\n\t\tAscendingNode\t    195.4044801966872\n\t\tArgOfPericenter\t    172.8124824274917\n\t\tMeanAnomaly\t        314.6585273385641\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "26P Grigg-Skjellerup",
+      "aliases": [
+        "26P Grigg-Skjellerup",
+        "Grigg-Skjellerup",
+        "P 1808 C1",
+        "P 1902 O1",
+        "P 1922 K1",
+        "P 1927 F1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        \t2456017.500000\t# 2012-Mar-31, 00:00\n\t\tPeriod                5.259315586392263\n\t\tSemiMajorAxis\t      3.024224445052753\n\t\tEccentricity\t      0.6396679618697105\n\t\tInclination\t         22.45511403015216\n\t\tAscendingNode\t    211.633966473815\n\t\tArgOfPericenter\t      1.896085645552865\n\t\tMeanAnomaly\t        273.4178382900974\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "29P Schwassmann-Wachmann",
+      "aliases": [
+        "29P Schwassmann-Wachmann",
+        "Schwassmann-Wachmann 1",
+        "P 1902 E1",
+        "P 1927 V1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        \t2457631.500000\t# 2016-Aug-31, 00:00\n\t\tPeriod               14.75425242735976\n\t\tSemiMajorAxis\t      6.015513024557499\n\t\tEccentricity\t      0.04166604640078779\n\t\tInclination\t          9.37634487689952\n\t\tAscendingNode\t    312.4090392955372\n\t\tArgOfPericenter\t     48.90792343360503\n\t\tMeanAnomaly\t        297.5561060173936\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "46P Wirtanen",
+      "aliases": [
+        "46P Wirtanen",
+        "Wirtanen",
+        "P 1948 A1",
+        "P 1954 R2"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        \t2458465.500000\t# 2018-Dec-13, 00:00\n\t\tPeriod                5.438847265757708\n\t\tSemiMajorAxis\t      3.092661874753647\n\t\tEccentricity\t      0.6587550054889648\n\t\tInclination\t         11.7475487582537\n\t\tAscendingNode\t     82.15763392494087\n\t\tArgOfPericenter\t    356.341071857073\n\t\tMeanAnomaly\t          0.01247351001231614\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "55P Tempel-Tuttle",
+      "aliases": [
+        "55P Tempel-Tuttle",
+        "Tempel-Tuttle",
+        "P 1366 E1",
+        "P 1699 U1",
+        "P 1865 Y1",
+        "P 1965 M2",
+        "P 1997 E1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2451040.500000\t# 1998-Aug-15, 00:00\n\t\tPeriod\t\t         33.24178275837982\n\t\tSemiMajorAxis\t     10.3383382297577\n\t\tEccentricity\t      0.905552720972412\n\t\tInclination\t        162.486575379434\n\t\tAscendingNode\t    235.270989149082\n\t\tArgOfPericenter\t    172.5002736828059\n\t\tMeanAnomaly\t          4.97833968468816\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t\t\t 15.31\n\t\tInclination\t\t162\n\t\tAscendingNode\t235\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "67P Churyumov-Gerasimenko",
+      "aliases": [
+        "67P Churyumov-Gerasimenko",
+        "Churyumov-Gerasimenko",
+        "P 1969 R1",
+        "P 1975 P1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\t# special solution (ID 1000012)\n\t{\n\t\tEpoch\t\t\t2456875.5\t# 2014-Aug-06 (Rosetta arrival)\n\t\tPeriod\t\t\t      6.444636522141629\n\t\tSemiMajorAxis\t      3.463061072582565\n\t\tEccentricity\t      0.6410215736667755\n\t\tInclination\t\t      7.040641689791556\n\t\tAscendingNode\t     50.14709747094515\n\t\tArgOfPericenter\t     12.77976848642103\n\t\tMeanAnomaly\t\t    303.0992165235814\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t\t\t 12.4041\n\t\tInclination\t\t 25.89\n\t\tAscendingNode\t159.54\n\t\tMeridianAngle\t114.69\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "96P Machholz",
+      "aliases": [
+        "96P Machholz",
+        "Machholz 1",
+        "P 1986 J2"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2457952.500000\t# 2017-Jul-18, 00:00\n\t\tPeriod\t\t\t      5.287538902681542\n\t\tSemiMajorAxis\t      3.03503415132119\n\t\tEccentricity\t      0.9591604569014903\n\t\tInclination\t         58.1379341982923\n\t\tAscendingNode\t     94.25475500848404\n\t\tArgOfPericenter\t     14.79291874358058\n\t\tMeanAnomaly\t        340.9939227088265\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t\t\t  4.096\n\t\tInclination\t\t 82\n\t\tAscendingNode\t189\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "109P Swift-Tuttle",
+      "aliases": [
+        "109P Swift-Tuttle",
+        "Swift-Tuttle",
+        "P 1737 N1",
+        "P 1862 O1",
+        "P 1992 S2"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        \t2450000.500000\t# 1995-Oct-10, 00:00\n\t\tPeriod              133.2818438401728\n\t\tSemiMajorAxis\t     26.0920694978266\n\t\tEccentricity\t      0.963225755046038\n\t\tInclination\t        113.453816997171\n\t\tAscendingNode\t    139.3811920815948\n\t\tArgOfPericenter\t    152.9821676305871\n\t\tMeanAnomaly\t          7.631696167124212\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "167P CINEOS",
+      "aliases": [
+        "167P CINEOS",
+        "CINEOS",
+        "P 2004 PY42"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        \t2453096.500000\t# 2004-Apr-01, 00:00\n\t\tPeriod               64.85546743889809\n\t\tSemiMajorAxis\t     16.14205890169403\n\t\tEccentricity\t      0.2700193033402064\n\t\tInclination\t         19.12660376408597\n\t\tAscendingNode\t    295.837027398652\n\t\tArgOfPericenter\t    343.6457775778229\n\t\tMeanAnomaly\t         16.52184361854798\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "153P Ikeya-Zhang",
+      "aliases": [
+        "153P Ikeya-Zhang",
+        "Ikeya-Zhang",
+        "C 2002 C1",
+        "C 1661 C1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2452402.500000\t# 2002-May-08, 00:00\n\t\tPeriod\t\t        365.4986961715122\n\t\tSemiMajorAxis\t     51.1193221677278\n\t\tEccentricity\t      0.9900806570176691\n\t\tInclination\t         28.1209574068563\n\t\tAscendingNode\t     93.36945661875394\n\t\tArgOfPericenter\t     34.66817865742473\n\t\tMeanAnomaly\t          0.134886581151805\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t\t\t 35.52\t\t\t# P = 1.48 days\n\t\tInclination\t\t 70\n\t\tAscendingNode\t322\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "C 1983 H1 (IRAS-Araki-Alcock)",
+      "aliases": [
+        "C 1983 H1 (IRAS-Araki-Alcock)",
+        "IRAS-Araki-Alcock",
+        "1983 VII",
+        "1983d"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2445467.500000\t# 1983-May-13, 00:00\n\t\tPeriod\t\t        970.6790526888775\n\t\tSemiMajorAxis\t     98.03435675076732\n\t\tEccentricity\t      0.9898878208777039\n\t\tInclination\t         73.25137867780242\n\t\tAscendingNode\t     49.10245750540501\n\t\tArgOfPericenter\t    192.8506889407098\n\t\tMeanAnomaly\t\t    359.9916183638424\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "C 1956 R1 (Arend-Roland)",
+      "aliases": [
+        "C 1956 R1 (Arend-Roland)",
+        "Arend-Roland",
+        "1956 III",
+        "1957h",
+        "Great Comet of 1957"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\tEclipticJ2000\t{ Center \"SSB\" }\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2436028.500000\t# 1957-Jul-09, 00:00\n\t\tPeriod\t\t\t  22559.617575934633351\n\t\tSemiMajorAxis\t    798.3835281410535\n\t\tEccentricity\t      0.99996125289969054\n\t\tInclination\t\t    119.9247650472963\n\t\tAscendingNode\t    216.0308728148151\n\t\tArgOfPericenter\t    308.5531356190100\n\t\tMeanAnomaly\t\t      0.004002187679796569\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "C 1973 E1 (Kohoutek)",
+      "aliases": [
+        "C 1973 E1 (Kohoutek)",
+        "Kohoutek",
+        "1973 XII",
+        "1973f"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\tEclipticJ2000\t{ Center \"SSB\" }\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2634166.500000\t# 2500-Jan-01, 00:00\n\t\tPeriod\t\t\t  78401.265492968188482\n\t\tSemiMajorAxis\t   1831.776407481045\n\t\tEccentricity\t      0.9999221277468180\n\t\tInclination\t \t     14.20892450066592\n\t\tAscendingNode\t    258.3439730167626\n\t\tArgOfPericenter\t     37.95842999569324\n\t\tMeanAnomaly\t\t      2.416925624045164\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "C 1995 O1 (Hale-Bopp)",
+      "aliases": [
+        "C 1995 O1 (Hale-Bopp)",
+        "Hale-Bopp",
+        "Great Comet of 1997"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2459837.500000\t# 2022-Sept-15, 00:00\n\t\tPeriod\t\t\t   2363.530468136978\n\t\tSemiMajorAxis\t    177.4333839117583\n\t\tEccentricity\t      0.9949810027633206\n\t\tInclination\t \t     89.28759424740302\n\t\tAscendingNode\t    282.7334213961641\n\t\tArgOfPericenter\t    130.4146670659176\n\t\tMeanAnomaly\t \t      3.878386339423241\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "C 1996 B2 (Hyakutake)",
+      "aliases": [
+        "C 1996 B2 (Hyakutake)",
+        "Hyakutake",
+        "Great Comet of 1996"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2450157.500000\t# 1996-Mar-15, 00:00\n\t\tPeriod\t\t\t  97942.59992726530\n\t\tSemiMajorAxis\t   2124.755444393889\n\t\tEccentricity\t      0.9998916470450123\n\t\tInclination\t \t    124.9220493922234\n\t\tAscendingNode\t    188.045131992156\n\t\tArgOfPericenter\t    130.1751209780967\n\t\tMeanAnomaly\t \t    359.9995230582502\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "C 2006 P1 (McNaught)",
+      "aliases": [
+        "C 2006 P1 (McNaught)",
+        "McNaught",
+        "Great Comet of 2007"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\tEclipticJ2000\t{ Center \"SSB\" }\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2454108.833333333 # 2007-Jan-8, 08:00\n\t\tPeriod\t\t\t  52697.478956626247964\n\t\tSemiMajorAxis\t   1405.562964747302\n\t\tEccentricity\t      0.9998756212011907\n\t\tInclination\t\t     77.34750819822122\n\t\tAscendingNode\t    267.1068712282699\n\t\tArgOfPericenter\t    155.0607305317392\n\t\tMeanAnomaly\t\t    359.9999174144606\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "C 2013 A1 (Siding Spring)",
+      "aliases": [
+        "C 2013 A1 (Siding Spring)",
+        "Siding Spring"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\tEclipticJ2000\t{ Center \"SSB\" }\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2457480.500000\t# 2016-Apr-2, 00:00\n\t\tPeriod\t\t\t 313645.24322106631007\n\t\tSemiMajorAxis\t   4616.181571612909\n\t\tEccentricity\t      0.9996968331654886\n\t\tInclination\t\t    128.9948715864994\n\t\tAscendingNode\t    301.0009245462045\n\t\tArgOfPericenter\t      2.449604421603379\n\t\tMeanAnomaly\t\t      0.001648915313056205\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "C 2014 UN271 (Bernardinelli-Bernstein)",
+      "aliases": [
+        "C 2014 UN271 (Bernardinelli-Bernstein)",
+        "Bernardinelli-Bernstein"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2458750.500000\t# 2019-Sept-24, 00:00\n\t\tPeriod\t\t\t 300803.0639949109\n\t\tSemiMajorAxis\t   4489.342112465647\n\t\tEccentricity\t      0.9975649080914114\n\t\tInclination\t\t     95.50034193311355\n\t\tAscendingNode\t    190.0157567404514\n\t\tArgOfPericenter\t    326.4246675873162\n\t\tMeanAnomaly\t\t    359.9864173004243\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "C 2020 F3 (NEOWISE)",
+      "aliases": [
+        "C 2020 F3 (NEOWISE)",
+        "NEOWISE",
+        "Great Comet of 2020"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2459036.500000\t# 2020-Jul-06, 00:00\n\t\tPeriod\t\t\t   6787.091630382272\n\t\tSemiMajorAxis\t    358.4679565529321\n\t\tEccentricity\t      0.9991780262531292\n\t\tInclination\t\t    128.9375027594809\n\t\tAscendingNode\t     61.01042818536988\n\t\tArgOfPericenter\t     37.2786584481257\n\t\tMeanAnomaly\t\t      0.0003370720801246702\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "C 2023 A3 (Tsuchinshan-ATLAS)",
+      "aliases": [
+        "C 2023 A3 (Tsuchinshan-ATLAS)",
+        "Tsuchinshan-ATLAS",
+        "Great Comet of 2024"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\tEclipticJ2000\t{ Center \"SSB\" }\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t\t\t2460570.625000\t# 2024-Sept-17, 03:00\n\t\tPeriod\t\t\t  93847.454727929158253\n\t\tSemiMajorAxis\t   2065.08886494021\n\t\tEccentricity\t      0.9998133246305106\n\t\tInclination\t\t    138.9767058917233\n\t\tAscendingNode\t     21.50257662712503\n\t\tArgOfPericenter\t    309.3893250633092\n\t\tMeanAnomaly\t\t    359.99998857859469\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/comets.ssc",
+      "source_sha256": "c7d6d243d9cac28cd7ba4271b15abff2f55c6d4f351c33c12a10ee4d1c0d2f6e",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004, 2008 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007, 2009 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2025-2026 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2026 Pedro J. Garcia"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "1I 'Oumuamua",
+      "aliases": [
+        "1I 'Oumuamua",
+        "'Oumuamua",
+        "A 2017 U1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        2458080.500000\t# 2017-11-23, 00:00:00\n\t\tPeriod             1.4351831770734\n\t\tSemiMajorAxis     -1.27234500742808\n\t\tEccentricity       1.201133796102373\n\t\tInclination      122.7417062847286\n\t\tAscendingNode     24.59690955523242\n\t\tArgOfPericenter  241.8105360304898\n\t\tMeanAnomaly       51.1576197938249\n\t}",
+        "PrecessingRotation": "PrecessingRotation\n\t{\n\t\tPeriod\t\t\t\t 7.937\n\t\tInclination\t\t\t85\n\t\tPrecessionPeriod\t 0.001\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/interstellar.ssc",
+      "source_sha256": "4f2c1aba0bdcdd53a343c45e4e95fe98ac87590195198e1f751327fa4254a9cd",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "2I Borisov",
+      "aliases": [
+        "2I Borisov",
+        "C 2019 Q4 (Borisov)",
+        "Borisov"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        2458853.500000\t# 2020-01-05, 00:00:00\n\t\tPeriod             0.7857258713194\n\t\tSemiMajorAxis     -0.8514922551937886\t\n\t\tEccentricity       3.356475782676596\n\t\tInclination       44.05264247909138\n\t\tAscendingNode    308.1477292269942\n\t\tArgOfPericenter  209.1236864378081\n\t\tMeanAnomaly       34.4294703072178\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t\t\t 10\n\t\tInclination\t\t 43.4098752589067\n\t\tAscendingNode\t307.5267199953905\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/interstellar.ssc",
+      "source_sha256": "4f2c1aba0bdcdd53a343c45e4e95fe98ac87590195198e1f751327fa4254a9cd",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "3I ATLAS",
+      "aliases": [
+        "3I ATLAS",
+        "C 2025 N1 (ATLAS)"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "comet",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch        2460857.500000\t# 2025-07-01, 00:00:00\n\t\tPeriod             0.1325467009628\n\t\tSemiMajorAxis     -0.2599636435166625\t\n\t\tEccentricity       6.297880223569178\n\t\tInclination      175.1184534160558\n\t\tAscendingNode    322.3053240978721\n\t\tArgOfPericenter  127.7776677558638\n\t\tMeanAnomaly     -893.5472819943519\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/interstellar.ssc",
+      "source_sha256": "4f2c1aba0bdcdd53a343c45e4e95fe98ac87590195198e1f751327fa4254a9cd",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001"
+      ],
+      "license": "GPL-2.0-or-later"
+    },
+    {
+      "name": "2060 Chiron",
+      "aliases": [
+        "2060 Chiron",
+        "Chiron",
+        "1977 UB",
+        "95P Chiron",
+        "P 1977 UB"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t50.45425905538089\n\t\tSemiMajorAxis\t13.66009987215255\n\t\tEccentricity\t0.3809847389441021\n\t\tInclination\t6.933611889008302\n\t\tAscendingNode\t209.3211014108095\n\t\tArgOfPericenter\t339.4657053799355\n\t\tMeanAnomaly\t27.72209767709737\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tEpoch\t2458735.462215  # 2019 Sept 08 23:04:26.20 UT\n\t\tPeriod\t5.917813\n\t\tInclination\t70.1\n\t\tAscendingNode\t241.3\n\t\tMeridianAngle\t294  # derived from Fig. 6 of Braga-Ribas et al. (2023)\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "10199 Chariklo",
+      "aliases": [
+        "10199 Chariklo",
+        "Chariklo",
+        "1997 CU26"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t62.60222264682847\n\t\tSemiMajorAxis\t15.77303091834199\n\t\tEccentricity\t0.1712934452932046\n\t\tInclination\t23.38664758325967\n\t\tAscendingNode\t300.4764696883996\n\t\tArgOfPericenter\t241.8770167366896\n\t\tMeanAnomaly\t337.0949942257109\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # C1R pole\n\t{\n\t\tEpoch\t2456446.7681  # 2013 Jun 03 06:25 UT\n\t\tPeriod\t7.01485  # Table 2 (1 \u03c3)\n\t\tInclination\t48.19\n\t\tAscendingNode\t241.03\n\t\tMeridianAngle\t33  # Table 2 (1 \u03c3)\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "15760 Albion",
+      "aliases": [
+        "15760 Albion",
+        "Albion",
+        "1992 QB1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t291.0133240775001\n\t\tSemiMajorAxis\t43.93364487390396\n\t\tEccentricity\t0.06939988798523856\n\t\tInclination\t2.185544508933063\n\t\tAscendingNode\t359.4135924870519\n\t\tArgOfPericenter\t2.838988939116845\n\t\tMeanAnomaly\t6.941076079597941\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t9  # no measurement\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "19521 Chaos",
+      "aliases": [
+        "19521 Chaos",
+        "Chaos",
+        "1998 WH24"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t309.0518938587759\n\t\tSemiMajorAxis\t45.73088354664556\n\t\tEccentricity\t0.1034410662936516\n\t\tInclination\t12.03564074392886\n\t\tAscendingNode\t49.98111994034111\n\t\tArgOfPericenter\t57.43184126093715\n\t\tMeanAnomaly\t319.3583697039084\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t8  # no measurement\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "20000 Varuna",
+      "aliases": [
+        "20000 Varuna",
+        "Varuna",
+        "2000 WR106"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t281.2725427717175\n\t\tSemiMajorAxis\t42.9477298171352\n\t\tEccentricity\t0.05393351779842136\n\t\tInclination\t17.17509329526719\n\t\tAscendingNode\t97.29851993854105\n\t\tArgOfPericenter\t267.2960252642638\n\t\tMeanAnomaly\t87.93488792117752\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t6.343572\n\t\tInclination\t154\n\t\tAscendingNode\t143\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "28978 Ixion",
+      "aliases": [
+        "28978 Ixion",
+        "Ixion",
+        "2001 KX76"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t248.0665229578189\n\t\tSemiMajorAxis\t39.49730154743512\n\t\tEccentricity\t0.2440535039152455\n\t\tInclination\t19.63023605259484\n\t\tAscendingNode\t71.03057889459807\n\t\tArgOfPericenter\t299.8597254480305\n\t\tMeanAnomaly\t257.4104890036214\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # average of three occultations\n\t{\n\t\tPeriod\t12.4\n\t\tInclination\t36  # assume equator-on orientation\n\t\tAscendingNode\t38  # position angle = 110.97\u00b0 +7.00\u00b0 -6.54\u00b0\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "Huya System",
+      "aliases": [
+        "Huya System"
+      ],
+      "parent": "Sol",
+      "item_type": "ReferencePoint",
+      "classification": null,
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t247.3272733571896\n\t\tSemiMajorAxis\t39.41879334362831\n\t\tEccentricity\t0.2761746871389861\n\t\tInclination\t15.47415843241552\n\t\tAscendingNode\t169.3273223857787\n\t\tArgOfPericenter\t67.86120288860887\n\t\tMeanAnomaly\t338.0052530662332\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "38628 Huya",
+      "aliases": [
+        "38628 Huya",
+        "Huya",
+        "2000 EB173"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Huya System\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2452400.0  # 2002 May 05 12:00 UT\n\t\tPeriod\t3.46293\n\t\tSemiMajorAxis\t226  # separation = 1898 km, assumed mass ratio = 1:7.38\n\t\tEccentricity\t0.036\n\t\tInclination\t65.8\n\t\tArgOfPericenter\t281\n\t\tAscendingNode\t122.9\n\t\tMeanAnomaly\t147\n\t}",
+        "UniformRotation": "UniformRotation  # to match orbit plane\n\t{\n\t\tPeriod\t6.725\n\t\tInclination\t65.8\n\t\tAscendingNode\t122.9\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "Lempo System",
+      "aliases": [
+        "Lempo System"
+      ],
+      "parent": "Sol",
+      "item_type": "ReferencePoint",
+      "classification": null,
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t247.2776976692937\n\t\tSemiMajorAxis\t39.41352561594384\n\t\tEccentricity\t0.2246836617176972\n\t\tInclination\t8.414658247621224\n\t\tAscendingNode\t97.11525422843135\n\t\tArgOfPericenter\t294.9759913302493\n\t\tMeanAnomaly\t337.6716728454998\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "Lempo-Hiisi",
+      "aliases": [
+        "Lempo-Hiisi"
+      ],
+      "parent": "Sol",
+      "item_type": "ReferencePoint",
+      "classification": null,
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Lempo System\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2453880.0  # 2006 May 24 12:00 UT\n\t\tPeriod\t50.302  # Benecchi et al. (2010)\n\t\tSemiMajorAxis\t138  # separation = 7606 km\n\t\tEccentricity\t0.2903\n\t\tInclination\t59.652\n\t\tArgOfPericenter\t178.30\n\t\tAscendingNode\t324.47\n\t\tMeanAnomaly\t190.90\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "47171 Lempo",
+      "aliases": [
+        "47171 Lempo",
+        "Lempo",
+        "1999 TC36",
+        "1999 TC36 A1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Lempo-Hiisi\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2453880.0  # 2006 May 24 12:00 UT\n\t\tPeriod\t1.9068  # Benecchi et al. (2010)\n\t\tSemiMajorAxis\t479  # separation = 838 km\n\t\tEccentricity\t0.1230\n\t\tInclination\t67.966\n\t\tArgOfPericenter\t264.6\n\t\tAscendingNode\t324.11\n\t\tMeanAnomaly\t167.4\n\t}",
+        "BodyFrame": "BodyFrame\t{ EclipticJ2000 {} }",
+        "UniformRotation": "UniformRotation  # to match orbit\n\t{\n    Period 45.7632\n\t\tEpoch\t2453880.0  # 2006 May 24 12:00 UT\n\t\tInclination\t67.966\n\t\tAscendingNode\t324.11\n\t\tMeridianAngle\t252.0\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "55565 Aya",
+      "aliases": [
+        "55565 Aya",
+        "Aya",
+        "2002 AW197"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t324.0185930364025\n\t\tSemiMajorAxis\t47.19564662137787\n\t\tEccentricity\t0.1288912802906013\n\t\tInclination\t24.38280084723755\n\t\tAscendingNode\t297.480986917323\n\t\tArgOfPericenter\t295.9274588876453\n\t\tMeanAnomaly\t273.2798227146114\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t8.78  # Thirouin et al. (2010), 2010A&A...522A..93T\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "55637 Uni",
+      "aliases": [
+        "55637 Uni",
+        "Uni",
+        "2002 UX25"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t278.5364670688723\n\t\tSemiMajorAxis\t42.66876058381893\n\t\tEccentricity\t0.1420774556810967\n\t\tInclination\t19.43344830180177\n\t\tAscendingNode\t204.6284732002555\n\t\tArgOfPericenter\t277.4576065451801\n\t\tMeanAnomaly\t274.4156281448926\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # assume alignment with moon orbit\n\t{\n\t\tPeriod\t6.55\n\t\tInclination\t63.1\n\t\tAscendingNode\t206.1\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "78799 Xewioso",
+      "aliases": [
+        "78799 Xewioso",
+        "Xewioso",
+        "2002 XW93"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t229.464013820547\n\t\tSemiMajorAxis\t37.49716007668098\n\t\tEccentricity\t0.2491034342023438\n\t\tInclination\t14.35647543904455\n\t\tAscendingNode\t46.82981521306245\n\t\tArgOfPericenter\t247.7536198760996\n\t\tMeanAnomaly\t114.5761918222783\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t8  # no measurement\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "90568 Goibniu",
+      "aliases": [
+        "90568 Goibniu",
+        "Goibniu",
+        "2004 GV9"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t271.4931715101741\n\t\tSemiMajorAxis\t41.94639028123139\n\t\tEccentricity\t0.07668165178025158\n\t\tInclination\t21.9825899162048\n\t\tAscendingNode\t250.6059313870576\n\t\tArgOfPericenter\t292.1156151262193\n\t\tMeanAnomaly\t14.65304126542339\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t5.86  # Dotto et al. (2008), 2008A&A...490..829D\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "Salacia-Actaea",
+      "aliases": [
+        "Salacia-Actaea"
+      ],
+      "parent": "Sol",
+      "item_type": "ReferencePoint",
+      "classification": null,
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit  # system barycenter solution\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t274.4920168217917\n\t\tSemiMajorAxis\t42.23582780996638\n\t\tEccentricity\t0.1027427617664265\n\t\tInclination\t23.94645482121152\n\t\tAscendingNode\t280.1822290328951\n\t\tArgOfPericenter\t312.0541009625456\n\t\tMeanAnomaly\t96.75909381213326\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "120347 Salacia",
+      "aliases": [
+        "120347 Salacia",
+        "Salacia",
+        "2004 SB60"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Salacia-Actaea\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2454300.0  # 2007 Jul 18 12:00 UT\n\t\tPeriod\t5.49389\n\t\tSemiMajorAxis\t533  # separation = 5700 km, assumed mass ratio = 0.10\n\t\tEccentricity\t0.008\n\t\tInclination\t17.2\n\t\tArgOfPericenter\t221\n\t\tAscendingNode\t108.9\n\t\tMeanAnomaly\t157\n\t}",
+        "UniformRotation": "UniformRotation  # to match orbit\n\t{\n\t\tEpoch\t2454300.0  # 2007 Jul 18 12:00 UT\n\t\t# Period\t131.8632  # measured (sidereal)\n\t\tPeriod\t131.85336\n\t\tInclination\t17.2\n\t\tAscendingNode\t108.9\n\t\tMeridianAngle\t198\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "145451 Rumina",
+      "aliases": [
+        "145451 Rumina",
+        "Rumina",
+        "2005 RM43"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t861.2576530536304\n\t\tSemiMajorAxis\t90.56159206719674\n\t\tEccentricity\t0.6123375254617228\n\t\tInclination\t28.75774328850087\n\t\tAscendingNode\t84.63622195725588\n\t\tArgOfPericenter\t318.3151636319234\n\t\tMeanAnomaly\t357.9707670366877\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t6.71  # Thirouin et al. (2010), 2010A&A...522A..93T\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "145452 Ritona",
+      "aliases": [
+        "145452 Ritona",
+        "Ritona",
+        "2005 RN43"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t267.2745728729669\n\t\tSemiMajorAxis\t41.5107342705003\n\t\tEccentricity\t0.02246247972016185\n\t\tInclination\t19.26788957335959\n\t\tAscendingNode\t187.0011005465927\n\t\tArgOfPericenter\t172.3634373305078\n\t\tMeanAnomaly\t319.1792152728446\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t6.946  # Hromakina et al. (2018), 2018MNRAS.474.2536H\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "Varda-Ilmar\u00eb",
+      "aliases": [
+        "Varda-Ilmar\u00eb"
+      ],
+      "parent": "Sol",
+      "item_type": "ReferencePoint",
+      "classification": null,
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t309.2032393685073\n\t\tSemiMajorAxis\t45.74581221342397\n\t\tEccentricity\t0.1426114200198719\n\t\tInclination\t21.51108837586643\n\t\tAscendingNode\t184.0972851643154\n\t\tArgOfPericenter\t183.2090761116666\n\t\tMeanAnomaly\t248.1810047624323\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "174567 Varda",
+      "aliases": [
+        "174567 Varda",
+        "Varda",
+        "2003 MW12"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEquatorJ2000\t{ Center \"Sol/Varda-Ilmar\u00eb\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit  # orbit 1\n\t{\n\t\tEpoch\t2455300.0  # 2010 Apr 13 12:00 UT\n\t\tPeriod\t5.75083\n\t\tSemiMajorAxis\t670  # separation = 4820 km, assumed mass ratio = 0.16\n\t\tEccentricity\t0.017\n\t\tInclination\t101.0\n\t\tMeanLongitude\t275.6\n\t\tAscendingNode\t3.0\n\t\tLongOfPericenter\t124\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t5.91\n\t\tInclination\t79  # B = -56\u00b0\n\t\tAscendingNode\t21  # position angle = 67\u00b0\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "208996 Achlys",
+      "aliases": [
+        "208996 Achlys",
+        "Achlys",
+        "2003 AZ84"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t247.7991843073797\n\t\tSemiMajorAxis\t39.46891923380872\n\t\tEccentricity\t0.1790440875629972\n\t\tInclination\t13.56505527753243\n\t\tAscendingNode\t252.0309374439046\n\t\tArgOfPericenter\t15.12394431970204\n\t\tMeanAnomaly\t204.5459197138737\n\t}",
+        "UniformRotation": "UniformRotation  # average of two occultations\n\t{\n\t\tEpoch\t2456977.2473  # 2014 Nov 15 17:55 UT\n\t\tPeriod\t6.7874  # Santos-Sanz et al. (2017), 2017A&A...604A..95S\n\t\tInclination\t68  # B = 50\u00b0\n\t\tAscendingNode\t349  # P_p = 78\u00b0\n\t\tMeridianAngle\t326  # Q = 10\u00b0 at epoch (light-time corrected)\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "229762 G!kun||'homdima",
+      "aliases": [
+        "229762 G!kun||'homdima",
+        "G!kun||'homdima",
+        "2007 UK126"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t628.9177436276161\n\t\tSemiMajorAxis\t73.43750009514187\n\t\tEccentricity\t0.4887391826728011\n\t\tInclination\t23.35736855320554\n\t\tAscendingNode\t131.17839454295\n\t\tArgOfPericenter\t346.4333576250627\n\t\tMeanAnomaly\t333.5092645180115\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # approximately coplanar with satellite\n\t{\n\t\tPeriod\t11.05\n\t\tInclination\t43.75\n\t\tAscendingNode\t110.6\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "307261 M\u00e1ni",
+      "aliases": [
+        "307261 M\u00e1ni",
+        "M\u00e1ni",
+        "2002 MS4"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t269.4630937148678\n\t\tSemiMajorAxis\t41.73702734140139\n\t\tEccentricity\t0.1452892533051482\n\t\tInclination\t17.69333610952009\n\t\tAscendingNode\t216.0751360568072\n\t\tArgOfPericenter\t214.5764827965695\n\t\tMeanAnomaly\t195.9176462145012\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t14.251\n\t\tInclination\t121  # assume equator-on orientation on 2020-08-08\n\t\tAscendingNode\t106  # position angle = 121\u00b0 \u00b1 16\u00b0\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "471143 Dziewanna",
+      "aliases": [
+        "471143 Dziewanna",
+        "Dziewanna",
+        "2010 EK139"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t577.3221816200545\n\t\tSemiMajorAxis\t69.364003075686\n\t\tEccentricity\t0.5313889177176493\n\t\tInclination\t29.46011730869261\n\t\tAscendingNode\t346.1863794149107\n\t\tArgOfPericenter\t284.6986015353738\n\t\tMeanAnomaly\t335.7501191414372\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t7.07  # Benecchi and Sheppard (2013), 2013AJ....145..124B\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "486958 Arrokoth",
+      "aliases": [
+        "486958 Arrokoth",
+        "Arrokoth",
+        "2014 MU69",
+        "Ultima Thule",
+        "PT1"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2458484.732303241  # 2019 Jan 01 05:34:31 TDB (New Horizons encounter)\n\t\tPeriod\t297.3705728517183\n\t\tSemiMajorAxis\t44.55124634225967\n\t\tEccentricity\t0.04096515756134208\n\t\tInclination\t2.451831129511527\n\t\tAscendingNode\t158.9767652155288\n\t\tArgOfPericenter\t174.6564493231953\n\t\tMeanAnomaly\t315.9005911094172\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t15.445296\n\t\tInclination\t115.5875063\n\t\tAscendingNode\t49.3685820\n\t\tMeridianAngle\t71.9541475\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "532037 Chiminigagua",
+      "aliases": [
+        "532037 Chiminigagua",
+        "Chiminigagua",
+        "2013 FY27"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t450.4304815695852\n\t\tSemiMajorAxis\t58.78598972315042\n\t\tEccentricity\t0.3948947540909976\n\t\tInclination\t33.12056114676863\n\t\tAscendingNode\t187.0531983983662\n\t\tArgOfPericenter\t139.2075189231244\n\t\tMeanAnomaly\t198.0573808609261\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t10  # no measurement\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "(612911) 2004 XR190",
+      "aliases": [
+        "(612911) 2004 XR190",
+        "2004 XR190"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t435.5299168036099\n\t\tSemiMajorAxis\t57.48227935585414\n\t\tEccentricity\t0.1075113568788882\n\t\tInclination\t46.64088613246979\n\t\tAscendingNode\t252.3672378505755\n\t\tArgOfPericenter\t283.5601276781185\n\t\tMeanAnomaly\t263.1244000059405\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t19.47\n\t\tInclination\t38  # assume equator-on orientation on 2021-01-22\n\t\tAscendingNode\t279  # position angle = 35\u00b0 \u00b1 32\u00b0\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "2014 UZ224",
+      "aliases": [
+        "2014 UZ224",
+        "DeeDee"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "asteroid",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"SSB\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2451545.0  # 2000 Jan 01 12:00\n\t\tPeriod\t1129.821086962011\n\t\tSemiMajorAxis\t108.5246607383175\n\t\tEccentricity\t0.6467505763744339\n\t\tInclination\t26.78460245749269\n\t\tAscendingNode\t131.0010599912059\n\t\tArgOfPericenter\t29.42537432496529\n\t\tMeanAnomaly\t314.5872667303412\n\t}",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t8  # no measurement\n\t}"
+      },
+      "catalog_source": "bundled orbit snapshot: Celestia/data/outersys.ssc",
+      "source_sha256": "1002a4173c453865ed0430acadd548bd5368e36f58f6ca7e43b52bb205b9fb46",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2004-2009 Grant Hutchison",
+        "# SPDX-FileCopyrightText: 2007-2008 Chris Laurel",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2020 LukeCEL",
+        "# SPDX-FileCopyrightText: 2021-2022 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2025 DaveBowman2001",
+        "# SPDX-FileCopyrightText: 2025-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+      ],
+      "license": "CC-BY-4.0"
+    }
+  ]
+}

@@ -54,7 +54,7 @@ def texture_references(path):
 
 
 def build_package(output,candidate,config,override='auto',patch_dwarf_planet=False,dwarf_catalog_path=None):
-    if not isinstance(patch_dwarf_planet,bool):raise ValueError('Patch dwarf planet must be a boolean')
+    if not isinstance(patch_dwarf_planet,bool):raise ValueError('Patch small body must be a boolean')
     output=Path(output)
     report=json.loads((output/'integration_report.json').read_text(encoding='utf-8'))
     if not report.get('numerical_validation_passed'):
@@ -80,7 +80,7 @@ def build_package(output,candidate,config,override='auto',patch_dwarf_planet=Fal
         (root/sub).mkdir(parents=True,exist_ok=True)
     old_manifest=root/'package_manifest.json'
     if old_manifest.is_file():
-        previous=json.loads(old_manifest.read_text(encoding='utf-8')).get('dwarf_planet_patch') or {}
+        old=json.loads(old_manifest.read_text(encoding='utf-8'));previous=old.get('small_body_patch') or old.get('dwarf_planet_patch') or {}
         for name in previous.get('files',[]):
             stale=(root/name).resolve()
             if not stale.is_relative_to(root.resolve()):raise ValueError('Invalid previous patch artifact path')
@@ -135,7 +135,7 @@ def build_package(output,candidate,config,override='auto',patch_dwarf_planet=Fal
                   candidate_passes_requested_limits=report.get('candidate_passes_requested_limits'),
                   requirement_violations=report.get('requirement_violations',[]),
                   passes_original_onboard_budget=report['passes_original_onboard_budget'],
-                  dwarf_planet_patch=patch)
+                  small_body_patch=patch,dwarf_planet_patch=patch)
     atomic_json(root/'package_manifest.json',manifest)
     (root/'README.txt').write_text(
         f'CELESTIA TRAJECTORY PACKAGE\n\nExtract the ZIP and copy this entire {addon_name} folder into Celestia/extras.\n'
@@ -149,9 +149,9 @@ def build_package(output,candidate,config,override='auto',patch_dwarf_planet=Fal
         f'Requested-limit violations: {"; ".join(report.get("requirement_violations",[])) or "See integration report and source search."}\n'
         'Numerical conic validation is not an optimized fuel budget or continuous n-body validation.\n'
         'See reports/integration_report.json and reports/burns.csv for all maneuvers and limitations.\n'+
-        (f'\nOPTIONAL JPL DWARF-PLANET PATCH\n{patch["celestia_object"]}: {patch["start_date"]} through {patch["end_date"]}.\n'
-         +patch['limitations']+'\nOriginal Celestia orbit fields are GPL-2.0-or-later; attribution is bundled in the app Celestia orbit catalog.\n'
-         'Remove jpl_dwarf_planet_patch.ssc to disable this override. See reports/dwarf_planet_patch.json.\n' if patch else ''),encoding='utf-8')
+        (f'\nOPTIONAL JPL SMALL-BODY PATCH\n{patch["celestia_object"]}: {patch["start_date"]} through {patch["end_date"]}.\n'
+         +patch['limitations']+'\nOriginal orbit-field source license: '+patch['source_license']+'. See patch provenance for attribution.\n'
+         f'Remove {patch["files"][0]} to disable this override. See {patch["report_file"]}.\n' if patch else ''),encoding='utf-8')
     zip_name=addon_name+'.zip'
     temporary=output/(zip_name+'.tmp')
     with zipfile.ZipFile(temporary,'w',compression=zipfile.ZIP_DEFLATED) as archive:

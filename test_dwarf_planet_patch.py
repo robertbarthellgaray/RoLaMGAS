@@ -65,4 +65,72 @@ class DwarfPatchTests(unittest.TestCase):
                 with self.assertRaisesRegex(OSError,'offline'):build_package(folder,q,self.config(),patch_dwarf_planet=True)
             self.assertFalse(list(Path(folder).glob('*_JPL.zip')))
 
+    def small_objects(self):return json.loads(dwarf.SMALL_BODY_ASSET.read_text(encoding='utf-8'))['objects']
+
+    def test_bundled_asteroids_comets_centaurs_and_interstellar_identity(self):
+        cases=[('433 Eros (A898 PA)','20000433','433','433 Eros'),
+               ('10199 Chariklo (1997 CU26)','20010199','10199','10199 Chariklo'),
+               ('1P/Halley','90000030','1P','1P Halley'),
+               ("1I/'Oumuamua (A/2017 U1)",'3788040','A/2017 U1',"1I 'Oumuamua")]
+        for name,ident,designation,expected in cases:
+            with self.subTest(target=name):
+                c=dict(target_object=dict(name=name,id=ident,designation=designation,command='confirmed'))
+                row=dwarf.select_template(c,self.small_objects())[0]
+                self.assertIsNotNone(row);self.assertEqual(row['name'],expected)
+                self.assertTrue(row.get('attribution'));self.assertEqual(len(row['source_sha256']),64)
+
+    def test_conflicting_comet_designations_and_ambiguous_aliases_never_patch_wrong_body(self):
+        text='''"C/2019 Y4 ATLAS:ATLAS" "Sol" { Class "comet" EllipticalOrbit { Period 200 SemiMajorAxis 40 } }
+        "C/2023 A3 ATLAS:ATLAS" "Sol" { Class "comet" EllipticalOrbit { Period 201 SemiMajorAxis 41 } }
+        "100 Shared:Shared" "Sol" { Class "asteroid" EllipticalOrbit { Period 2 SemiMajorAxis 2 } }
+        "200 Shared:Shared" "Sol" { Class "asteroid" EllipticalOrbit { Period 3 SemiMajorAxis 3 } }'''
+        objects=dwarf.catalog_from_ssc(text)
+        c=dict(target_object=dict(name='C/2023 A3 (ATLAS)',id='90000001',designation='C/2023 A3'))
+        self.assertEqual(dwarf.select_template(c,objects)[0]['name'],'C/2023 A3 ATLAS')
+        c['target_object'].update(name='C/2030 A1 (ATLAS)',designation='C/2030 A1')
+        self.assertIsNone(dwarf.select_template(c,objects)[0])
+        with self.assertRaisesRegex(ValueError,'Ambiguous'):
+            dwarf.select_template(dict(target_object=dict(name='Shared')),objects)
+        self.assertEqual(dwarf.select_template(dict(target_object=dict(name='200 Shared',id='20000200',designation='200')),objects)[0]['name'],'200 Shared')
+
+    def test_chariklo_override_preserves_ring_orientation_and_frame_restoration(self):
+        with tempfile.TemporaryDirectory() as folder:
+            q=package_tests.CelestiaPackageTests().fixture(folder)
+            target='10199 Chariklo (1997 CU26)'
+            q.update(bodies=['Earth',target],dates_jd_tdb=[jd('2033-01-01'),jd('2034-02-07T12:34:56')])
+            config=dict(target=target,target_object=dict(name=target,id='20010199',designation='10199',command='10199;',kind='small_body'))
+            with patch.object(dwarf,'Ephemerides',CachedVectors):result=build_package(folder,q,config,patch_dwarf_planet=True)
+            self.assertEqual(result['small_body_patch'],result['dwarf_planet_patch'])
+            p=result['small_body_patch'];self.assertEqual(p['object_class'],'asteroid')
+            with zipfile.ZipFile(Path(folder)/result['filename']) as archive:
+                ssc=archive.read(next(n for n in archive.namelist() if n.endswith('/jpl_small_body_patch.ssc'))).decode()
+                self.assertIn('Modify "10199 Chariklo" "Sol"',ssc)
+                self.assertEqual(ssc.count('Center "SSB"'),2)
+                self.assertEqual(ssc.count('Period\t7.01485'),3)
+                self.assertNotIn('Texture',ssc);self.assertNotIn('Rings',ssc)
+                self.assertIn('reports/small_body_patch.json',' '.join(archive.namelist()))
+
+    def test_comet_patch_uses_hourly_samples_and_selected_apparition(self):
+        with tempfile.TemporaryDirectory() as folder:
+            q=package_tests.CelestiaPackageTests().fixture(folder);target='1P/Halley'
+            q.update(bodies=['Earth',target],dates_jd_tdb=[jd('2033-01-01'),jd('2034-02-07T12:34:56')])
+            desc=dict(name=target,id='90000030',designation='1P',command='DES=1P;CAP<2460000;',kind='small_body',is_comet=True)
+            config=dict(target=target,target_object=desc)
+            with patch.object(dwarf,'Ephemerides',side_effect=CachedVectors) as ep:result=build_package(folder,q,config,patch_dwarf_planet=True)
+            p=result['small_body_patch'];self.assertEqual(p['step_days'],1/24);self.assertEqual(p['target_identity']['command'],desc['command'])
+            self.assertGreaterEqual(p['rows'],365*24+1)
+            self.assertEqual(p['celestia_object'],'Sol/1P Halley')
+            self.assertEqual(ep.call_args.args[4],1/24)
+
+    def test_custom_ssc_and_bundled_catalog_work_without_installation(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'asteroid.ssc';path.write_text('"123 Custom" "Sol" { Class "asteroid" EllipticalOrbit { Period 2 SemiMajorAxis 2 } }')
+            c=dict(target_object=dict(name='123 Custom',id='20000123',designation='123',command='123;'))
+            self.assertTrue(dwarf.patch_info(c,path)['available'])
+            self.assertEqual(dwarf.read_catalog(path)[0]['license'],'not specified in source catalog')
+            self.assertEqual(dwarf.read_catalog(path)[0]['attribution'],[])
+        with patch.dict('os.environ',{},clear=True):
+            info=dwarf.patch_info(dict(target_object=dict(name='10199 Chariklo',id='20010199',designation='10199',command='10199;')))
+            self.assertTrue(info['available']);self.assertIn('bundled',info['catalog_source'])
+
 if __name__=='__main__':unittest.main()

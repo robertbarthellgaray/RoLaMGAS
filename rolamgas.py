@@ -21,7 +21,7 @@ def self_check():
         raise RuntimeError('Compiled Lambert/Kepler self-check failed: '+str(error)+' km')
     required=('gui.html','gui.js','mission_metrics.js','gui.css','sequence_database.json','gui_assets/launch_mass_c3.png','gui_assets/rolamgas-icon.png','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json','departure_seeds/historical_missions.json',
               'departure_seeds/mission_studies.json','departure_seeds/decadal_missions.json',
-              'celestia_assets/dwarf_planet_orbits.json','model_assets/LowPolySatPanels.3ds','model_assets/LowPolySatRTG.3ds','LICENSE')
+              'celestia_assets/dwarf_planet_orbits.json','celestia_assets/small_body_orbits.json','model_assets/LowPolySatPanels.3ds','model_assets/LowPolySatRTG.3ds','LICENSE')
     missing=[name for name in required if not (RESOURCE_ROOT/name).is_file()]
     if missing:raise RuntimeError('Bundled resources missing: '+', '.join(missing))
     with zipfile.ZipFile(RESOURCE_ROOT/'baseline_ephemerides.zip') as archive:

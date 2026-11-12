@@ -149,7 +149,7 @@ async function refreshDwarfPatch(reset=true){
   if(identifier!==state.selected||run!==state.run)return;
   $('patchDwarfPlanet').disabled=!info.available;
   $('dwarfPatchInfoText').textContent=info.note;
-  $('dwarfPatchStatus').textContent=info.available?`${info.celestia_object} · optional JPL patch for the encounter year(s)`:'No supported dwarf-planet definition for this target.';
+  $('dwarfPatchStatus').textContent=info.available?`${info.celestia_object} · optional JPL patch for the encounter year(s)`:'No matching small-body Keplerian definition. Choose its original .ssc catalog in Why patch?.';
   $('dwarfCatalogSource').textContent='Original orbit: '+info.catalog_source;
   if(!info.available)$('patchDwarfPlanet').checked=false;
  }catch(e){$('patchDwarfPlanet').checked=false;$('dwarfPatchStatus').textContent='Patch unavailable: '+e.message;}
@@ -164,7 +164,7 @@ async function exportPackage(modelOverride,patchOverride){
  if(state.selected!==identifier||state.run!==run)return;
  if(result.state==='integrating'){state.pendingPackage={identifier,run,model,patch};$('integrate').disabled=true;$('packageStatus').textContent='Integrating first, then packaging the selected spacecraft…';checkExport();return;}
  $('packageStatus').replaceChildren(element('p',result.model+' model · '+result.model_selection_reason,'success'));
- if(result.dwarf_planet_patch){const p=result.dwarf_planet_patch;$('packageStatus').append(element('p',`Includes JPL override for ${p.celestia_object}: ${p.start_date} → ${p.end_date}. Original orbit restored outside that interval.`,'success'));}
+ if(result.small_body_patch||result.dwarf_planet_patch){const p=result.small_body_patch||result.dwarf_planet_patch;$('packageStatus').append(element('p',`Includes JPL override for ${p.celestia_object}: ${p.start_date} → ${p.end_date}. Original orbit restored outside that interval.`,'success'));}
  const links=element('div',undefined,'download-links'),a=element('a','Download Celestia package (.zip)');
  a.href='/files/'+encodeURIComponent(run)+'/exports/'+identifier+'/'+encodeURIComponent(result.filename);a.download=result.filename;
  const open=element('button','Open addon folder');open.className='quiet';open.onclick=()=>api('/api/open-package-folder',{run,candidate:identifier}).catch(e=>message(e.message,true));

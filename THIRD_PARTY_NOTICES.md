@@ -26,8 +26,10 @@ Build-tool notices: `third_party_licenses/pyinstaller/`,
 `third_party_licenses/pyinstaller_hooks_contrib/`, and `third_party_licenses/altgraph/`.
 PyInstaller’s bootloader exception is retained in its license text.
 
-`celestia_assets/dwarf_planet_orbits.json` contains orbital/frame/rotation fields
-derived from Celestia's `data/dwarfplanets.ssc` (GPL-2.0-or-later). Its original
-SPDX copyright notices and source checksum are retained in that JSON. The
+`celestia_assets/dwarf_planet_orbits.json` and `celestia_assets/small_body_orbits.json`
+contain orbital/frame/rotation fields derived from Celestia's
+`data/dwarfplanets.ssc`, `asteroids.ssc`, `comets.ssc`, `interstellar.ssc` and
+`outersys.ssc` (GPL-2.0-or-later). Original SPDX copyright notices and source
+checksums are retained in the JSON snapshots. No meshes or textures are copied. The
 derived snapshot is distributed under GPLv3, permitted by the original
 "or later" license grant; the GPLv3 text is included as `LICENSE`.
