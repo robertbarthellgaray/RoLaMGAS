@@ -341,6 +341,38 @@
       "label": "Camilla — Jupiter cruise recreation",
       "featured_priority": 5,
       "note": "Based on Howell et al. 2018 / supplied Camilla concept chart. Solved Jupiter cruise prefix; Chariklo leg excluded. One explicit July DSM, with independently checked coast endpoints and flyby vectors."
+    },
+    "404d8229337b4fdc5bf734b6b3a15cff151d1b57f0b5ffb11d66bfdc0caa6708": {
+      "label": "EVEEJ — Jupiter 2037 launch, C3 11.05",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+    },
+    "404d8229337b": {
+      "label": "EVEEJ — Jupiter 2037 launch, C3 11.05",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+    },
+    "955be464468e9e3bb159f7cc88adb1d03be90c9b8dbaf752edd782ebbaecd535": {
+      "label": "EVEEJU — Uranus 2037 launch, C3 11.05",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+    },
+    "1028e6930fc8": {
+      "label": "EVEEJU — Uranus 2037 launch, C3 11.05",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+    },
+    "0bbf3c81dfd099476026cf360c5df2145577dd523b1f4f329cfb868045bc0dca": {
+      "label": "EVEES — Saturn 2036 launch, C3 12",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+    },
+    "d9331e2d831f": {
+      "label": "EVEES — Saturn 2036 launch, C3 12",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+    },
+    "1ddc8bddcfee": {
+      "label": "EVEEJ — earlier Jupiter encounter, C3 10.36",
+      "note": "Local refinement of the 2037 low-C3 family: Jupiter arrival 13 November 2045 instead of 1 April 2046. Still inward at Jupiter; no designed DSM. Independent DOP853 solar-coast endpoint errors below 5 metres. Finite-radius export corrections, launch injection and capture are additional."
+    },
+    "1ddc8bddcfee2d90287fa3855292b70f8d393948c0c18818455553edb21746c5": {
+      "label": "EVEEJ — earlier Jupiter encounter, C3 10.36",
+      "note": "Local refinement of the 2037 low-C3 family: Jupiter arrival 13 November 2045 instead of 1 April 2046. Still inward at Jupiter; no designed DSM. Independent DOP853 solar-coast endpoint errors below 5 metres. Finite-radius export corrections, launch injection and capture are additional."
     }
   }
 }
