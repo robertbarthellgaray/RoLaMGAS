@@ -1,4 +1,5 @@
 import vm from 'node:vm';
+import {createHash} from 'node:crypto';
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {transferDocument,finiteRadiusDownload} from '../docs/desktop_transfer.js';
 import {historicalMatch} from '../docs/historical_labels.js';
@@ -9,7 +10,26 @@ test('ReachStar research handoff preserves attribution, resonance controls and d
  const d=transferDocument(c);
  assert.equal(d.attribution,'ReachStar on Bilibili');assert.equal(d.trajectory.body_ids.length,15);
  assert.equal(d.trajectory.dsm_controls.length,2);assert.equal(d.settings.minimum_altitude_km.Earth,130);
- assert.equal(d.settings.minimum_altitude_km.Venus,250);assert.equal(finiteRadiusDownload(c),false);
+ assert.equal(d.settings.minimum_altitude_km.Venus,250);assert.equal(finiteRadiusDownload(c),true);
+ assert.match(c.trajectory_files.xyzv,/-targeted-025\.xyzv$/);
+ assert.ok(c.original_trajectory_files.xyzv);assert.ok(c.trajectory_files.total_onboard_delta_v_kms<.1);
+});
+
+test('refreshed finite downloads reconcile public budgets, source previews and numeric file hashes',()=>{
+ const review=load('data/finite_download_review.json'),accepted=review.trajectories.filter(r=>r.accepted);
+ assert.equal(accepted.length,review.upgraded);assert.ok(accepted.length>=117);
+ for(const row of accepted){
+  const c=load('data/cases/'+row.id+'.json'),f=c.trajectory_files,r=load(f.integration_report);
+  assert.ok(finiteRadiusDownload(c));assert.ok(c.original_trajectory_files);
+  assert.ok(r.numerical_validation_passed&&r.no_sample_bracketed_planet_or_sun_impacts);
+  assert.ok(r.passes_individual_burn_limits&&r.passes_original_onboard_budget&&r.candidate_passes_requested_limits);
+  // Export ceiling permits 1e-6 km2/s2, plus source-state roundoff on reimport.
+  assert.ok(r.exported_launch_c3_km2_s2<=c.c3+2e-6);assert.ok(row.maximum_serialized_midpoint_error_km<=1);
+  assert.ok(row.patch_mps<=review.publication_threshold_mps);
+  assert.equal(f.total_onboard_delta_v_kms,r.total_onboard_delta_v_kms);
+  assert.equal(f.patch_join_delta_v_kms,r.patch_join_delta_v_kms);
+  for(const format of ['csv','xyzv'])assert.equal(createHash('sha256').update(fs.readFileSync(new URL(f[format],root))).digest('hex'),f[format+'_sha256'],row.id+' '+format);
+ }
 });
 
 test('curated shared aliases keep the server timestamp for Newest shared ordering',()=>{
