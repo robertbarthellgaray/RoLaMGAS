@@ -4,7 +4,7 @@ import json,shutil,subprocess,tempfile,threading,time,unittest
 from pathlib import Path
 from copy import deepcopy
 from unittest.mock import patch
-from trajectory_transfer import checked_record,materialize
+from trajectory_transfer import checked_record,materialize,pin_record_epochs
 from search_options import import_options
 from mission_search import normalize,routes_for
 from test_full_chain_seeds import EventEphemerides
@@ -43,6 +43,19 @@ class WebsiteTransferTests(unittest.TestCase):
     def test_rejects_changed_saved_states_instead_of_substituting_a_trajectory(self):
         c=normalize(import_options(self.document)['config']);r=deepcopy(self.document['trajectory']);r['segments'][0]['v'][0]+=.1
         with self.assertRaisesRegex(ValueError,'No replacement trajectory'):materialize(r,c,routes_for(c)[0],EventEphemerides())
+    def test_selected_numeric_julian_dates_survive_browser_millisecond_rounding(self):
+        d=next(d for d in self.documents if d['source_candidate_id']=='c16155480c4d')
+        from datetime import datetime
+        legacy=deepcopy(d)
+        legacy['settings']['event_windows']=[[datetime.fromisoformat(a).isoformat(timespec='milliseconds'),datetime.fromisoformat(b).isoformat(timespec='milliseconds')] for a,b in d['settings']['event_windows']]
+        c=normalize(import_options(legacy)['config']);exact=d['trajectory']['dates_jd_tdb']
+        self.assertTrue(any(a!=t for (a,b),t in zip(c['event_windows_jd'],exact)))
+        pinned=pin_record_epochs(c,d['trajectory']);again=normalize(pinned)
+        self.assertEqual(again['event_windows_jd'],[[t,t] for t in exact])
+        self.assertEqual(normalize(import_options(d)['config'])['event_windows_jd'],[[t,t] for t in exact])
+        changed=deepcopy(d['trajectory']);changed['dates_jd_tdb'][1]+=.1
+        with self.assertRaisesRegex(ValueError,'outside'):pin_record_epochs(c,changed)
+
     def test_malformed_numeric_state_and_duplicate_burns_are_rejected(self):
         original=self.document['trajectory']
         for alter in (lambda r:r['dates_jd_tdb'].__setitem__(0,float('nan')),lambda r:r['segments'][0].__setitem__('v',[float('inf'),0,0]),lambda r:r['branches'][0].__setitem__(0,'2'),lambda r:r['dsm_controls'].append(r['dsm_controls'][0])):

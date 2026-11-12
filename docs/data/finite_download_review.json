@@ -1,0 +1,1522 @@
+{
+  "generated_at": "2026-11-12T18:36:46.855607+00:00",
+  "publication_threshold_mps": 100.0,
+  "reviewed": 129,
+  "upgraded": 117,
+  "original_integrations_retained": [
+    {
+      "id": "claudius-uop-2045",
+      "reason": "Original integrated file retained; no Lambert handoff record"
+    },
+    {
+      "id": "tianwen4-concept",
+      "reason": "Original integrated file retained; no Lambert handoff record"
+    },
+    {
+      "id": "ba36e139b812",
+      "reason": "Original integrated file retained; no Lambert handoff record"
+    }
+  ],
+  "note": "Numerical, clearance, burn-cap, budget and serialized midpoint checks required. Larger date windows are explicit variants; source candidate previews and original files are retained.",
+  "trajectories": [
+    {
+      "id": "04d297525d62",
+      "title": "EVVMe \u00b7 Mercury",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 16.472160093907824,
+      "total_cruise_mps": 16.472317263084705,
+      "exported_c3": 35.433402570246926,
+      "maximum_serialized_midpoint_error_km": 0.1006704388993019
+    },
+    {
+      "id": "062cbbfc4256",
+      "title": "EdvEJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 72.06690289983156,
+      "total_cruise_mps": 766.8219009970882,
+      "exported_c3": 94.2143730480945,
+      "maximum_serialized_midpoint_error_km": 0.0995314820670681
+    },
+    {
+      "id": "0fc1f2bcd586",
+      "title": "Mars Life Explorer 2035 \u00b7 EM",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 22.242991494194555,
+      "maximum_serialized_midpoint_error_km": 0.09119201257283678
+    },
+    {
+      "id": "1379a7b6ed72",
+      "title": "EdvEJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 42.54673018150525,
+      "total_cruise_mps": 381.53132601885704,
+      "exported_c3": 46.20690437657352,
+      "maximum_serialized_midpoint_error_km": 0.1004801012186752
+    },
+    {
+      "id": "13e3bb9071d3",
+      "title": "EdvEJS \u00b7 Saturn",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 80.00281466983753,
+      "total_cruise_mps": 452.7100790063907,
+      "exported_c3": 76.2803413019147,
+      "maximum_serialized_midpoint_error_km": 0.09867206940543465
+    },
+    {
+      "id": "1652f938b990",
+      "title": "EJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 40.57921282339869,
+      "total_cruise_mps": 40.57921282339869,
+      "exported_c3": 82.74621002440547,
+      "maximum_serialized_midpoint_error_km": 0.09824863823766175
+    },
+    {
+      "id": "1680406571d2",
+      "title": "EdvEJN \u00b7 Neptune",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 979.4637060676497,
+          "total_cruise_mps": 1587.1185565951134,
+          "dsm_mps": 607.5462707829928,
+          "exported_c3": 25.107597704324945,
+          "reasons": [
+            "passes_individual_burn_limits failed",
+            "passes_original_onboard_budget failed",
+            "candidate_passes_requested_limits failed",
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 221.88739719896927,
+          "total_cruise_mps": 778.3237294231227,
+          "dsm_mps": 556.3327819671891,
+          "exported_c3": 24.881109620719002,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1c465a6bf57a",
+      "title": "EJX \u00b7 2026 ED138",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 40.42242000749943,
+      "total_cruise_mps": 40.42242000749943,
+      "exported_c3": 120.05854624595267,
+      "maximum_serialized_midpoint_error_km": 0.09816794588851321
+    },
+    {
+      "id": "2133f62b3336",
+      "title": "EdvEJ \u00b7 Jupiter",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0.0070777821441348416,
+      "total_cruise_mps": 499.6083130311876,
+      "exported_c3": 26.093827442269273,
+      "maximum_serialized_midpoint_error_km": 0.09937876085017183
+    },
+    {
+      "id": "2479d2667a18",
+      "title": "Fast Saturn 2033-04-01 \u00b7 EVEEJS",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.00395466741463623,
+      "exported_c3": 22.300474592754952,
+      "maximum_serialized_midpoint_error_km": 0.09983644013220466
+    },
+    {
+      "id": "27b710a1ae98",
+      "title": "EVEEJEr \u00c2\u00b7 Eris",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 253.08266396497947,
+          "total_cruise_mps": 253.08276395699187,
+          "dsm_mps": 0.0,
+          "exported_c3": 26.69623748435312,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 197.6488231608532,
+          "total_cruise_mps": 197.64892355780546,
+          "dsm_mps": 0.0,
+          "exported_c3": 26.892241783316408,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2c8de26a2f93",
+      "title": "Camilla \u2014 Jupiter cruise recreation \u00b7 EVdvEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 50.487362561520435,
+      "total_cruise_mps": 206.6623093525485,
+      "exported_c3": 11.023361586184308,
+      "maximum_serialized_midpoint_error_km": 0.09921089543846515
+    },
+    {
+      "id": "3084ef3a087b",
+      "title": "EJEr \u00c2\u00b7 Eris",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 3.460374031051255,
+      "total_cruise_mps": 3.460374031051255,
+      "exported_c3": 138.08244105944345,
+      "maximum_serialized_midpoint_error_km": 0.09935238452552966
+    },
+    {
+      "id": "32d09f3c3385",
+      "title": "EJX \u00b7 2026 ED138",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 51.27060893507146,
+      "total_cruise_mps": 51.27060893507146,
+      "exported_c3": 88.58744505643175,
+      "maximum_serialized_midpoint_error_km": 0.09969210323467688
+    },
+    {
+      "id": "34799f4dd0f0",
+      "title": "EVVEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.0013554822461912623,
+      "exported_c3": 26.77890915328682,
+      "maximum_serialized_midpoint_error_km": 0.09994353930771949
+    },
+    {
+      "id": "35bd4d9c6e03",
+      "title": "CALYPSO Ariel / KBO concept \u2014 Uranus cruise \u00b7 EJU",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 44.590166100544046,
+      "total_cruise_mps": 83.3863296700405,
+      "exported_c3": 118.61145809753101,
+      "maximum_serialized_midpoint_error_km": 0.09761072042071886
+    },
+    {
+      "id": "363bbc45686e",
+      "title": "EJS \u00b7 Saturn",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 28.019648834643387,
+      "total_cruise_mps": 28.074873695452798,
+      "exported_c3": 142.40680389260552,
+      "maximum_serialized_midpoint_error_km": 0.09949643669881152
+    },
+    {
+      "id": "37ffb1146e4c",
+      "title": "EdvEJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 20.379835258929134,
+      "total_cruise_mps": 286.82123574428755,
+      "exported_c3": 46.10997222229638,
+      "maximum_serialized_midpoint_error_km": 0.0989020471065735
+    },
+    {
+      "id": "3db24aae7071",
+      "title": "EdvEJEr \u00c2\u00b7 Eris",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 66.13528232205081,
+      "total_cruise_mps": 667.6866705591685,
+      "exported_c3": 24.7105239844294,
+      "maximum_serialized_midpoint_error_km": 0.10062820915090764
+    },
+    {
+      "id": "3ee87f3d91eb",
+      "title": "EVVMe \u00b7 Mercury",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 10.251907641212348,
+      "total_cruise_mps": 10.253784875357818,
+      "exported_c3": 90.83974014202377,
+      "maximum_serialized_midpoint_error_km": 0.09975551691230318
+    },
+    {
+      "id": "43ae5640d01a",
+      "title": "EVVEJS",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 78.78894212436097,
+      "total_cruise_mps": 78.80629845495312,
+      "exported_c3": 15.09922913675193,
+      "maximum_serialized_midpoint_error_km": 0.10037553094119626
+    },
+    {
+      "id": "45a45fc7816a",
+      "title": "EEVEEJ \u00b7 Jupiter",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 43.740339007199374,
+      "total_cruise_mps": 43.89240686428029,
+      "exported_c3": 11.784749464397322,
+      "maximum_serialized_midpoint_error_km": 0.10012131471232144
+    },
+    {
+      "id": "4aa63e8a78a9",
+      "title": "EJEr \u00c2\u00b7 Eris",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 89.3604651748036,
+      "total_cruise_mps": 89.3604651748036,
+      "exported_c3": 119.2405709714209,
+      "maximum_serialized_midpoint_error_km": 0.097998654519903
+    },
+    {
+      "id": "4c5ef422ee6c",
+      "title": "EdvEJU \u00b7 Uranus",
+      "accepted": true,
+      "selected_days": 60.0,
+      "patch_mps": 6.261927722988841,
+      "total_cruise_mps": 575.9683082553252,
+      "exported_c3": 27.427261688286947,
+      "maximum_serialized_midpoint_error_km": 0.09877902682974622
+    },
+    {
+      "id": "4d76acaf1f6f",
+      "title": "Low-energy Jupiter \u00b7 EdvEVEEJ",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 53.909275691653534,
+      "total_cruise_mps": 468.6707557417717,
+      "exported_c3": 6.250000180869961,
+      "maximum_serialized_midpoint_error_km": 0.09987115822820297
+    },
+    {
+      "id": "4e2d25c32914",
+      "title": "EVEEJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 93.80685285331381,
+      "total_cruise_mps": 93.80685285331381,
+      "exported_c3": 26.008405056774208,
+      "maximum_serialized_midpoint_error_km": 0.10022629017257546
+    },
+    {
+      "id": "4e4230a71f50",
+      "title": "Low-C3 Jupiter 2031-05-18 \u00b7 EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 1.681550368158096,
+      "total_cruise_mps": 1.741610507174249,
+      "exported_c3": 18.52994960443641,
+      "maximum_serialized_midpoint_error_km": 0.09976528241478771
+    },
+    {
+      "id": "4fed974cbffb",
+      "title": "Rebuilding Cassini \u00b7 Saturn",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 58.09317492348116,
+      "total_cruise_mps": 571.7696999759772,
+      "exported_c3": 15.027747784813542,
+      "maximum_serialized_midpoint_error_km": 0.09946681141026546
+    },
+    {
+      "id": "505885ceb073",
+      "title": "EVVMe \u00b7 Mercury",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 14.245603674096257,
+      "total_cruise_mps": 14.245879927881171,
+      "exported_c3": 70.37760291695868,
+      "maximum_serialized_midpoint_error_km": 0.10039738049987652
+    },
+    {
+      "id": "5069f90780a0",
+      "title": "EJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 50.527300108728696,
+      "total_cruise_mps": 50.527300108728696,
+      "exported_c3": 79.96487973649747,
+      "maximum_serialized_midpoint_error_km": 0.0989894803221794
+    },
+    {
+      "id": "510033b3140d",
+      "title": "Fast Saturn 2033-02-01 \u00b7 EVVEJS",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 87.61207458937669,
+      "total_cruise_mps": 87.615402399162,
+      "exported_c3": 27.23807227057003,
+      "maximum_serialized_midpoint_error_km": 0.10068505527453987
+    },
+    {
+      "id": "51bc33113cf9",
+      "title": "Mercury resonant research \u00b7 EVVMe",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 7.5896497825921525,
+      "total_cruise_mps": 7.597770475751641,
+      "exported_c3": 42.37731388549284,
+      "maximum_serialized_midpoint_error_km": 0.10078969367106255
+    },
+    {
+      "id": "552363ae7812",
+      "title": "T-OWS 2030 concept \u2014 operations-table schedule \u00b7 EdvJN",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0.25425435027270876,
+      "total_cruise_mps": 121.24555803777822,
+      "exported_c3": 89.37694292398704,
+      "maximum_serialized_midpoint_error_km": 0.09882044916164268
+    },
+    {
+      "id": "56b116f12c78",
+      "title": "UOP-family reconstruction \u00b7 EVEdvEU",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 5.029705225619581,
+      "total_cruise_mps": 699.0370382108482,
+      "exported_c3": 22.216680896298143,
+      "maximum_serialized_midpoint_error_km": 0.10063331771331176
+    },
+    {
+      "id": "5a3fe6f984b0",
+      "title": "ESX \u00b7 2026 ED138",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 6.247060669038089,
+      "total_cruise_mps": 6.251195305698801,
+      "exported_c3": 148.7446540778261,
+      "maximum_serialized_midpoint_error_km": 0.09913704388494737
+    },
+    {
+      "id": "5d1edcd4d0a8",
+      "title": "EVVMe \u00b7 Mercury",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 25.178158821472255,
+      "total_cruise_mps": 25.178377226407356,
+      "exported_c3": 52.802091357808806,
+      "maximum_serialized_midpoint_error_km": 0.09992562267990532
+    },
+    {
+      "id": "5f815020eed0",
+      "title": "EVEEJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 29.92815718173316,
+      "total_cruise_mps": 29.92815718173316,
+      "exported_c3": 12.746515038452756,
+      "maximum_serialized_midpoint_error_km": 0.09958179121469343
+    },
+    {
+      "id": "61a83e8f369c",
+      "title": "CLAUDIUS 2045 - finite-SOI refinement",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 7.479159333492949,
+      "total_cruise_mps": 628.3648128910984,
+      "exported_c3": 29.03871984779444,
+      "maximum_serialized_midpoint_error_km": 0.09983557458356034
+    },
+    {
+      "id": "64c95c89d0a5",
+      "title": "Low-C3 Jupiter 2031-05-22 \u00b7 EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 95.15492008472671,
+      "total_cruise_mps": 95.38418041907182,
+      "exported_c3": 18.23599080566423,
+      "maximum_serialized_midpoint_error_km": 0.09983526732065046
+    },
+    {
+      "id": "678b73b7cd36",
+      "title": "EdvEJ \u00b7 Jupiter",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 42.44059145686824,
+      "total_cruise_mps": 603.7366656574792,
+      "exported_c3": 32.098676038949066,
+      "maximum_serialized_midpoint_error_km": 0.09999180302107716
+    },
+    {
+      "id": "6825e717ab9a",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.07815811597663645,
+      "exported_c3": 22.954820600979644,
+      "maximum_serialized_midpoint_error_km": 0.099986334565556
+    },
+    {
+      "id": "6b43da2aa708",
+      "title": "EJX \u00b7 2026 ED138",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 2.9598340154245664,
+      "total_cruise_mps": 2.9598340154245664,
+      "exported_c3": 142.86170799592645,
+      "maximum_serialized_midpoint_error_km": 0.09970441387055824
+    },
+    {
+      "id": "6c08be483068",
+      "title": "EdvEJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 44.26330829775898,
+      "total_cruise_mps": 559.569534315576,
+      "exported_c3": 25.949862783917368,
+      "maximum_serialized_midpoint_error_km": 0.09998706394952844
+    },
+    {
+      "id": "6ef2b7edc240",
+      "title": "EdvES \u00b7 Saturn",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0.03160591059197236,
+      "total_cruise_mps": 413.8990188105784,
+      "exported_c3": 49.714199546493674,
+      "maximum_serialized_midpoint_error_km": 0.09984815114657086
+    },
+    {
+      "id": "718296444bb1",
+      "title": "EdvEJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0.031855077391808026,
+      "total_cruise_mps": 687.1487934757433,
+      "exported_c3": 28.431557859690543,
+      "maximum_serialized_midpoint_error_km": 0.0989687575418647
+    },
+    {
+      "id": "758dec758cb9",
+      "title": "Low-C3 Jupiter 2031-05-12 \u00b7 EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 88.43163581290723,
+      "total_cruise_mps": 88.62561370375708,
+      "exported_c3": 15.817685671038276,
+      "maximum_serialized_midpoint_error_km": 0.10042822794172687
+    },
+    {
+      "id": "76ed124dce08",
+      "title": "EdvEJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 7.693782689774536,
+      "total_cruise_mps": 345.72239815797326,
+      "exported_c3": 46.68071791766194,
+      "maximum_serialized_midpoint_error_km": 0.0994126216954552
+    },
+    {
+      "id": "773b1d982ede",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.044837856717185674,
+      "exported_c3": 27.57534953433469,
+      "maximum_serialized_midpoint_error_km": 0.10030750427452947
+    },
+    {
+      "id": "77a67c2f79f3",
+      "title": "EJSX \u00b7 2026 ED138",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 70.79876798427826,
+      "total_cruise_mps": 70.79876798427826,
+      "exported_c3": 113.89929062459406,
+      "maximum_serialized_midpoint_error_km": 0.09750332753271004
+    },
+    {
+      "id": "7a0833494c9a",
+      "title": "EdvEJS \u00b7 Saturn",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 75.55490621431747,
+      "total_cruise_mps": 569.6319532987844,
+      "exported_c3": 104.05606408352105,
+      "maximum_serialized_midpoint_error_km": 0.0998604072547911
+    },
+    {
+      "id": "7b9193f015ab",
+      "title": "Mercury resonant research \u00b7 EVVMedvMedvMedvMedvMe",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 23.492541098967184,
+          "total_cruise_mps": 1695.9887813829619,
+          "dsm_mps": 1672.4881165627492,
+          "exported_c3": 42.37737447839554,
+          "reasons": [
+            "passes_original_onboard_budget failed"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 46.05011154413198,
+          "total_cruise_mps": 2362.581607010613,
+          "dsm_mps": 2316.5233673354055,
+          "exported_c3": 42.100582571800715,
+          "reasons": [
+            "passes_individual_burn_limits failed",
+            "passes_original_onboard_budget failed",
+            "candidate_passes_requested_limits failed"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "7c37a5ed4b83",
+      "title": "EVVEJS",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 56.85527413156246,
+      "total_cruise_mps": 56.85527413156246,
+      "exported_c3": 27.239502269357544,
+      "maximum_serialized_midpoint_error_km": 0.10068573666208046
+    },
+    {
+      "id": "7f5a2b89c818",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.052968657059827555,
+      "exported_c3": 22.150553838021338,
+      "maximum_serialized_midpoint_error_km": 0.09976035471620422
+    },
+    {
+      "id": "80522756b101",
+      "title": "EVEEJX \u00b7 2026 ED138",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 254.51441992203476,
+          "total_cruise_mps": 254.51441992203476,
+          "dsm_mps": 0.0,
+          "exported_c3": 26.63082567806198,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 190.32534563231724,
+          "total_cruise_mps": 190.32534563231724,
+          "dsm_mps": 0.0,
+          "exported_c3": 27.42036804458793,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "80d327c468c0",
+      "title": "EJSX \u00b7 2026 ED138",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 61.414901849026535,
+      "total_cruise_mps": 61.414901849026535,
+      "exported_c3": 88.42677375146808,
+      "maximum_serialized_midpoint_error_km": 0.09908383909739943
+    },
+    {
+      "id": "8a215745de8d",
+      "title": "UOP-family reconstruction \u00b7 EVEdvEU",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 5.0513810431651205,
+      "total_cruise_mps": 454.63958553292065,
+      "exported_c3": 22.216677798724888,
+      "maximum_serialized_midpoint_error_km": 0.09980392259818929
+    },
+    {
+      "id": "8a5fdc72fe2c",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 38.493412661676714,
+      "total_cruise_mps": 38.54289967544672,
+      "exported_c3": 28.00000080156684,
+      "maximum_serialized_midpoint_error_km": 0.10014336321735559
+    },
+    {
+      "id": "8c16a241e714",
+      "title": "EdvEJX \u00b7 2026 ED138",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 226.97655287876077,
+          "total_cruise_mps": 892.5257815030274,
+          "dsm_mps": 665.5311639067421,
+          "exported_c3": 27.81790752977672,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 155.64822138480554,
+          "total_cruise_mps": 808.6256586229591,
+          "dsm_mps": 652.9596914720529,
+          "exported_c3": 28.556441248963424,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "8dc1409ff137",
+      "title": "EJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 52.92838236632941,
+      "total_cruise_mps": 52.92838236632941,
+      "exported_c3": 89.59337318624806,
+      "maximum_serialized_midpoint_error_km": 0.09930533186890186
+    },
+    {
+      "id": "8e8101e4c79d",
+      "title": "EdvEJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 6.9270297304310695,
+      "total_cruise_mps": 632.3379322600749,
+      "exported_c3": 49.30567816346111,
+      "maximum_serialized_midpoint_error_km": 0.10035416475342801
+    },
+    {
+      "id": "90157970b87b",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.010766213325424717,
+      "exported_c3": 22.805917865763178,
+      "maximum_serialized_midpoint_error_km": 0.09989684581521115
+    },
+    {
+      "id": "920e1459edd4",
+      "title": "EJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 55.25569211993089,
+      "total_cruise_mps": 55.25569211993089,
+      "exported_c3": 119.464616168287,
+      "maximum_serialized_midpoint_error_km": 0.09842323489194903
+    },
+    {
+      "id": "9617e7f77635",
+      "title": "EVEEJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 99.07300047713744,
+      "total_cruise_mps": 99.07300047713744,
+      "exported_c3": 12.738723321409367,
+      "maximum_serialized_midpoint_error_km": 0.09789181373947949
+    },
+    {
+      "id": "99d9fe80db02",
+      "title": "EV \u00b7 Venus",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 13.946318360900591,
+      "maximum_serialized_midpoint_error_km": 0.09807315794302682
+    },
+    {
+      "id": "9b24b6d12306",
+      "title": "EVEEJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 7.319477368876995,
+      "total_cruise_mps": 7.322904544531178,
+      "exported_c3": 16.864385937589176,
+      "maximum_serialized_midpoint_error_km": 0.09989859647402413
+    },
+    {
+      "id": "9ca55df1c55c",
+      "title": "Mars Life Explorer 2039 \u00b7 EM",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 36.32501627062233,
+      "maximum_serialized_midpoint_error_km": 0.0984693852743591
+    },
+    {
+      "id": "a1daffa5e461",
+      "title": "EVMeMe \u00b7 Mercury",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 12.851521857977325,
+      "total_cruise_mps": 12.851918034883358,
+      "exported_c3": 34.3831151798653,
+      "maximum_serialized_midpoint_error_km": 0.09942444088908528
+    },
+    {
+      "id": "a29e6a582250",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 87.80567073642766,
+      "total_cruise_mps": 87.80639383800816,
+      "exported_c3": 27.120619521314737,
+      "maximum_serialized_midpoint_error_km": 0.1003980036619265
+    },
+    {
+      "id": "a5c3c026107a",
+      "title": "EVEEJS",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 63.49381635949529,
+      "total_cruise_mps": 63.49381635949529,
+      "exported_c3": 21.999443972313756,
+      "maximum_serialized_midpoint_error_km": 0.10048498610426755
+    },
+    {
+      "id": "a602d9b0bc52",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 50.354341124593084,
+      "total_cruise_mps": 50.475299571792874,
+      "exported_c3": 28.000000700944113,
+      "maximum_serialized_midpoint_error_km": 0.09986605157625848
+    },
+    {
+      "id": "aa694361ac7d",
+      "title": "EJEr \u00c2\u00b7 Eris",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 31.22881494679587,
+      "total_cruise_mps": 31.22881494679587,
+      "exported_c3": 80.36152489398783,
+      "maximum_serialized_midpoint_error_km": 0.09744706957192754
+    },
+    {
+      "id": "aaf8a1bd2e95",
+      "title": "EJEr \u00c2\u00b7 Eris",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 47.35491415297984,
+      "total_cruise_mps": 47.35491415297984,
+      "exported_c3": 123.2353544133128,
+      "maximum_serialized_midpoint_error_km": 0.0986284147693838
+    },
+    {
+      "id": "abd068a90487",
+      "title": "Low-C3 Jupiter 2031-05-18 \u00b7 EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 80.91572915041506,
+      "total_cruise_mps": 80.96413347334509,
+      "exported_c3": 15.267471118915623,
+      "maximum_serialized_midpoint_error_km": 0.09963454043826216
+    },
+    {
+      "id": "ae44e762fbb5",
+      "title": "EdvEJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 81.30238877120468,
+      "total_cruise_mps": 781.028501490027,
+      "exported_c3": 33.44070812635398,
+      "maximum_serialized_midpoint_error_km": 0.09743795003887441
+    },
+    {
+      "id": "b5f6859f1da2",
+      "title": "EJSX \u00b7 2026 ED138",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 79.26058178686945,
+      "total_cruise_mps": 79.26058178686945,
+      "exported_c3": 81.10958345062379,
+      "maximum_serialized_midpoint_error_km": 0.09812049790865282
+    },
+    {
+      "id": "b64e734031ee",
+      "title": "EVEEJS",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 315.35223844647265,
+          "total_cruise_mps": 315.59341955408166,
+          "dsm_mps": 0.0,
+          "exported_c3": 15.396432957723448,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 159.20774323982124,
+          "total_cruise_mps": 159.4495934359477,
+          "dsm_mps": 0.0,
+          "exported_c3": 14.967727702688848,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "b717cf02be29",
+      "title": "ESX \u00b7 2026 ED138",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 96.08886575490237,
+      "total_cruise_mps": 96.08888158191165,
+      "exported_c3": 117.34320581956267,
+      "maximum_serialized_midpoint_error_km": 0.09944213469171573
+    },
+    {
+      "id": "b720420bbb11",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 12.128244854087255,
+      "total_cruise_mps": 12.139997743307383,
+      "exported_c3": 28.0000009343497,
+      "maximum_serialized_midpoint_error_km": 0.10030959693444494
+    },
+    {
+      "id": "b78d06fef769",
+      "title": "EEVEEJ \u00b7 Jupiter",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.0030277946817656434,
+      "exported_c3": 18.15341908052639,
+      "maximum_serialized_midpoint_error_km": 0.10060473132075111
+    },
+    {
+      "id": "ba1cfb4c18d8",
+      "title": "EVEEJ",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 221.25638681301822,
+          "total_cruise_mps": 221.37513056927193,
+          "dsm_mps": 0.0,
+          "exported_c3": 27.040677091693723,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 113.54399303288655,
+          "total_cruise_mps": 113.6641045779028,
+          "dsm_mps": 0.0,
+          "exported_c3": 27.999999932737126,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bcb9342b0346",
+      "title": "EVEEJS \u00b7 Saturn",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 235.71743632309523,
+          "total_cruise_mps": 235.71961412322796,
+          "dsm_mps": 0.0,
+          "exported_c3": 19.200724388666885,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 143.54027493465784,
+          "total_cruise_mps": 143.5424576783099,
+          "dsm_mps": 0.0,
+          "exported_c3": 19.099256405556815,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf01358ddea3",
+      "title": "EdvES \u00b7 Saturn",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0.048429611164526945,
+      "total_cruise_mps": 413.48410645959945,
+      "exported_c3": 49.74338872004209,
+      "maximum_serialized_midpoint_error_km": 0.09946007248274245
+    },
+    {
+      "id": "c119a55f3e77",
+      "title": "EVEEJ \u00b7 Jupiter",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 230.19723688627374,
+          "total_cruise_mps": 230.4278664221632,
+          "dsm_mps": 0.0,
+          "exported_c3": 19.198365711002126,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 143.07206367134776,
+          "total_cruise_mps": 143.30291344161745,
+          "dsm_mps": 0.0,
+          "exported_c3": 19.305005125716477,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c16155480c4d",
+      "title": "ReachStar\u2019s Eight-Planet Grand Tour",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 18.900258028448757,
+      "total_cruise_mps": 63.48598253603674,
+      "exported_c3": 12.621909649250085,
+      "maximum_serialized_midpoint_error_km": 0.10065452414176473
+    },
+    {
+      "id": "c236c8370c1e",
+      "title": "EVEEJX \u00b7 2026 ED138",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 318.04549819360295,
+          "total_cruise_mps": 318.04549819360295,
+          "dsm_mps": 0.0,
+          "exported_c3": 14.739629774176663,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 118.7401997369389,
+          "total_cruise_mps": 118.7401997369389,
+          "dsm_mps": 0.0,
+          "exported_c3": 14.724607863069693,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "c23b6d279e81",
+      "title": "EdvEJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 40.66385862616369,
+      "total_cruise_mps": 482.74019832413796,
+      "exported_c3": 116.56726810654244,
+      "maximum_serialized_midpoint_error_km": 0.09983892088178956
+    },
+    {
+      "id": "c31b5ba9508d",
+      "title": "EdvEJ \u00b7 Jupiter",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0.0042820808607274925,
+      "total_cruise_mps": 589.0466406401227,
+      "exported_c3": 24.936071596044215,
+      "maximum_serialized_midpoint_error_km": 0.09930326208203816
+    },
+    {
+      "id": "c5579dfa1bf1",
+      "title": "EdvEJX \u00b7 2026 ED138",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 80.97556861565877,
+      "total_cruise_mps": 726.9159926521163,
+      "exported_c3": 28.086326730148357,
+      "maximum_serialized_midpoint_error_km": 0.09922183934001022
+    },
+    {
+      "id": "c7d914d08b10",
+      "title": "EdvES \u00b7 Saturn",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0.02979965931773798,
+      "total_cruise_mps": 498.2970538419311,
+      "exported_c3": 50.10033726263593,
+      "maximum_serialized_midpoint_error_km": 0.09995996897978249
+    },
+    {
+      "id": "c7f0cb5ac6a5",
+      "title": "EVVMe \u00b7 Mercury",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 28.757308676572467,
+      "total_cruise_mps": 28.757780865937466,
+      "exported_c3": 20.35423792989363,
+      "maximum_serialized_midpoint_error_km": 0.09996447398366083
+    },
+    {
+      "id": "c7fd4644762d",
+      "title": "EVEEJU \u00b7 Uranus",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 51.53477860698297,
+      "total_cruise_mps": 51.5382061425156,
+      "exported_c3": 16.84588173131729,
+      "maximum_serialized_midpoint_error_km": 0.09991187818662715
+    },
+    {
+      "id": "c83df5b43a29",
+      "title": "EV \u00b7 Venus",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 18.878670673188026,
+      "maximum_serialized_midpoint_error_km": 0.09927857602189408
+    },
+    {
+      "id": "ce30e35d6b87",
+      "title": "EJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 60.66993925911597,
+      "total_cruise_mps": 60.66993925911597,
+      "exported_c3": 74.38526632259368,
+      "maximum_serialized_midpoint_error_km": 0.09985812686161992
+    },
+    {
+      "id": "d4ae6404331e",
+      "title": "EJS \u00b7 Saturn",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 155.26550602138096,
+          "total_cruise_mps": 155.26550602138096,
+          "dsm_mps": 0.0,
+          "exported_c3": 76.1554850843904,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 141.95250117927966,
+          "total_cruise_mps": 141.95250117927966,
+          "dsm_mps": 0.0,
+          "exported_c3": 76.13226246303476,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d58cdc007d6a",
+      "title": "EV \u00b7 Venus",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 15.612822175771342,
+      "maximum_serialized_midpoint_error_km": 0.09952984297572023
+    },
+    {
+      "id": "d5a557a70bef",
+      "title": "EdvEJ \u00b7 Jupiter",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 53.38391859433688,
+      "total_cruise_mps": 707.6456279541385,
+      "exported_c3": 25.61167413693083,
+      "maximum_serialized_midpoint_error_km": 0.10052316244378938
+    },
+    {
+      "id": "d7fd1704c890",
+      "title": "EdvEJS \u00b7 Saturn",
+      "accepted": true,
+      "selected_days": 60.0,
+      "patch_mps": 99.91367604878272,
+      "total_cruise_mps": 697.0551896078282,
+      "exported_c3": 25.21014768409553,
+      "maximum_serialized_midpoint_error_km": 0.09876945302746673
+    },
+    {
+      "id": "da96b885faee",
+      "title": "EdvEJS \u00b7 Saturn",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 18.056776980341972,
+      "total_cruise_mps": 292.2659736414105,
+      "exported_c3": 46.17294996463683,
+      "maximum_serialized_midpoint_error_km": 0.10013376869541185
+    },
+    {
+      "id": "dc5e428e5765",
+      "title": "EJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 5.098767823486464,
+      "total_cruise_mps": 5.098767823486464,
+      "exported_c3": 113.55582261365304,
+      "maximum_serialized_midpoint_error_km": 0.09970518693632661
+    },
+    {
+      "id": "dcf0958c43ee",
+      "title": "EJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 50.8883442666681,
+      "total_cruise_mps": 50.8883442666681,
+      "exported_c3": 100.45317186083605,
+      "maximum_serialized_midpoint_error_km": 0.09992145502235018
+    },
+    {
+      "id": "dd67c26fd41f",
+      "title": "Mars Life Explorer 2037 \u00b7 EM",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 17.3449164418343,
+      "maximum_serialized_midpoint_error_km": 0.09977452655263565
+    },
+    {
+      "id": "de41b7ae5ebe",
+      "title": "EdvEJU \u00b7 Uranus",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 38.405995054543546,
+      "total_cruise_mps": 611.7588776372879,
+      "exported_c3": 26.917010251619857,
+      "maximum_serialized_midpoint_error_km": 0.09923508426057108
+    },
+    {
+      "id": "de627203f107",
+      "title": "EdvEJEr \u00c2\u00b7 Eris",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 65.72613504987874,
+      "total_cruise_mps": 667.5758678927258,
+      "exported_c3": 24.707821882191396,
+      "maximum_serialized_midpoint_error_km": 0.09853480841210636
+    },
+    {
+      "id": "e053dea07bbe",
+      "title": "EVEEJU \u00b7 Uranus",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 51.18942574591555,
+      "total_cruise_mps": 51.19541937448399,
+      "exported_c3": 11.258166890997543,
+      "maximum_serialized_midpoint_error_km": 0.09976346707912159
+    },
+    {
+      "id": "e27f7e68d479",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.1326444266300663,
+      "exported_c3": 27.72874550567576,
+      "maximum_serialized_midpoint_error_km": 0.09991739801446291
+    },
+    {
+      "id": "e3b34d4d2d8a",
+      "title": "EV \u00b7 Venus",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 14.518050135017802,
+      "maximum_serialized_midpoint_error_km": 0.0993657924958485
+    },
+    {
+      "id": "e67fbcbb4ae7",
+      "title": "EVEEJS",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.004049621942830008,
+      "exported_c3": 21.99867913849083,
+      "maximum_serialized_midpoint_error_km": 0.10049893434796087
+    },
+    {
+      "id": "eb75baf7b607",
+      "title": "EdvEJU \u00b7 Uranus",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 13.404131989892258,
+      "total_cruise_mps": 285.44083381761465,
+      "exported_c3": 48.44151621158099,
+      "maximum_serialized_midpoint_error_km": 0.10047243740098064
+    },
+    {
+      "id": "eb95953df9dd",
+      "title": "UOP-family reconstruction \u00b7 EVEdvEU",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 5.033734028644482,
+      "total_cruise_mps": 642.5556053284918,
+      "exported_c3": 22.2166832969056,
+      "maximum_serialized_midpoint_error_km": 0.10063313248674595
+    },
+    {
+      "id": "eca634889af1",
+      "title": "EdvEJS \u00b7 Saturn",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 7.9710573805061475,
+      "total_cruise_mps": 277.72924105523356,
+      "exported_c3": 48.39425863261455,
+      "maximum_serialized_midpoint_error_km": 0.09982465302031014
+    },
+    {
+      "id": "eeaac8604197",
+      "title": "EJS \u00b7 Saturn",
+      "accepted": false,
+      "attempts": [
+        {
+          "days": 0.0,
+          "patch_mps": 166.40063757559142,
+          "total_cruise_mps": 166.40063757559142,
+          "dsm_mps": 0.0,
+          "exported_c3": 111.16343701166461,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        },
+        {
+          "days": 60.0,
+          "patch_mps": 142.858818158549,
+          "total_cruise_mps": 142.858818158549,
+          "dsm_mps": 0.0,
+          "exported_c3": 112.32851739852835,
+          "reasons": [
+            "Additional patch burns exceed publication threshold"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "f04ce76410a4",
+      "title": "EdvEJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 57.559419095345966,
+      "total_cruise_mps": 683.7842389258531,
+      "exported_c3": 25.417746419520782,
+      "maximum_serialized_midpoint_error_km": 0.09881407735941394
+    },
+    {
+      "id": "f13e9724c4ee",
+      "title": "EVVMe \u00b7 Mercury",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 15.189136128927139,
+      "total_cruise_mps": 15.189769062087299,
+      "exported_c3": 42.74211822862084,
+      "maximum_serialized_midpoint_error_km": 0.09980715129207783
+    },
+    {
+      "id": "f53fc65c9329",
+      "title": "Trident date-match \u2014 added maneuvers \u00b7 EdvEVEdvEJdvN",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 10.8924652065868,
+      "total_cruise_mps": 588.3253430419924,
+      "exported_c3": 15.195145701441035,
+      "maximum_serialized_midpoint_error_km": 0.10027217391428907
+    },
+    {
+      "id": "f6a99b81a77c",
+      "title": "EdvEJU \u00b7 Uranus",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 62.10556546490833,
+      "total_cruise_mps": 697.4119293354812,
+      "exported_c3": 26.031266558921473,
+      "maximum_serialized_midpoint_error_km": 0.09886957327296653
+    },
+    {
+      "id": "f6e0a237831a",
+      "title": "EJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0.25685789670559567,
+      "total_cruise_mps": 0.25685789670559567,
+      "exported_c3": 140.73416123066107,
+      "maximum_serialized_midpoint_error_km": 0.09978594363858533
+    },
+    {
+      "id": "f6f8cd0659c3",
+      "title": "EV \u00b7 Venus",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 17.151473913888296,
+      "maximum_serialized_midpoint_error_km": 0.09864933219803239
+    },
+    {
+      "id": "f7328d340de1",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.053140269422313584,
+      "exported_c3": 22.570326137890277,
+      "maximum_serialized_midpoint_error_km": 0.09856835522836092
+    },
+    {
+      "id": "faff87d9f20f",
+      "title": "EdvEJEr \u00c2\u00b7 Eris",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 57.79409143343934,
+      "total_cruise_mps": 665.0199235245053,
+      "exported_c3": 24.988964198398307,
+      "maximum_serialized_midpoint_error_km": 0.0997249473982631
+    },
+    {
+      "id": "fb595fa890ce",
+      "title": "EdvEJU \u00b7 Uranus",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 57.75106340744507,
+      "total_cruise_mps": 757.5022108951661,
+      "exported_c3": 48.69973426292559,
+      "maximum_serialized_midpoint_error_km": 0.09909870932638745
+    },
+    {
+      "id": "fb9494bd87e1",
+      "title": "EdvEJEr \u00c2\u00b7 Eris",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 63.85563884595834,
+      "total_cruise_mps": 761.5955575033302,
+      "exported_c3": 28.52118362434986,
+      "maximum_serialized_midpoint_error_km": 0.09869995044848347
+    },
+    {
+      "id": "fbe2c0a6d793",
+      "title": "EVEEJN \u00b7 Neptune",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 15.589259480388922,
+      "total_cruise_mps": 15.59525227266396,
+      "exported_c3": 11.237433953668074,
+      "maximum_serialized_midpoint_error_km": 0.09998480091223237
+    },
+    {
+      "id": "fd54bf2484be",
+      "title": "EVEEJ",
+      "accepted": true,
+      "selected_days": 30.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0.07340511440545215,
+      "exported_c3": 21.279336743331072,
+      "maximum_serialized_midpoint_error_km": 0.09993083705527481
+    },
+    {
+      "id": "mars-147775d1f4",
+      "title": "EM \u00b7 Mars",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 39.42836648804736,
+      "maximum_serialized_midpoint_error_km": 0.10025992119346652
+    },
+    {
+      "id": "mars-56ba6bdc55",
+      "title": "EM \u00b7 Mars",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 9.03014637089781,
+      "maximum_serialized_midpoint_error_km": 0.10021421362866706
+    },
+    {
+      "id": "mars-8b0dcb7414",
+      "title": "EM \u00b7 Mars",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 6.38721621186236,
+      "total_cruise_mps": 6.38721621186236,
+      "exported_c3": 7.831368510398235,
+      "maximum_serialized_midpoint_error_km": 0.099889270554298
+    },
+    {
+      "id": "mars-985926baf0",
+      "title": "EM \u00b7 Mars",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 6.973918734689694,
+      "total_cruise_mps": 6.973918734689694,
+      "exported_c3": 7.81842240857749,
+      "maximum_serialized_midpoint_error_km": 0.09897473068146014
+    },
+    {
+      "id": "mars-b18e7c287c",
+      "title": "EM \u00b7 Mars",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 35.2794394632907,
+      "maximum_serialized_midpoint_error_km": 0.09840067709761088
+    },
+    {
+      "id": "mars-f2d061b975",
+      "title": "EM \u00b7 Mars",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 0,
+      "total_cruise_mps": 0,
+      "exported_c3": 25.510664505873635,
+      "maximum_serialized_midpoint_error_km": 0.09951592212471626
+    }
+  ]
+}

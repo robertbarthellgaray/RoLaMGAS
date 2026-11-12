@@ -1,5 +1,5 @@
 // Analytic diagnostics only: never modifies saved burns, controls or trajectories.
-import {state,bodyName} from './community.js?v=20261112b';
+import {state,bodyName} from './community.js?v=20261112d';
 const AU=149597870.7,DAY=86400,MU=132712440041.27942;
 export const FLYBY_BODIES=Object.freeze({
  '199':['Mercury',22031.86855,2439.7,200],'299':['Venus',324858.592,6051.8,300],

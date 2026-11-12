@@ -1,0 +1,64 @@
+{
+  "vector_audit": {
+    "passed": true,
+    "reasons": [],
+    "method": "Independent stored-vector patched-conic screen",
+    "joins": [
+      {
+        "body": "Earth",
+        "event_index": 1,
+        "jd": 2464137.6237744545,
+        "mismatch_mps": 0.016798493541969606,
+        "vinf_in_kms": 9.682636389840738,
+        "vinf_out_kms": 9.68265318833428,
+        "turn_deg": 44.04670677537513,
+        "max_turn_deg": 46.230740297662166,
+        "inferred_altitude_km": 708.277154694415,
+        "minimum_altitude_km": 200.0,
+        "powered_mps": 0.0,
+        "powered_geometry_audited": false,
+        "clearance_above_floor_km": 508.277154694415
+      },
+      {
+        "body": "Jupiter",
+        "event_index": 2,
+        "jd": 2464818.5445508,
+        "mismatch_mps": 0.06536185894923108,
+        "vinf_in_kms": 7.201182356996924,
+        "vinf_out_kms": 7.2011169951379745,
+        "turn_deg": 69.2065550303437,
+        "max_turn_deg": 150.8046508683098,
+        "inferred_altitude_km": 1787388.4328064735,
+        "minimum_altitude_km": 10000.0,
+        "powered_mps": 0.0,
+        "powered_geometry_audited": false,
+        "clearance_above_floor_km": 1777388.4328064735
+      }
+    ],
+    "max_vinf_mismatch_mps": 0.06536185894923108,
+    "max_unpowered_vinf_mismatch_mps": 0.06536185894923108,
+    "max_single_dsm_mps": 694.55124986687,
+    "max_powered_flyby_mps": 0.0,
+    "cruise_total_mps": 694.55124986687,
+    "policy": {
+      "max_unpowered_speed_mismatch_mps": 1.0,
+      "max_single_dsm_mps": 700.0,
+      "max_powered_flyby_mps": 200.0,
+      "max_total_cruise_mps": 1500.0
+    }
+  },
+  "independent_coasts": {
+    "maximum_dop853_endpoint_error_km": 0.009353730879326838,
+    "maximum_velocity_difference_kms": 1.4273197767907616e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "desktop_import": {
+    "source": "Website trajectory transfer",
+    "maximum_coast_position_difference_km": 0.0,
+    "maximum_coast_velocity_difference_kms": 0.0,
+    "optimization_performed": false,
+    "source_cruise_delta_v_kms": 0.69455124986687,
+    "recomputed_cruise_delta_v_kms": 0.69455124986687
+  }
+}

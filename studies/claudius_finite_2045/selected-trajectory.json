@@ -1,0 +1,218 @@
+{
+  "format": "rolamgas-search-options",
+  "schema_version": 1,
+  "app_version": "0.2.5-test2",
+  "settings": {
+    "target": "Uranus",
+    "launch_start": "2032-04-29",
+    "launch_end": "2032-04-30",
+    "max_years": 30.0,
+    "vinf_tolerance_mps": 20.0,
+    "min_c3": 6.25,
+    "max_c3": 200.0,
+    "max_arrival_vinf_kms": 15.0,
+    "max_dsm_kms": 1.5,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 5.0,
+    "minimum_altitude_km": {
+      "Mercury": 200.0,
+      "Venus": 300.0,
+      "Earth": 200.0,
+      "Mars": 200.0,
+      "Jupiter": 10000.0,
+      "Saturn": 10000.0,
+      "Uranus": 1000.0,
+      "Neptune": 1000.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EdvEJU"
+    ],
+    "route_overrides": {
+      "EdvEJU": {
+        "leg_days": [
+          [
+            500,
+            1200
+          ],
+          [
+            300,
+            1800
+          ],
+          [
+            1800,
+            5000
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              0,
+              true
+            ],
+            [
+              1,
+              true
+            ],
+            [
+              1,
+              false
+            ],
+            [
+              2,
+              true
+            ],
+            [
+              2,
+              false
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "arrival_date": "2045-12-26",
+    "arrival_tolerance_days": 1.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "max_venus_c3": 30.0
+  },
+  "trajectory": {
+    "schema_version": 1,
+    "sequence": "EdvEJU",
+    "body_ids": [
+      "399",
+      "399",
+      "599",
+      "799"
+    ],
+    "dates_jd_tdb": [
+      2463352.5,
+      2464137.6237744545,
+      2464818.5445508,
+      2468341.469261941
+    ],
+    "branches": [
+      [
+        2,
+        true
+      ],
+      [
+        0,
+        true
+      ],
+      [
+        0,
+        true
+      ]
+    ],
+    "dsm_controls": [
+      {
+        "leg_index": 0,
+        "fraction": 0.4168095701812793,
+        "departure_offset_kms": [
+          3.9093805640529213,
+          -3.686337472418373,
+          -0.5741870909665231
+        ]
+      }
+    ],
+    "segments": [
+      {
+        "start_jd": 2463352.5,
+        "end_jd": 2463679.7471029693,
+        "r": [
+          -115833315.8929428,
+          -96384582.4836482,
+          7405.575511485338
+        ],
+        "v": [
+          22.478820539310732,
+          -26.696045469580827,
+          -0.5724101233884088
+        ]
+      },
+      {
+        "start_jd": 2463679.7471029693,
+        "end_jd": 2464137.6237744545,
+        "r": [
+          293202346.2442288,
+          157857340.40212107,
+          -1101762.4164270714
+        ],
+        "v": [
+          -5.130516337618788,
+          14.473393739967246,
+          0.015500737596804212
+        ]
+      },
+      {
+        "start_jd": 2464137.6237744545,
+        "end_jd": 2464818.5445508,
+        "r": [
+          5932913.56085901,
+          -151931812.5448203,
+          11710.375586691813
+        ],
+        "v": [
+          38.32580758302258,
+          -2.2280376508907125,
+          -1.0633517952273606
+        ]
+      },
+      {
+        "start_jd": 2464818.5445508,
+        "end_jd": 2468341.469261941,
+        "r": [
+          362322059.34518117,
+          658615139.9601924,
+          -10843219.828365378
+        ],
+        "v": [
+          -9.996484114088933,
+          13.92969851310251,
+          0.10570544217667091
+        ]
+      }
+    ],
+    "metrics": {
+      "launch_c3_km2_s2": 29.29854263995979,
+      "total_dsm_kms": 0.69455124986687,
+      "arrival_vinf_kms": 5.379790486596312,
+      "duration_years": 13.659053420783119
+    }
+  },
+  "display_name": "CLAUDIUS 2045 - finite-SOI refinement",
+  "source_candidate_id": "61a83e8f369c"
+}

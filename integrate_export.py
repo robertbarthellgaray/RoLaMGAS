@@ -160,6 +160,23 @@ def revolutions(segment):
     return max(0,int(np.floor(sweep/(2*np.pi)+1e-8)))
 
 
+def continued_reference_sweep(r,v,ra,rb,start_seconds,end_seconds):
+    """Unwrapped true-anomaly change, including date shifts exceeding an orbit."""
+    radius=np.linalg.norm(r);energy=v@v/2-MU_SUN/radius
+    if energy>=0:return 0.
+    h=unit(np.cross(r,v));eccentricity=np.cross(v,np.cross(r,v))/MU_SUN-r/radius
+    eccentricity_norm=np.linalg.norm(eccentricity);a=-MU_SUN/(2*energy);rate=np.sqrt(MU_SUN/a**3)
+    if eccentricity_norm<1e-9:return float(rate*(end_seconds-start_seconds))
+    def wrapped_angle(point):
+        value=np.arctan2(h@np.cross(eccentricity,point),eccentricity@point)
+        return float((value+np.pi)%(2*np.pi)-np.pi)
+    first=wrapped_angle(r)
+    E=np.arctan2(np.sqrt(max(0.,1-eccentricity_norm**2))*np.sin(first),eccentricity_norm+np.cos(first))
+    mean0=E-eccentricity_norm*np.sin(E)
+    def phase(point,seconds):return wrapped_angle(point)+2*np.pi*np.floor((mean0+rate*seconds+np.pi)/(2*np.pi))
+    return float(phase(rb,end_seconds)-phase(ra,start_seconds))
+
+
 def solar_velocities(start,end,r0,r1,reference,low=True,boundary_velocities=None):
     """Keep the physical winding, even when finite SOI endpoints cross 0/360°."""
     if end<=start:
@@ -169,9 +186,7 @@ def solar_velocities(start,end,r0,r1,reference,low=True,boundary_velocities=None
     def angle(a,b):return float(np.arctan2(np.dot(h,np.cross(a,b)),np.dot(a,b)))
     ra,reference_departure=kepler(r,v,(start-reference['start_jd'])*DAY)
     rb,_=kepler(r,v,(end-reference['start_jd'])*DAY)
-    original_end,_=kepler(r,v,(reference['end_jd']-reference['start_jd'])*DAY)
-    sweep=reference_sweep(tuple(r),tuple(v),(reference['end_jd']-reference['start_jd'])*DAY)
-    sweep+=angle(original_end,rb)-angle(r,ra)
+    sweep=continued_reference_sweep(r,v,ra,rb,(start-reference['start_jd'])*DAY,(end-reference['start_jd'])*DAY)
     finite_angle=angle(r0,r1)%(2*np.pi)
     m=max(0,int(round((sweep-finite_angle)/(2*np.pi))))
     choices=[]
@@ -431,10 +446,13 @@ def node_coast_boundary(node,outgoing):
     return node['date'],state
 
 
+MAX_PATCH_EPOCH_SHIFT_DAYS=365.25
+
+
 def validate_patch_epoch_shift(value):
     value=float(value)
-    if not math.isfinite(value) or not 0<=value<=2:
-        raise ValueError('Finite-patch flyby date adjustment must be between 0 and 2 days')
+    if not math.isfinite(value) or not 0<=value<=MAX_PATCH_EPOCH_SHIFT_DAYS:
+        raise ValueError(f'Finite-patch flyby date adjustment must be between 0 and {MAX_PATCH_EPOCH_SHIFT_DAYS:g} days')
     return value
 
 

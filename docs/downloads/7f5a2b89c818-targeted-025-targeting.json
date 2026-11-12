@@ -1,0 +1,134 @@
+{
+  "applied": true,
+  "reason": "Lower explicit cruise budget",
+  "baseline_cruise_delta_v_kms": 1.2372863142451935,
+  "matched_cruise_delta_v_kms": 5.2969696215212726e-05,
+  "evaluations": 7762,
+  "remaining_patch_delta_v_kms": 1.0382094817734244e-09,
+  "maximum_patch_burn_kms": 3.62577312266052e-10,
+  "matched_dsm_delta_v_kms": 0.0,
+  "final_solver_patch_delta_v_kms": 3.0831566089506613e-09,
+  "final_solver_cruise_delta_v_kms": 5.297174351034262e-05,
+  "scipy_success": true,
+  "scipy_message": "`xtol` termination condition is satisfied.",
+  "maximum_periapsis_epoch_shift_days": 30.0,
+  "cost_optimizer_success": false,
+  "cost_optimizer_message": "Iteration limit reached",
+  "cost_optimizer_stages": [
+    {
+      "success": false,
+      "message": "Iteration limit reached",
+      "best_feasible_kms": 5.2969696215212726e-05
+    },
+    {
+      "success": false,
+      "message": "Iteration limit reached",
+      "best_feasible_kms": 5.2969696215212726e-05
+    }
+  ],
+  "continuity_polish": null,
+  "cost_objective": "Sum of actual DSM, periapsis and finite-patch vector impulse magnitudes; individual DSM/patch and total cruise caps constrained",
+  "parameter_schema": [
+    {
+      "node_index": 0,
+      "offset": 0,
+      "count": 4
+    },
+    {
+      "node_index": 1,
+      "offset": 4,
+      "count": 6
+    },
+    {
+      "node_index": 2,
+      "offset": 10,
+      "count": 6
+    },
+    {
+      "node_index": 3,
+      "offset": 16,
+      "count": 6
+    },
+    {
+      "node_index": 4,
+      "offset": 22,
+      "count": 4
+    }
+  ],
+  "parameter_values": [
+    -0.0031457412347606632,
+    0.00034919439407750364,
+    0.013956990259295475,
+    -0.018815856542510306,
+    0.0014764979086693047,
+    0.00015207019596100147,
+    -0.001266445617405903,
+    0.007606487269235987,
+    -0.004402472551393263,
+    -0.15225854163790437,
+    0.02747071764978079,
+    -0.06496921767703756,
+    0.010938089288303305,
+    -0.0027451418646534387,
+    -0.0025517458911480198,
+    -0.10360189111516276,
+    0.02987451924403476,
+    -0.05661872687363864,
+    0.0072906494233190575,
+    -0.024021736010002948,
+    -0.002197339157246303,
+    -0.13919777215887305,
+    -0.013343619116625923,
+    0.013655057518612112,
+    -0.017470200356866715,
+    -0.0813771466986171
+  ],
+  "changes": [
+    {
+      "body": "Earth",
+      "source_jd_tdb": 2463032.5,
+      "exported_jd_tdb": 2463032.5,
+      "date": "2031-06-15T00:00:00 TDB",
+      "epoch_shift_days": 0.0,
+      "source_altitude_km": 200.0,
+      "exported_altitude_km": 200.0000000000009
+    },
+    {
+      "body": "Venus",
+      "source_jd_tdb": 2463110.7425988424,
+      "exported_jd_tdb": 2463110.590340301,
+      "date": "2031-09-01T02:10:05 TDB",
+      "epoch_shift_days": -0.15225854143500328,
+      "source_altitude_km": 17633.09801541121,
+      "exported_altitude_km": 17765.444713422487
+    },
+    {
+      "body": "Earth",
+      "source_jd_tdb": 2463783.2916492363,
+      "exported_jd_tdb": 2463783.1880473453,
+      "date": "2033-07-04T16:30:47 TDB",
+      "epoch_shift_days": -0.1036018910817802,
+      "source_altitude_km": 3843.4786740714926,
+      "exported_altitude_km": 3833.4905239472528
+    },
+    {
+      "body": "Earth",
+      "source_jd_tdb": 2464513.790928947,
+      "exported_jd_tdb": 2464513.6517311744,
+      "date": "2035-07-05T03:38:29 TDB",
+      "epoch_shift_days": -0.13919777236878872,
+      "source_altitude_km": 717.8917325330158,
+      "exported_altitude_km": 705.5993078426982
+    },
+    {
+      "body": "Jupiter",
+      "source_jd_tdb": 2465272.232806794,
+      "exported_jd_tdb": 2465272.232806794,
+      "date": "2037-08-01T17:35:14 TDB",
+      "epoch_shift_days": 0.0,
+      "source_altitude_km": 10000.0,
+      "exported_altitude_km": 10000.0
+    }
+  ],
+  "note": "Local finite-SOI matching, not a global minimum. Source candidate is unchanged. Remaining velocity gaps are explicit burns, not hidden or erased."
+}

@@ -49,14 +49,26 @@ class FiniteTargetingTests(unittest.TestCase):
         t,state=node_coast_boundary(new[0],True)
         self.assertAlmostEqual(np.linalg.norm(state[:3]-ep.state('Earth',t)[:3]),new[0]['soi'],delta=.01)
 
+    def test_large_date_adjustments_preserve_all_completed_reference_orbits(self):
+        r=np.array([AU,0.,0.]);v=np.array([0.,np.sqrt(MU_SUN/AU),0.])
+        period=2*np.pi*np.sqrt(AU**3/MU_SUN)/DAY
+        reference=dict(r=r.tolist(),v=v.tolist(),start_jd=JD0,end_jd=JD0+period)
+        end=JD0+4*period-1.;r1,v1=kepler(r,v,(end-JD0)*DAY)
+        piece=solar_piece(JD0,end,r,r1,reference,boundary_velocities=(v,v1))
+        self.assertEqual(piece['revolutions'],3)
+        np.testing.assert_allclose(piece['state'](JD0)[3:],v,atol=1e-8)
+        np.testing.assert_allclose(piece['state'](end)[3:],v1,atol=1e-8)
+
     def test_analytic_fit_and_numerically_integrated_hyperbola_match(self):
         ep=CircularPlanets();node=planet_pieces('Earth',JD0,ep,uout=np.array([8.,1.,.3]),departure=True)
         analytic=retarget_node(node,ep,node['peri_position'],node['peri_in_velocity'],node['peri_out_velocity'],JD0)
         for t in np.linspace(node['pieces'][0]['start'],node['pieces'][0]['end'],5):
             np.testing.assert_allclose(analytic['pieces'][0]['state'](t),node['pieces'][0]['state'](t),atol=1e-4)
-        for invalid in [-1,3,float('nan'),float('inf')]:
+        for invalid in [-1,366,float('nan'),float('inf')]:
             with self.assertRaises(ValueError):validate_patch_epoch_shift(invalid)
         self.assertEqual(validate_patch_epoch_shift(0),0)
+        self.assertEqual(validate_patch_epoch_shift(30),30)
+        self.assertEqual(validate_patch_epoch_shift(365.25),365.25)
 
 
 if __name__=='__main__':unittest.main()

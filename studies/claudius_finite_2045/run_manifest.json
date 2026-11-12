@@ -1,0 +1,121 @@
+{
+  "config": {
+    "target": "Uranus",
+    "launch_start": "2032-04-29",
+    "launch_end": "2032-04-30",
+    "max_years": 30.0,
+    "vinf_tolerance_mps": 20.0,
+    "min_c3": 6.25,
+    "max_c3": 200.0,
+    "max_arrival_vinf_kms": 15.0,
+    "max_dsm_kms": 1.5,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 5.0,
+    "minimum_altitude_km": {
+      "Mercury": 200.0,
+      "Venus": 300.0,
+      "Earth": 200.0,
+      "Mars": 200.0,
+      "Jupiter": 10000.0,
+      "Saturn": 10000.0,
+      "Uranus": 1000.0,
+      "Neptune": 1000.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "workers": 4,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "cache": "cache",
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EdvEJU"
+    ],
+    "route_overrides": {
+      "EdvEJU": {
+        "leg_days": [
+          [
+            500,
+            1200
+          ],
+          [
+            300,
+            1800
+          ],
+          [
+            1800,
+            5000
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              0,
+              true
+            ],
+            [
+              1,
+              true
+            ],
+            [
+              1,
+              false
+            ],
+            [
+              2,
+              true
+            ],
+            [
+              2,
+              false
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "local_refinement": null,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "append_flyby": null,
+    "arrival_date": "2045-12-26",
+    "arrival_tolerance_days": 1.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "max_venus_c3": 30.0,
+    "effective_min_c3": 6.25,
+    "launch_jd": [
+      2463351.5,
+      2463352.5
+    ],
+    "arrival_window_jd": [
+      2468339.5,
+      2468341.5
+    ]
+  }
+}

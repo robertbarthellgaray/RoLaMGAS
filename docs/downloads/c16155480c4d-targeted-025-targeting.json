@@ -1,0 +1,346 @@
+{
+  "applied": true,
+  "reason": "Lower explicit cruise budget",
+  "baseline_cruise_delta_v_kms": 1.7698570327638783,
+  "matched_cruise_delta_v_kms": 0.06348598241025065,
+  "evaluations": 39377,
+  "remaining_patch_delta_v_kms": 0.018900257327128897,
+  "maximum_patch_burn_kms": 0.008629274766540438,
+  "matched_dsm_delta_v_kms": 0.04458524192032407,
+  "final_solver_patch_delta_v_kms": 0.0009067433457095917,
+  "final_solver_cruise_delta_v_kms": 0.14115937974247447,
+  "scipy_success": false,
+  "scipy_message": "The maximum number of function evaluations is exceeded.",
+  "maximum_periapsis_epoch_shift_days": 30.0,
+  "cost_optimizer_success": false,
+  "cost_optimizer_message": "Iteration limit reached",
+  "cost_optimizer_stages": [
+    {
+      "success": false,
+      "message": "Iteration limit reached",
+      "best_feasible_kms": 0.06392508359592447
+    },
+    {
+      "success": false,
+      "message": "Iteration limit reached",
+      "best_feasible_kms": 0.0637034906683597
+    }
+  ],
+  "continuity_polish": {
+    "success": false,
+    "message": "Iteration limit reached",
+    "total_budget_ceiling_kms": 0.0637034906683597,
+    "patch_before_kms": 0.019117765585237947,
+    "patch_after_kms": 0.018900257327128897
+  },
+  "cost_objective": "Sum of actual DSM, periapsis and finite-patch vector impulse magnitudes; individual DSM/patch and total cruise caps constrained",
+  "parameter_schema": [
+    {
+      "node_index": 0,
+      "offset": 0,
+      "count": 4
+    },
+    {
+      "node_index": 1,
+      "offset": 4,
+      "count": 6
+    },
+    {
+      "node_index": 2,
+      "offset": 10,
+      "count": 6
+    },
+    {
+      "node_index": 3,
+      "offset": 16,
+      "count": 6
+    },
+    {
+      "node_index": 4,
+      "offset": 22,
+      "count": 6
+    },
+    {
+      "node_index": 5,
+      "offset": 28,
+      "count": 6
+    },
+    {
+      "node_index": 6,
+      "offset": 34,
+      "count": 6
+    },
+    {
+      "node_index": 7,
+      "offset": 40,
+      "count": 6
+    },
+    {
+      "node_index": 8,
+      "offset": 46,
+      "count": 6
+    },
+    {
+      "node_index": 9,
+      "offset": 52,
+      "count": 6
+    },
+    {
+      "node_index": 10,
+      "offset": 58,
+      "count": 6
+    },
+    {
+      "node_index": 11,
+      "offset": 64,
+      "count": 6
+    },
+    {
+      "node_index": 12,
+      "offset": 70,
+      "count": 6
+    },
+    {
+      "node_index": 13,
+      "offset": 76,
+      "count": 6
+    },
+    {
+      "node_index": 14,
+      "offset": 82,
+      "count": 4
+    }
+  ],
+  "parameter_values": [
+    0.0029032390460048295,
+    0.007732733326001935,
+    0.011988266468483416,
+    -0.03122534732821708,
+    0.004699618594476554,
+    0.009462651240610766,
+    0.012235619099954726,
+    0.020868741423470873,
+    -0.013752583301322617,
+    -0.024230988190526888,
+    0.005058833256056595,
+    -0.0010826360554978265,
+    0.001633990004429075,
+    0.03203777132118868,
+    0.0027717211252234726,
+    0.7227374176751288,
+    -0.003976053392448905,
+    0.0009836742606270628,
+    0.007927577760784186,
+    0.01823565678582004,
+    -0.0040326565789706986,
+    0.5642591688377597,
+    -0.0014619245972995556,
+    0.00437330771456475,
+    0.010195630503909826,
+    -0.0007082538852683402,
+    0.0004098445457454092,
+    0.45811575836175805,
+    -0.00021817427892518348,
+    0.0013888555052204191,
+    0.0002604419805358737,
+    0.03477045489662055,
+    -0.003286851427916889,
+    -0.018167790697560325,
+    0.0023566012102133292,
+    0.0008382175047461778,
+    -0.0002285379926013946,
+    -0.09023741784980957,
+    0.0006127736769461984,
+    0.009318871337545515,
+    -6.733623149270331e-05,
+    -0.05732932028814225,
+    -0.0029540394284389244,
+    -0.00654468851628813,
+    0.0016177809446451398,
+    -0.11037624589155418,
+    -0.03765918513541914,
+    0.031039924275838147,
+    -0.004066167692573679,
+    1.7486687564644763,
+    0.001369179818727443,
+    -0.13682246435575796,
+    0.000928739417698959,
+    0.0005965229499343495,
+    -0.009070010317759197,
+    0.10763746395865977,
+    0.0010086158503938283,
+    -0.48495910310770085,
+    0.008648318162592084,
+    -0.010940029306990486,
+    -0.006034465858652586,
+    2.9838698533039953,
+    0.00034794396859192674,
+    -0.6155468701348518,
+    -0.0012030120572687777,
+    -0.0002921682847748031,
+    0.00015415210341493125,
+    0.0404439044076615,
+    -0.019895459031984433,
+    -0.855260871279405,
+    2.968793223701857e-05,
+    -3.138055088024184e-05,
+    0.0013722995863488059,
+    0.05442390803321788,
+    -0.0048191177575390605,
+    -1.5164396433094287,
+    -2.4976691125638496e-05,
+    6.66166816708903e-05,
+    -0.00013770887904942773,
+    0.0023080519631254156,
+    -0.0010381155049466093,
+    -0.6665297095861807,
+    -0.0031466164857127522,
+    0.006333167262821324,
+    -5.84371130863823e-06,
+    -0.000739483417343639,
+    0.23970056717177946,
+    -0.2177488807876785,
+    -0.00018367534682972282,
+    -0.5575186147305817,
+    0.3946770018757368,
+    -1.0752549594855432
+  ],
+  "changes": [
+    {
+      "body": "Earth",
+      "source_jd_tdb": 2440812.817524262,
+      "exported_jd_tdb": 2440812.817524262,
+      "date": "1970-08-14T07:37:14 TDB",
+      "epoch_shift_days": 0.0,
+      "source_altitude_km": 200.0,
+      "exported_altitude_km": 200.0
+    },
+    {
+      "body": "Venus",
+      "source_jd_tdb": 2440943.9977540737,
+      "exported_jd_tdb": 2440943.9735230855,
+      "date": "1970-12-23T11:21:52 TDB",
+      "epoch_shift_days": -0.02423098823055625,
+      "source_altitude_km": 11013.270646071873,
+      "exported_altitude_km": 11240.246672698948
+    },
+    {
+      "body": "Mars",
+      "source_jd_tdb": 2441193.100734213,
+      "exported_jd_tdb": 2441193.8234716305,
+      "date": "1971-08-30T07:45:47 TDB",
+      "epoch_shift_days": 0.7227374175563455,
+      "source_altitude_km": 2104.4026920735146,
+      "exported_altitude_km": 2166.4033889673997
+    },
+    {
+      "body": "Earth",
+      "source_jd_tdb": 2441402.9011465516,
+      "exported_jd_tdb": 2441403.4654057203,
+      "date": "1972-03-26T23:10:11 TDB",
+      "epoch_shift_days": 0.5642591686919332,
+      "source_altitude_km": 5985.076158951936,
+      "exported_altitude_km": 6092.826784024578
+    },
+    {
+      "body": "Venus",
+      "source_jd_tdb": 2441624.3673757794,
+      "exported_jd_tdb": 2441624.825491538,
+      "date": "1972-11-03T07:48:42 TDB",
+      "epoch_shift_days": 0.4581157583743334,
+      "source_altitude_km": 10319.881508508694,
+      "exported_altitude_km": 10312.752000854874
+    },
+    {
+      "body": "Venus",
+      "source_jd_tdb": 2441849.068788374,
+      "exported_jd_tdb": 2441849.0506205834,
+      "date": "1973-06-15T13:12:53 TDB",
+      "epoch_shift_days": -0.01816779049113393,
+      "source_altitude_km": 969.0909392381755,
+      "exported_altitude_km": 994.5338253837663
+    },
+    {
+      "body": "Mercury",
+      "source_jd_tdb": 2442254.4330744715,
+      "exported_jd_tdb": 2442254.442393343,
+      "date": "1974-07-25T22:37:02 TDB",
+      "epoch_shift_days": 0.009318871423602104,
+      "source_altitude_km": 2016.9029813579964,
+      "exported_altitude_km": 1860.130103963479
+    },
+    {
+      "body": "Venus",
+      "source_jd_tdb": 2442295.854435671,
+      "exported_jd_tdb": 2442295.7440594253,
+      "date": "1974-09-05T05:51:26 TDB",
+      "epoch_shift_days": -0.11037624580785632,
+      "source_altitude_km": 1814.0083390601276,
+      "exported_altitude_km": 1803.8058142346235
+    },
+    {
+      "body": "Venus",
+      "source_jd_tdb": 2442520.5551227797,
+      "exported_jd_tdb": 2442520.4183003153,
+      "date": "1975-04-17T22:02:21 TDB",
+      "epoch_shift_days": -0.13682246441021562,
+      "source_altitude_km": 251.41825624664034,
+      "exported_altitude_km": 258.15064347521366
+    },
+    {
+      "body": "Venus",
+      "source_jd_tdb": 2442895.2424754906,
+      "exported_jd_tdb": 2442894.7575163874,
+      "date": "1976-04-26T06:10:49 TDB",
+      "epoch_shift_days": -0.48495910316705704,
+      "source_altitude_km": 636.2479826338786,
+      "exported_altitude_km": 680.1427237023245
+    },
+    {
+      "body": "Earth",
+      "source_jd_tdb": 2443728.390730479,
+      "exported_jd_tdb": 2443727.7751836088,
+      "date": "1978-08-07T06:36:15 TDB",
+      "epoch_shift_days": -0.6155468700453639,
+      "source_altitude_km": 131.9940468612058,
+      "exported_altitude_km": 169.41064768765955
+    },
+    {
+      "body": "Jupiter",
+      "source_jd_tdb": 2444291.4166038726,
+      "exported_jd_tdb": 2444290.561343001,
+      "date": "1980-02-21T01:28:20 TDB",
+      "epoch_shift_days": -0.8552608713507652,
+      "source_altitude_km": 831343.1613173224,
+      "exported_altitude_km": 865242.3732166274
+    },
+    {
+      "body": "Saturn",
+      "source_jd_tdb": 2444840.3397852853,
+      "exported_jd_tdb": 2444838.823345642,
+      "date": "1981-08-22T07:45:37 TDB",
+      "epoch_shift_days": -1.5164396432228386,
+      "source_altitude_km": 33792.43933858942,
+      "exported_altitude_km": 35123.201039354855
+    },
+    {
+      "body": "Uranus",
+      "source_jd_tdb": 2446160.966918309,
+      "exported_jd_tdb": 2446160.3003885997,
+      "date": "1985-04-04T19:12:33 TDB",
+      "epoch_shift_days": -0.6665297094732523,
+      "source_altitude_km": 37745.88103661002,
+      "exported_altitude_km": 37830.79038937911
+    },
+    {
+      "body": "Neptune",
+      "source_jd_tdb": 2447265.553628953,
+      "exported_jd_tdb": 2447265.553628953,
+      "date": "1988-04-14T01:17:13 TDB",
+      "epoch_shift_days": 0.0,
+      "source_altitude_km": 1000.0,
+      "exported_altitude_km": 1000.0000000000036
+    }
+  ],
+  "note": "Local finite-SOI matching, not a global minimum. Source candidate is unchanged. Remaining velocity gaps are explicit burns, not hidden or erased."
+}

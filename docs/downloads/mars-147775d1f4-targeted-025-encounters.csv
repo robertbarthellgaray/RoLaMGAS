@@ -1,0 +1,3 @@
+body,julian_date_tdb,date,periapsis_radius_km,altitude_km,target_center_distance_km
+Earth,2462786.5,2030-10-12T00:00:00 TDB,6578.136999999999,199.9999999999991,
+Mars,2463096.5,2031-08-18T00:00:00 TDB,3596.1900000000005,200.00000000000045,

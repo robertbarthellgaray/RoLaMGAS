@@ -1,11 +1,11 @@
 import {historicalMatch} from './historical_labels.js?v=20261108b';
 import {publicationDate} from './publication_dates.js?v=20261110b';
-import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261111c';
+import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261112d';
 import './mission_metrics.js?v=20261110a';
-import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261112b';
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261112d';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261108b';
-import {trimAlternatives,groupLaunches,launchTimestamp} from './library_curation.js?v=20261112b';
-import {storedMismatch,estimateFlybys,FLYBY_BODIES} from './flyby_diagnostics.js?v=20261112b';
+import {trimAlternatives,groupLaunches,launchTimestamp} from './library_curation.js?v=20261112d';
+import {storedMismatch,estimateFlybys,FLYBY_BODIES} from './flyby_diagnostics.js?v=20261112d';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
@@ -241,7 +241,7 @@ async function selectCandidate(id) {
   $('plot-message').hidden = false; $('plot-message').textContent = 'Loading saved flight…';
   try {
     let c = cache.get(id);
-    if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json?v=20261112b`); cache.set(id, c); }
+    if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json?v=20261112d`); cache.set(id, c); }
     if (token !== requestVersion) return;
     annotateMission(c);selected = c; attachPlanetContext(c); renderBodyVisibility(c); fraction = 0; zoom = 1; setView('3d');
     updateLocation(c.id);
@@ -289,6 +289,13 @@ async function selectCandidate(id) {
     }
     if(files) $('trajectory-download-note').textContent=`${files.rows.toLocaleString()} saved position/velocity states · ${files.units} · ${files.coordinates}. ${files.note}`;
     else if(c.download) { $('download-xyzv').href=c.download; $('download-xyzv').hidden=false; }
+    const extras=$('download-extras');extras.replaceChildren();
+    const extra=(label,href,download=true)=>{const a=document.createElement('a');a.className='text-link small';a.textContent=label;a.href=href;if(download)a.setAttribute('download','');extras.append(a);return a;};
+    if(files?.encounters)extra('Exported encounter dates ↓',files.encounters);
+    if(files?.targeting)extra('Targeting changes ↓',files.targeting);
+    if(c.original_trajectory_files){const old=c.original_trajectory_files,label=old.finite_radius?'Previous finite export':'Original analysis';extra(label+' CSV ↓',old.csv);extra(label+' XYZV ↓',old.xyzv);}
+    if(c.refined_alternative){const id=c.refined_alternative.case_id,a=extra(c.refined_alternative.label,'#mission='+id,false);a.onclick=e=>{e.preventDefault();selectCandidate(id);};}
+    extras.hidden=extras.childElementCount===0;
     if(!finite){$('download-xyzv').hidden=true;$('trajectory-download-note').textContent='Preview / analysis CSV uses ideal Lambert coasts joined at planet centers. For Celestia flybys, choose Use in desktop app, load the downloaded file, then choose Integrate & export to construct finite-radius SOI patches and list their extra burns. RoLaMGAS v0.2.4 loads exact candidates; older clients import the search settings.';}
     if(c.community_record){$('download-csv').hidden=false;$('download-csv').href='#analysis-csv';}
     if(!finite){$('download-xyzv').removeAttribute('href');$('download-xyzv').removeAttribute('download');}else $('download-xyzv').setAttribute('download','');
@@ -502,7 +509,7 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings,names,historical,annotations,performance,publications]=await Promise.all([fetchJson('data/index.json?v=20261112b'),fetchJson('data/community_seed_catalog.json?v=20261112b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261112b').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261110a').catch(()=>null),fetchJson('data/publication_dates.json?v=20261112b').catch(()=>({candidates:{}}))]);
+ const [data,archive,settings,names,historical,annotations,performance,publications]=await Promise.all([fetchJson('data/index.json?v=20261112d'),fetchJson('data/community_seed_catalog.json?v=20261112d').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261112d').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261110a').catch(()=>null),fetchJson('data/publication_dates.json?v=20261112d').catch(()=>({candidates:{}}))]);
  registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  catalog.push(...data.cases.filter(c=>c.c3<=250).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;

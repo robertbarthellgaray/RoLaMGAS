@@ -25,10 +25,27 @@ def checked_record(record):
     # Only fixed science fields survive an import. Unknown fields are not executable settings.
     return {k:r[k] for k in ('schema_version','sequence','body_ids','dates_jd_tdb','branches','dsm_controls','segments','metrics')}
 
+def pin_record_epochs(config,record):
+    """Preserve selected JD floats despite browser Date's millisecond precision."""
+    from datetime import timedelta
+    from ephemeris import EPOCH,JD0,jd
+    c=deepcopy(config);dates=record['dates_jd_tdb']
+    windows=c.get('event_windows_jd') or [[jd(a),jd(b)] for a,b in c.get('event_windows',[])]
+    if not windows:return c
+    # Same 8.64 ms tolerance as record_variables, not permission to widen dates.
+    if len(windows)!=len(dates) or any(not a-1e-7<=t<=b+1e-7 for (a,b),t in zip(windows,dates)):
+        raise ValueError('Selected epochs are outside the configured import windows')
+    iso=[(EPOCH+timedelta(days=float(t)-JD0)).isoformat(timespec='microseconds') for t in dates]
+    if any(jd(s)!=t for s,t in zip(iso,dates)):raise ValueError('Selected epoch cannot be preserved at microsecond precision')
+    c.update(event_windows=[[s,s] for s in iso],event_windows_jd=[[t,t] for t in dates],
+             launch_start=iso[0],launch_end=iso[0],launch_jd=[dates[0],dates[0]])
+    return c
+
+
 def materialize(record,config,route,ep):
     from dynamics import Model
     from community import record_variables
-    r=checked_record(record);model=Model(route,config,ep);x,branches=record_variables(r,model)
+    r=checked_record(record);model=Model(route,pin_record_epochs(config,r),ep);x,branches=record_variables(r,model)
     if r['sequence']!=route['id']:raise ValueError('Imported sequence differs from search settings')
     if list(r['body_ids'])!=[str(BODIES[b][0]) if b in BODIES else str(config['target_object']['id']) for b in route['bodies']]:raise ValueError('Imported body IDs differ from search settings')
     q=model.evaluate(x,branches,enforce_c3=False)

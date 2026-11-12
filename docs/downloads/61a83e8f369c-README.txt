@@ -1,0 +1,2 @@
+A Lambert reconstruction inspired by the original CLAUDIUS Uranus concept, not the unchanged original n-body integration. The preview retains its selected source candidate. The separate finite-radius download adjusts flyby geometry and dates; compare the actual exported burn and encounter tables. Original project files and the Uranian moon tour are preserved.
+Columns: JD(TDB), x_km, y_km, z_km, vx_km_s, vy_km_s, vz_km_s. Sun-centered Ecliptic J2000.

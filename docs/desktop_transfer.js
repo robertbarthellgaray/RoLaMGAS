@@ -1,6 +1,6 @@
 // A selected trajectory plus portable search settings, not a screenshot or run path.
 const ids={Mercury:'199',Venus:'299',Earth:'399',Mars:'499',Jupiter:'599',Saturn:'699',Uranus:'799',Neptune:'899'};
-const iso=jd=>new Date((jd-2440587.5)*86400000).toISOString().replace(/Z$/,'');
+const iso=jd=>{const us=Math.round((jd-2440587.5)*86400*1e6),seconds=Math.floor(us/1e6);return new Date(seconds*1000).toISOString().slice(0,19)+'.'+String(us-seconds*1e6).padStart(6,'0');};
 export function transferDocument(c,label=''){
  let record=c.community_record||c.desktop_record||null;
  const dates=record?.dates_jd_tdb||c.events.map(e=>e.jd),bodies=c.bodies,target=bodies.at(-1);

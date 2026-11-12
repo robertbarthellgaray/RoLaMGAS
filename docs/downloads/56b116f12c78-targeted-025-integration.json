@@ -1,0 +1,548 @@
+{
+  "engine_version": "0.2.5-test2",
+  "model": "Two-body patched conics: Sun-only coasts and one-planet-only SOI hyperbolas, translated using JPL planet states",
+  "propagation_model": "two_body_patched_conics",
+  "nbody_propagation": false,
+  "force_model": {
+    "heliocentric_coasts": "Sun point mass only, outside planned encounter SOIs",
+    "planetary_patches": "Encounter-planet point mass only in planet-relative coordinates, inside its Laplace SOI",
+    "simultaneous_multiple_gravity_sources": false,
+    "solar_tides_inside_planet_patch": false,
+    "other_planet_perturbations_outside_soi": false,
+    "planet_ephemerides_usage": "Geometric planet positions/velocities translate patch frames and support clearance checks; they are not perturbing force inputs.",
+    "unplanned_encounters_automatically_patched": false
+  },
+  "force_segments": [
+    {
+      "start_jd_tdb": 2464109.5,
+      "end_jd_tdb": 2464111.6516002254,
+      "center": "Earth",
+      "gm_km3_s2": 398600.435436,
+      "soi_radius_km": 936729.9377811393
+    },
+    {
+      "start_jd_tdb": 2464111.6516002254,
+      "end_jd_tdb": 2464445.8665512325,
+      "center": "Sun",
+      "gm_km3_s2": 132712440041.27942,
+      "soi_radius_km": null
+    },
+    {
+      "start_jd_tdb": 2464445.8665512325,
+      "end_jd_tdb": 2464446.553734977,
+      "center": "Venus",
+      "gm_km3_s2": 324858.592,
+      "soi_radius_km": 620166.7749467334
+    },
+    {
+      "start_jd_tdb": 2464446.553734977,
+      "end_jd_tdb": 2464447.240918722,
+      "center": "Venus",
+      "gm_km3_s2": 324858.592,
+      "soi_radius_km": 620166.7749467334
+    },
+    {
+      "start_jd_tdb": 2464447.240918722,
+      "end_jd_tdb": 2464872.0428886847,
+      "center": "Sun",
+      "gm_km3_s2": 132712440041.27942,
+      "soi_radius_km": null
+    },
+    {
+      "start_jd_tdb": 2464872.0428886847,
+      "end_jd_tdb": 2464872.858627708,
+      "center": "Earth",
+      "gm_km3_s2": 398600.435436,
+      "soi_radius_km": 939992.2231245416
+    },
+    {
+      "start_jd_tdb": 2464872.858627708,
+      "end_jd_tdb": 2464873.6743667317,
+      "center": "Earth",
+      "gm_km3_s2": 398600.435436,
+      "soi_radius_km": 939992.2231245416
+    },
+    {
+      "start_jd_tdb": 2464873.6743667317,
+      "end_jd_tdb": 2465585.1085541025,
+      "center": "Sun",
+      "gm_km3_s2": 132712440041.27942,
+      "soi_radius_km": null
+    },
+    {
+      "start_jd_tdb": 2465585.1085541025,
+      "end_jd_tdb": 2466082.461246061,
+      "center": "Sun",
+      "gm_km3_s2": 132712440041.27942,
+      "soi_radius_km": null
+    },
+    {
+      "start_jd_tdb": 2466082.461246061,
+      "end_jd_tdb": 2466083.16332125,
+      "center": "Earth",
+      "gm_km3_s2": 398600.435436,
+      "soi_radius_km": 920550.772088754
+    },
+    {
+      "start_jd_tdb": 2466083.16332125,
+      "end_jd_tdb": 2466083.8653964372,
+      "center": "Earth",
+      "gm_km3_s2": 398600.435436,
+      "soi_radius_km": 920550.772088754
+    },
+    {
+      "start_jd_tdb": 2466083.8653964372,
+      "end_jd_tdb": 2469570.6941617555,
+      "center": "Sun",
+      "gm_km3_s2": 132712440041.27942,
+      "soi_radius_km": null
+    },
+    {
+      "start_jd_tdb": 2469570.6941617555,
+      "end_jd_tdb": 2469661.2999998727,
+      "center": "Uranus",
+      "gm_km3_s2": 5793950.6103,
+      "soi_radius_km": 49324237.69109437
+    },
+    {
+      "start_jd_tdb": 2469661.2999998727,
+      "end_jd_tdb": 2469691.7374998727,
+      "center": "Uranus",
+      "gm_km3_s2": 5793950.6103,
+      "soi_radius_km": 49324237.69109437
+    }
+  ],
+  "maneuver_budget_breakdown": {
+    "candidate_cruise_dsm_kms": 0.6940869754136765,
+    "candidate_modeled_flyby_burns_kms": 0.0,
+    "candidate_modeled_target_turnaround_kms": 0.0,
+    "candidate_modeled_maneuver_total_kms": 0.6940869754136765,
+    "candidate_maneuver_budget_complete": true,
+    "unresolved_flyby_count": 0,
+    "unresolved_speed_mismatch_total_mps": 0.0,
+    "unresolved_speed_mismatch_is_delta_v": false,
+    "exported_cruise_dsm_kms": 0.6940073015421279,
+    "exported_target_turnaround_kms": 0.0,
+    "exported_modeled_powered_flyby_kms": 0.0,
+    "exported_additional_periapsis_speed_match_kms": 3.14431007670892e-08,
+    "exported_finite_soi_boundary_junction_kms": 0.005029705225619581,
+    "exported_total_onboard_kms": 0.6990370382108482,
+    "note": "The candidate modeled total excludes unresolved joins. Exported periapsis impulses and finite SOI-boundary retargeting impulses are explicit vector burns; no scalar V-infinity residual is silently substituted for either."
+  },
+  "candidate_maneuver_budget_complete": true,
+  "frame": "Sun-centered Ecliptic J2000; km, km/s; Julian dates TDB",
+  "candidate_id": "56b116f12c78",
+  "arrival_altitude_option_km": null,
+  "arrival_inclination_option_deg": null,
+  "arrival_state": {
+    "body": "Uranus",
+    "epoch_jd_tdb": 2469661.2999998727,
+    "epoch": "2049-08-07T19:11:59 TDB",
+    "frame": "Planet-centered Ecliptic J2000 (not equatorial or body-fixed); geometric, km and km/s; epoch TDB",
+    "position_km": [
+      -21485.42198228836,
+      15612.26178586483,
+      -120.02155826985836
+    ],
+    "velocity_kms": [
+      12.805688149404059,
+      17.62531505522147,
+      0.29510553394803696
+    ],
+    "heliocentric_state_km_kms": [
+      -2645048655.546274,
+      696707902.2844894,
+      36827437.86849514,
+      11.011142683167815,
+      10.718072360657512,
+      0.2929508500000201
+    ],
+    "planet_state_km_kms": [
+      -2645027170.124292,
+      696692290.0227035,
+      36827557.89005341,
+      -1.7945454662362446,
+      -6.907242694563959,
+      -0.002154683948016866
+    ],
+    "reference_radius_km": 25559.0,
+    "gm_km3_s2": 5793950.6103,
+    "altitude_km": 1000.0000000343534,
+    "capture_assessment": {
+      "requested_inclination_deg": null,
+      "achieved_inclination_deg": 98.32845352598781,
+      "reference_plane": "Planet equator; IAU north-pole convention",
+      "pole_model": "JPL NAIF pck00011.tpc (IAU text-PCK north pole at encounter epoch)",
+      "pole_source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "pole_vector_ecliptic_j2000": [
+        -0.21199958153779858,
+        -0.967989001879952,
+        0.13436320056939957
+      ],
+      "fixed_asymptote_inclination_range_deg": [
+        54.61606394211238,
+        125.38393605788761
+      ],
+      "b_plane_vector_km": [
+        -86410.25029992341,
+        -35329.46147332755,
+        -1297.2642095828905
+      ],
+      "circular_capture_radius_km": 26559.000000000004,
+      "circular_speed_kms": 14.770035356657546,
+      "hypothetical_circular_capture_delta_v_kms": 7.018137284746116,
+      "hypothetical_circular_capture_burn_vector_kms": [
+        -4.124810232381616,
+        -5.6772489727207835,
+        -0.09505575271551767
+      ],
+      "hypothetical_circular_state_km_kms": [
+        -21485.42198280542,
+        15612.261785094744,
+        -120.02155828029154,
+        8.68087791673674,
+        11.948066082703757,
+        0.20004978123090136
+      ],
+      "capture_applied": false,
+      "capture_cost_included_in_onboard_budget": false,
+      "note": "B-plane orientation is chosen only during finite-radius export, not constrained in the Lambert search. All finite-patch junction burns are reported separately. The coplanar impulsive circular-capture estimate is not executed or included in the maneuver budget; atmospheric drag, rings, J2 and moons are omitted. IAU north defines 0 deg; Venus and Uranus retrograde spin does not reverse that pole. The Earth pole uses the approximate text-PCK model, not Earth-orientation measurements."
+    },
+    "note": "Incoming state at periapsis. No insertion burn or captured orbit has been applied. Transform the frame and time scale as needed before using FreeFlyer."
+  },
+  "post_flyby_months": 1.0,
+  "month_length_days": 30.4375,
+  "post_flyby_solar_orbit": null,
+  "final_encounter_jd_tdb": 2469661.2999998727,
+  "post_flyby_end_date": "2049-09-07T05:41:59 TDB",
+  "passes_individual_burn_limits": true,
+  "maximum_integrated_dsm_or_patch_kms": 0.6940073015421279,
+  "maximum_integrated_flyby_burn_kms": 3.14431007670892e-08,
+  "source_candidate_status": "passes_configured_patched_conic_screen",
+  "export_evaluation_status": "passes_configured_patched_conic_screen",
+  "powered_flybys_active": false,
+  "candidate_powered_flyby_delta_v_kms": 0.0,
+  "candidate_cruise_dsm_kms": 0.6940869754136765,
+  "candidate_target_turnaround_delta_v_kms": 0,
+  "candidate_event_burns": [],
+  "exported_target_turnaround_burns": [],
+  "powered_flyby_burns": [],
+  "candidate_passes_requested_limits": true,
+  "requirement_violations": [],
+  "requested_limits": {
+    "effective_min_c3": 6.25,
+    "min_c3": 6.25,
+    "max_c3": 23.10000099320818,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "max_dsm_kms": 1.5,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "max_arrival_vinf_kms": 15.0,
+    "max_years": 30.0,
+    "vinf_tolerance_mps": 20.0,
+    "minimum_altitude_km": {
+      "Venus": 300.0,
+      "Earth": 200.0
+    }
+  },
+  "source_candidate_sha256": "e5712b4e60169cd7772c95c969a9ce149fe67f68216e2bec2e7e0f69c9c14068",
+  "exported_launch_c3_km2_s2": 22.216680896298143,
+  "exported_arrival_vinf_kms": 6.1981108556161875,
+  "finite_targeting": {
+    "applied": true,
+    "reason": "Lower explicit cruise budget",
+    "baseline_cruise_delta_v_kms": 1.0038375739306948,
+    "matched_cruise_delta_v_kms": 0.6990370476890485,
+    "evaluations": 2634,
+    "remaining_patch_delta_v_kms": 0.0050297052919330044,
+    "maximum_patch_burn_kms": 0.002414032987239319,
+    "matched_dsm_delta_v_kms": 0.694007301563804,
+    "final_solver_patch_delta_v_kms": 0.005092744300272111,
+    "final_solver_cruise_delta_v_kms": 0.6991502203031713,
+    "scipy_success": true,
+    "scipy_message": "`ftol` termination condition is satisfied.",
+    "maximum_periapsis_epoch_shift_days": 0.0,
+    "cost_optimizer_success": true,
+    "cost_optimizer_message": "Optimization terminated successfully",
+    "cost_optimizer_stages": [
+      {
+        "success": true,
+        "message": "Optimization terminated successfully",
+        "best_feasible_kms": 0.6990370476890485
+      }
+    ],
+    "continuity_polish": null,
+    "cost_objective": "Sum of actual DSM, periapsis and finite-patch vector impulse magnitudes; individual DSM/patch and total cruise caps constrained",
+    "parameter_schema": [
+      {
+        "node_index": 0,
+        "offset": 0,
+        "count": 4
+      },
+      {
+        "node_index": 1,
+        "offset": 4,
+        "count": 5
+      },
+      {
+        "node_index": 2,
+        "offset": 9,
+        "count": 5
+      },
+      {
+        "node_index": 3,
+        "offset": 14,
+        "count": 5
+      },
+      {
+        "node_index": 4,
+        "offset": 19,
+        "count": 4
+      }
+    ],
+    "parameter_values": [
+      0.4999794844254164,
+      -0.2750324639827268,
+      0.1921663103346702,
+      -0.01949460939189271,
+      -1.2843442168404453e-05,
+      0.0004487254894386076,
+      0.0004930355677398113,
+      0.03599405778392011,
+      -0.003983618683690219,
+      0.00046144904257878415,
+      -0.0015390125191551466,
+      0.00034817865313318495,
+      0.017191435312570055,
+      -0.001958850038472986,
+      0.0008121723940069749,
+      0.002001880695885606,
+      0.00010400413929175978,
+      1.5018491412995045,
+      -0.0019064461602429142,
+      0.01071892604813384,
+      -0.026172769903666092,
+      -0.0016684878262035476,
+      -0.0035940530680730856,
+      -0.09948778280388755,
+      -0.11244146763164753,
+      -0.1441417972767146
+    ],
+    "changes": [
+      {
+        "body": "Earth",
+        "source_jd_tdb": 2464109.5,
+        "exported_jd_tdb": 2464109.5,
+        "date": "2034-05-27T00:00:00 TDB",
+        "epoch_shift_days": 0.0,
+        "source_altitude_km": 200.0,
+        "exported_altitude_km": 199.9999999999991
+      },
+      {
+        "body": "Venus",
+        "source_jd_tdb": 2464446.553734977,
+        "exported_jd_tdb": 2464446.553734977,
+        "date": "2035-04-29T01:17:22 TDB",
+        "epoch_shift_days": 0.0,
+        "source_altitude_km": 1667.2111866934474,
+        "exported_altitude_km": 1717.3190480324947
+      },
+      {
+        "body": "Earth",
+        "source_jd_tdb": 2464872.858627708,
+        "exported_jd_tdb": 2464872.858627708,
+        "date": "2036-06-28T08:36:25 TDB",
+        "epoch_shift_days": 0.0,
+        "source_altitude_km": 1375.935185858676,
+        "exported_altitude_km": 1396.3259707702
+      },
+      {
+        "body": "Earth",
+        "source_jd_tdb": 2466083.16332125,
+        "exported_jd_tdb": 2466083.16332125,
+        "date": "2039-10-21T15:55:10 TDB",
+        "epoch_shift_days": 0.0,
+        "source_altitude_km": 206.75610956784203,
+        "exported_altitude_km": 230.33482395365263
+      },
+      {
+        "body": "Uranus",
+        "source_jd_tdb": 2469661.2999998727,
+        "exported_jd_tdb": 2469661.2999998727,
+        "date": "2049-08-07T19:11:59 TDB",
+        "epoch_shift_days": 0.0,
+        "source_altitude_km": 1000.0,
+        "exported_altitude_km": 1000.0000000000036
+      }
+    ],
+    "note": "Local finite-SOI matching, not a global minimum. Source candidate is unchanged. Remaining velocity gaps are explicit burns, not hidden or erased."
+  },
+  "refine_patches_option": true,
+  "patch_epoch_shift_days_option": 0.0,
+  "ephemeris_sources": {
+    "Earth": [
+      {
+        "body": "Earth",
+        "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27399%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2461404.5%27&STOP_TIME=%27JD2473139.5%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+        "sha256": "35048fd6e06eefa302c96cb7205754a00605a08cb0eb4dc82b38c6ead5959e26",
+        "raw_file": "Earth_35048fd6e06eefa3.txt",
+        "target_identity": {
+          "name": "Earth",
+          "id": "399",
+          "command": "399",
+          "kind": "planet"
+        },
+        "npz_sha256": "2b1c1e4dbd12492036286c8c593f0f44c7aedfc3e9a4a2dbec7072eb03e5f9d6",
+        "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+        "start_jd": 2461404.5,
+        "end_jd": 2473139.5,
+        "max_step_days": 1.0,
+        "records": 11736
+      }
+    ],
+    "Uranus": [
+      {
+        "body": "Uranus",
+        "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27799%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2461403.5000000000%27&STOP_TIME=%27JD2471505.5000000000%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+        "sha256": "b4e329d64895d5706d72feb2fb513a37d347d1f4531334da5bff27d660441a1a",
+        "raw_file": "Uranus_b4e329d64895d570.txt",
+        "target_identity": {
+          "name": "Uranus",
+          "id": "799",
+          "command": "799",
+          "kind": "planet"
+        },
+        "npz_sha256": "ce7cff14042b2642c990add37409f3993d1b441a05457d17b159a747ff8348d6",
+        "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+        "start_jd": 2461403.5,
+        "end_jd": 2471505.5,
+        "max_step_days": 1.0,
+        "records": 10103
+      }
+    ],
+    "Venus": [
+      {
+        "body": "Venus",
+        "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27299%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2461769.5%27&STOP_TIME=%27JD2475195.5%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+        "sha256": "30127f2bc626d81804feb4aa642cab325eb100507f94d95847f908dff099a56e",
+        "raw_file": "Venus_30127f2bc626d818.txt",
+        "npz_sha256": "3e8efa467aca4e19abf74650fdd93555f6970145926efa86d0389a12ab3d417b",
+        "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+        "start_jd": 2461769.5,
+        "end_jd": 2475195.5,
+        "max_step_days": 1.0,
+        "records": 13427
+      }
+    ]
+  },
+  "numerical_validation_passed": true,
+  "maximum_arc_endpoint_error_km": 0.002605437080924094,
+  "maximum_position_join_residual_km": 0.002605437080924094,
+  "patch_join_delta_v_kms": 0.005029705225619581,
+  "total_onboard_delta_v_kms": 0.6990370382108482,
+  "patch_targeting": {
+    "finite_soi_positions_targeted": true,
+    "planet_center_endpoints_used_for_export": false,
+    "adjacent_flyby_and_coast_velocities_jointly_optimized": true,
+    "original_physical_coast_winding_retained": true,
+    "correction_meaning": "Finite-SOI periapsis geometry, epochs and existing DSM positions are locally matched to adjacent solar coasts. All remaining velocity gaps are explicit impulses; launch injection uses the exported departure energy."
+  },
+  "launch_injection_from_200_km_kms": 4.190968620411782,
+  "candidate_dsm_kms": 0.6940869754136765,
+  "passes_original_onboard_budget": true,
+  "rows": 6999,
+  "start_jd_tdb": 2464109.5,
+  "end_jd_tdb": 2469691.7374998727,
+  "planet_clearances": [
+    {
+      "body": "Earth",
+      "julian_date_tdb": 2464109.5,
+      "date": "2034-05-27T00:00:00 TDB",
+      "center_distance_km": 6578.137000007937,
+      "altitude_km": 200.00000000793716
+    },
+    {
+      "body": "Jupiter",
+      "julian_date_tdb": 2465257.4445915325,
+      "date": "2037-07-17T22:40:12 TDB",
+      "center_distance_km": 415573184.94613117,
+      "altitude_km": 415501692.94613117
+    },
+    {
+      "body": "Mars",
+      "julian_date_tdb": 2466139.579601424,
+      "date": "2039-12-17T01:54:37 TDB",
+      "center_distance_km": 65908408.12691237,
+      "altitude_km": 65905011.93691237
+    },
+    {
+      "body": "Mercury",
+      "julian_date_tdb": 2464268.8861626144,
+      "date": "2034-11-02T09:16:04 TDB",
+      "center_distance_km": 49995688.068498954,
+      "altitude_km": 49993248.36849895
+    },
+    {
+      "body": "Neptune",
+      "julian_date_tdb": 2464983.3859797693,
+      "date": "2036-10-16T21:15:48 TDB",
+      "center_distance_km": 4292864220.7669845,
+      "altitude_km": 4292839456.7669845
+    },
+    {
+      "body": "Saturn",
+      "julian_date_tdb": 2465537.6238204474,
+      "date": "2038-04-24T02:58:18 TDB",
+      "center_distance_km": 897958312.7867856,
+      "altitude_km": 897898044.7867856
+    },
+    {
+      "body": "Uranus",
+      "julian_date_tdb": 2469661.2999998727,
+      "date": "2049-08-07T19:11:59 TDB",
+      "center_distance_km": 26558.99999999968,
+      "altitude_km": 999.9999999996799
+    },
+    {
+      "body": "Venus",
+      "julian_date_tdb": 2464446.553734977,
+      "date": "2035-04-29T01:17:22 TDB",
+      "center_distance_km": 7769.119048036895,
+      "altitude_km": 1717.3190480368949
+    },
+    {
+      "body": "Sun",
+      "julian_date_tdb": 2464235.8598756506,
+      "date": "2034-09-30T08:38:13 TDB",
+      "center_distance_km": 82525702.67759995,
+      "altitude_km": 81830002.67759995
+    }
+  ],
+  "no_sample_bracketed_planet_or_sun_impacts": true,
+  "clearance_checks_cover_all_eight_planets": true,
+  "planets_checked": [
+    "Mercury",
+    "Venus",
+    "Earth",
+    "Mars",
+    "Jupiter",
+    "Saturn",
+    "Uranus",
+    "Neptune"
+  ],
+  "planets_omitted_from_clearance_check": [],
+  "clearance_ephemerides_policy": "Use existing complete-span cached vectors only for other planets; no extra downloads or perturbing gravity are added for this check.",
+  "continuous_nbody_validated": false,
+  "sampling": "Adaptive Hermite midpoint position residual below 0.1 km; maximum solar step 2 days, flyby step 2 hours; impulse epochs separated by 0.02 s.",
+  "small_body_arrival": null,
+  "small_body_encounter_distance_km": null,
+  "limitations": [
+    "Finite SOI-boundary positions and times are retargeted from the planet-center Lambert design; every velocity gap is an explicit junction impulse, not an n-body correction.",
+    "Inside each planned SOI only that planet is propagated; outside planned SOIs only the Sun is propagated. Unplanned encounters are not automatically patched.",
+    "Clearance minima are sample-bracketed with continuous refinement, not exhaustive polynomial root isolation.",
+    "Moon perturbations, planetary rings and thermal constraints are not included.",
+    "Numerical validation does not establish an optimized or budget-compliant mission.",
+    "Post-flyby continuation uses the target planet inside its SOI and Sun-only gravity outside; custom-body gravity and later flybys are not modeled. No new burn is applied."
+  ]
+}

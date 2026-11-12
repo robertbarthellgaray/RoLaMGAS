@@ -159,7 +159,7 @@ class App:
     def import_website_candidate(self,document):
         """Load one selected solution; this path never starts random optimization."""
         from search_options import import_options
-        from trajectory_transfer import checked_record
+        from trajectory_transfer import checked_record,pin_record_epochs
         parsed=import_options(document);record=checked_record(document.get('trajectory'))
         label=document.get('display_name','')
         if not isinstance(label,str) or len(label)>100 or any(ord(v)<32 for v in label):raise ValueError('Invalid imported display name')
@@ -169,7 +169,7 @@ class App:
         def status(state,message,**extra):atomic_json(output/'gui_status.json',dict(state=state,message=message,**extra))
         status('preparing','Loading selected website trajectory. Using local JPL data or downloading missing coverage; no search is running.')
         atomic_json(output/'imported_record.json',record)
-        config=parsed['config'];config['cache']=str(self.cache);atomic_json(output/'request.json',config)
+        config=pin_record_epochs(parsed['config'],record);config['cache']=str(self.cache);atomic_json(output/'request.json',config)
         def load():
             try:
                 from mission_search import prepare
