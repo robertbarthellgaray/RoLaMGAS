@@ -7,11 +7,12 @@ import {createHash} from 'node:crypto';
 test('queued package retains the selected dwarf patch and catalog while integration runs',async()=>{
  const gui=fs.readFileSync(new URL('../gui.js',import.meta.url),'utf8');
  const source=gui.slice(gui.indexOf('async function exportPackage('),gui.indexOf('async function refreshCache('));
- const elements={packageModel:{value:'RTG'},patchDwarfPlanet:{checked:true},dwarfCatalogPath:{value:'/opt/Celestia/data/dwarfplanets.ssc'},packageButton:{},packageStatus:{},integrate:{},postFlybyMonths:{value:'6'},exportPowered:{checked:false}};
+ const elements={packageModel:{value:'RTG'},patchDwarfPlanet:{checked:true},dwarfCatalogPath:{value:'/opt/Celestia/data/dwarfplanets.ssc'},packageButton:{},packageStatus:{},integrate:{},postFlybyMonths:{value:'6'},exportPowered:{checked:false},refinePatches:{checked:true},patchEpochShift:{value:'0'}};
  let payload;
  const ctx=vm.createContext({state:{selected:'0123456789ab',run:'saved'},$:(id)=>elements[id],arrivalAltitude:()=>null,arrivalInclination:()=>null,checkExport(){},api:async(path,data)=>{payload=data;return {state:'integrating'}}});
  vm.runInContext(source,ctx);await vm.runInContext('exportPackage()',ctx);
  assert.equal(payload.patch_dwarf_planet,true);assert.equal(payload.dwarf_catalog_path,'/opt/Celestia/data/dwarfplanets.ssc');
+ assert.equal(payload.refine_patches,true);assert.equal(payload.patch_epoch_shift_days,0);
  elements.patchDwarfPlanet.checked=false;elements.dwarfCatalogPath.value='';
  assert.equal(ctx.state.pendingPackage.patch.enabled,true);assert.equal(ctx.state.pendingPackage.patch.catalog,'/opt/Celestia/data/dwarfplanets.ssc');
  assert.match(gui,/exportPackage\(pending.model,pending.patch\)/);

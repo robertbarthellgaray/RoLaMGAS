@@ -509,11 +509,13 @@ class App:
 
 
 
-    def integrate(self,name,identifier,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None):
-        from integrate_export import validate_post_flyby_months
+    def integrate(self,name,identifier,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,refine_patches=True,patch_epoch_shift_days=2.):
+        from integrate_export import validate_post_flyby_months,validate_patch_epoch_shift
         from arrival_geometry import validate_inclination
         arrival_inclination_deg=validate_inclination(arrival_inclination_deg)
         post_flyby_months=validate_post_flyby_months(post_flyby_months)
+        patch_epoch_shift_days=validate_patch_epoch_shift(patch_epoch_shift_days)
+        if not isinstance(refine_patches,bool):raise ValueError('Patch refinement option must be boolean')
         if powered_flybys is not None and not isinstance(powered_flybys,bool):raise ValueError('Powered flyby option must be boolean')
         if arrival_altitude_km is not None:
             import math
@@ -541,7 +543,7 @@ class App:
             flags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0
             with (output/'integration.log').open('w',encoding='utf-8') as log:
                 self.integrations[(name,identifier)]=subprocess.Popen(worker_command('integrate_export',
-                       '--candidate',str(candidate),'--config',str(config),'--output',str(output),'--post-flyby-months',str(post_flyby_months))+(['--arrival-altitude-km',str(arrival_altitude_km)] if arrival_altitude_km is not None else [])+(['--powered-flybys' if powered_flybys else '--no-powered-flybys'] if powered_flybys is not None else [])+(['--arrival-inclination-deg',str(arrival_inclination_deg)] if arrival_inclination_deg is not None else []),
+                       '--candidate',str(candidate),'--config',str(config),'--output',str(output),'--post-flyby-months',str(post_flyby_months),'--refine-patches' if refine_patches else '--no-refine-patches','--patch-epoch-shift-days',str(patch_epoch_shift_days))+(['--arrival-altitude-km',str(arrival_altitude_km)] if arrival_altitude_km is not None else [])+(['--powered-flybys' if powered_flybys else '--no-powered-flybys'] if powered_flybys is not None else [])+(['--arrival-inclination-deg',str(arrival_inclination_deg)] if arrival_inclination_deg is not None else []),
                        cwd=HERE,stdout=log,stderr=subprocess.STDOUT,creationflags=flags,env=worker_environment(output/'integration.log'))
             return dict(started=True)
 
@@ -558,11 +560,13 @@ class App:
             status['report']=read_json(output/'integration_report.json',{})
         return status
 
-    def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,patch_dwarf_planet=False,dwarf_catalog_path=None):
-        from integrate_export import validate_post_flyby_months
+    def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,patch_dwarf_planet=False,dwarf_catalog_path=None,refine_patches=True,patch_epoch_shift_days=2.):
+        from integrate_export import validate_post_flyby_months,validate_patch_epoch_shift
         from arrival_geometry import validate_inclination
         arrival_inclination_deg=validate_inclination(arrival_inclination_deg)
         post_flyby_months=validate_post_flyby_months(post_flyby_months)
+        patch_epoch_shift_days=validate_patch_epoch_shift(patch_epoch_shift_days)
+        if not isinstance(refine_patches,bool):raise ValueError('Patch refinement option must be boolean')
         if model not in ('auto','Panels','RTG'):
             raise ValueError('Invalid model choice')
         status=self.export_status(name,identifier)
@@ -570,12 +574,14 @@ class App:
         if status['state']=='finished' and (status.get('report',{}).get('arrival_altitude_option_km')!=requested_altitude or
             (powered_flybys is not None and status.get('report',{}).get('powered_flybys_active',False)!=powered_flybys) or
             status.get('report',{}).get('post_flyby_months',0.)!=post_flyby_months or
-            status.get('report',{}).get('arrival_inclination_option_deg')!=arrival_inclination_deg):
-            self.integrate(name,identifier,arrival_altitude_km,powered_flybys,post_flyby_months,arrival_inclination_deg)
+            status.get('report',{}).get('arrival_inclination_option_deg')!=arrival_inclination_deg or
+            status.get('report',{}).get('refine_patches_option',False)!=refine_patches or
+            status.get('report',{}).get('patch_epoch_shift_days_option',2.)!=patch_epoch_shift_days):
+            self.integrate(name,identifier,arrival_altitude_km,powered_flybys,post_flyby_months,arrival_inclination_deg,refine_patches,patch_epoch_shift_days)
             return dict(state='integrating',message='Updating trajectory export options; the previous export is preserved.')
         if status['state']!='finished':
             if status['state']!='running':
-                self.integrate(name,identifier,arrival_altitude_km,powered_flybys,post_flyby_months,arrival_inclination_deg)
+                self.integrate(name,identifier,arrival_altitude_km,powered_flybys,post_flyby_months,arrival_inclination_deg,refine_patches,patch_epoch_shift_days)
             return dict(state='integrating',message='Integrating the trajectory before packaging.')
         from celestia_package import build_package
         root=self.folder(name)
@@ -711,9 +717,9 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/api/render-candidate':
                 return self.json(self.app.render_candidate(value['run'],value['candidate']))
             if self.path=='/api/integrate':
-                return self.json(self.app.integrate(value['run'],value['candidate'],value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg')))
+                return self.json(self.app.integrate(value['run'],value['candidate'],value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('refine_patches',True),value.get('patch_epoch_shift_days',2.)))
             if self.path=='/api/package':
-                return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('patch_dwarf_planet',False),value.get('dwarf_catalog_path')))
+                return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('patch_dwarf_planet',False),value.get('dwarf_catalog_path'),value.get('refine_patches',True),value.get('patch_epoch_shift_days',2.)))
             if self.path=='/api/dwarf-patch-info':
                 from dwarf_planet_patch import patch_info
                 root=self.app.folder(value['run'])

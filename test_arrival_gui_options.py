@@ -35,12 +35,12 @@ class ArrivalGuiOptionsTests(unittest.TestCase):
                     app=SimpleNamespace(token='arrival-token',integrate=Mock(return_value={'started':True}),package=Mock(return_value={'state':'finished'}))
                     self.request(app,endpoint,dict(run='saved',candidate=ID,arrival_inclination_deg=desired))
                     expected=('saved',ID,None,None,0.,desired) if method=='integrate' else ('saved',ID,'auto',None,None,0.,desired,False,None)
-                    getattr(app,method).assert_called_once_with(*expected)
+                    getattr(app,method).assert_called_once_with(*expected,True,2.)
 
     def test_http_api_forwards_optional_dwarf_patch_catalog(self):
         app=SimpleNamespace(token='arrival-token',package=Mock(return_value={'state':'finished'}))
         self.request(app,'/api/package',dict(run='saved',candidate=ID,patch_dwarf_planet=True,dwarf_catalog_path='/opt/celestia/data/dwarfplanets.ssc'))
-        app.package.assert_called_once_with('saved',ID,'auto',None,None,0.,None,True,'/opt/celestia/data/dwarfplanets.ssc')
+        app.package.assert_called_once_with('saved',ID,'auto',None,None,0.,None,True,'/opt/celestia/data/dwarfplanets.ssc',True,2.)
 
     def test_worker_flags_keep_zero_and_omit_unspecified_inclination(self):
         for desired in (None,0.,90.):
@@ -72,7 +72,7 @@ class ArrivalGuiOptionsTests(unittest.TestCase):
                 with patch('celestia_package.build_package') as build:
                     result=app.package('saved',ID,arrival_inclination_deg=new)
                 self.assertEqual(result['state'],'integrating');build.assert_not_called()
-                app.integrate.assert_called_once_with('saved',ID,None,None,0.,new)
+                app.integrate.assert_called_once_with('saved',ID,None,None,0.,new,True,2.)
 
     def test_legacy_or_unchanged_reports_reuse_the_existing_export(self):
         for report,desired in [({},None),({'arrival_inclination_option_deg':90.},90.),({'arrival_inclination_option_deg':0.},0.)]:
@@ -80,8 +80,22 @@ class ArrivalGuiOptionsTests(unittest.TestCase):
                 app=self.saved_app(folder);app.export_status=Mock(return_value={'state':'finished','report':report})
                 app.integrate=Mock()
                 with patch('celestia_package.build_package',return_value={'state':'finished','package':'saved.zip'}) as build:
-                    result=app.package('saved',ID,arrival_inclination_deg=desired)
+                    result=app.package('saved',ID,arrival_inclination_deg=desired,refine_patches=False)
                 self.assertEqual(result['package'],'saved.zip');app.integrate.assert_not_called();build.assert_called_once()
+
+    def test_fixed_date_refinement_reaches_the_worker_and_invalidates_legacy_exports(self):
+        with tempfile.TemporaryDirectory() as folder:
+            app=self.saved_app(folder)
+            with patch('gui.subprocess.Popen') as popen:
+                app.integrate('saved',ID,refine_patches=True,patch_epoch_shift_days=0.)
+            command=popen.call_args.args[0]
+            self.assertIn('--refine-patches',command)
+            self.assertEqual(command[command.index('--patch-epoch-shift-days')+1],'0.0')
+            app.export_status=Mock(return_value={'state':'finished','report':{}});app.integrate=Mock()
+            with patch('celestia_package.build_package') as build:
+                result=app.package('saved',ID,refine_patches=True,patch_epoch_shift_days=0.)
+            self.assertEqual(result['state'],'integrating');build.assert_not_called()
+            app.integrate.assert_called_once_with('saved',ID,None,None,0.,None,True,0.)
 
     def test_hypothetical_capture_impulse_is_tangent_and_does_not_rotate_the_plane(self):
         class Ep:
