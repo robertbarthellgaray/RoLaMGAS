@@ -1,0 +1,102 @@
+{
+  "config": {
+    "target": "Jupiter",
+    "launch_start": "2026-09-09",
+    "launch_end": "2026-09-09T23:59:59",
+    "max_years": 6.0,
+    "vinf_tolerance_mps": 0.1,
+    "min_c3": 5.0,
+    "max_c3": 15.0,
+    "max_arrival_vinf_kms": 15.0,
+    "max_dsm_kms": 0.7,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 2.0,
+    "minimum_altitude_km": {
+      "Earth": 200.0,
+      "Venus": 300.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "workers": 4,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "cache": "cache",
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EVdvEEJ"
+    ],
+    "route_overrides": {},
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "local_refinement": null,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "append_flyby": null,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "max_venus_c3": 30.0,
+    "event_windows": [
+      [
+        "2026-09-09T00:00:00",
+        "2026-09-09T23:59:59"
+      ],
+      [
+        "2027-02-25T00:00:00",
+        "2027-02-25T23:59:59"
+      ],
+      [
+        "2027-12-29T00:00:00",
+        "2027-12-29T23:59:59"
+      ],
+      [
+        "2029-12-29T00:00:00",
+        "2029-12-29T23:59:59"
+      ],
+      [
+        "2031-10-25T00:00:00",
+        "2031-10-25T23:59:59"
+      ]
+    ],
+    "effective_min_c3": 5.0,
+    "launch_jd": [
+      2461292.5,
+      2461293.499988426
+    ],
+    "event_windows_jd": [
+      [
+        2461292.5,
+        2461293.499988426
+      ],
+      [
+        2461461.5,
+        2461462.499988426
+      ],
+      [
+        2461768.5,
+        2461769.499988426
+      ],
+      [
+        2462499.5,
+        2462500.499988426
+      ],
+      [
+        2463164.5,
+        2463165.499988426
+      ]
+    ]
+  }
+}

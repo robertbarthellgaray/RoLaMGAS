@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "kind": "Source-backed concept timings; every numerical candidate still requires local validation",
+  "missions": [
+    {
+      "name": "Camilla 2026 Jupiter cruise",
+      "sequence": "EVdvEEJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "2026-09-09",
+        "2027-02-25",
+        "2027-12-29",
+        "2029-12-29",
+        "2031-10-25"
+      ],
+      "c3": 11.9,
+      "sources": [
+        "https://doi.org/10.1016/j.pss.2018.07.008"
+      ],
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        169.0,
+        307.0,
+        731.0,
+        665.0
+      ],
+      "note": "Planetary calendar days from the user-supplied Camilla chart. The published 2018 paper describes a July 2027 DSM and approximately 0.4 km/s cruise budget. The July 15 date here is an initialization within that reported month, not a published exact burn epoch. Chariklo dates differ between the supplied slide and journal text, so this seed ends at Jupiter.",
+      "dsm_events": [
+        {
+          "leg_index": 1,
+          "date": "2027-07-15",
+          "fraction": 0.4560260586319218,
+          "magnitude_kms": null,
+          "epoch_basis": "middle-of-reported-month initialization"
+        }
+      ]
+    },
+    {
+      "name": "Common Probe Venus 2024",
+      "sequence": "EV",
+      "bodies": [
+        "Earth",
+        "Venus"
+      ],
+      "dates": [
+        "2024-12-20",
+        "2025-05-09"
+      ],
+      "c3": 7.3,
+      "sources": [
+        "https://ntrs.nasa.gov/api/citations/20180004128/downloads/20180004128.pdf"
+      ],
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        140.0
+      ],
+      "note": "Poster VENUS TRAJECTORY DESIGN table. A 36 m/s carrier divert on May 5 is an arrival operation, excluded from this ideal planet-center transfer seed."
+    },
+    {
+      "name": "Common Probe Jupiter 2029",
+      "sequence": "EVEdvJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "2029-09-27",
+        "2030-11-23",
+        "2032-02-16",
+        "2034-10-29"
+      ],
+      "c3": 17.0,
+      "sources": [
+        "https://ntrs.nasa.gov/api/citations/20180004128/downloads/20180004128.pdf"
+      ],
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": false,
+      "planet_leg_days": [
+        422.0,
+        450.0,
+        986.0
+      ],
+      "note": "Poster JUPITER TRAJECTORY DESIGN table. The 203 m/s DSM is only 3.04% into the final leg, outside the app current 10%-90% DSM-time parameterization. Retained for research rather than moving the burn to an invented date. The 46 m/s carrier divert is a separate arrival operation.",
+      "dsm_events": [
+        {
+          "leg_index": 2,
+          "date": "2032-03-17",
+          "fraction": 0.030425963488843813,
+          "magnitude_kms": 0.203
+        }
+      ]
+    },
+    {
+      "name": "Common Probe Saturn 2024",
+      "sequence": "EVEEdvS",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Saturn"
+      ],
+      "dates": [
+        "2024-11-24",
+        "2026-01-18",
+        "2027-04-12",
+        "2029-08-24",
+        "2034-11-03"
+      ],
+      "c3": 18.7,
+      "sources": [
+        "https://ntrs.nasa.gov/api/citations/20180004128/downloads/20180004128.pdf"
+      ],
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": false,
+      "planet_leg_days": [
+        420.0,
+        449.0,
+        865.0,
+        1897.0
+      ],
+      "note": "Poster SATURN TRAJECTORY DESIGN table; closely related to the SPRITE mission family. Its 214 m/s DSM is five days after the final Earth flyby, outside the app current DSM-time parameterization. The 37 m/s carrier divert is separate.",
+      "dsm_events": [
+        {
+          "leg_index": 3,
+          "date": "2029-08-29",
+          "fraction": 0.002635740643120717,
+          "magnitude_kms": 0.214
+        }
+      ]
+    },
+    {
+      "name": "Common Probe Uranus 2030",
+      "sequence": "EVEdvEJU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2030-04-15",
+        "2031-09-18",
+        "2032-06-08",
+        "2034-05-09",
+        "2036-03-23",
+        "2043-05-18"
+      ],
+      "c3": 13.0,
+      "sources": [
+        "https://ntrs.nasa.gov/api/citations/20180004128/downloads/20180004128.pdf"
+      ],
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        521.0,
+        264.0,
+        700.0,
+        684.0,
+        2612.0
+      ],
+      "note": "Poster URANUS TRAJECTORY DESIGN table. The reported 757 m/s DSM exceeds the ordinary 700 m/s individual cap; the explicit study preset allows 810 m/s. Ordinary searches retain their user limits. A 23 m/s arrival carrier divert is separate.",
+      "dsm_events": [
+        {
+          "leg_index": 2,
+          "date": "2033-06-09",
+          "fraction": 0.5228571428571429,
+          "magnitude_kms": 0.757
+        }
+      ]
+    },
+    {
+      "name": "Common Probe Neptune 2031",
+      "sequence": "EJN",
+      "bodies": [
+        "Earth",
+        "Jupiter",
+        "Neptune"
+      ],
+      "dates": [
+        "2031-02-21",
+        "2032-12-17",
+        "2044-08-21"
+      ],
+      "c3": 81.8,
+      "sources": [
+        "https://ntrs.nasa.gov/api/citations/20180004128/downloads/20180004128.pdf"
+      ],
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        665.0,
+        4265.0
+      ],
+      "note": "Poster NEPTUNE TRAJECTORY DESIGN table. Its 14 m/s carrier divert occurs near arrival and is excluded from this ideal interplanetary seed."
+    },
+    {
+      "name": "Europa Clipper 2012 VEEGA study",
+      "sequence": "EVEEJ",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter"
+      ],
+      "dates": [
+        "2020-02-29",
+        "2020-06-28",
+        "2021-04-24",
+        "2023-07-26",
+        "2025-12-21"
+      ],
+      "c3": 12.8,
+      "sources": [
+        "https://sites.nationalacademies.org/cs/groups/ssbsite/documents/webpage/ssb_073049.pdf"
+      ],
+      "reference_kind": "Proposed mission study / numerical initialization",
+      "seed_eligible": true,
+      "planet_leg_days": [
+        120.0,
+        300.0,
+        823.0,
+        879.0
+      ],
+      "note": "Page 25, nominal interplanetary table. Ganymede encounter December 20 and JOI December 21 are distinct events; this planet-only timing guess ends at Jupiter and does not model Ganymede."
+    }
+  ]
+}

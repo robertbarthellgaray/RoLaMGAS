@@ -25,6 +25,11 @@ test('launch window is checked against the retained witness, not a distant chain
 test('filtering launch years first restores an otherwise trimmed launch opportunity',()=>{
  const rows=[base,{...worse,start:base.start+365.25}];assert.equal(trimAlternatives(rows).hidden.size,1);assert.equal(trimAlternatives(rows.slice(1)).rows.length,1);
 });
+test('a cheaper candidate with worse measured flyby continuity cannot hide a better-connected option',()=>{
+ assert.equal(clearlyDominates({...base,mismatch_max_mps:500},{...worse,mismatch_max_mps:400}),false);
+ assert.equal(clearlyDominates({...base,mismatch_max_mps:0},{...worse,mismatch_max_mps:400}),true);
+ assert.equal(clearlyDominates(base,{...worse,mismatch_max_mps:400}),false);
+});
 test('near-equal launch costs cannot produce a comparison pointing to another trimmed record',()=>{
  const rows=[{...base,id:'older',start:base.start-5*365.25,c3:20.00000004,years:6},{...base,id:'middle',start:base.start-2.5*365.25,c3:20.00000005},worse];
  const result=trimAlternatives(rows);for(const [id,witness] of result.hidden){assert.ok(!result.hidden.has(witness));assert.ok(clearlyDominates(rows.find(c=>c.id===witness),rows.find(c=>c.id===id)));}

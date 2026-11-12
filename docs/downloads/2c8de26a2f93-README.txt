@@ -1,0 +1,2 @@
+Camilla-inspired recreation of the supplied 2026-2031 planetary calendar days, ending at Jupiter. The explicitly modeled July 2027 DSM is 313.75 m/s; launch C3 is 11.915 km2/s2. Chariklo encounter and impactor deployment are outside this case. Flyby altitudes are inferred from asymptotic turns; the preview/downloads join planet centers and require the desktop finite-radius exporter for Celestia close-ups. Launch injection and Jupiter capture are excluded.
+Columns: JD(TDB), x_km, y_km, z_km, vx_km_s, vy_km_s, vz_km_s. Sun-centered Ecliptic J2000.

@@ -1,5 +1,5 @@
 // Reversible gallery curation. Original records and direct links remain available.
-export const CURATION_RULE = Object.freeze({launchWindowDays:3*365.25, fraction:.20, c3Gain:2, yearsGain:1});
+export const CURATION_RULE = Object.freeze({launchWindowDays:3*365.25, fraction:.20, c3Gain:2, yearsGain:1, mismatchToleranceMps:1});
 const finite = c => ['start','c3','years','vinf','burns_mps'].every(k=>Number.isFinite(c[k]));
 export function familyKey(c){return JSON.stringify([c.target,c.sequence,c.bodies]);}
 export function launchMonth(c){return new Date((c.start-2440587.5)*86400000).toISOString().slice(0,7);}
@@ -15,6 +15,8 @@ export function clearlyDominates(a,b){
 }
 function costDominates(a,b){
  if(a.classification==='yellow'&&b.classification!=='yellow')return false;
+ const gap=c=>Number.isFinite(c.mismatch_max_mps)?c.mismatch_max_mps:c.model==='Lambert candidate'?1:null;
+ const ga=gap(a),gb=gap(b);if(gb!==null&&(ga===null||ga>gb+CURATION_RULE.mismatchToleranceMps))return false;
  // A cheaper/faster option must also preserve arrival speed and cruise burn cost.
  if(['c3','years','vinf','burns_mps'].some(k=>a[k]>b[k]))return false;
  return b.c3-a.c3>=Math.max(CURATION_RULE.c3Gain,CURATION_RULE.fraction*b.c3)

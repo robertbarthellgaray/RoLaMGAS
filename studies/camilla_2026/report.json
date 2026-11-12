@@ -1,0 +1,97 @@
+{
+  "reference": {
+    "name": "Camilla 2026 Jupiter cruise",
+    "sources": [
+      "https://doi.org/10.1016/j.pss.2018.07.008",
+      "https://authors.library.caltech.edu/records/4ep13-y2e40"
+    ],
+    "note": "A reproduction of the supplied planetary calendar days with optimized times and an explicitly charged July DSM. This is the Jupiter-bound prefix; Chariklo is not included.",
+    "reported_c3": 11.9,
+    "reported_cruise_budget_kms": 0.4
+  },
+  "id": "2c8de26a2f93",
+  "launch_c3": 11.91502873431212,
+  "dsm_mps": 313.7511139427203,
+  "dates": [
+    2461293.0,
+    2461462.0,
+    2461769.0,
+    2462499.517293548,
+    2463165.0
+  ],
+  "max_vinf_mismatch_mps": 0.00022075476024951968,
+  "vector_audit": {
+    "passed": true,
+    "reasons": [],
+    "method": "Independent stored-vector patched-conic screen",
+    "joins": [
+      {
+        "body": "Venus",
+        "event_index": 1,
+        "jd": 2461462.0,
+        "mismatch_mps": 1.7763568394002505e-12,
+        "vinf_in_kms": 7.118521555006199,
+        "vinf_out_kms": 7.118521555006197,
+        "turn_deg": 32.17779044366686,
+        "max_turn_deg": 60.306276101751486,
+        "inferred_altitude_km": 10670.453459180237,
+        "minimum_altitude_km": 300.0,
+        "powered_mps": 0.0,
+        "powered_geometry_audited": false,
+        "clearance_above_floor_km": 10370.453459180237
+      },
+      {
+        "body": "Earth",
+        "event_index": 2,
+        "jd": 2461769.0,
+        "mismatch_mps": 3.019806626980426e-11,
+        "vinf_in_kms": 10.590700933783014,
+        "vinf_out_kms": 10.590700933782983,
+        "turn_deg": 28.404018082755194,
+        "max_turn_deg": 41.06637296816779,
+        "inferred_altitude_km": 4553.069444212138,
+        "minimum_altitude_km": 200.0,
+        "powered_mps": 0.0,
+        "powered_geometry_audited": false,
+        "clearance_above_floor_km": 4353.069444212138
+      },
+      {
+        "body": "Earth",
+        "event_index": 3,
+        "jd": 2462499.517293548,
+        "mismatch_mps": 0.00022075476024951968,
+        "vinf_in_kms": 10.608610932995578,
+        "vinf_out_kms": 10.608611153750338,
+        "turn_deg": 40.02607188826333,
+        "max_turn_deg": 40.97226599749394,
+        "inferred_altitude_km": 429.0722774313772,
+        "minimum_altitude_km": 200.0,
+        "powered_mps": 0.0,
+        "powered_geometry_audited": false,
+        "clearance_above_floor_km": 229.0722774313772
+      }
+    ],
+    "max_vinf_mismatch_mps": 0.00022075476024951968,
+    "max_unpowered_vinf_mismatch_mps": 0.00022075476024951968,
+    "max_single_dsm_mps": 313.7511139427203,
+    "max_powered_flyby_mps": 0.0,
+    "cruise_total_mps": 313.7511139427203,
+    "policy": {
+      "max_unpowered_speed_mismatch_mps": 1.0,
+      "max_single_dsm_mps": 700.0,
+      "max_powered_flyby_mps": 200.0,
+      "max_total_cruise_mps": 1500.0
+    }
+  },
+  "solar_coast_audit": {
+    "maximum_dop853_endpoint_error_km": 0.021857735859327,
+    "maximum_velocity_difference_kms": 3.4859544590676185e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "flyby_altitudes_km": [
+    10670.453459180237,
+    4553.069444212138,
+    429.07227743137446
+  ]
+}

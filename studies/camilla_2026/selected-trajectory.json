@@ -1,0 +1,278 @@
+{
+  "format": "rolamgas-search-options",
+  "schema_version": 1,
+  "app_version": "0.2.5-test1",
+  "settings": {
+    "target": "Jupiter",
+    "launch_start": "2026-09-09",
+    "launch_end": "2026-09-09T23:59:59",
+    "max_years": 6.0,
+    "vinf_tolerance_mps": 0.1,
+    "min_c3": 5.0,
+    "max_c3": 15.0,
+    "max_arrival_vinf_kms": 15.0,
+    "max_dsm_kms": 0.7,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 2.0,
+    "minimum_altitude_km": {
+      "Mercury": 200.0,
+      "Venus": 300.0,
+      "Earth": 200.0,
+      "Mars": 200.0,
+      "Jupiter": 10000.0,
+      "Saturn": 10000.0,
+      "Uranus": 1000.0,
+      "Neptune": 1000.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EVdvEEJ"
+    ],
+    "route_overrides": {
+      "EVdvEEJ": {
+        "leg_days": [
+          [
+            45,
+            700
+          ],
+          [
+            45,
+            900
+          ],
+          [
+            300,
+            1200
+          ],
+          [
+            300,
+            1800
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              0,
+              true
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ],
+            [
+              1,
+              true
+            ],
+            [
+              1,
+              false
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ],
+            [
+              1,
+              true
+            ],
+            [
+              1,
+              false
+            ],
+            [
+              2,
+              true
+            ],
+            [
+              2,
+              false
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "max_venus_c3": 30.0,
+    "event_windows": [
+      [
+        "2026-09-09T00:00:00",
+        "2026-09-09T23:59:59"
+      ],
+      [
+        "2027-02-25T00:00:00",
+        "2027-02-25T23:59:59"
+      ],
+      [
+        "2027-12-29T00:00:00",
+        "2027-12-29T23:59:59"
+      ],
+      [
+        "2029-12-29T00:00:00",
+        "2029-12-29T23:59:59"
+      ],
+      [
+        "2031-10-25T00:00:00",
+        "2031-10-25T23:59:59"
+      ]
+    ]
+  },
+  "trajectory": {
+    "schema_version": 1,
+    "sequence": "EVdvEEJ",
+    "body_ids": [
+      "399",
+      "299",
+      "399",
+      "399",
+      "599"
+    ],
+    "dates_jd_tdb": [
+      2461293.0,
+      2461462.0,
+      2461769.0,
+      2462499.517293548,
+      2463165.0
+    ],
+    "branches": [
+      [
+        0,
+        true
+      ],
+      [
+        0,
+        true
+      ],
+      [
+        1,
+        true
+      ],
+      [
+        0,
+        true
+      ]
+    ],
+    "dsm_controls": [
+      {
+        "leg_index": 1,
+        "fraction": 0.4087947882736156,
+        "departure_offset_kms": [
+          0.3529123749304466,
+          0.20653207659398687,
+          -0.3909938345343811
+        ]
+      }
+    ],
+    "segments": [
+      {
+        "start_jd": 2461293.0,
+        "end_jd": 2461462.0,
+        "r": [
+          146497071.7158068,
+          -35270401.51960914,
+          1210.0990733060119
+        ],
+        "v": [
+          5.844711654728948,
+          25.552054843282356,
+          -0.7406824593609239
+        ]
+      },
+      {
+        "start_jd": 2461462.0,
+        "end_jd": 2461587.5,
+        "r": [
+          -67993625.51471707,
+          -84280544.27250156,
+          2764910.9476730544
+        ],
+        "v": [
+          27.467225701525955,
+          -29.226021496880975,
+          -1.2122368897126714
+        ]
+      },
+      {
+        "start_jd": 2461587.5,
+        "end_jd": 2461769.0,
+        "r": [
+          197554675.60454398,
+          -28404744.967320606,
+          -8445036.24832007
+        ],
+        "v": [
+          7.631653099835717,
+          20.536102839773633,
+          -0.4455620717388931
+        ]
+      },
+      {
+        "start_jd": 2461769.0,
+        "end_jd": 2462499.517293548,
+        "r": [
+          -18281490.227678128,
+          145977654.37864017,
+          -9189.986275278843
+        ],
+        "v": [
+          -32.32510302465585,
+          -14.13870144914258,
+          -0.7020151425967348
+        ]
+      },
+      {
+        "start_jd": 2462499.517293548,
+        "end_jd": 2463165.0,
+        "r": [
+          -18293374.9980559,
+          145972455.656108,
+          -9448.092926400295
+        ],
+        "v": [
+          -38.035764864825765,
+          -10.510264497244506,
+          1.930312455556922
+        ]
+      }
+    ],
+    "metrics": {
+      "launch_c3_km2_s2": 11.91502873431212,
+      "total_dsm_kms": 0.31375111394272026,
+      "arrival_vinf_kms": 9.046658770897016,
+      "duration_years": 5.125256673511293
+    }
+  },
+  "display_name": "Camilla \u2014 Jupiter cruise recreation",
+  "source_candidate_id": "2c8de26a2f93"
+}

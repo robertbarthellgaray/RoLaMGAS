@@ -2,9 +2,10 @@ import {historicalMatch} from './historical_labels.js?v=20261108b';
 import {publicationDate} from './publication_dates.js?v=20261110b';
 import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261111c';
 import './mission_metrics.js?v=20261110a';
-import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261111a';
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261112b';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261108b';
-import {trimAlternatives,groupLaunches,launchTimestamp} from './library_curation.js?v=20261111a';
+import {trimAlternatives,groupLaunches,launchTimestamp} from './library_curation.js?v=20261112b';
+import {storedMismatch,estimateFlybys,FLYBY_BODIES} from './flyby_diagnostics.js?v=20261112b';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
@@ -81,7 +82,8 @@ function launchGroupMarkup(group){
   <div class="launch-variants">${group.rows.map(c=>`<button type="button" class="candidate-card variant-card" data-id="${escapeHtml(c.id)}" aria-pressed="${c.id===selected?.id}" aria-label="Inspect ${escapeHtml(missionName(c)||c.sequence)}, launch ${launchTimestamp(c)}, C3 ${fmt(c.c3)}">
    ${missionName(c)?`<strong>${escapeHtml(missionName(c))}</strong>`:''}<time>${launchTimestamp(c)}</time>
    <span class="variant-arrival">Arrival ${escapeHtml(c.arrival_date)} · ${fmt(c.years,3)} yr</span>
-   <span class="variant-metrics">C3 ${fmt(c.c3,2)} · Δv ${fmt(c.burns_mps,0)} m/s · V∞ ${fmt(c.vinf,2)} km/s</span>
+   <span class="variant-metrics">C3 ${fmt(c.c3,2)} · Modeled Δv ${fmt(c.burns_mps,0)} m/s · V∞ ${fmt(c.vinf,2)} km/s</span>
+   ${c.mismatch_max_mps>100?`<span class="variant-gap">Flyby speed gap up to ${fmt(c.mismatch_max_mps,1)} m/s</span>`:''}
   </button>`).join('')}</div></details>`;
 }
 function renderList(revealId=null) {
@@ -113,6 +115,38 @@ function drawTradeoff(rows=visibleRows()){
  $('tradeoff-svg').innerHTML=svg;$('tradeoff-svg').setAttribute('aria-label',`Flight time versus ${verticalLabel}; select a point to inspect and download`);
  $('tradeoff-legend').innerHTML=[...palette].filter(([sequence])=>rows.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<span><i class="sequence-swatch" style="background:${color}"></i>${escapeHtml(sequence)}</span>`).join('');
  $('tradeoff-status').textContent=`${target} · ${rows.length} trajectories · ${Math.min(...rows.map(launchYear))}–${Math.max(...rows.map(launchYear))} launches. Select a dot to inspect and download.`;
+}
+
+function renderFlybyDiagnostics(c){
+ const panel=$('flyby-diagnostics'),record=c.community_record||c.desktop_record,
+  mismatch=storedMismatch(record)??c.validation?.max_vinf_mismatch_mps??c.mismatch_max_mps;
+ panel.hidden=c.bodies.length<3||!(Number.isFinite(mismatch)||record||c.desktop_record_url);if(panel.hidden)return;
+ const gap=Number.isFinite(mismatch)?`${fmt(mismatch,mismatch<.01?6:2)} m/s`:'not retained in this record',
+  ids=[...new Set(record?.body_ids.slice(1,-1)||c.bodies.slice(1,-1).map(body=>Object.keys(FLYBY_BODIES).find(id=>FLYBY_BODIES[id][0]===body)))].filter(id=>FLYBY_BODIES[id]);
+ panel.innerHTML=`<h4>Flyby continuity and correction burns</h4><p>Largest saved V∞ speed difference: <strong>${gap}</strong>.</p>
+  ${mismatch>100&&c.burns_mps===0?'<p class="variant-gap">These flybys have unresolved velocity gaps despite the zero modeled cruise Δv.</p>':''}
+  <p class="small quiet">The stored maximum is one encounter’s speed difference. It excludes the other flybys and does not give the total correction burn. Powered-flyby estimates below preserve both saved asymptotes.</p>
+  ${record||c.desktop_record_url?`<details><summary>Minimum flyby altitudes for the estimate</summary><div class="correction-floors">${ids.map(id=>`<label>${FLYBY_BODIES[id][0]} · km<input type="number" min="0" step="any" data-correction-floor="${id}" value="${c.flybys?.find(f=>f.body===FLYBY_BODIES[id][0])?.altitude_floor_km??FLYBY_BODIES[id][3]}"></label>`).join('')}</div></details>
+  <button type="button" class="subtle-button" id="estimate-flybys">Estimate flyby correction burns</button><div id="flyby-estimates" role="status"></div>`:''}`;
+ if($('estimate-flybys'))$('estimate-flybys').onclick=()=>showFlybyEstimates(c);
+}
+async function showFlybyEstimates(c){
+ const button=$('estimate-flybys'),output=$('flyby-estimates'),token=requestVersion;
+ button.disabled=true;output.textContent='Loading cached JPL context and calculating the encounter geometry…';
+ try{
+  let record=c.community_record||c.desktop_record;
+  if(!record&&c.desktop_record_url){record=await fetchJson(c.desktop_record_url);c.desktop_record=record;}
+  if(!record)throw Error('Saved coast states are unavailable');
+  if(!planetLoad)planetLoad=fetchJson('data/planet_playback.json?v=20261111c').catch(error=>{planetLoad=null;throw error});
+  const context=await planetLoad;if(token!==requestVersion||selected?.id!==c.id)return;
+  const floors=Object.fromEntries([...document.querySelectorAll('[data-correction-floor]')].map(input=>[input.dataset.correctionFloor,Number(input.value)]));
+  const result=estimateFlybys(record,context,floors),shown=value=>Number.isFinite(value)?'≈ '+fmt(value,1):'unavailable';
+  output.innerHTML=`<div class="table-scroll"><table><thead><tr><th>Encounter · TDB</th><th>Speed gap · m/s</th><th>Periapsis altitude · km</th><th>Estimated burn · m/s</th></tr></thead><tbody>${result.rows.map(row=>`<tr><td>${escapeHtml(row.body)}<br>${new Date((row.jd-2440587.5)*86400000).toISOString().slice(0,10)}</td><td>${shown(row.mismatch_mps)}</td><td>${shown(row.estimated_altitude_km)}</td><td>${Number.isFinite(row.estimated_burn_mps)?shown(row.estimated_burn_mps):escapeHtml(row.error)}</td></tr>`).join('')}</tbody></table></div>
+   <p>Sum of flyby speed differences: <strong>${shown(result.speed_gap_sum_mps)} m/s</strong>.<br>Estimated periapsis burns: <strong>${shown(result.estimated_powered_flyby_sum_mps)} m/s</strong>.</p>
+   <p class="small quiet">Modeled coast DSMs: ${shown(result.modeled_coast_dsm_mps)} m/s. Replacing all flyby joins with this construction gives ${shown(result.modeled_coast_dsm_mps==null||result.estimated_powered_flyby_sum_mps==null?null:result.modeled_coast_dsm_mps+result.estimated_powered_flyby_sum_mps)} m/s in cruise impulses. This replaces any already modeled flyby burns rather than counting them twice.</p>
+   <p class="small quiet">Conservative analytic construction using interpolated JPL context; it is not a minimum-fuel solution. Finite-radius propagation can add targeting corrections. Saved trajectory states and burns are unchanged.</p>`;
+ }catch(error){if(token===requestVersion)output.textContent='Correction estimate unavailable: '+error.message;}
+ finally{if(token===requestVersion)button.disabled=false;}
 }
 
 
@@ -207,7 +241,7 @@ async function selectCandidate(id) {
   $('plot-message').hidden = false; $('plot-message').textContent = 'Loading saved flight…';
   try {
     let c = cache.get(id);
-    if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json?v=20261111e`); cache.set(id, c); }
+    if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json?v=20261112b`); cache.set(id, c); }
     if (token !== requestVersion) return;
     annotateMission(c);selected = c; attachPlanetContext(c); renderBodyVisibility(c); fraction = 0; zoom = 1; setView('3d');
     updateLocation(c.id);
@@ -222,8 +256,9 @@ async function selectCandidate(id) {
     const publication=publicationDate(c,publicationHistory);
     $('mission-added').textContent='Added to repository: '+publication.text;
     $('mission-added').title='Source: '+publication.basis+'. First encounter-sequence publication is retained when a better same-day candidate replaces it.';
-    const metrics = [ ['Launch C3', fmt(c.c3), 'km²/s²'], ['Cruise Δv', fmt(c.burns_mps,c.burns_mps>0&&c.burns_mps<.1?3:1), 'm/s'], ['Arrival V∞', fmt(c.vinf), 'km/s'], ['Flight time', fmt(c.years), 'years'] ];
+    const metrics = [ ['Launch C3', fmt(c.c3), 'km²/s²'], ['Modeled cruise Δv', fmt(c.burns_mps,c.burns_mps>0&&c.burns_mps<.1?3:1), 'm/s'], ['Arrival V∞', fmt(c.vinf), 'km/s'], ['Flight time', fmt(c.years), 'years'] ];
     $('metrics').innerHTML = metrics.map(([label,value,unit]) => `<div class="metric"><p>${label}</p><strong>${value}</strong><small>${unit}</small></div>`).join('');
+    renderFlybyDiagnostics(c);
     const events = [...c.events.map(e => ({...e, burn:false})), ...c.burns.filter(globalThis.MissionMetrics.visibleManeuver).map(b => ({...b, burn:true}))].sort((a,b) => a.jd - b.jd);
     $('events').innerHTML = events.map(e => {
       const f = c.flybys.find(f => Math.abs(f.jd - e.jd) < .0001);
@@ -467,7 +502,7 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings,names,historical,annotations,performance,publications]=await Promise.all([fetchJson('data/index.json?v=20261111c'),fetchJson('data/community_seed_catalog.json?v=20261110b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261111c').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261110a').catch(()=>null),fetchJson('data/publication_dates.json?v=20261111c').catch(()=>({candidates:{}}))]);
+ const [data,archive,settings,names,historical,annotations,performance,publications]=await Promise.all([fetchJson('data/index.json?v=20261112b'),fetchJson('data/community_seed_catalog.json?v=20261112b').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261108b').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261112b').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261110a').catch(()=>null),fetchJson('data/publication_dates.json?v=20261112b').catch(()=>({candidates:{}}))]);
  registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  catalog.push(...data.cases.filter(c=>c.c3<=250).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;

@@ -1,0 +1,94 @@
+{
+  "target": "Jupiter",
+  "launch_start": "2026-09-09",
+  "launch_end": "2026-09-09T23:59:59",
+  "max_years": 5.625256673511293,
+  "vinf_tolerance_mps": 1.0,
+  "min_c3": 5.0,
+  "max_c3": 30.0,
+  "max_arrival_vinf_kms": 30.0,
+  "max_dsm_kms": 0.7999999999999999,
+  "max_single_dsm_kms": 0.7,
+  "max_powered_flyby_kms": 0.2,
+  "dsm_velocity_box_kms": 6.0,
+  "minimum_altitude_km": {
+    "Earth": 200.0,
+    "Venus": 300.0
+  },
+  "samples_per_sequence": 3000,
+  "refinements_per_sequence": 36,
+  "max_nfev": 250,
+  "branch_families": 16,
+  "workers": 4,
+  "batches": 1,
+  "seed": 502,
+  "keep": 100,
+  "cache": "D:\\Import Actual\\Traj\\RoLaMGAS\\cache",
+  "max_ephemeris_step_days": 1.0,
+  "sequences": [
+    "EVdvEEJ"
+  ],
+  "route_overrides": {
+    "EVdvEEJ": {
+      "leg_days": [
+        [
+          84.5,
+          254.5
+        ],
+        [
+          153.5,
+          461.5
+        ],
+        [
+          365.5,
+          1097.5
+        ],
+        [
+          332.5,
+          998.5
+        ]
+      ]
+    }
+  },
+  "target_object": null,
+  "custom_leg_days": [
+    30.0,
+    18262.5
+  ],
+  "search_objective": "feasibility",
+  "cost_refinements": 3,
+  "powered_flybys": false,
+  "local_refinement": null,
+  "mercury_resonant_seeds": true,
+  "earth_return_seeds": true,
+  "historical_mission_seeds": true,
+  "append_flyby": null,
+  "arrival_date": null,
+  "arrival_tolerance_days": 0.0,
+  "transfer_direction": "prograde",
+  "mission_profile": "custom",
+  "c3_seed_boundary": "minimum",
+  "max_venus_c3": 30.0,
+  "event_windows": [
+    [
+      "2026-09-09T00:00:00",
+      "2026-09-09T23:59:59"
+    ],
+    [
+      "2027-02-25T00:00:00",
+      "2027-02-25T23:59:59"
+    ],
+    [
+      "2027-12-29T00:00:00",
+      "2027-12-29T23:59:59"
+    ],
+    [
+      "2029-12-29T00:00:00",
+      "2029-12-29T23:59:59"
+    ],
+    [
+      "2031-10-25T00:00:00",
+      "2031-10-25T23:59:59"
+    ]
+  ]
+}

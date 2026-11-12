@@ -624,7 +624,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     archive_hash=hashlib.sha256(archive_path.read_bytes()).hexdigest()
     if reused:print(f'Revalidated {len(reused)} compatible saved candidates against all current limits.',flush=True)
     engine_hashes = {name:hashlib.sha256((RESOURCE_ROOT/name).read_bytes()).hexdigest()
-                     for name in ('mission_search.py','dynamics.py','trajectory_policy.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','historical_seeds.py','resonant_shooting_seeds.py','departure_seeds/reachstar_tour.json','departure_seeds/historical_missions.json','departure_seeds/mission_studies.json','departure_seeds/decadal_missions.json','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
+                     for name in ('mission_search.py','dynamics.py','trajectory_policy.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','historical_seeds.py','resonant_shooting_seeds.py','departure_seeds/reachstar_tour.json','departure_seeds/historical_missions.json','departure_seeds/mission_studies.json','departure_seeds/decadal_missions.json','departure_seeds/new_frontiers_missions.json','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
     signature = hashlib.sha256(json.dumps([c,routes,ep.manifest,engine_hashes,archive_hash],sort_keys=True).encode()).hexdigest()
     manifest_path = output/'run_manifest.json'
     if resume:

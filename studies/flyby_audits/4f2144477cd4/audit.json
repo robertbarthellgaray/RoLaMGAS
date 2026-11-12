@@ -1,0 +1,107 @@
+{
+  "candidate_id": "4f2144477cd43baf526df67b7f62a966ddcfa557ff67f5012bb9033afc54130c",
+  "stored_modeled_burns_mps": 0,
+  "stored_max_vinf_mismatch_mps": 450.51030810996906,
+  "rows": [
+    {
+      "body": "Venus",
+      "event_index": 1,
+      "jd": 2461459.046580631,
+      "mismatch_mps": 253.50567964246017,
+      "incoming_vinf_kms": [
+        -3.1456136940421295,
+        -5.650258872426061,
+        2.5509332811205456
+      ],
+      "outgoing_vinf_kms": [
+        -0.39626651346229735,
+        -7.144972071940529,
+        0.8419185463234915
+      ],
+      "planet_state_km_kms": [
+        -74647538.9477291,
+        -78347832.04606903,
+        3230374.143544209,
+        25.109351917145435,
+        -24.321386745240023,
+        -1.7830557088036658
+      ],
+      "minimum_altitude_km": 300.0,
+      "estimated_burn_mps": 196.11864551356166,
+      "estimated_altitude_km": 13280.900105379442,
+      "delta_v_vector_kms": [
+        -0.05033212953149713,
+        -0.18328446119423702,
+        0.04833224740933195
+      ]
+    },
+    {
+      "body": "Earth",
+      "event_index": 2,
+      "jd": 2461764.9798006024,
+      "mismatch_mps": 443.1959272718853,
+      "incoming_vinf_kms": [
+        1.7030387271766507,
+        -10.063061224917769,
+        1.1946403392919616
+      ],
+      "outgoing_vinf_kms": [
+        -2.9430431452501757,
+        -10.274692685548747,
+        -0.8165357708144515
+      ],
+      "planet_state_km_kms": [
+        -7805144.776831376,
+        146934211.36430013,
+        -9002.126428846199,
+        -30.24227539608899,
+        -1.6872239566628207,
+        -0.0002966655064742981
+      ],
+      "minimum_altitude_km": 200.0,
+      "estimated_burn_mps": 346.8389723134422,
+      "estimated_altitude_km": 5057.143864978924,
+      "delta_v_vector_kms": [
+        -0.021965319340957024,
+        -0.34608971991271176,
+        0.006058319274784119
+      ]
+    },
+    {
+      "body": "Earth",
+      "event_index": 3,
+      "jd": 2462495.5000002766,
+      "mismatch_mps": 450.51030798645365,
+      "incoming_vinf_kms": [
+        -2.9614265125896466,
+        -10.279481455232986,
+        -0.8177117443454305
+      ],
+      "outgoing_vinf_kms": [
+        -8.143636885070308,
+        -7.104285146893957,
+        -2.8612145985192092
+      ],
+      "planet_state_km_kms": [
+        -7829507.347965489,
+        146925427.99717516,
+        -9601.795421999834,
+        -30.22365293000295,
+        -1.686929144889577,
+        0.0008795925321374065
+      ],
+      "minimum_altitude_km": 200.0,
+      "estimated_burn_mps": 333.535643611226,
+      "estimated_altitude_km": 1682.5563085231315,
+      "delta_v_vector_kms": [
+        -0.17743977994292148,
+        -0.2762254279555538,
+        -0.05882740011026755
+      ]
+    }
+  ],
+  "sum_speed_mismatches_mps": 1147.211914900799,
+  "estimated_periapsis_burn_sum_mps": 876.4932614382299,
+  "model": "One conservative common-periapsis impulse per planetary encounter; original saved asymptotes preserved. Not a minimum-fuel solution. Nominal encounter epochs are not finite-radius periapsis times. Launch injection, capture, targeting corrections and any already modeled coast DSMs are separate.",
+  "ephemeris": "Locally cached JPL Horizons, heliocentric Ecliptic J2000, TDB, km and km/s"
+}

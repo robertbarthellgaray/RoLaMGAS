@@ -12,6 +12,7 @@ retained alternative:
 - has the same target and ordered assist sequence;
 - launches within three Julian years;
 - has no higher C3, flight time, arrival V-infinity or modeled cruise burn cost;
+- has no larger saved maximum flyby-speed gap (allowing 1 m/s numerical tolerance);
 - improves C3 by both 20% and 2 km²/s², **or** flight time by both 20% and one year;
 - does not replace a submitted pass with a submitted yellow candidate.
 
@@ -39,7 +40,8 @@ To include additional downloaded records (a JSON array from the public API):
 node tools/audit_gallery_curation.mjs --snapshot live.json --output audit.json
 ```
 
-The saved 2026-11-12 UTC audit includes the then-current live feed: 5,559 displayed
-records before trimming, 4,006 after, collected into 761 sequence/month groups.
+The saved audit includes a snapshot of the live feed and the bundled archive.
 Counts vary with filters, subsequent uploads and locally assigned mission names.
+Maximum flyby-speed gaps are compared separately from modeled burns; a zero-DSM
+candidate with a large gap cannot hide a better-connected alternative.
 The website, tests and audit command use the same `docs/library_curation.js` rules.

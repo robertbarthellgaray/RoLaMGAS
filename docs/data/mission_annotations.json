@@ -331,6 +331,16 @@
       "label": "ReachStar’s Eight-Planet Grand Tour",
       "featured_priority": 12,
       "note": "Original RSS/Principia trajectory design by ReachStar on Bilibili; date-adjusted JPL patched-conic recreation in RoLaMGAS."
+    },
+    "2c8de26a2f93": {
+      "label": "Camilla — Jupiter cruise recreation",
+      "featured_priority": 5,
+      "note": "Based on Howell et al. 2018 / supplied Camilla concept chart. Solved Jupiter cruise prefix; Chariklo leg excluded. One explicit July DSM, with independently checked coast endpoints and flyby vectors."
+    },
+    "e78c56d2619226f876eb5dafa16dcddcf44f0de2a1152603e427d8b88986a2fb": {
+      "label": "Camilla — Jupiter cruise recreation",
+      "featured_priority": 5,
+      "note": "Based on Howell et al. 2018 / supplied Camilla concept chart. Solved Jupiter cruise prefix; Chariklo leg excluded. One explicit July DSM, with independently checked coast endpoints and flyby vectors."
     }
   }
 }
