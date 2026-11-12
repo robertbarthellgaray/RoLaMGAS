@@ -4,11 +4,13 @@ import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=202
 import './mission_metrics.js?v=20261110a';
 import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261111a';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261108b';
+import {trimAlternatives,groupLaunches,launchTimestamp} from './library_curation.js?v=20261111a';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
 const colors = ['#79d8f1', '#ffd08a', '#8ae3bd', '#b4aeff', '#ff9f9a', '#9ed2ff'];
 const catalog = [];
+const openLaunchGroups=new Set();
 const missionNames=(()=>{try{const data=JSON.parse(localStorage.getItem('rolamgas-mission-names')||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?Object.fromEntries(Object.entries(data).filter(([id,label])=>typeof label==='string'&&label.length<=100)):{}}catch{return {}}})();
 let historicalProfiles=[],ownerMissions={},launchPerformance=null,publicationHistory={};
 function annotateMission(c,id=c.id){const a=ownerMissions[id];if(a)Object.assign(c,{mission_label:a.label,featured_priority:a.featured_priority,mission_note:a.note});return c;}
@@ -56,24 +58,45 @@ function syncGraphYears(){for(const suffix of ['min','max'])$('chart-launch-year
 function minimumYear(){return $('launch-year-min').value.trim()===''?-Infinity:Number($('launch-year-min').value)}
 function maximumYear(){return $('launch-year-max').value.trim()===''?Infinity:Number($('launch-year-max').value)}
 function targetRows(){return catalog.filter(c=>targetMatches(c)&&(!CATEGORIES.includes(destination)||smallBodyTarget==='All'||c.target===smallBodyTarget))}
-function visibleRows(){
+function matchingRows(){
  const search=$('search').value.trim().toLowerCase().replace(/\s+/g,'');
  return targetRows().filter(c=>`${missionName(c)} ${c.id} ${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
   &&(!c.community||c.classification!=='yellow'||$('include-yellow').checked)&&c.c3<=maximum('max-c3')&&c.vinf<=maximum('max-vinf')&&c.burns_mps<=maximum('max-burns')&&c.years<=maximum('max-years')&&launchYear(c)>=minimumYear()&&launchYear(c)<=maximumYear());
 }
-function renderList() {
-  const rows=visibleRows(),sort=$('sort').value;
+function gallerySelection(){
+ const all=matchingRows(),protectedIds=new Set(all.filter(c=>missionName(c)||c.featured_priority||c.spotlight).map(c=>c.id));
+ const trimmed=trimAlternatives(all,protectedIds);
+ return {all,rows:$('show-trimmed').checked?all:trimmed.rows,hidden:trimmed.hidden};
+}
+function visibleRows(){return gallerySelection().rows;}
+function launchGroupMarkup(group){
+ const c=group.rows[0],range=(key,digits)=>{const values=group.rows.map(c=>c[key]),lo=Math.min(...values),hi=Math.max(...values);return fmt(lo,digits)+(Math.abs(hi-lo)<10**(-digits)?'':'–'+fmt(hi,digits));};
+ const title=missionName(c)||group.sequence,open=openLaunchGroups.has(group.key)||group.rows.some(c=>c.id===selected?.id);
+ if(open)openLaunchGroups.add(group.key);
+ return `<details class="launch-group" data-launch-group="${escapeHtml(group.key)}" ${open?'open':''}>
+  <summary><div class="card-preview"><img loading="lazy" src="${c.community?sharedPreview(c.id):`images/${c.id}.svg`}" width="320" height="220" alt="${escapeHtml(group.sequence)} trajectory preview"></div>
+  <div class="card-title">${escapeHtml(title)} <b>${escapeHtml(group.month)}</b></div>
+  <p class="card-subtitle">${escapeHtml(group.target)} · ${escapeHtml(group.sequence)} · ${group.rows.length} ${group.rows.length===1?'variant':'variants'}</p>
+  <div class="card-metrics"><div><span>C3 · km²/s²</span>${range('c3',1)}</div><div><span>FLIGHT · yr</span>${range('years',1)}</div></div><span class="group-prompt">Choose an exact departure ▾</span></summary>
+  <div class="launch-variants">${group.rows.map(c=>`<button type="button" class="candidate-card variant-card" data-id="${escapeHtml(c.id)}" aria-pressed="${c.id===selected?.id}" aria-label="Inspect ${escapeHtml(missionName(c)||c.sequence)}, launch ${launchTimestamp(c)}, C3 ${fmt(c.c3)}">
+   ${missionName(c)?`<strong>${escapeHtml(missionName(c))}</strong>`:''}<time>${launchTimestamp(c)}</time>
+   <span class="variant-arrival">Arrival ${escapeHtml(c.arrival_date)} · ${fmt(c.years,3)} yr</span>
+   <span class="variant-metrics">C3 ${fmt(c.c3,2)} · Δv ${fmt(c.burns_mps,0)} m/s · V∞ ${fmt(c.vinf,2)} km/s</span>
+  </button>`).join('')}</div></details>`;
+}
+function renderList(revealId=null) {
+  const {all,rows,hidden}=gallerySelection(),sort=$('sort').value;
   rows.sort((a,b) => sort === 'recommended' ? (b.featured_priority || 0) - (a.featured_priority || 0) || Number(b.spotlight) - Number(a.spotlight) || (b.received||0)-(a.received||0) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
-  $('result-count').textContent = `${rows.length} ${rows.length === 1 ? 'trajectory' : 'trajectories'}`;
-  $('candidate-more').hidden=visibleCount>=rows.length;
-  $('candidate-more').textContent=`Show ${Math.min(48,Math.max(0,rows.length-visibleCount))} more (${Math.min(visibleCount,rows.length)} of ${rows.length})`;
-  $('candidate-list').innerHTML = rows.length ? rows.slice(0,visibleCount).map(c => `<button type="button" class="candidate-card" data-id="${c.id}" aria-pressed="${c.id === selected?.id}" aria-label="Inspect ${escapeHtml(c.title)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}">
-    <div class="card-preview"><img loading="lazy" src="${c.community ? sharedPreview(c.id) : `images/${c.id}.svg`}" width="320" height="220" alt="${escapeHtml(c.sequence)} heliocentric trajectory preview"><span class="card-badge">${c.spotlight ? 'Integrated concept' : escapeHtml(c.model)}</span></div>
-    <div class="card-title">${escapeHtml(missionName(c)||c.sequence)}<b aria-hidden="true">↗</b></div><p class="card-subtitle">${escapeHtml(c.target)} · ${c.launch_date} → ${c.arrival_date}</p>
-    <div class="card-metrics"><div><span>C3 · km²/s²</span>${fmt(c.c3,1)}</div><div><span>Δv · m/s</span>${fmt(c.burns_mps,0)}</div><div><span>FLIGHT · yr</span>${fmt(c.years,1)}</div></div></button>`).join('')
+  const groups=groupLaunches(rows);
+  if(revealId){const index=groups.findIndex(g=>g.rows.some(c=>c.id===revealId));if(index>=0)visibleCount=Math.max(visibleCount,Math.ceil((index+1)/48)*48);}
+  $('result-count').textContent = `${rows.length} trajectories · ${groups.length} launch groups`;
+  $('curation-status').textContent=hidden.size?`${hidden.size} clearly inferior alternatives ${$('show-trimmed').checked?'included':'trimmed'}. Original files and direct links remain available.`:'No clearly inferior alternatives in this selection.';
+  $('candidate-more').hidden=visibleCount>=groups.length;
+  $('candidate-more').textContent=`Show ${Math.min(48,Math.max(0,groups.length-visibleCount))} more launch groups (${Math.min(visibleCount,groups.length)} of ${groups.length})`;
+  $('candidate-list').innerHTML = rows.length ? groups.slice(0,visibleCount).map(launchGroupMarkup).join('')
     : '<p class="empty">No saved examples match these filters. Try raising a limit, changing launch years or choosing another destination.</p>';
   drawTradeoff(rows);
-  if (rows.length && !rows.some(c => c.id === selected?.id)) selectCandidate(rows[0].id);
+  if (rows.length && !all.some(c => c.id === selected?.id)) selectCandidate(rows[0].id);
 }
 function selectedTarget(){return CATEGORIES.includes(destination)?(smallBodyTarget==='All'?null:smallBodyTarget):destination==='All'?null:destination}
 function drawTradeoff(rows=visibleRows()){
@@ -234,7 +257,8 @@ async function selectCandidate(id) {
     if(!finite){$('download-xyzv').hidden=true;$('trajectory-download-note').textContent='Preview / analysis CSV uses ideal Lambert coasts joined at planet centers. For Celestia flybys, choose Use in desktop app, load the downloaded file, then choose Integrate & export to construct finite-radius SOI patches and list their extra burns. RoLaMGAS v0.2.4 loads exact candidates; older clients import the search settings.';}
     if(c.community_record){$('download-csv').hidden=false;$('download-csv').href='#analysis-csv';}
     if(!finite){$('download-xyzv').removeAttribute('href');$('download-xyzv').removeAttribute('download');}else $('download-xyzv').setAttribute('download','');
-    document.querySelectorAll('.candidate-card').forEach(b => b.setAttribute('aria-pressed', b.dataset.id === c.id));
+    if(![...document.querySelectorAll('.candidate-card')].some(b=>b.dataset.id===c.id))renderList(c.id);
+    document.querySelectorAll('.candidate-card').forEach(b => {b.setAttribute('aria-pressed', b.dataset.id === c.id);if(b.dataset.id===c.id){const group=b.closest('[data-launch-group]');if(group){group.open=true;openLaunchGroups.add(group.dataset.launchGroup);}}});
     canvas.setAttribute('aria-label', `${c.title} heliocentric trajectory in AU. Drag to rotate, scroll to zoom; arrow keys rotate and plus or minus zoom.`);
     $('plot-message').hidden = true;
     updateTime();
@@ -349,16 +373,18 @@ $('destinations').addEventListener('click', e => {
 });
 $('small-body-options').addEventListener('click',e=>{const b=e.target.closest('[data-small-body]');if(!b)return;if(smallBodyTarget!==b.dataset.smallBody)resetDestinationFilters();pendingHashTarget=null;smallBodyTarget=b.dataset.smallBody;visibleCount=48;makeDestinations();renderList();if(selected)updateLocation(selected.id);});
 $('candidate-list').addEventListener('click', e => { const b=e.target.closest('[data-id]'); if (b) selectCandidate(b.dataset.id); });
+$('candidate-list').addEventListener('toggle',e=>{const group=e.target;if(group.matches?.('[data-launch-group]')&&group.isConnected){if(group.open)openLaunchGroups.add(group.dataset.launchGroup);else openLaunchGroups.delete(group.dataset.launchGroup);}},true);
 for (const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{syncGraphYears();visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
 $('sort').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('include-yellow').addEventListener('change',()=>{visibleCount=48;renderList()});
+$('show-trimmed').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('candidate-more').onclick=()=>{const top=$('candidate-list').scrollTop;visibleCount+=48;renderList();$('candidate-list').scrollTop=top};
 $('community-refresh').onclick=()=>syncShared();
 for(const suffix of ['min','max'])$('chart-launch-year-'+suffix).addEventListener('input',()=>{$('launch-year-'+suffix).value=$('chart-launch-year-'+suffix).value;$('launch-year-'+suffix).dispatchEvent(new Event('input'))});
 $('chart-metric').onchange=()=>{drawTradeoff();if(selected)updateLocation(selected.id)};
 function selectPoint(e){const point=e.target.closest('[data-candidate]');if(!point)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();selectCandidate(point.dataset.candidate);$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
 $('tradeoff-svg').addEventListener('click',selectPoint);$('tradeoff-svg').addEventListener('keydown',selectPoint);
-function resetDestinationFilters(){for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('sort').value='recommended';visibleCount=48;syncGraphYears();}
+function resetDestinationFilters(){for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('show-trimmed').checked=false;$('sort').value='recommended';visibleCount=48;syncGraphYears();}
 $('clear-filters').addEventListener('click',()=>{resetDestinationFilters();renderList();if(selected)updateLocation(selected.id);});
 document.querySelector('.projection').addEventListener('click', e => { if (e.target.dataset.view) setView(e.target.dataset.view); });
 $('reset-view').addEventListener('click', () => { zoom=1; setView('3d'); });

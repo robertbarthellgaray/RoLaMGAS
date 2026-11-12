@@ -67,11 +67,11 @@ test('identified mission labels are explicit recreations and selected shared mis
 
 test('destination switches reset restrictive limits and mirrored year inputs',()=>{
  const app=fs.readFileSync(new URL('../docs/app.js',import.meta.url),'utf8'),start=app.indexOf('function resetDestinationFilters(){'),end=app.indexOf("$('clear-filters')",start),source=app.slice(start,end);
- const ids=['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max','chart-launch-year-min','chart-launch-year-max','include-yellow','sort'];
+ const ids=['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max','chart-launch-year-min','chart-launch-year-max','include-yellow','sort','show-trimmed'];
  const elements=Object.fromEntries(ids.map(id=>[id,{value:'restrictive',checked:false}]));
  const ctx=vm.createContext({$:(id)=>elements[id],syncGraphYears(){for(const suffix of ['min','max'])elements['chart-launch-year-'+suffix].value=elements['launch-year-'+suffix].value;}});
  vm.runInContext('let visibleCount=999;'+source+'resetDestinationFilters()',ctx);
  for(const id of ids.slice(0,9))assert.equal(elements[id].value,'');
- assert.equal(elements['include-yellow'].checked,true);assert.equal(elements.sort.value,'recommended');
+ assert.equal(elements['include-yellow'].checked,true);assert.equal(elements['show-trimmed'].checked,false);assert.equal(elements.sort.value,'recommended');
  assert.match(app,/destination!==b.dataset.target.*resetDestinationFilters/);assert.match(app,/smallBodyTarget!==b.dataset.smallBody.*resetDestinationFilters/);
 });

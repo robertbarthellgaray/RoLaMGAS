@@ -15,8 +15,8 @@
   <meta property="og:url" content="https://robertbarthellgaray.github.io/RoLaMGAS/">
   <link rel="icon" type="image/png" sizes="64x64" href="images/rolamgas-icon-64.png">
   <link rel="apple-touch-icon" sizes="180x180" href="images/rolamgas-touch-180.png">
-  <link rel="stylesheet" href="style.css?v=20261108b">
-  <script type="module" src="app.js?v=20261111c"></script>
+  <link rel="stylesheet" href="style.css?v=20261111d">
+  <script type="module" src="app.js?v=20261111d"></script>
 </head>
 <body>
   <a class="skip-link" href="#explorer">Skip to trajectory explorer</a>
@@ -36,6 +36,7 @@
       <div id="small-body-options" class="small-body-options" role="group" aria-label="Choose a small body" hidden></div>
       <details class="sequence-key"><summary>Read the assist sequences</summary><p>E = Earth · V = Venus · Me = Mercury · M = Mars · J = Jupiter · S = Saturn · U = Uranus · N = Neptune · P = Pluto · Er = Eris · X = a resolved Horizons object. <strong>dv</strong> marks a deep-space maneuver.</p></details>
       <div class="shared-library-tools"><p id="community-status" role="status" class="quiet">Loading saved and shared trajectories…</p><label class="quiet"><input id="include-yellow" type="checkbox" checked> Include submitted yellow candidates</label><button id="community-refresh" type="button" class="subtle-button">Refresh shared library</button><a class="text-link small" href="data/community_seed_catalog.json?v=20261108b" download="rolamgas-passing-history.json">Full archive JSON ↓</a><a class="text-link small" href="data/community_history_index.csv?v=20261108b" download>Dates & metrics CSV ↓</a></div>
+      <div class="gallery-curation"><label><input id="show-trimmed" type="checkbox"> Show trimmed alternatives</label><span id="curation-status" role="status"></span><details><summary>What gets trimmed?</summary><p>Within the same target and assist sequence, compare launches no more than three years apart. An alternative is trimmed when another uses no more C3 or cruise Δv, takes no longer, arrives with no higher V∞, and improves C3 by at least 20% and 2 km²/s², or flight time by at least 20% and one year. Named and featured missions stay visible. Your filters apply first: narrowing launch years can reveal a useful opportunity again. Original records, downloads and direct links are preserved. <a class="text-link" href="data/library_curation_report.json" download>Download the cleanup audit ↓</a></p></details></div>
       <section class="tradeoff" aria-labelledby="tradeoff-title">
         <div class="tradeoff-heading"><div><p class="eyebrow">COMPARE YOUR OPTIONS</p><h3 id="tradeoff-title">Compare trajectories</h3><p class="quiet" id="tradeoff-status" role="status">Choose a destination to compare its trajectories.</p></div><div class="chart-year-controls"><label>Launch from year<input id="chart-launch-year-min" type="number" step="1" placeholder="Any"></label><label>Through year<input id="chart-launch-year-max" type="number" step="1" placeholder="Any"></label><label class="chart-axis">Compare flight time with<select id="chart-metric"><option value="c3">Launch C3 · km²/s²</option><option value="vinf">Arrival V∞ · km/s</option></select></label></div></div>
         <div id="tradeoff-chart" class="tradeoff-chart" hidden><svg id="tradeoff-svg" role="group" aria-label="Flight time versus C3; select a point to inspect and download its trajectory" viewBox="0 0 1000 340"></svg><div id="tradeoff-legend" class="tradeoff-legend" aria-label="Assist sequence colors"></div></div>
