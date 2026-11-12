@@ -94,7 +94,7 @@
       "launch_site": "CCSFS",
       "fairing": "5.4m",
       "adapter": "47in (1194mm) payload separation ring with C22 adapter",
-      "ground_rules": "This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | 3-sigma mission required margin. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 1194-mm (47-in) payload separation system with lightweight C22 adapter. | Performance values assume harness, logo, reradiating antenna, 2 payload fairing doors. | Payload mass greater than 9,000 kg (19,841 lbm) may require mission unique accommodations, resulting in cost and/or performance impacts. | Park-orbit coast duration up to 60 minutes. Longer coast periods may require additional consumables, which could affect performance capability. | 185 km (100 nmi) circular park orbit altitude. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-41 at CCSFS (Cape Canaveral Space Force Station).",
+      "ground_rules": "This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | 3-sigma mission required margin. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 1194-mm (47-in) payload separation system with lightweight C22 adapter. | Performance values assume harness, logo, reradiating antenna, 2 payload fairing doors. | Payload mass greater than 9,000 kg (19,841 lbm) may require mission unique accommodations, resulting in cost and/or performance impacts. | Park-orbit coast duration up to 60 minutes. Longer coast periods may require additional consumables, which could affect performance capability. | 185 km (100 nmi) circular park orbit altitude. | Performance shown is applicable for declinations between 28.5 deg. and –28.5 deg. | Launch from SLC-41 at CCSFS (Cape Canaveral Space Force Station).",
       "points": [
         [
           0.0,
@@ -131,7 +131,7 @@
       "launch_site": "KSC",
       "fairing": "5.2m",
       "adapter": "47in (1194mm)",
-      "ground_rules": "First stage recovery has been accounted for in the performance capability. Recovery indicates that the performance includes the effects of recovering the booster components; Expendable indicates that the full performance of the vehicle is being used and the first stage is not recovered. | 3-sigma guidance reserves. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 937-mm or 1194-mm payload adapter/separation systems are available; masses of each are comparable and have been accounted for to provide separated spacecraft mass. | 2 payload fairing doors. | Payload mass greater than 10,000 kg (22,046 lbm) may require mission-unique adapter/accommodations, resulting in cost and/or performance impacts. | 160 km (86 nmi) park orbit perigee altitude. | This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-39A at KSC (Kennedy Space Center).",
+      "ground_rules": "First stage recovery has been accounted for in the performance capability. Recovery indicates that the performance includes the effects of recovering the booster components; Expendable indicates that the full performance of the vehicle is being used and the first stage is not recovered. | 3-sigma guidance reserves. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 937-mm or 1194-mm payload adapter/separation systems are available; masses of each are comparable and have been accounted for to provide separated spacecraft mass. | 2 payload fairing doors. | Payload mass greater than 10,000 kg (22,046 lbm) may require mission-unique adapter/accommodations, resulting in cost and/or performance impacts. | 160 km (86 nmi) park orbit perigee altitude. | This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | Performance shown is applicable for declinations between 28.5 deg. and –28.5 deg. | Launch from SLC-39A at KSC (Kennedy Space Center).",
       "points": [
         [
           0.0,
@@ -167,8 +167,8 @@
       "vehicle": "New Glenn (New Glenn)",
       "launch_site": "CCSFS",
       "fairing": "7m",
-      "adapter": "Various \u2013 see ground rules for specifics",
-      "ground_rules": "This performance takes into account the general effects of additional maneuvers associated with orbital debris compliance. This will also need to be evaluated on a mission-specific basis, which could result in additional performance impacts. | First stage recovery has been accounted for in the performance capability. | 3-sigma guidance reserves. | This configuration is under development; reserves are based on assumptions that are believed to be conservative. However, vehicle performance may change as the vehicle evolves and postflight data becomes available. Please contact LSP for guidance on use of performance data. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | Standard-capacity 1575-mm (62-in) payload adapter and one of various commercial-off-the-shelf (COTS) separation systems for payloads less than 10,000 kg (22,046 lbm). Masses of COTS separation systems are comparable and have been accounted for to provide separated spacecraft mass. | Payload mass greater than 10,000 kg (22,046 lbm) requires the standard service high-capacity 3169.9-mm (124.8-in) payload adapter; however, a mission-unique separation system or other accommodations may be required, which could have cost and/or performance impacts. | 2 payload fairing doors. | Vehicle environments and accelerations are based on a payload mass greater than 2,267 kg (5,000 lbm). Smaller payloads may be subject to higher accelerations and may require mission-unique accommodations, resulting in cost and/or performance impacts. | Launch from SLC-36 at CCSFS (Cape Canaveral Space Force Station). | To meet disposal requirements, an additional stage burn has been assumed for C3 < 0 km^2/s^2. Controlled entry is assumed for C3 < -5 km^2/s^2; escape is assumed for all other values. | 185 km (100 nmi) park orbit perigee altitude. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg.",
+      "adapter": "Various – see ground rules for specifics",
+      "ground_rules": "This performance takes into account the general effects of additional maneuvers associated with orbital debris compliance. This will also need to be evaluated on a mission-specific basis, which could result in additional performance impacts. | First stage recovery has been accounted for in the performance capability. | 3-sigma guidance reserves. | This configuration is under development; reserves are based on assumptions that are believed to be conservative. However, vehicle performance may change as the vehicle evolves and postflight data becomes available. Please contact LSP for guidance on use of performance data. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | Standard-capacity 1575-mm (62-in) payload adapter and one of various commercial-off-the-shelf (COTS) separation systems for payloads less than 10,000 kg (22,046 lbm). Masses of COTS separation systems are comparable and have been accounted for to provide separated spacecraft mass. | Payload mass greater than 10,000 kg (22,046 lbm) requires the standard service high-capacity 3169.9-mm (124.8-in) payload adapter; however, a mission-unique separation system or other accommodations may be required, which could have cost and/or performance impacts. | 2 payload fairing doors. | Vehicle environments and accelerations are based on a payload mass greater than 2,267 kg (5,000 lbm). Smaller payloads may be subject to higher accelerations and may require mission-unique accommodations, resulting in cost and/or performance impacts. | Launch from SLC-36 at CCSFS (Cape Canaveral Space Force Station). | To meet disposal requirements, an additional stage burn has been assumed for C3 < 0 km^2/s^2. Controlled entry is assumed for C3 < -5 km^2/s^2; escape is assumed for all other values. | 185 km (100 nmi) park orbit perigee altitude. | Performance shown is applicable for declinations between 28.5 deg. and –28.5 deg.",
       "points": [
         [
           0.0,
@@ -197,7 +197,7 @@
       "launch_site": "CCSFS",
       "fairing": "5.4m",
       "adapter": "47in (1194mm) payload separation ring with C22 adapter",
-      "ground_rules": "This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | 3-sigma mission required margin. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 1194-mm (47-in) payload separation system with lightweight C22 adapter. | Performance values assume harness, logo, reradiating antenna, 2 payload fairing doors. | Payload mass greater than 9,000 kg (19,841 lbm) may require mission unique accommodations, resulting in cost and/or performance impacts. | Park-orbit coast duration up to 60 minutes. Longer coast periods may require additional consumables, which could affect performance capability. | 185 km (100 nmi) circular park orbit altitude. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-41 at CCSFS (Cape Canaveral Space Force Station).",
+      "ground_rules": "This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | 3-sigma mission required margin. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 1194-mm (47-in) payload separation system with lightweight C22 adapter. | Performance values assume harness, logo, reradiating antenna, 2 payload fairing doors. | Payload mass greater than 9,000 kg (19,841 lbm) may require mission unique accommodations, resulting in cost and/or performance impacts. | Park-orbit coast duration up to 60 minutes. Longer coast periods may require additional consumables, which could affect performance capability. | 185 km (100 nmi) circular park orbit altitude. | Performance shown is applicable for declinations between 28.5 deg. and –28.5 deg. | Launch from SLC-41 at CCSFS (Cape Canaveral Space Force Station).",
       "points": [
         [
           0.0,
@@ -238,7 +238,7 @@
       "launch_site": "CCSFS",
       "fairing": "5.4m",
       "adapter": "47in (1194mm) payload separation ring with C22 adapter",
-      "ground_rules": "This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | 3-sigma mission required margin. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 1194-mm (47-in) payload separation system with lightweight C22 adapter. | Performance values assume harness, logo, reradiating antenna, 2 payload fairing doors. | Payload mass greater than 9,000 kg (19,841 lbm) may require mission unique accommodations, resulting in cost and/or performance impacts. | Park-orbit coast duration up to 60 minutes. Longer coast periods may require additional consumables, which could affect performance capability. | 185 km (100 nmi) circular park orbit altitude. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-41 at CCSFS (Cape Canaveral Space Force Station).",
+      "ground_rules": "This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | 3-sigma mission required margin. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 1194-mm (47-in) payload separation system with lightweight C22 adapter. | Performance values assume harness, logo, reradiating antenna, 2 payload fairing doors. | Payload mass greater than 9,000 kg (19,841 lbm) may require mission unique accommodations, resulting in cost and/or performance impacts. | Park-orbit coast duration up to 60 minutes. Longer coast periods may require additional consumables, which could affect performance capability. | 185 km (100 nmi) circular park orbit altitude. | Performance shown is applicable for declinations between 28.5 deg. and –28.5 deg. | Launch from SLC-41 at CCSFS (Cape Canaveral Space Force Station).",
       "points": [
         [
           0.0,
@@ -283,7 +283,7 @@
       "launch_site": "KSC",
       "fairing": "5.2m",
       "adapter": "47in (1194mm)",
-      "ground_rules": "First stage recovery has been accounted for in the performance capability. Recovery indicates that the performance includes the effects of recovering the booster components; Expendable indicates that the full performance of the vehicle is being used and the first stage is not recovered. | 3-sigma guidance reserves. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 937-mm or 1194-mm payload adapter/separation systems are available; masses of each are comparable and have been accounted for to provide separated spacecraft mass. | 2 payload fairing doors. | Payload mass greater than 10,000 kg (22,046 lbm) may require mission-unique adapter/accommodations, resulting in cost and/or performance impacts. | 160 km (86 nmi) park orbit perigee altitude. | This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | Performance shown is applicable for declinations between 28.5 deg. and \u201328.5 deg. | Launch from SLC-39A at KSC (Kennedy Space Center).",
+      "ground_rules": "First stage recovery has been accounted for in the performance capability. Recovery indicates that the performance includes the effects of recovering the booster components; Expendable indicates that the full performance of the vehicle is being used and the first stage is not recovered. | 3-sigma guidance reserves. | Instantaneous launch attempt. Finite window accommodations may significantly reduce performance for missions with inertially fixed targets. | 937-mm or 1194-mm payload adapter/separation systems are available; masses of each are comparable and have been accounted for to provide separated spacecraft mass. | 2 payload fairing doors. | Payload mass greater than 10,000 kg (22,046 lbm) may require mission-unique adapter/accommodations, resulting in cost and/or performance impacts. | 160 km (86 nmi) park orbit perigee altitude. | This performance does not include the effects of orbital debris compliance, which must be evaluated on a mission-specific basis. This could result in a significant performance impact for missions in which launch vehicle hardware remains in Earth orbit. | Performance shown is applicable for declinations between 28.5 deg. and –28.5 deg. | Launch from SLC-39A at KSC (Kennedy Space Center).",
       "points": [
         [
           0.0,
@@ -322,6 +322,1044 @@
           755.0
         ]
       ]
+    },
+    {
+      "international_id": "wise2010_LM-3A",
+      "vehicle": "Long March LM-3A (historical baseline)",
+      "launch_site": "Source manual baseline",
+      "source_label": "Published fit · 2010",
+      "source_url": "https://repository.gatech.edu/server/api/core/bitstreams/2578ccee-732e-421b-adda-de8458be849a/content",
+      "data_kind": "published_historical_fit",
+      "source_year": 2010,
+      "fairing": "Source configuration",
+      "adapter": "Source convention",
+      "ground_rules": "Wise, Lafleur & Saleh, IAC-10.D2.P06, Table 1, p.7. Historical configuration; not an enhanced/current-vehicle rating. Printed rounded polynomial coefficients; curve-fit residuals are not launch-performance uncertainty. Valid C3 0.55–29.67 km²/s². No extrapolation.",
+      "polynomial_ascending": [
+        1450.0,
+        -47.06,
+        -0.4361,
+        0.037,
+        -0.000616
+      ],
+      "valid_c3_range": [
+        0.55,
+        29.67
+      ],
+      "query_grid_c3": [
+        0.55,
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        6.25,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0,
+        13.0,
+        14.0,
+        15.0,
+        16.0,
+        17.0,
+        18.0,
+        19.0,
+        20.0,
+        21.0,
+        22.0,
+        23.0,
+        24.0,
+        25.0,
+        26.0,
+        27.0,
+        28.0,
+        29.0,
+        29.67
+      ],
+      "points": [
+        [
+          0.55,
+          1423.99117925715
+        ],
+        [
+          1.0,
+          1402.540284
+        ],
+        [
+          2.0,
+          1354.421744
+        ],
+        [
+          3.0,
+          1305.844204
+        ],
+        [
+          4.0,
+          1256.992704
+        ],
+        [
+          5.0,
+          1208.0375
+        ],
+        [
+          6.0,
+          1159.134064
+        ],
+        [
+          6.25,
+          1146.93310546875
+        ],
+        [
+          7.0,
+          1110.423084
+        ],
+        [
+          8.0,
+          1062.030464
+        ],
+        [
+          9.0,
+          1014.067324
+        ],
+        [
+          10.0,
+          966.63
+        ],
+        [
+          11.0,
+          919.800044
+        ],
+        [
+          12.0,
+          873.644224
+        ],
+        [
+          13.0,
+          828.214524
+        ],
+        [
+          14.0,
+          783.548144
+        ],
+        [
+          15.0,
+          739.6674999999999
+        ],
+        [
+          16.0,
+          696.5802239999999
+        ],
+        [
+          17.0,
+          654.279164
+        ],
+        [
+          18.0,
+          612.7423839999999
+        ],
+        [
+          19.0,
+          571.9331639999999
+        ],
+        [
+          20.0,
+          531.8
+        ],
+        [
+          21.0,
+          492.276604
+        ],
+        [
+          22.0,
+          453.2819039999998
+        ],
+        [
+          23.0,
+          414.72004399999986
+        ],
+        [
+          24.0,
+          376.48038399999996
+        ],
+        [
+          25.0,
+          338.4375
+        ],
+        [
+          26.0,
+          300.45118400000007
+        ],
+        [
+          27.0,
+          262.36644399999983
+        ],
+        [
+          28.0,
+          224.01350399999984
+        ],
+        [
+          29.0,
+          185.20780399999995
+        ],
+        [
+          29.67,
+          158.85604023876652
+        ]
+      ]
+    },
+    {
+      "international_id": "wise2010_LM-3B",
+      "vehicle": "Long March LM-3B (historical baseline)",
+      "launch_site": "Source manual baseline",
+      "source_label": "Published fit · 2010",
+      "source_url": "https://repository.gatech.edu/server/api/core/bitstreams/2578ccee-732e-421b-adda-de8458be849a/content",
+      "data_kind": "published_historical_fit",
+      "source_year": 2010,
+      "fairing": "Source configuration",
+      "adapter": "Source convention",
+      "ground_rules": "Wise, Lafleur & Saleh, IAC-10.D2.P06, Table 1, p.7. Historical configuration; not an enhanced/current-vehicle rating. Printed rounded polynomial coefficients; curve-fit residuals are not launch-performance uncertainty. Valid C3 1.02–47.32 km²/s². No extrapolation.",
+      "polynomial_ascending": [
+        3413.0,
+        -81.02,
+        -0.0512,
+        0.026,
+        -0.000349
+      ],
+      "valid_c3_range": [
+        1.02,
+        47.32
+      ],
+      "query_grid_c3": [
+        1.02,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        6.25,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0,
+        13.0,
+        14.0,
+        15.0,
+        16.0,
+        17.0,
+        18.0,
+        19.0,
+        20.0,
+        21.0,
+        22.0,
+        23.0,
+        24.0,
+        25.0,
+        26.0,
+        27.0,
+        28.0,
+        29.0,
+        30.0,
+        31.0,
+        32.0,
+        33.0,
+        34.0,
+        35.0,
+        36.0,
+        37.0,
+        38.0,
+        39.0,
+        40.0,
+        41.0,
+        42.0,
+        43.0,
+        44.0,
+        45.0,
+        46.0,
+        47.0,
+        47.32
+      ],
+      "points": [
+        [
+          1.02,
+          3330.333545159176
+        ],
+        [
+          2.0,
+          3250.957616
+        ],
+        [
+          3.0,
+          3170.152931
+        ],
+        [
+          4.0,
+          3089.675456
+        ],
+        [
+          5.0,
+          3009.651875
+        ],
+        [
+          6.0,
+          2930.200496
+        ],
+        [
+          6.25,
+          2910.4401245117188
+        ],
+        [
+          7.0,
+          2851.431251
+        ],
+        [
+          8.0,
+          2773.445696
+        ],
+        [
+          9.0,
+          2696.337011
+        ],
+        [
+          10.0,
+          2620.19
+        ],
+        [
+          11.0,
+          2545.081091
+        ],
+        [
+          12.0,
+          2471.078336
+        ],
+        [
+          13.0,
+          2398.241411
+        ],
+        [
+          14.0,
+          2326.621616
+        ],
+        [
+          15.0,
+          2256.261875
+        ],
+        [
+          16.0,
+          2187.196736
+        ],
+        [
+          17.0,
+          2119.452371
+        ],
+        [
+          18.0,
+          2053.046576
+        ],
+        [
+          19.0,
+          1987.988771
+        ],
+        [
+          20.0,
+          1924.2800000000002
+        ],
+        [
+          21.0,
+          1861.912931
+        ],
+        [
+          22.0,
+          1800.8718560000002
+        ],
+        [
+          23.0,
+          1741.1326910000002
+        ],
+        [
+          24.0,
+          1682.6629759999998
+        ],
+        [
+          25.0,
+          1625.421875
+        ],
+        [
+          26.0,
+          1569.360176
+        ],
+        [
+          27.0,
+          1514.420291
+        ],
+        [
+          28.0,
+          1460.536256
+        ],
+        [
+          29.0,
+          1407.633731
+        ],
+        [
+          30.0,
+          1355.63
+        ],
+        [
+          31.0,
+          1304.433971
+        ],
+        [
+          32.0,
+          1253.9461760000002
+        ],
+        [
+          33.0,
+          1204.058771
+        ],
+        [
+          34.0,
+          1154.6555360000002
+        ],
+        [
+          35.0,
+          1105.6118750000003
+        ],
+        [
+          36.0,
+          1056.794816
+        ],
+        [
+          37.0,
+          1008.063011
+        ],
+        [
+          38.0,
+          959.2667360000002
+        ],
+        [
+          39.0,
+          910.247891
+        ],
+        [
+          40.0,
+          860.8400000000003
+        ],
+        [
+          41.0,
+          810.8682110000002
+        ],
+        [
+          42.0,
+          760.1492960000003
+        ],
+        [
+          43.0,
+          708.4916509999999
+        ],
+        [
+          44.0,
+          655.6952960000003
+        ],
+        [
+          45.0,
+          601.5518750000001
+        ],
+        [
+          46.0,
+          545.8446560000001
+        ],
+        [
+          47.0,
+          488.34853100000004
+        ],
+        [
+          47.32,
+          469.53405214405353
+        ]
+      ]
+    },
+    {
+      "international_id": "wise2010_LM-3C",
+      "vehicle": "Long March LM-3C (historical baseline)",
+      "launch_site": "Source manual baseline",
+      "source_label": "Published fit · 2010",
+      "source_url": "https://repository.gatech.edu/server/api/core/bitstreams/2578ccee-732e-421b-adda-de8458be849a/content",
+      "data_kind": "published_historical_fit",
+      "source_year": 2010,
+      "fairing": "Source configuration",
+      "adapter": "Source convention",
+      "ground_rules": "Wise, Lafleur & Saleh, IAC-10.D2.P06, Table 1, p.7. Historical configuration; not an enhanced/current-vehicle rating. Printed rounded polynomial coefficients; curve-fit residuals are not launch-performance uncertainty. Valid C3 0.55–38.17 km²/s². No extrapolation.",
+      "polynomial_ascending": [
+        2329.0,
+        -71.89,
+        0.5289,
+        0.0021,
+        -9.03e-05
+      ],
+      "valid_c3_range": [
+        0.55,
+        38.17
+      ],
+      "query_grid_c3": [
+        0.55,
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        6.25,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0,
+        13.0,
+        14.0,
+        15.0,
+        16.0,
+        17.0,
+        18.0,
+        19.0,
+        20.0,
+        21.0,
+        22.0,
+        23.0,
+        24.0,
+        25.0,
+        26.0,
+        27.0,
+        28.0,
+        29.0,
+        30.0,
+        31.0,
+        32.0,
+        33.0,
+        34.0,
+        35.0,
+        36.0,
+        37.0,
+        38.0,
+        38.17
+      ],
+      "points": [
+        [
+          0.55,
+          2289.6208333744858
+        ],
+        [
+          1.0,
+          2257.6409097
+        ],
+        [
+          2.0,
+          2187.3509552
+        ],
+        [
+          3.0,
+          2118.1394857
+        ],
+        [
+          4.0,
+          2050.0136832
+        ],
+        [
+          5.0,
+          1982.9785625
+        ],
+        [
+          6.0,
+          1917.0369712
+        ],
+        [
+          6.25,
+          1900.7225646972656
+        ],
+        [
+          7.0,
+          1852.1895897
+        ],
+        [
+          8.0,
+          1788.4349312
+        ],
+        [
+          9.0,
+          1725.7693417
+        ],
+        [
+          10.0,
+          1664.1870000000001
+        ],
+        [
+          11.0,
+          1603.6799177
+        ],
+        [
+          12.0,
+          1544.2379392
+        ],
+        [
+          13.0,
+          1485.8487417
+        ],
+        [
+          14.0,
+          1428.4978352
+        ],
+        [
+          15.0,
+          1372.1685625
+        ],
+        [
+          16.0,
+          1316.8420992
+        ],
+        [
+          17.0,
+          1262.4974536999998
+        ],
+        [
+          18.0,
+          1209.1114672
+        ],
+        [
+          19.0,
+          1156.6588136999999
+        ],
+        [
+          20.0,
+          1105.112
+        ],
+        [
+          21.0,
+          1054.4413657
+        ],
+        [
+          22.0,
+          1004.6150832000001
+        ],
+        [
+          23.0,
+          955.5991577
+        ],
+        [
+          24.0,
+          907.3574271999998
+        ],
+        [
+          25.0,
+          859.8515625
+        ],
+        [
+          26.0,
+          813.0410671999999
+        ],
+        [
+          27.0,
+          766.8832777
+        ],
+        [
+          28.0,
+          721.3333631999999
+        ],
+        [
+          29.0,
+          676.3443257000001
+        ],
+        [
+          30.0,
+          631.8670000000002
+        ],
+        [
+          31.0,
+          587.8500536999999
+        ],
+        [
+          32.0,
+          544.2399872
+        ],
+        [
+          33.0,
+          500.98113370000016
+        ],
+        [
+          34.0,
+          458.0156591999998
+        ],
+        [
+          35.0,
+          415.2835624999999
+        ],
+        [
+          36.0,
+          372.72267520000014
+        ],
+        [
+          37.0,
+          330.2686617000002
+        ],
+        [
+          38.0,
+          287.8550191999999
+        ],
+        [
+          38.17,
+          280.6438074091275
+        ]
+      ]
+    },
+    {
+      "international_id": "silverbird_0",
+      "vehicle": "PSLV (six strap-ons; variant unspecified) · model estimate",
+      "launch_site": "Satish Dhawan Space Center",
+      "source_label": "SilverBird estimate",
+      "source_url": "https://silverbirdastronautics.com/LVperform.html",
+      "data_kind": "third_party_model",
+      "retrieved_at": "2026-11-12T20:14:13.263383+00:00",
+      "fairing": "Source model",
+      "adapter": "Included in estimated payload system mass",
+      "ground_rules": "Direct ascent; perigee 200 km; escape declination 0 deg; mixed calibration; guidance-command shutdown; default ODMSP disposal option. Payload includes attachment fittings/adapters. Third-party model estimates, not provider capacities. Reported confidence bounds are model outputs, not certified margins. A zero is the model estimate, not a verified impossibility. The GSLV Mark III model is not evidence for current C32/upgraded LVM3 performance. Source does not identify the strap-on generation; do not interpret this as a PSLV-XL capacity curve.",
+      "query_grid_c3": [
+        0.0,
+        5.0,
+        10.0,
+        20.0,
+        28.0,
+        40.0
+      ],
+      "points": [
+        [
+          0.0,
+          111.0
+        ],
+        [
+          5.0,
+          29.0
+        ],
+        [
+          10.0,
+          0.0
+        ],
+        [
+          20.0,
+          0.0
+        ],
+        [
+          28.0,
+          0.0
+        ],
+        [
+          40.0,
+          0.0
+        ]
+      ],
+      "confidence95_points": [
+        [
+          0.0,
+          0.0,
+          127.0
+        ],
+        [
+          5.0,
+          0.0,
+          43.0
+        ],
+        [
+          10.0,
+          0.0,
+          0.0
+        ],
+        [
+          20.0,
+          0.0,
+          0.0
+        ],
+        [
+          28.0,
+          0.0,
+          0.0
+        ],
+        [
+          40.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "international_id": "silverbird_1",
+      "vehicle": "GSLV Mark II · model estimate",
+      "launch_site": "Satish Dhawan Space Center",
+      "source_label": "SilverBird estimate",
+      "source_url": "https://silverbirdastronautics.com/LVperform.html",
+      "data_kind": "third_party_model",
+      "retrieved_at": "2026-11-12T20:14:13.263383+00:00",
+      "fairing": "Source model",
+      "adapter": "Included in estimated payload system mass",
+      "ground_rules": "Direct ascent; perigee 200 km; escape declination 0 deg; mixed calibration; guidance-command shutdown; default ODMSP disposal option. Payload includes attachment fittings/adapters. Third-party model estimates, not provider capacities. Reported confidence bounds are model outputs, not certified margins. A zero is the model estimate, not a verified impossibility. The GSLV Mark III model is not evidence for current C32/upgraded LVM3 performance.",
+      "query_grid_c3": [
+        0.0,
+        5.0,
+        10.0,
+        20.0,
+        28.0,
+        40.0
+      ],
+      "points": [
+        [
+          0.0,
+          750.0
+        ],
+        [
+          5.0,
+          595.0
+        ],
+        [
+          10.0,
+          448.0
+        ],
+        [
+          20.0,
+          178.0
+        ],
+        [
+          28.0,
+          0.0
+        ],
+        [
+          40.0,
+          0.0
+        ]
+      ],
+      "confidence95_points": [
+        [
+          0.0,
+          241.0,
+          1377.0
+        ],
+        [
+          5.0,
+          109.0,
+          1195.0
+        ],
+        [
+          10.0,
+          0.0,
+          1023.0
+        ],
+        [
+          20.0,
+          0.0,
+          704.0
+        ],
+        [
+          28.0,
+          0.0,
+          473.0
+        ],
+        [
+          40.0,
+          0.0,
+          162.0
+        ]
+      ]
+    },
+    {
+      "international_id": "silverbird_2",
+      "vehicle": "GSLV Mark III · model estimate",
+      "launch_site": "Satish Dhawan Space Center",
+      "source_label": "SilverBird estimate",
+      "source_url": "https://silverbirdastronautics.com/LVperform.html",
+      "data_kind": "third_party_model",
+      "retrieved_at": "2026-11-12T20:14:13.263383+00:00",
+      "fairing": "Source model",
+      "adapter": "Included in estimated payload system mass",
+      "ground_rules": "Direct ascent; perigee 200 km; escape declination 0 deg; mixed calibration; guidance-command shutdown; default ODMSP disposal option. Payload includes attachment fittings/adapters. Third-party model estimates, not provider capacities. Reported confidence bounds are model outputs, not certified margins. A zero is the model estimate, not a verified impossibility. The GSLV Mark III model is not evidence for current C32/upgraded LVM3 performance.",
+      "query_grid_c3": [
+        0.0,
+        5.0,
+        10.0,
+        20.0,
+        28.0,
+        40.0
+      ],
+      "points": [
+        [
+          0.0,
+          1156.0
+        ],
+        [
+          5.0,
+          851.0
+        ],
+        [
+          10.0,
+          562.0
+        ],
+        [
+          20.0,
+          31.0
+        ],
+        [
+          28.0,
+          0.0
+        ],
+        [
+          40.0,
+          0.0
+        ]
+      ],
+      "confidence95_points": [
+        [
+          0.0,
+          211.0,
+          2317.0
+        ],
+        [
+          5.0,
+          0.0,
+          1958.0
+        ],
+        [
+          10.0,
+          0.0,
+          1618.0
+        ],
+        [
+          20.0,
+          0.0,
+          992.0
+        ],
+        [
+          28.0,
+          0.0,
+          541.0
+        ],
+        [
+          40.0,
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    {
+      "international_id": "silverbird_3",
+      "vehicle": "Long March CZ-5 · model estimate",
+      "launch_site": "Wenchang",
+      "source_label": "SilverBird estimate",
+      "source_url": "https://silverbirdastronautics.com/LVperform.html",
+      "data_kind": "third_party_model",
+      "retrieved_at": "2026-11-12T20:14:13.263383+00:00",
+      "fairing": "Source model",
+      "adapter": "Included in estimated payload system mass",
+      "ground_rules": "Direct ascent; perigee 200 km; escape declination 0 deg; mixed calibration; guidance-command shutdown; default ODMSP disposal option. Payload includes attachment fittings/adapters. Third-party model estimates, not provider capacities. Reported confidence bounds are model outputs, not certified margins. A zero is the model estimate, not a verified impossibility. The GSLV Mark III model is not evidence for current C32/upgraded LVM3 performance.",
+      "query_grid_c3": [
+        0.0,
+        5.0,
+        10.0,
+        20.0,
+        28.0,
+        40.0
+      ],
+      "points": [
+        [
+          0.0,
+          5027.0
+        ],
+        [
+          5.0,
+          4515.0
+        ],
+        [
+          10.0,
+          4030.0
+        ],
+        [
+          20.0,
+          3137.0
+        ],
+        [
+          28.0,
+          2491.0
+        ],
+        [
+          40.0,
+          1627.0
+        ]
+      ],
+      "confidence95_points": [
+        [
+          0.0,
+          3834.0,
+          6435.0
+        ],
+        [
+          5.0,
+          3381.0,
+          5855.0
+        ],
+        [
+          10.0,
+          2951.0,
+          5306.0
+        ],
+        [
+          20.0,
+          2160.0,
+          4293.0
+        ],
+        [
+          28.0,
+          1588.0,
+          3561.0
+        ],
+        [
+          40.0,
+          822.0,
+          2588.0
+        ]
+      ]
+    },
+    {
+      "international_id": "wang2025_lm5_point",
+      "vehicle": "Long March 5 · 2025 study point",
+      "launch_site": "Wenchang",
+      "source_label": "Published study · 2025",
+      "source_url": "https://www.mdpi.com/2226-4310/12/4/271",
+      "data_kind": "published_study_point",
+      "source_year": 2025,
+      "fairing": "Unspecified in study",
+      "adapter": "Unspecified in study",
+      "points": [
+        [
+          30.0,
+          3000.0
+        ]
+      ],
+      "query_grid_c3": [
+        30.0
+      ],
+      "ground_rules": "Wang et al., Aerospace 2025, 12(4), 271, Section 5.1: approximately 3 tonnes at C3=30. Mission-study assumption, not a provider guarantee. A single anchor point; never interpolated/extrapolated into a full curve."
+    }
+  ],
+  "additional_sources": [
+    {
+      "label": "Wise et al. 2010 historical fits",
+      "url": "https://repository.gatech.edu/server/api/core/bitstreams/2578ccee-732e-421b-adda-de8458be849a/content"
+    },
+    {
+      "label": "Wang et al. 2025 LM-5 study point",
+      "url": "https://www.mdpi.com/2226-4310/12/4/271"
+    },
+    {
+      "label": "SilverBird third-party estimates",
+      "url": "https://silverbirdastronautics.com/LVperform.html"
     }
   ]
 }

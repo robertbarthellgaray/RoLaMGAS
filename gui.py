@@ -680,7 +680,7 @@ class Handler(BaseHTTPRequestHandler):
                 path = (root/parts[3]).resolve()
                 if not path.is_relative_to(root) or path.suffix.lower() not in ('.json','.png','.tsv','.html','.md','.log','.csv','.xyzv','.ssc','.txt','.zip'):
                     raise ValueError('File is outside this run')
-            elif url.path in ('/gui_assets/launch_mass_c3.png','/gui_assets/rolamgas-icon.png','/gui_assets/launch_performance_curves.json'):
+            elif url.path in ('/gui_assets/launch_mass_c3.png','/gui_assets/rolamgas-icon.png','/gui_assets/launch_performance_curves.json','/gui_assets/international_launch_performance.png'):
                 path=RESOURCE_ROOT/'gui_assets'/url.path.rsplit('/',1)[-1]
             elif url.path in ('/','/gui.html','/gui.js','/mission_metrics.js','/gui.css'):
                 path = RESOURCE_ROOT/('gui.html' if url.path=='/' else url.path[1:])

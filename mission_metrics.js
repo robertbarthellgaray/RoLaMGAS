@@ -50,14 +50,24 @@
   }
   function launchCapacities(document,c3) {
     if(!document?.vehicles||!Number.isFinite(c3)||c3<0)return [];
-    const grid=(document.queries||[]).map(q=>q.c3);
+    const defaultGrid=(document.queries||[]).map(q=>q.c3);
     return document.vehicles.filter(visibleLaunchVehicle).map(vehicle=>{
+      const grid=vehicle.query_grid_c3||defaultGrid;
       const points=vehicle.points||[],exact=points.find(p=>Math.abs(p[0]-c3)<1e-9);
-      if(exact)return {...vehicle,capacity_kg:exact[1],interpolated:false};
+      if(exact)return {...vehicle,capacity_kg:exact[1],interpolated:false,sample_c3:exact[0]};
       const lower=points.filter(p=>p[0]<c3).at(-1),upper=points.find(p=>p[0]>c3);
       if(!lower||!upper||grid.some(v=>lower[0]<v&&v<upper[0]))return {...vehicle,capacity_kg:null,interpolated:false};
       return {...vehicle,capacity_kg:lower[1]+(upper[1]-lower[1])*(c3-lower[0])/(upper[0]-lower[0]),interpolated:true,bracket_c3:[lower[0],upper[0]]};
     });
   }
-  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,visibleLaunchVehicle,launchCapacities});
+  function launchCapacitySource(row) {
+    let text=row.source_label||'NASA LSP / NLS-II';
+    if(row.capacity_kg!=null&&row.confidence95_points){
+      const at=row.interpolated?row.bracket_c3:[row.sample_c3];
+      const intervals=row.confidence95_points.filter(p=>at?.some(c3=>Math.abs(p[0]-c3)<1e-9));
+      if(intervals.length)text+=' · source 95% model interval'+(row.interpolated?'s at bracket samples':'')+': '+intervals.map(p=>'C3 '+p[0]+' → '+p[1]+'–'+p[2]+' kg').join('; ');
+    }
+    return text;
+  }
+  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,visibleLaunchVehicle,launchCapacities,launchCapacitySource});
 })(globalThis);

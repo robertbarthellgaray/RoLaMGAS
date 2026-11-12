@@ -158,10 +158,10 @@ function updateParkingEstimate(){
 function renderLaunchPerformance(){
  if(!selected||!$('launch-performance-table'))return;
  const rows=globalThis.MissionMetrics.launchCapacities(launchPerformance,selected.c3);
- $('launch-performance-status').textContent=rows.length?'C3 '+fmt(selected.c3,3)+' km²/s² · NASA data retrieved '+launchPerformance.retrieved_at.slice(0,10)+'. Values between samples are interpolated estimates; blank capacity means no cached coverage.':'NASA capacity data is unavailable for this selection.';
- const body=rows.map(r=>'<tr><td>'+escapeHtml(r.vehicle)+'</td><td>'+(r.capacity_kg==null?'—':(r.interpolated?'≈ ':'')+fmt(r.capacity_kg,0))+'</td><td>'+escapeHtml(r.launch_site)+'</td></tr>').join('');
- const rules=rows.map(r=>'<p><strong>'+escapeHtml(r.vehicle)+'</strong> · '+escapeHtml(r.ground_rules)+'</p>').join('');
- $('launch-performance-table').innerHTML=rows.length?'<div class="table-scroll"><table><thead><tr><th>Vehicle / configuration</th><th>Capacity · kg</th><th>Launch site</th></tr></thead><tbody>'+body+'</tbody></table></div><details><summary>Vehicle ground rules</summary>'+rules+'</details>':'';
+ $('launch-performance-status').textContent=rows.length?'C3 '+fmt(selected.c3,3)+' km²/s² · NASA samples retrieved '+launchPerformance.retrieved_at.slice(0,10)+'. Sources differ by row. ≈ means interpolation or a published/model estimate; — means no coverage. See source notes and model uncertainty.':'Launch capacity data is unavailable for this selection.';
+ const body=rows.map(r=>'<tr><td>'+escapeHtml(r.vehicle)+'</td><td>'+(r.capacity_kg==null?'—':(r.interpolated||r.data_kind?'≈ ':'')+fmt(r.capacity_kg,0))+'</td><td>'+escapeHtml(r.launch_site)+'</td><td>'+escapeHtml(globalThis.MissionMetrics.launchCapacitySource(r))+'</td></tr>').join('');
+ const rules=rows.map(r=>'<p><strong>'+escapeHtml(r.vehicle)+'</strong> · '+escapeHtml(r.ground_rules)+' <a href="'+escapeHtml(r.source_url||'https://elvperf.ksc.nasa.gov/Pages/Query.aspx')+'" target="_blank" rel="noopener">Source ↗</a></p>').join('');
+ $('launch-performance-table').innerHTML=rows.length?'<div class="table-scroll"><table><thead><tr><th>Vehicle / configuration</th><th>Capacity · kg</th><th>Launch site</th><th>Source / model uncertainty</th></tr></thead><tbody>'+body+'</tbody></table></div><details><summary>Vehicle ground rules</summary>'+rules+'</details>':'';
 }
 function renderSequenceComparison(){
  if(!selected)return;

@@ -54,6 +54,10 @@ def source_release(baseline):
     files += list(ROOT.glob('test_*.py'))
     files += list((ROOT/'examples').glob('*.json'))
     files += list((ROOT/'model_assets').glob('*'))
+    # Reproducible international capacity samples, without redistributing source
+    # papers, provider HTML or third-party calculator Javascript.
+    files += [p for name in ('README.md','silverbird_samples.json','capacity_samples.csv','international_launch_performance.png')
+              if (p:=ROOT/'studies/international_launch_performance'/name).is_file()]
     files += [p for p in (ROOT/'.github').rglob('*') if p.is_file()]
     files += [p for folder in ('docs','tools','gui_assets','departure_seeds','celestia_assets','third_party_licenses','mission_comparison') for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts]
     files += [ROOT/name for name in ('LICENSE','THIRD_PARTY_NOTICES.md') if (ROOT/name).is_file()]

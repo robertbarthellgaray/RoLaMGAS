@@ -113,16 +113,16 @@ async function renderLaunchPerformance(exact=null){
  const q=state.card;if(!q)return;
  const selected=q.id;
  if(!exact&&!launchPerformanceData){
-  try{if(!launchPerformanceLoading)launchPerformanceLoading=fetch('/gui_assets/launch_performance_curves.json').then(r=>{if(!r.ok)throw Error('Cached NASA capacities unavailable');return r.json()});launchPerformanceData=await launchPerformanceLoading;}
+  try{if(!launchPerformanceLoading)launchPerformanceLoading=fetch('/gui_assets/launch_performance_curves.json').then(r=>{if(!r.ok)throw Error('Cached launch capacities unavailable');return r.json()});launchPerformanceData=await launchPerformanceLoading;}
   catch(e){$('launchPerformanceStatus').textContent=e.message;return;}
  }
  if(state.card?.id!==selected)return;
  const rows=(exact?.vehicles||globalThis.MissionMetrics.launchCapacities(launchPerformanceData,q.launch_c3_km2_s2)).filter(globalThis.MissionMetrics.visibleLaunchVehicle);
- $('launchPerformanceStatus').textContent=exact?'NASA response for C3 '+fmt(exact.c3_km2_s2,3)+' · retrieved '+exact.retrieved_at+' · '+(exact.from_cache?'saved exact query':'fresh query'):'Cached NASA high-energy capacities at C3 '+fmt(q.launch_c3_km2_s2,3)+' · ≈ means interpolated; — means no cached coverage.';
+ $('launchPerformanceStatus').textContent=exact?'NASA response for C3 '+fmt(exact.c3_km2_s2,3)+' · retrieved '+exact.retrieved_at+' · '+(exact.from_cache?'saved exact query':'fresh query'):'Cached launch capacities at C3 '+fmt(q.launch_c3_km2_s2,3)+' · ≈ means interpolated or a published/model estimate; — means no coverage. Sources and uncertainty are shown per row.';
  if(exact?.availability==='no_vehicles_listed')$('launchPerformanceStatus').textContent='NASA returned no vehicle capacities at C3 '+fmt(exact.c3_km2_s2,3)+'. This is not a zero-capacity estimate.';
- const table=element('table'),head=element('tr');for(const label of ['Vehicle / configuration','Capacity · kg','Site'])head.append(element('th',label));table.append(head);
- for(const row of rows){const tr=element('tr');for(const text of [row.vehicle,row.capacity_kg==null?'—':(row.interpolated?'≈ ':'')+fmt(row.capacity_kg,0),row.launch_site])tr.append(element('td',text));table.append(tr);}
- const rules=element('details');rules.append(element('summary','Vehicle ground rules'));for(const row of rows)rules.append(element('p',row.vehicle+': '+row.ground_rules,'hint'));
+ const table=element('table'),head=element('tr');for(const label of ['Vehicle / configuration','Capacity · kg','Site','Source / model uncertainty'])head.append(element('th',label));table.append(head);
+ for(const row of rows){const tr=element('tr');for(const text of [row.vehicle,row.capacity_kg==null?'—':(row.interpolated||row.data_kind?'≈ ':'')+fmt(row.capacity_kg,0),row.launch_site,globalThis.MissionMetrics.launchCapacitySource(row)])tr.append(element('td',text));table.append(tr);}
+ const rules=element('details');rules.append(element('summary','Vehicle ground rules'));for(const row of rows)rules.append(element('p',row.vehicle+': '+row.ground_rules+' Source: '+(row.source_url||'https://elvperf.ksc.nasa.gov/Pages/Query.aspx'),'hint'));
  $('launchPerformanceTable').replaceChildren(table,rules);
 }
 function renderSequenceComparison(){
