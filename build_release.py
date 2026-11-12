@@ -13,6 +13,7 @@ MODULES=['app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search',
          'build_database','build_release','restore_diagnostics','trajectory_policy','resonant_shooting_seeds']
 DOCS=['MISSION_STUDIES.md','RESONANT_TRANSFERS.md','LAUNCH_PERFORMANCE.md','WEBSITE_HANDOFF.md','GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md','JUICE_DEPARTURE_SEEDS.md','PREVIEW_AND_RESULTS.md','HISTORICAL_SEEDS.md','CELESTIA_DWARF_PATCH.md']
 DOCS.extend(['REACHSTAR_SEEDS.md','ATMOSPHERIC_FLYBY_LIMITS.md','FINITE_PATCH_TARGETING.md'])
+DOCS.append('RELEASE_NOTES_0.2.5.md')
 DATA_FILES=('departure_seeds','celestia_assets','community_seed_catalog.json','community_config.json','gui.html','gui.js','mission_metrics.js','gui.css','gallery.html','sequence_database.json','examples','model_assets',
             'gui_assets','baseline_ephemerides.zip','LICENSE','THIRD_PARTY_NOTICES.md','third_party_licenses')
 
@@ -189,7 +190,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--exe',action='store_true',help='Build the native application on this operating system')
     parser.add_argument('--native',action='store_true',help='Also wrap it in a macOS DMG or Linux DEB; Windows outputs EXE')
-    parser.add_argument('--version',default='0.2.4',help='Package version, for example 0.2.0')
+    parser.add_argument('--version',default='0.2.5',help='Package version, for example 0.2.5')
     args=parser.parse_args();validate_version(args.version)
     baseline=baseline_archive();source_release(baseline)
     if args.exe or args.native:
