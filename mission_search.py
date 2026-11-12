@@ -102,7 +102,7 @@ def normalize(config, config_dir=HERE):
              seed=502, keep=100, cache='cache', max_ephemeris_step_days=1., sequences=[],
              route_overrides={},target_object=None,custom_leg_days=list(OTHER_DEFAULT_DAYS),search_objective='feasibility',cost_refinements=3,powered_flybys=False,
              local_refinement=None,mercury_resonant_seeds=True,earth_return_seeds=True,historical_mission_seeds=True,append_flyby=None,
-             arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom',c3_seed_boundary='minimum',max_venus_c3=30.)
+             arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom',c3_seed_boundary='minimum',max_venus_c3=30.,prefer_outbound_encounters=True)
     unknown = set(config)-set(c)-{'event_windows','launch_jd','event_windows_jd','arrival_window_jd','effective_min_c3'}
     if unknown:
         raise ValueError(f'Unknown configuration keys: {sorted(unknown)}')
@@ -112,14 +112,15 @@ def normalize(config, config_dir=HERE):
     if not isinstance(c['mercury_resonant_seeds'],bool):raise ValueError('mercury_resonant_seeds must be boolean')
     if not isinstance(c['earth_return_seeds'],bool):raise ValueError('earth_return_seeds must be boolean')
     if not isinstance(c['historical_mission_seeds'],bool):raise ValueError('historical_mission_seeds must be boolean')
+    if not isinstance(c['prefer_outbound_encounters'],bool):raise ValueError('prefer_outbound_encounters must be boolean')
     local=c.get('local_refinement')
     if local:
         if not isinstance(local,dict) or len(c['sequences'])!=1 or not c.get('event_windows'):
             raise ValueError('Local refinement needs one sequence and explicit date windows')
         if not all(math.isfinite(float(v)) and 0<=v<=1 for v in local.get('seed_x',[])):
             raise ValueError('Local refinement seed must be finite and within bounds')
-    if c['search_objective'] not in ('feasibility','balanced','c3','dsm','arrival','time'):
-        raise ValueError('Search objective must be feasibility, balanced, c3, dsm, arrival or time')
+    if c['search_objective'] not in ('feasibility','balanced','c3','dsm','arrival','time','outer_time'):
+        raise ValueError('Search objective must be feasibility, balanced, c3, dsm, arrival, time or outer_time')
     if c['mission_profile'] not in ('custom','orbiter','flyby'):
         raise ValueError('Mission profile must be custom, orbiter or flyby')
     if c['transfer_direction'] not in ('prograde','retrograde','both'):
@@ -339,11 +340,14 @@ def candidate_key(q):
 
 
 def objective_key(c):
-    if c.get('search_objective')=='c3':return lambda q:q['launch_c3_km2_s2']
-    if c.get('search_objective')=='arrival':return lambda q:q['arrival_vinf_kms']
-    if c.get('search_objective')=='time':return lambda q:q['duration_years']
-    if c.get('search_objective')=='dsm':return lambda q:q['total_dsm_kms']
-    return candidate_key
+    from encounter_preferences import preference_penalty,first_outer_years
+    objective=c.get('search_objective')
+    if objective=='c3':return lambda q:q['launch_c3_km2_s2']+10*preference_penalty(q,c)
+    if objective=='arrival':return lambda q:q['arrival_vinf_kms']+preference_penalty(q,c)
+    if objective=='time':return lambda q:q['duration_years']+preference_penalty(q,c)
+    if objective=='outer_time':return lambda q:first_outer_years(q)+.01*q['duration_years']+preference_penalty(q,c)
+    if objective=='dsm':return lambda q:q['total_dsm_kms']+preference_penalty(q,c)
+    return lambda q:candidate_key(q)+preference_penalty(q,c)
 
 
 def worker_initialize(progress_queue=None):
@@ -624,7 +628,7 @@ def run(c, routes, output, resume=False, stop_file=None, managed=False, checkpoi
     archive_hash=hashlib.sha256(archive_path.read_bytes()).hexdigest()
     if reused:print(f'Revalidated {len(reused)} compatible saved candidates against all current limits.',flush=True)
     engine_hashes = {name:hashlib.sha256((RESOURCE_ROOT/name).read_bytes()).hexdigest()
-                     for name in ('mission_search.py','dynamics.py','trajectory_policy.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','historical_seeds.py','resonant_shooting_seeds.py','departure_seeds/reachstar_tour.json','departure_seeds/historical_missions.json','departure_seeds/mission_studies.json','departure_seeds/decadal_missions.json','departure_seeds/new_frontiers_missions.json','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
+                     for name in ('mission_search.py','dynamics.py','trajectory_policy.py','ephemeris.py','bootstrap.py','horizons_targets.py','cost_refinement.py','encounter_preferences.py','powered_flyby.py','mercury_returns.py','append_flyby.py','candidate_archive.py','community.py','earth_return_seeds.py','historical_seeds.py','resonant_shooting_seeds.py','departure_seeds/reachstar_tour.json','departure_seeds/historical_missions.json','departure_seeds/mission_studies.json','departure_seeds/decadal_missions.json','departure_seeds/new_frontiers_missions.json','departure_seeds/juice_departure.json','departure_seeds/eevee_chain.json')}
     signature = hashlib.sha256(json.dumps([c,routes,ep.manifest,engine_hashes,archive_hash],sort_keys=True).encode()).hexdigest()
     manifest_path = output/'run_manifest.json'
     if resume:
@@ -832,7 +836,7 @@ def wizard():
         raise ValueError('Choose quick, standard or deep')
     samples,starts,nfev = {'quick':(1200,24,200),'standard':(6000,72,350),'deep':(25000,240,500)}[effort]
     config.update(samples_per_sequence=samples,refinements_per_sequence=starts,max_nfev=nfev)
-    config['search_objective']=ask('Refinement objective: balanced / c3 / dsm / arrival / time / feasibility','balanced').lower()
+    config['search_objective']=ask('Refinement objective: balanced / c3 / dsm / arrival / time / outer_time / feasibility','balanced').lower()
     config['batches'] = int(ask('Independent batches (more batches explore more starts)',1))
     output = HERE/'runs'/datetime.now().strftime('%Y%m%d_%H%M%S')
     config['cache'] = str(HERE/'cache')

@@ -23,6 +23,15 @@ def _fill_progress_proxy(progress):
 
 
 class GuiBackendTests(unittest.TestCase):
+    def test_saved_refinement_objective_and_preference_reach_inspector(self):
+        from gui import App
+        with tempfile.TemporaryDirectory() as folder,patch('gui.HERE',Path(folder)):
+            app=App();root=app.folder('preference');root.mkdir()
+            (root/'request.json').write_text(json.dumps(dict(search_objective='outer_time',prefer_outbound_encounters=False)))
+            snapshot=app.snapshot('preference')
+            self.assertEqual(snapshot['limits']['search_objective'],'outer_time')
+            self.assertIs(snapshot['limits']['prefer_outbound_encounters'],False)
+
     def test_old_low_c3_rows_are_removed_before_hydration_and_render_queue(self):
         from gui import App
         with tempfile.TemporaryDirectory() as folder,patch('gui.HERE',Path(folder)):

@@ -80,4 +80,22 @@ class WebsiteTransferTests(unittest.TestCase):
                 self.assertEqual(len(read_json(out/'live.json')['candidates']),1)
                 self.assertEqual(read_json(out/'candidate_names.json')[candidate['id']],self.document['display_name'])
                 renderer.assert_called_once()
+
+    def test_explicit_share_rechecks_import_and_requires_confirmation(self):
+        from gui import App
+        from ephemeris import atomic_json
+        with tempfile.TemporaryDirectory() as tmp,patch('gui.HERE',Path(tmp)),patch('gui.ensure_data'):
+            app=App();root=app.folder('share_test');(root/'candidates').mkdir(parents=True)
+            c=normalize(self.document['settings']);route=routes_for(c)[0]
+            q=materialize(self.document['trajectory'],c,route,EventEphemerides());q['id']='abcdef123456'
+            atomic_json(root/'candidates'/(q['id']+'.json'),q)
+            atomic_json(root/'run_manifest.json',dict(config=c))
+            with self.assertRaisesRegex(ValueError,'Confirm'):app.share_candidate('share_test',q['id'])
+            with patch('community.settings',return_value=dict(share_candidates=False,endpoint='https://example.com')):
+                with self.assertRaisesRegex(ValueError,'Enable'):app.share_candidate('share_test',q['id'],True)
+            with patch('community.settings',return_value=dict(share_candidates=True,endpoint='https://example.com')),patch('gui.get_ephemerides',return_value=EventEphemerides()),patch('community.exchange',side_effect=lambda url,payload:dict(ids=[payload['candidates'][0]['id']])) as upload:
+                receipt=app.share_candidate('share_test',q['id'],True)
+                self.assertEqual(len(receipt['record_id']),64);self.assertTrue((root/'community_upload.json').exists())
+                record=upload.call_args.args[1]['candidates'][0]
+                self.assertNotIn('settings',record);self.assertNotIn('cache',record);self.assertEqual(record['classification'],'pass')
 if __name__=='__main__':unittest.main()

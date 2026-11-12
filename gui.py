@@ -277,7 +277,32 @@ class App:
             raise ValueError('No recoverable request/checkpoints for this run')
         return self.start(request,recover_from=name)
 
-    def refine_candidate(self,name,identifier,days=30.):
+    def share_candidate(self,name,identifier,confirmed=False):
+        """Explicit user action, including for imports which bypass search uploads."""
+        if confirmed is not True:raise ValueError('Confirm public sharing of this trajectory first')
+        if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
+        from community import settings,public_record,exchange
+        from trajectory_transfer import materialize
+        pref=settings()
+        if not pref['share_candidates'] or not pref['endpoint']:raise ValueError('Enable community sharing in Settings first')
+        root=self.folder(name);q=read_json(root/'candidates'/(identifier+'.json'))
+        if not q:raise ValueError('Candidate not found')
+        manifest=read_json(root/'run_manifest.json',{})
+        c=normalize(manifest.get('config') or read_json(root/'request.json'),HERE)
+        route=next(r for r in routes_for(c) if r['id']==q['sequence'])
+        record=public_record(q,c,route)
+        if record is None:raise ValueError('Only eligible pass/yellow candidates can be shared')
+        # Recompute the stored solution before publishing any science vectors.
+        verified=materialize(record,c,route,get_ephemerides(c,[route]))
+        record=public_record(verified,c,route)
+        if record is None:raise ValueError('Rechecked trajectory does not meet public screening rules')
+        receipt=exchange(pref['endpoint']+'/v1/candidates',dict(candidates=[record]))
+        if record['id'] not in receipt.get('ids',[]):raise ValueError('No matching server receipt; please retry')
+        result=dict(record_id=record['id'],message='Submitted to the community library. Same-day duplicates keep the preferred representative.')
+        atomic_json(root/'community_upload.json',result)
+        return result
+
+    def refine_candidate(self,name,identifier,days=30.,objective=None,prefer_outbound_encounters=None):
         from candidate_refinement import neighborhood_request
         if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
         root=self.folder(name)
@@ -287,6 +312,10 @@ class App:
         config=manifest.get('config') or normalize(read_json(root/'request.json'),HERE)
         route=next((r for r in manifest.get('routes',[]) if r['id']==candidate['sequence']),None)
         if route is None:route=next(r for r in routes_for(normalize(config,HERE)) if r['id']==candidate['sequence'])
+        config=dict(config)
+        if objective is not None:config['search_objective']=objective
+        if prefer_outbound_encounters is not None:config['prefer_outbound_encounters']=prefer_outbound_encounters
+        config=normalize(config,HERE)
         request=neighborhood_request(config,route,candidate,name,days)
         return self.start(request)
 
@@ -364,7 +393,7 @@ class App:
                       distinct_accepted=max(0,live.get('distinct_accepted',0)-sum(q.get('status','').startswith('passes') for q in live['candidates'])+sum(q.get('status','').startswith('passes') for q in eligible)),
                       excluded_below_hard_c3_floor=len(live['candidates'])-len(eligible),
                       candidates=[dict(q,**plot_status(output/'candidates',q,request)) for q in hydrated])
-        limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years')}
+        limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years','search_objective','prefer_outbound_encounters')}
         limits['effective_min_c3']=max(float(request.get('min_c3') if request.get('min_c3') is not None else DEFAULT_MIN_C3),HARD_MIN_C3)
         return dict(run=name,status=status or dict(state='finished'),live=live,log=logs,candidate_names=read_json(output/'candidate_names.json',{}),
                     heartbeat=read_json(output/'heartbeat.json'),database=read_json(output/'database_first.json',{}),
@@ -702,7 +731,9 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/api/recover':
                 return self.json(self.app.recover(value['run']))
             if self.path=='/api/refine':
-                return self.json(self.app.refine_candidate(value['run'],value['candidate'],value.get('days',30.)))
+                return self.json(self.app.refine_candidate(value['run'],value['candidate'],value.get('days',30.),value.get('objective'),value.get('prefer_outbound_encounters')))
+            if self.path=='/api/share-candidate':
+                return self.json(self.app.share_candidate(value['run'],value['candidate'],value.get('confirmed',False)))
             if self.path=='/api/return-earth':
                 return self.json(self.app.return_to_earth(value['run'],value['candidate'],value.get('minimum_days',80.),value.get('maximum_days',750.),value.get('dsm',False)))
             if self.path=='/api/append-flyby':

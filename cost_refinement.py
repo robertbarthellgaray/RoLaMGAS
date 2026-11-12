@@ -119,9 +119,10 @@ def feasibility_refine(model,x,branches,maxiter=160):
 
 
 def refine(model,x,branches,objective='balanced',maxiter=160):
-    if objective not in ('balanced','c3','dsm','arrival','time'):
-        raise ValueError('Choose balanced, c3, dsm, arrival or time refinement')
+    if objective not in ('balanced','c3','dsm','arrival','time','outer_time'):
+        raise ValueError('Choose balanced, c3, dsm, arrival, time or outer_time refinement')
     c=model.config
+    from encounter_preferences import preference_penalty,first_outer_years
     @lru_cache(maxsize=256)
     def evaluate(values):
         try:return model.evaluate(np.array(values),branches)
@@ -133,11 +134,13 @@ def refine(model,x,branches,objective='balanced',maxiter=160):
             error=np.minimum(energy_constraints(model,values,branches),0.)
             return float(1e6+1e4*(error@error))
         injection=launch_injection(q['launch_c3_km2_s2'])
-        if objective=='c3':return q['launch_c3_km2_s2']/10+1e-5*q['total_dsm_kms']
-        if objective=='dsm':return q['total_dsm_kms']+1e-5*injection
-        if objective=='arrival':return q['arrival_vinf_kms']+1e-5*injection
-        if objective=='time':return q['duration_years']+1e-7*injection
-        return injection+q['total_dsm_kms']
+        penalty=preference_penalty(q,c)
+        if objective=='c3':return q['launch_c3_km2_s2']/10+1e-5*q['total_dsm_kms']+penalty
+        if objective=='dsm':return q['total_dsm_kms']+1e-5*injection+penalty
+        if objective=='arrival':return q['arrival_vinf_kms']+1e-5*injection+penalty
+        if objective=='time':return q['duration_years']+1e-7*injection+penalty
+        if objective=='outer_time':return first_outer_years(q)+.01*q['duration_years']+penalty
+        return injection+q['total_dsm_kms']+penalty
     def equality(values):
         q=q_at(values)
         count=sum(body in BODIES for body in model.bodies[1:-1]) if not model.extension else sum(body in BODIES for body in model.bodies[model.prefix_count-1:-1])
@@ -166,5 +169,7 @@ def refine(model,x,branches,objective='balanced',maxiter=160):
              optimizer_message=str(fit.message),iterations=int(fit.nit),
              objective_before=float(cost(x)),objective_after=float(cost(result['x'])),feasibility_restored=restored,
              valid_under_requested_limits=bool(model.accepted(result)),
+             prefer_outbound_encounters=c.get('prefer_outbound_encounters',True),
+             approach_preference_penalty=preference_penalty(result,c),
              note='Local optimum search with hard launch-energy constraints. Balanced cost is ideal 200 km launch injection plus explicit modeled DSM/target-turnaround/powered-flyby delta-v. Unresolved speed mismatches are not fabricated burns.')
     return result

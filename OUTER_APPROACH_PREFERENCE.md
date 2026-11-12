@@ -1,0 +1,13 @@
+# Outward outer-planet encounters
+
+The default **Prefer outward encounters at Jupiter and beyond** option adds a soft search preference. It never changes collision screens, launch-energy bounds, maneuver budgets, or whether a candidate is physically feasible.
+
+For each outward transfer to Jupiter, Saturn, Uranus or Neptune, the solver computes heliocentric radial velocity `dot(r, v) / norm(r)` using the spacecraft's incoming heliocentric velocity. A negative value means the spacecraft is moving inward. It also analytically finds the first outward crossing of the encounter's solar distance on the incoming elliptic coasts. The elapsed time after that crossing detects extra revolutions even when the eventual encounter is outward. An earlier radius crossing is **not** an earlier meeting with the moving planet.
+
+The dimensionless preference is the sum of elapsed years after that crossing plus inward radial speed divided by 5 km/s. Time objectives add this to their cost in years; the C3 objective adds ten times this to its cost in km²/s². This is an optimization weight, never a physical burn. Disable the checkbox to recover the previous objective. Deliberately inward transfers, Earth/Venus resonance loops, and locked portions of appended missions are excluded. Unbound and nearly circular coasts use radial speed only.
+
+**Reach first outer planet sooner** minimizes time to the first eligible outer-planet encounter, with a 1% total-flight-time term and this preference. It can prioritize Jupiter even when the final destination is Uranus. **Minimize flight time** instead prioritizes the final destination. Feasibility-only searches apply the preference to ranking; select a cost objective for active date optimization.
+
+The inspector reports direction, radial speed and any delay after the first radius crossing. Under **I like this one**, select the refinement objective and preference before starting. Existing launch/date windows, C3, V∞ and burn limits remain in force. Exact-date imports stay pinned to their saved event windows; widen those windows in a new search if you want different dates. Local optimization cannot prove an earliest possible encounter or a global optimum.
+
+Imported trajectory JSONs are rechecked and saved locally. Use **Share this candidate to community library** in the inspector and confirm publication to submit one explicitly. The app rechecks it again, honors community settings and reports a server receipt or an error. Eligible pass/yellow scientific records are shared; local paths, personal settings and local display names are excluded. Same-day duplicates may retain the preferred existing representative. Import alone does not upload.

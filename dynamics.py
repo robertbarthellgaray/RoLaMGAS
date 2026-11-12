@@ -305,7 +305,10 @@ class Model:
                 prefix_dates_unchanged=dates[:self.prefix_count]==p['dates_jd_tdb'],
                 prefix_segments_unchanged=segments[:len(p['segments'])]==p['segments'],
                 launch_c3_change_km2_s2=c3-p['launch_c3_km2_s2'])
+        from encounter_preferences import outer_approaches
+        approaches=outer_approaches(self.bodies,dates,states,arr,segments,self.prefix_count if self.extension else 1)
         return dict(sequence=self.route['id'], bodies=self.bodies, x=np.asarray(x).tolist(), branches=branches,
+                    outer_approaches=approaches,
                     extension_source=extension_source,
                     dates_jd_tdb=dates, launch_date=calendar(dates[0]), arrival_date=calendar(dates[-1]),
                     duration_years=(dates[-1]-dates[0])/365.25, launch_c3_km2_s2=c3,
