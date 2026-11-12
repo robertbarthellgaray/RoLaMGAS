@@ -18,7 +18,7 @@ class DownloadTests(unittest.TestCase):
                 c=json.loads((DOCS/'data/cases'/(row['id']+'.json')).read_text());files=c['trajectory_files']
                 for key in ['csv','xyzv']:
                     file=DOCS/files[key];self.assertEqual(hashlib.sha256(file.read_bytes()).hexdigest(),files[key+'_sha256'])
-                a=np.loadtxt(DOCS/files['csv'],delimiter=',',skiprows=1);b=np.loadtxt(DOCS/files['xyzv'],comments='#')
+                a=np.loadtxt(DOCS/files['csv'],delimiter=',',skiprows=1,encoding='utf-8');b=np.loadtxt(DOCS/files['xyzv'],comments='#',encoding='utf-8')
                 self.assertEqual(a.shape,(files['rows'],7));self.assertTrue(np.isfinite(a).all());np.testing.assert_allclose(a,b,rtol=0,atol=1e-5)
                 if c['model'] in ('Lambert candidate','Research patched-conic recreation'):
                     self.assertTrue(np.all(np.diff(a[:,0])>0));self.assertLessEqual(files['max_checked_hermite_position_error_km'],10.000001)

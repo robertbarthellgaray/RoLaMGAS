@@ -207,7 +207,7 @@ async function selectCandidate(id) {
   $('plot-message').hidden = false; $('plot-message').textContent = 'Loading saved flight…';
   try {
     let c = cache.get(id);
-    if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json?v=20261110d`); cache.set(id, c); }
+    if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json?v=20261111e`); cache.set(id, c); }
     if (token !== requestVersion) return;
     annotateMission(c);selected = c; attachPlanetContext(c); renderBodyVisibility(c); fraction = 0; zoom = 1; setView('3d');
     updateLocation(c.id);
