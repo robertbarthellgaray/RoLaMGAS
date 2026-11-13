@@ -3,6 +3,9 @@ from unittest.mock import patch
 import refresh_body_names as names
 
 class BodyNameTests(unittest.TestCase):
+    def test_comets_include_their_official_designation_and_name(self):
+        with patch.object(names,'fetch',return_value=dict(result=[dict(spkid='1000025',name='Encke',pdes='2P',type='comet (integrated barycenter)')])):
+            self.assertEqual(names.resolve_label('1000025')['name'],'2P/Encke')
     def test_exact_horizons_identity_ignores_similar_objects(self):
         with patch.object(names,'fetch',return_value=dict(result=[dict(spkid='20000001',name='Ceres'),dict(spkid='20010199',name='10199 Chariklo')])):
             self.assertEqual(names.resolve_label('20010199')['name'],'10199 Chariklo')

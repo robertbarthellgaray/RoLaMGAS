@@ -1,0 +1,2562 @@
+[
+  {
+    "maximum_dop853_endpoint_error_km": 0.003173722857087062,
+    "maximum_velocity_difference_kms": 6.758760013205828e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "834d556aad7e559d916de58b9e35834211ab700eedefbc108a0f88e23e69ca55",
+    "sampled_minimum_heliocentric_radius_km": 147642918.22742873
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0024178558831964196,
+    "maximum_velocity_difference_kms": 5.781971556273201e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "8262f56c9590e0064e305de3673612735593fd73bbc50aaa4e9019e391051eab",
+    "sampled_minimum_heliocentric_radius_km": 146858943.0243735
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008454540830499395,
+    "maximum_velocity_difference_kms": 1.8189871302421808e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d38acf45393d7ef07cc74e7319557a585d5f399d5ed3ea19e8587a07f7475b9b",
+    "sampled_minimum_heliocentric_radius_km": 146194997.2505272
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003871823479591347,
+    "maximum_velocity_difference_kms": 9.105196891003221e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d56d843822bc9af4968dc82c738c410260dfd2557d20db1db5aeb0a63392a5ce",
+    "sampled_minimum_heliocentric_radius_km": 144866934.56399912
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008502289428844992,
+    "maximum_velocity_difference_kms": 1.8048809766602988e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "13c991792b1ef2cbb37e4fe802c41af8ef0cf8dffad55833a077cda5d53e2e75",
+    "sampled_minimum_heliocentric_radius_km": 147100717.0281876
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0051445914782829215,
+    "maximum_velocity_difference_kms": 1.165778926390542e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "4140a993f068c1d88e9ed9a83558fc7217d1868e87f62eeff70a877e25543a7f",
+    "sampled_minimum_heliocentric_radius_km": 147100717.0281876
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009260188531528098,
+    "maximum_velocity_difference_kms": 1.945471325164602e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1f9d7873724936a09f9cd0ac171a5c09c8b221c514e8f08f3674d22c0539c28f",
+    "sampled_minimum_heliocentric_radius_km": 147209087.055387
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004532375073381698,
+    "maximum_velocity_difference_kms": 1.1663443677392697e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "9a207c4a1f611e539a11dba6164d116dc5b30815743c9030c3a6381f6eb6dbce",
+    "sampled_minimum_heliocentric_radius_km": 147207369.46804348
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004996725759404264,
+    "maximum_velocity_difference_kms": 1.2031524090658036e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b445c0c7fdc079088af659ded4500a8b3b9317972f1836ef8fe34193c5b1e1b7",
+    "sampled_minimum_heliocentric_radius_km": 146514780.72775903
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005259779458768053,
+    "maximum_velocity_difference_kms": 1.2373120377880918e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "98ecfbcbd7ca9b9049c67d313468a029896f9e5e835113dc537927c50fc32877",
+    "sampled_minimum_heliocentric_radius_km": 147363321.55334663
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0021421360156208113,
+    "maximum_velocity_difference_kms": 5.974328612380873e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d92744a0d2c65ed9506560ada920cb3ab57f0ebd7a81bdddc58f698935e9aec1",
+    "sampled_minimum_heliocentric_radius_km": 148010852.22154522
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.002431542111445169,
+    "maximum_velocity_difference_kms": 6.56730324904816e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c0a4b63df097916212ee9f11f10fc08da1bc944486a0afb7fdd47915602c969f",
+    "sampled_minimum_heliocentric_radius_km": 148027603.0875122
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0019488281981682898,
+    "maximum_velocity_difference_kms": 4.9044860741002474e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "e1a33b7330c3c811452a5a5955a5c5333d595cbd85b5bd0a460f88faa7f9b709",
+    "sampled_minimum_heliocentric_radius_km": 146587544.496726
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004198466688338383,
+    "maximum_velocity_difference_kms": 1.1200735841233124e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0900d14ab38e3247b3de7e3cb686972d8cdec6876b3982cad7358df8441b2d33",
+    "sampled_minimum_heliocentric_radius_km": 149615855.7764784
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008286015384457387,
+    "maximum_velocity_difference_kms": 1.8304896760821071e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "026a6aaef79bb6f6950b14ac953bcc6861d32e29f108cc79290375e88886e660",
+    "sampled_minimum_heliocentric_radius_km": 148552686.28013384
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.002886863150516403,
+    "maximum_velocity_difference_kms": 7.750780956306075e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d1f34bcaf00e6db38649917e1a8085e6911e266c6a94af9292c131a294805d53",
+    "sampled_minimum_heliocentric_radius_km": 151175635.66701046
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0028553161689384705,
+    "maximum_velocity_difference_kms": 7.11347738463598e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2b80b12dd3bdcd123fc8e830cb31373b1c35ce1f1b0d074144514d207239e0d0",
+    "sampled_minimum_heliocentric_radius_km": 149520716.54975078
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005590364277227003,
+    "maximum_velocity_difference_kms": 1.2425429896402342e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f0ec8cbf8532957fe85aef88d98eba6c7f0ba06895acff2cd817269b1b336f41",
+    "sampled_minimum_heliocentric_radius_km": 152047953.21409938
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0031397393610067353,
+    "maximum_velocity_difference_kms": 8.055136140023399e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "5a5d2213c0cbc5d17bd7c3598aee85412cd1640670dbd76e05826411d9af3b7e",
+    "sampled_minimum_heliocentric_radius_km": 151986014.7789553
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004585761361011258,
+    "maximum_velocity_difference_kms": 1.06342433361012e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f4be7587ec1a17d7ef9012f7f4a143c3ed8444a8ddbb8b813a01ec7a43681ec3",
+    "sampled_minimum_heliocentric_radius_km": 150350863.77002808
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004838444580837281,
+    "maximum_velocity_difference_kms": 1.1609328957178369e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f0fed96c6aadbc86d0f1480e0e2eb24389c0d9839a01628b2656e879e4b81abd",
+    "sampled_minimum_heliocentric_radius_km": 151910874.22983617
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0041175984099349324,
+    "maximum_velocity_difference_kms": 1.065556975253584e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6987b2812a190fd02e83f00e6b7446c658d028cf82be0f2216fb67e39455f0f5",
+    "sampled_minimum_heliocentric_radius_km": 151842382.16139
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.001703077718095627,
+    "maximum_velocity_difference_kms": 4.48331830596942e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "e70c50a6e3ecaee32a18e395ab9d0635a25ca5014063805d28b87bd99c056f56",
+    "sampled_minimum_heliocentric_radius_km": 151187641.89111477
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.002176111236111326,
+    "maximum_velocity_difference_kms": 5.160898692615726e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "835cc4386559ed62b45434bd9463659fd357ea3f598eeaadce9ab645ed5f98a7",
+    "sampled_minimum_heliocentric_radius_km": 150876396.60057256
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.010595594569997986,
+    "maximum_velocity_difference_kms": 2.0047121423409697e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f09388ecc1eb9ab736d1ca801440c593ed9d921f84a63cbbc671fa72f4f340e4",
+    "sampled_minimum_heliocentric_radius_km": 148979008.84104896
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.002616149818290121,
+    "maximum_velocity_difference_kms": 6.684834482125356e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b919f9477192012a27dd3be29dec6870bec84f33b654e2b5eeef31630c983a35",
+    "sampled_minimum_heliocentric_radius_km": 149836673.03088287
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005142392019250721,
+    "maximum_velocity_difference_kms": 1.0133312955212285e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "fad9fe663967c2e337919606051b6a2765047b3070c2927d42798cb3ca15e0c7",
+    "sampled_minimum_heliocentric_radius_km": 148058219.84627116
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003289957945339468,
+    "maximum_velocity_difference_kms": 8.385119796301e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "78e22e0ab69deae42ff6e71a0500bca53b09d238abee33dc4d47071f62423daf",
+    "sampled_minimum_heliocentric_radius_km": 148592986.76474604
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004298748595289814,
+    "maximum_velocity_difference_kms": 9.239489210301682e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b09c08e4d6fad6b053b510d567296f88791511edddf843b4e81598adadc6836e",
+    "sampled_minimum_heliocentric_radius_km": 146439017.02833298
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0011776237042788382,
+    "maximum_velocity_difference_kms": 2.246140914966757e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0ea82a71530fae3c7c4cd6236d0e0260f80be8fea09bc56d4820c47363e311eb",
+    "sampled_minimum_heliocentric_radius_km": 144960664.02685654
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007626376467929823,
+    "maximum_velocity_difference_kms": 1.717184219232611e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1f348db2c047d62171bb5cb2e5a9f2a42cc2265f1d55942db47e8a15c4842a61",
+    "sampled_minimum_heliocentric_radius_km": 147113018.04464978
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004417204719580415,
+    "maximum_velocity_difference_kms": 1.0338724112877508e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "378aedcb81a0cfc3de8e94c0a6c7f3e044e7918be7c5a45c72ed5c10d669607b",
+    "sampled_minimum_heliocentric_radius_km": 146409589.65090948
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007604543198906901,
+    "maximum_velocity_difference_kms": 1.6500879903693562e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f959eebb0e0bf769fb351fb4db8bde9e68c8555ad788c2af5bae3f2c414951f3",
+    "sampled_minimum_heliocentric_radius_km": 144583915.77224916
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006355873449553334,
+    "maximum_velocity_difference_kms": 1.4554650054760574e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "11c50700380d9d7b2fd3b2225f718ff52abf5732a65c7ff9f21a63ac96b05f95",
+    "sampled_minimum_heliocentric_radius_km": 147107593.3973596
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008031376832276099,
+    "maximum_velocity_difference_kms": 1.702664323455e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "30b102ef06d5130df3f6cea43c28ccc660c09d0119578afc788ff17a25cfb254",
+    "sampled_minimum_heliocentric_radius_km": 147117977.2812395
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0074845762819749475,
+    "maximum_velocity_difference_kms": 1.6907478793445254e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6c95175ab82846cf37fc958b5740ab0575d883ee2d73bbe19fe12b69252fc29c",
+    "sampled_minimum_heliocentric_radius_km": 147166410.6777223
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0038563994723193125,
+    "maximum_velocity_difference_kms": 1.0147851470949627e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3dd29857a8487297e6af11d949c3cdd9fb072f79c5f2900362b1f86fe5ac73a9",
+    "sampled_minimum_heliocentric_radius_km": 147284365.34977406
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00508678532879864,
+    "maximum_velocity_difference_kms": 1.1821612340620867e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3bcf2cd32069a48e909e3488f8edcd8cb219a694460d7e216a77eb57dedf26ec",
+    "sampled_minimum_heliocentric_radius_km": 147636266.55507392
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003990315053738248,
+    "maximum_velocity_difference_kms": 9.86373410111908e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3487c7061fdaf1eff05cdeb1cffc389e0f3d4642069a0a356b6115426b8379d8",
+    "sampled_minimum_heliocentric_radius_km": 145000227.2103195
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0019460192585605397,
+    "maximum_velocity_difference_kms": 5.2463545930234996e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "45d06d39cad102ef8565caee96bb877cc3a5d8589ad1317946b608d8c0c1eb84",
+    "sampled_minimum_heliocentric_radius_km": 148367020.0923733
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0021642167369194934,
+    "maximum_velocity_difference_kms": 5.4349872699670827e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "29f9cdaef99df3a95824789ac87b59385687ea1af3733bfda8e7bb67114e19dd",
+    "sampled_minimum_heliocentric_radius_km": 147071239.86634988
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004088498396339834,
+    "maximum_velocity_difference_kms": 1.0824651396100884e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6dffc29d065f60c9d38d7e0bbe5c12f30d3bf89e672d403d265ed156155f1489",
+    "sampled_minimum_heliocentric_radius_km": 150118180.42347378
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0037331819355934407,
+    "maximum_velocity_difference_kms": 1.0090747734153158e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "83a63c4a499a236ac20c0c500d203c4d995edf7ef453d4e9d4fcaf84467d4cba",
+    "sampled_minimum_heliocentric_radius_km": 149484444.45375293
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0032008216638325293,
+    "maximum_velocity_difference_kms": 7.002167570427588e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "41d8960e23d57c4b0a010a2d393ef0204fe7ee8056926e8d70f139a7dcb6b3a5",
+    "sampled_minimum_heliocentric_radius_km": 151535400.02439973
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0023623206075990516,
+    "maximum_velocity_difference_kms": 6.481717938028709e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0474cb29b9ed380c2f1c95bd58634b209da0843284a6c96a2b1f85a68e4cd28a",
+    "sampled_minimum_heliocentric_radius_km": 151079234.80083284
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00612799844343694,
+    "maximum_velocity_difference_kms": 1.429084748975217e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "664761727bf615b4ea12f3c01f171ffb537cce3f53bd2e5ea017983267e6e56e",
+    "sampled_minimum_heliocentric_radius_km": 152003764.99542725
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008170350600648184,
+    "maximum_velocity_difference_kms": 1.7525034029767214e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "79b7c3eec0243dea6dc4524bf753942e8bebc05dfeacd8815fee160902db0e21",
+    "sampled_minimum_heliocentric_radius_km": 150352343.16653967
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00373351877220493,
+    "maximum_velocity_difference_kms": 9.758500405172773e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "fcfd3b3d51d66246c2318bea6858c76a8e4a25b835c932a4553ff3e8ef009575",
+    "sampled_minimum_heliocentric_radius_km": 151892472.4767485
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0048990065873137385,
+    "maximum_velocity_difference_kms": 1.1126186897263928e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0519b032ae16dcf8081a2d57a153aaedf18a9592e4e672c6567149adcb03e564",
+    "sampled_minimum_heliocentric_radius_km": 151569773.2560181
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0019693927015977854,
+    "maximum_velocity_difference_kms": 5.05670443432602e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "586f3340d28d0d145434b6e4d109f8f694472da3da2d7f33723a3c6ba581de36",
+    "sampled_minimum_heliocentric_radius_km": 150770741.14314035
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009741762483249525,
+    "maximum_velocity_difference_kms": 1.860613147198869e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "528063f5be2c75993961c1a4abb1d158b28d144fce2bf591ace189287903b057",
+    "sampled_minimum_heliocentric_radius_km": 148315297.04381448
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006767911863461937,
+    "maximum_velocity_difference_kms": 1.4137724835172283e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2958eb3974effdad487315137a61cf3205853724cf1d7b2fb1620eda35c5311e",
+    "sampled_minimum_heliocentric_radius_km": 148946534.01721615
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004762185332095525,
+    "maximum_velocity_difference_kms": 9.370693046725934e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "dea8e5951acd78bbf81654def172115673d853dc773e6f31c7395a9f8f847bbf",
+    "sampled_minimum_heliocentric_radius_km": 147833251.4215933
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004005870648951474,
+    "maximum_velocity_difference_kms": 8.493164730970016e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "64c26db51c147df89b610b06d0e8b1aa3981869b3bf69cc94bd7f5dc93bf8643",
+    "sampled_minimum_heliocentric_radius_km": 147004450.89827448
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0044010011644140985,
+    "maximum_velocity_difference_kms": 9.407788529668119e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "83ee72f824197ad99b05b1fe661a143d974a92c8d51deca1733d8b744ac07e5f",
+    "sampled_minimum_heliocentric_radius_km": 147430340.27830908
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006372155608340872,
+    "maximum_velocity_difference_kms": 1.2869785550965194e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "56c9de5c52e458de1b03e90a3732f79c137547e2f3660e2c62006a4214fd8ab5",
+    "sampled_minimum_heliocentric_radius_km": 147109946.6460123
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004207182941009973,
+    "maximum_velocity_difference_kms": 9.113991388404865e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "9ffd224909cfc85db3f556a6381adf3c5396fd6fc42c799bcba2562ec52ebe96",
+    "sampled_minimum_heliocentric_radius_km": 144661101.30853477
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00681817231790667,
+    "maximum_velocity_difference_kms": 1.573137922305294e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2b3629f6e81eee6744c9a93b2e3901179dabe10ed8fb8ae837ab1e227dbce226",
+    "sampled_minimum_heliocentric_radius_km": 147106050.44389006
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007953396384881121,
+    "maximum_velocity_difference_kms": 1.7185923048060183e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "acebcd48af184d4c93a8bc2a77c44be9f8a677e27376c92e01ccdfb97a1dedb2",
+    "sampled_minimum_heliocentric_radius_km": 146179368.48848534
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.011573264872830167,
+    "maximum_velocity_difference_kms": 2.2724167136601692e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "47c268111cd8af7678c45b8736f3b521bd5a5bfcd68225ad7f3f0acab53c1eae",
+    "sampled_minimum_heliocentric_radius_km": 147105441.35259554
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007264100354966731,
+    "maximum_velocity_difference_kms": 1.6557290078759485e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "274d0279589d0031ac9d4ac154031e4f323cdb2f23abccba6ed3f84c91191f18",
+    "sampled_minimum_heliocentric_radius_km": 147146609.98945156
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008757586839148469,
+    "maximum_velocity_difference_kms": 1.848948530917985e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "cb64d797d0f2be92147aadc98b986843d2bcb5fed4f4a6b40e3fddf024a2058e",
+    "sampled_minimum_heliocentric_radius_km": 147343207.8788569
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003143898237965463,
+    "maximum_velocity_difference_kms": 8.459282780003806e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "5fac2b550abc9d1dc5543aad3f1973fe64f6c9b9c174388a0ad6aa0511418fe0",
+    "sampled_minimum_heliocentric_radius_km": 147249616.40678206
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00456842729718144,
+    "maximum_velocity_difference_kms": 1.0534699862106038e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d2cc0a841098e483c6e3f2377e487a90de80cb843bf98aa10f73590be4f2e5c2",
+    "sampled_minimum_heliocentric_radius_km": 147989472.44098827
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.002675054839431668,
+    "maximum_velocity_difference_kms": 7.268165448149122e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c69317593c07804449d1f99284916e6a9affc6e886948e9b1c968fa2127c3fb0",
+    "sampled_minimum_heliocentric_radius_km": 148337558.60786223
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0020738001844632825,
+    "maximum_velocity_difference_kms": 5.495135256097446e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ec30438d727176dc1b081d253c6cf1212ca707cf24830cb0e3ee5012b1d31226",
+    "sampled_minimum_heliocentric_radius_km": 148931848.3209271
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008970036799475356,
+    "maximum_velocity_difference_kms": 1.5813555686902713e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0cf04d99e0ce2bb0865dcbed2b73ae2e4e651345f114764a4d2a6c4d3f83d90b",
+    "sampled_minimum_heliocentric_radius_km": 102638774.03620982
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009949507861376949,
+    "maximum_velocity_difference_kms": 1.689678243969309e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "570e89b6a8fcf83d63eb79d95558571c240d1536e7394bad189ee2dcc94de212",
+    "sampled_minimum_heliocentric_radius_km": 102983174.11744577
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.01015345918319901,
+    "maximum_velocity_difference_kms": 1.6549241724338175e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ca2475aad72b15617ea335739d0d4d86d2b56f6afede34f92b23aa4bceabe7d7",
+    "sampled_minimum_heliocentric_radius_km": 85945842.8625623
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.015270940265412362,
+    "maximum_velocity_difference_kms": 2.4966727958910187e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d5b93ecf8224cea5ec6db28820cf90b3c3cab7b10f62d6cf9318e0146b1780c5",
+    "sampled_minimum_heliocentric_radius_km": 106755865.240537
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007105093410734108,
+    "maximum_velocity_difference_kms": 1.262813566167814e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c011dec8f0f1bf27af2c85743e1f1845de60c3a98ee0e3429920d0a455b7b8d6",
+    "sampled_minimum_heliocentric_radius_km": 95073545.46068157
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006051529188495135,
+    "maximum_velocity_difference_kms": 8.764049079406779e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "da0a246cabd20b1183029f4ee8e39a414080049122a8989799f9a9b0c8a09a71",
+    "sampled_minimum_heliocentric_radius_km": 105928373.8115647
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009825439125577103,
+    "maximum_velocity_difference_kms": 1.738341766293982e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c0dcaeeb047ffd29bb5c50528ccb9ec7ad46503fc58ebe039c88a98593c85010",
+    "sampled_minimum_heliocentric_radius_km": 94810927.97197184
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.011877864920002198,
+    "maximum_velocity_difference_kms": 2.073679719336856e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "874a909e04c81a3dd14a3d147360a1963d36c52ee42f03be656c036b2b457c9a",
+    "sampled_minimum_heliocentric_radius_km": 93770197.05717002
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005053822003667515,
+    "maximum_velocity_difference_kms": 1.5408459651875665e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2aaefe71718e9b35c67d85b48d85bb45968af135d70f0bbb0fc55c5be53dd8c5",
+    "sampled_minimum_heliocentric_radius_km": 89235727.00296071
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004883881511369936,
+    "maximum_velocity_difference_kms": 1.4925752080932054e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b4fe1e51072fa7976509c5b98bfae85e39f9b5426902314c919617311c0088a2",
+    "sampled_minimum_heliocentric_radius_km": 88877297.74795839
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007037958304875052,
+    "maximum_velocity_difference_kms": 1.2424042526301114e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "dea6cca4a044889a9c7219cac3c1461fa958bb762952f05ce1f5b8cd150bbb95",
+    "sampled_minimum_heliocentric_radius_km": 104684507.88751091
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0014011962579400959,
+    "maximum_velocity_difference_kms": 6.667671928478505e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "5273461d8c6cfb1d27f182f72568d510a86d1a9b59762af98f6d9b445953c275",
+    "sampled_minimum_heliocentric_radius_km": 104894880.77033083
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008597135459216601,
+    "maximum_velocity_difference_kms": 1.0104202376703115e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c523429d31c25970b07dba399afa23f3f7757138bdae4c99031003cb1b6f8d01",
+    "sampled_minimum_heliocentric_radius_km": 91079623.89785245
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007047388948067081,
+    "maximum_velocity_difference_kms": 1.135721656261796e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a943227f9fb3eadaedc39b5fb3ab3c8a1e53a22866807904ec1604006304f57c",
+    "sampled_minimum_heliocentric_radius_km": 88203088.26792054
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0047421565161860114,
+    "maximum_velocity_difference_kms": 2.898095863751354e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ca0d436f89efd6e3520525aee20393d2bb58e20efd76045563151346525c5d77",
+    "sampled_minimum_heliocentric_radius_km": 91424763.48687544
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004887654986689413,
+    "maximum_velocity_difference_kms": 8.455931089037568e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "fd6f2378343ee309fea98cf8a877d7addcdb86b47e619783a5b4d9ed247659a9",
+    "sampled_minimum_heliocentric_radius_km": 134021751.65499735
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005028677163060392,
+    "maximum_velocity_difference_kms": 8.246401319335556e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a661c4bcb5b4f5e58e9b194445a6cde83e5c61c6a561d1d8c55d1ab7a5f2c6e2",
+    "sampled_minimum_heliocentric_radius_km": 134116098.6725376
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004969674793237977,
+    "maximum_velocity_difference_kms": 8.212691138347653e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "70d7da47d26c6aaae5d4a9e5ebcbd0fa374527e93ce75b80bb433559c1e905f7",
+    "sampled_minimum_heliocentric_radius_km": 146396332.67090094
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00785598805127393,
+    "maximum_velocity_difference_kms": 2.4071827585361616e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "277f8b18e2393a0df1e26da1d8936f44933e29f4b7b78c9d1778523b94937edc",
+    "sampled_minimum_heliocentric_radius_km": 148629600.90746897
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006203015811400651,
+    "maximum_velocity_difference_kms": 1.196336357023147e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "eb0035c3b0780ef6e2ba96c714ed617ba5a821f88e5f7b8473f1a61b907db1d4",
+    "sampled_minimum_heliocentric_radius_km": 133089720.96553424
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0049725578702502216,
+    "maximum_velocity_difference_kms": 9.713523434073292e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ca88c4a38e96b7d5e15538a09fa9f710d5fb5a00419c7b96f52987aae4ad7c00",
+    "sampled_minimum_heliocentric_radius_km": 134148230.16674303
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005937340644151021,
+    "maximum_velocity_difference_kms": 1.1352977497250765e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2c83e306f9eb60a1a4a3f7937afde629ef5db8df2cd001b01e396bfcc1412c2a",
+    "sampled_minimum_heliocentric_radius_km": 134664851.42260984
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007101546726996348,
+    "maximum_velocity_difference_kms": 1.21859350601607e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d95e858ea9bb1cecb464019fc53d30b128d421bb49c41393b92354b6cf8f1af9",
+    "sampled_minimum_heliocentric_radius_km": 135619939.19870174
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007874552989776315,
+    "maximum_velocity_difference_kms": 1.2271518378704768e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "63c5e38f1ec813aa61989dc9a1185eecc730b0d31931a9b856b8365fba4df48a",
+    "sampled_minimum_heliocentric_radius_km": 136095330.52254185
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005532319260601723,
+    "maximum_velocity_difference_kms": 1.0293502150128595e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f7d2ca422eceb0e40e04b574f64194797984bb0ef18381638080cce473f262d0",
+    "sampled_minimum_heliocentric_radius_km": 137199288.58610344
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004748386069601445,
+    "maximum_velocity_difference_kms": 8.676880023608965e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1bbe9394675807ec6278bfc73192669aef642f16b25f01d3ec540e9950e1f83a",
+    "sampled_minimum_heliocentric_radius_km": 137677790.5712228
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0061372565140657255,
+    "maximum_velocity_difference_kms": 9.839517274697808e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "34a37c9333b9599e8a37a401bb9aad9e60c0629f3e8f824f013a6c242d52887b",
+    "sampled_minimum_heliocentric_radius_km": 148952555.87437832
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005321137988264609,
+    "maximum_velocity_difference_kms": 9.094782715133831e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2b2d1c84f33d36d85642b736d281bb9c04d58095e2decd422a43240080690eb1",
+    "sampled_minimum_heliocentric_radius_km": 148372852.7588938
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0062882349434097,
+    "maximum_velocity_difference_kms": 1.0158728410624185e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "33f3392e7ac9bf9dd6b3ee8e5e0329baeae749a5bfe1988cfcd598792e8b9bad",
+    "sampled_minimum_heliocentric_radius_km": 134324177.6665379
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008341861924872481,
+    "maximum_velocity_difference_kms": 1.3718832434602406e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c2a82e283ccb8d0ebcb73a909a31d7097d5e4bb6e52db2a4cf1f05182b841053",
+    "sampled_minimum_heliocentric_radius_km": 134291136.93811372
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008375569727249323,
+    "maximum_velocity_difference_kms": 1.3333104859844649e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3e070c404cf1593aa54c4c1e158a6cae1b0fd62e9ab2d6ed55ba69f926aca8f6",
+    "sampled_minimum_heliocentric_radius_km": 132501937.53433901
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004641097677782719,
+    "maximum_velocity_difference_kms": 7.649108900762566e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "303e91cdab05cbc423b4a42385fc1277203869b2c89704e8b337156a6e9502ff",
+    "sampled_minimum_heliocentric_radius_km": 130494771.45036829
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0074260380350401126,
+    "maximum_velocity_difference_kms": 9.138436300564602e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c3abbdf1ed9678b59a5d73160a25c96c1914c35c0b663100bb0cee09b6afb33c",
+    "sampled_minimum_heliocentric_radius_km": 146647151.89992586
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008476251478235325,
+    "maximum_velocity_difference_kms": 1.452556505609502e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d4d98ba355c022255d4ab06b3f00f70cf9af51a313321697d91ec6c3abf04315",
+    "sampled_minimum_heliocentric_radius_km": 132077854.24119636
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006840699809511379,
+    "maximum_velocity_difference_kms": 7.045617351767819e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ae14ff75239665574ff0e12ec9b7a640696ce88b4de2c501ba8dcdb4dd1359b8",
+    "sampled_minimum_heliocentric_radius_km": 146707813.99756098
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006191284295382395,
+    "maximum_velocity_difference_kms": 1.1346515568383456e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b7a5d9e3a012d2b03e489f6efa98a9a43394217a9c0c00fc168464fded016f55",
+    "sampled_minimum_heliocentric_radius_km": 145877582.19476074
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005149397680155686,
+    "maximum_velocity_difference_kms": 8.510432558819855e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "490d866509e375942bc2d5532f9993c6960b3f80c725af70d458f02978449c19",
+    "sampled_minimum_heliocentric_radius_km": 146386681.43931058
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006588826919195498,
+    "maximum_velocity_difference_kms": 1.1002308575491488e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6c98b3a086eb94059b0686f947cfa0d78902ac029beae613876d7a5192807823",
+    "sampled_minimum_heliocentric_radius_km": 133074917.9568755
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006682493005957969,
+    "maximum_velocity_difference_kms": 8.747027617621618e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "5923e743dceb4369720f616f4c5c1731a161e60300652131ba544876160c50b1",
+    "sampled_minimum_heliocentric_radius_km": 147591952.4615405
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.012419927777785528,
+    "maximum_velocity_difference_kms": 6.763902310516606e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f6372c2091075d0159f1ab47b86a8669748e85e4c77830c27d2bd9985a70c335",
+    "sampled_minimum_heliocentric_radius_km": 148858474.00713935
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007325665245605301,
+    "maximum_velocity_difference_kms": 1.278854654153971e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b169d98bffef902af246ef49aa4a6efad04402ee10ada1efa5eded67f86510df",
+    "sampled_minimum_heliocentric_radius_km": 132947453.2286485
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.010363556184563538,
+    "maximum_velocity_difference_kms": 1.754420542608285e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "cbb44d7d243dd7f1fefaf4677bf553d24f8b606a27faffd299661ec0bdabf402",
+    "sampled_minimum_heliocentric_radius_km": 131740812.07062156
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007204562114505422,
+    "maximum_velocity_difference_kms": 1.295695280793306e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6c2f49b410474fb78855b0b460a1ffe1fd83e6e95fc14c4d6b9674d4d374f3e7",
+    "sampled_minimum_heliocentric_radius_km": 132472852.55033645
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005962016548730963,
+    "maximum_velocity_difference_kms": 1.1518709676816456e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2f0aa2f662ae74ae17ba644408f0721715dc4d94ae812cbee09a251e0b2c2429",
+    "sampled_minimum_heliocentric_radius_km": 133324104.30713403
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005378439240299071,
+    "maximum_velocity_difference_kms": 8.964717548122393e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "533cc2cb8c1e01b09b8f52cfb5e146bfc5bc645f168fb9206dcec3b107eada47",
+    "sampled_minimum_heliocentric_radius_km": 133189539.69899221
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007652028848583599,
+    "maximum_velocity_difference_kms": 1.4237075829664297e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0542584fcce7269862f7db0bd2c015f60a9bd9c115879fe48cc8e3b367ccbd29",
+    "sampled_minimum_heliocentric_radius_km": 134254945.20630854
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005736277587869906,
+    "maximum_velocity_difference_kms": 6.570840548991198e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "63ebc63adee1f1b3b27da26baac83b2a60e1ea6f8e13520117d498ebd0f241b0",
+    "sampled_minimum_heliocentric_radius_km": 134182151.07209736
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007373048710565206,
+    "maximum_velocity_difference_kms": 1.1965741469394965e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "772a2f5f93bb7282ee3611482c599d591abba780f39396f3acd82f33410b060a",
+    "sampled_minimum_heliocentric_radius_km": 131710335.44492628
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007978509585286163,
+    "maximum_velocity_difference_kms": 1.3086061056105764e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "e0302f6090e18decf62eda6ce57889e6bb2eb4234dcd7f75182b8e031b4bc4e4",
+    "sampled_minimum_heliocentric_radius_km": 131617746.67973691
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0004240859036127977,
+    "maximum_velocity_difference_kms": 2.2602660009714747e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1d9aed7327e84f59de60901f6d257f1ca6b648373204af5ada5aaf73813487e3",
+    "sampled_minimum_heliocentric_radius_km": 146381453.3662084
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008729558783943185,
+    "maximum_velocity_difference_kms": 1.681808758840184e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "075891817f2cd1bbc3c8d47824c60ea47c79f619b3c87d8db550ce2f3a36a51d",
+    "sampled_minimum_heliocentric_radius_km": 147187690.93227434
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0016501721058456832,
+    "maximum_velocity_difference_kms": 3.317961652981398e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "17b8c1d3e4e042ba8fd88165019cab16cd28b44d156eab9b7c350b3249cf5f62",
+    "sampled_minimum_heliocentric_radius_km": 144736778.68254167
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.002707573874397976,
+    "maximum_velocity_difference_kms": 6.950916761608365e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "228105d57a6f5197a2590def36fcd8e9d3fe93e2a1cfbc50aba5b1e5b11818a9",
+    "sampled_minimum_heliocentric_radius_km": 147172922.84609154
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0024215808746493248,
+    "maximum_velocity_difference_kms": 7.149381942723389e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "e548fa70a5b865690c1785921d63604f5bce393f018ddb2d99f52db957b7692d",
+    "sampled_minimum_heliocentric_radius_km": 146736857.9904708
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.012858711550678475,
+    "maximum_velocity_difference_kms": 2.582568733505186e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3fabead7aa77233d5c2ecc524f5df7bf636ce4f202e6646adb9f612b67176bed",
+    "sampled_minimum_heliocentric_radius_km": 147209087.055387
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.010769693121871341,
+    "maximum_velocity_difference_kms": 2.1831575483937521e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3eba0f9900b1a0249e1d8ad4a37d9339617ffcc82791d7c25c16c5ba3ec5cfbf",
+    "sampled_minimum_heliocentric_radius_km": 145536848.24808913
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0036145773319139155,
+    "maximum_velocity_difference_kms": 9.69349466465638e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6731238f0f1684bfab5a11405574be21febf73ca1100402d4f63f5b9088afbe4",
+    "sampled_minimum_heliocentric_radius_km": 147147073.3675687
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005205364492447291,
+    "maximum_velocity_difference_kms": 1.2270519637104112e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1fb95c272524e36e5ad604e05ca8aa51145e4ff0b6d6c025a3b4743523c502d9",
+    "sampled_minimum_heliocentric_radius_km": 146168270.45669046
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005867772995049891,
+    "maximum_velocity_difference_kms": 1.359362901166006e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2c277aa270602b4c36e6ea49a716761e7de582b5d205ca01fdc1d914f5271fa6",
+    "sampled_minimum_heliocentric_radius_km": 147719248.9667931
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0018513968187920983,
+    "maximum_velocity_difference_kms": 5.291317052436106e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1c98af9a755c09646641b8c4a370516068969074d05be88074edb0010fd94591",
+    "sampled_minimum_heliocentric_radius_km": 147770509.46456084
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0019019167120055897,
+    "maximum_velocity_difference_kms": 4.823558726392274e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2501870d41f5980dd28e3286d3d87cd61c000f5abba610b44c91a2afcbac09b1",
+    "sampled_minimum_heliocentric_radius_km": 146610503.83387324
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007960124416698031,
+    "maximum_velocity_difference_kms": 1.7545235840674723e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ec2941344cb63a761e9e5fbcf91212631a911bafc11af0e7a8cbeca9c13bac5c",
+    "sampled_minimum_heliocentric_radius_km": 148891797.7183793
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005490387644276236,
+    "maximum_velocity_difference_kms": 1.3450825496500216e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0076b4be13aa31b6aaf60527910780cd499954328a7f717377d4f1e215c2aef7",
+    "sampled_minimum_heliocentric_radius_km": 147591946.0902453
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0033888188899171053,
+    "maximum_velocity_difference_kms": 7.167114334436437e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1c76bc648c75acfc83ba04eb3aedd7586c632bfe7c3c7e91d49fdc2b55402dbf",
+    "sampled_minimum_heliocentric_radius_km": 151636816.9353056
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003490797245366398,
+    "maximum_velocity_difference_kms": 8.161371103539133e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0ff3b537255ba47dab6b5dfb4c091619b533c9c79ae71bb7bce7170b8413951a",
+    "sampled_minimum_heliocentric_radius_km": 151621078.45798907
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005178234320184453,
+    "maximum_velocity_difference_kms": 1.1944733314236e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "328f8fcfec241a3c22befa46636b9c7066b025c398122eafb51c8474ab9c2fcb",
+    "sampled_minimum_heliocentric_radius_km": 151974230.4224075
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0027666998128099882,
+    "maximum_velocity_difference_kms": 7.101789249411121e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ca7d0dfc3d7b83f8367d62653b5e7dc39b5986543646b4461e0c62a3b795b8a7",
+    "sampled_minimum_heliocentric_radius_km": 150397199.72908384
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003677112521403037,
+    "maximum_velocity_difference_kms": 9.793970835818904e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "5db1baf226d1e75351502b96532dc790f8e7349b9d2b34530fec8b4616f42385",
+    "sampled_minimum_heliocentric_radius_km": 152040916.03093266
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00485183714963939,
+    "maximum_velocity_difference_kms": 9.272980007715605e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "8f6e955972756cd3d6fd7a871e863293b2a431943be9fdb3d0bc3f2e596516b7",
+    "sampled_minimum_heliocentric_radius_km": 151482191.9293828
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.001824961973409864,
+    "maximum_velocity_difference_kms": 5.139009311811167e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "273b954f5fa6373c38d10172a1e77322203fb0f655c1fc2136fdc0f247b73f70",
+    "sampled_minimum_heliocentric_radius_km": 151130771.38729587
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005496788397040789,
+    "maximum_velocity_difference_kms": 1.1508202490807834e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "fb70aa559381a7d6cd3ce5f710c567a8fd5ade291de72a3831369cfb130e924b",
+    "sampled_minimum_heliocentric_radius_km": 150134176.30186665
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.011197184590680578,
+    "maximum_velocity_difference_kms": 2.0995961129250655e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1a2cf19af42d774e50234c5e35079478e5f7004a0335e32ebf9fafa8ea488cce",
+    "sampled_minimum_heliocentric_radius_km": 148919122.56352937
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.002642332828528472,
+    "maximum_velocity_difference_kms": 6.757716716072011e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "46916a1f8b547842305efd828e83d568fa73708806625015bb2d5ec8d6183723",
+    "sampled_minimum_heliocentric_radius_km": 149811018.79307052
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005128806451131272,
+    "maximum_velocity_difference_kms": 1.0737132819108048e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b9761c1dcceff5e859852cee0e21dbb69b93f55b6b1f7cbaadc30242b004a696",
+    "sampled_minimum_heliocentric_radius_km": 148182549.21964478
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.002514010779895965,
+    "maximum_velocity_difference_kms": 7.01501067577583e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3de432b80576f6d1b4b215572744c85948e50a53d2c9a5f18ff57e45b0a5de1d",
+    "sampled_minimum_heliocentric_radius_km": 148710917.38106722
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009975201583961528,
+    "maximum_velocity_difference_kms": 1.9391438106307283e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6e7a0c1e911881fb85973495d951f614de7cb24a4e13f1ce0289dd72e1661fad",
+    "sampled_minimum_heliocentric_radius_km": 147149522.978942
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003773869197247491,
+    "maximum_velocity_difference_kms": 7.820081148832893e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "8286f82890da6031e855d7ac6c7fa9ff2acd96f29facf9d1e6b799f86af0cd33",
+    "sampled_minimum_heliocentric_radius_km": 147149522.978942
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003630760766739224,
+    "maximum_velocity_difference_kms": 9.409975457354091e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "086c2604df129af044fd029d117ae9bad7f3f194fce785c24671779fbdca744e",
+    "sampled_minimum_heliocentric_radius_km": 146989185.31674755
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.016734329850862387,
+    "maximum_velocity_difference_kms": 3.1714282468769736e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f6415eb2a94387fd0b40f12ebfa2364e20fdcb5123c392cbca7fecfa3b6f8c4b",
+    "sampled_minimum_heliocentric_radius_km": 147231318.72101626
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008000664988732718,
+    "maximum_velocity_difference_kms": 1.7125830994446483e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "4336aa417d86d968b9148a6c9b6810953017d368c91c6d8287637f884dc2b391",
+    "sampled_minimum_heliocentric_radius_km": 147107593.3973596
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0029365076457361578,
+    "maximum_velocity_difference_kms": 7.520889454973477e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "579a4e2bef9f382ffe96f07b536ce2de072c9760e6bb18f708dd6ff5e5f8c7bb",
+    "sampled_minimum_heliocentric_radius_km": 147107593.3973596
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.011087556624901787,
+    "maximum_velocity_difference_kms": 2.2319344919714927e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a269ec8d75f6a462c6b349861abd270086b769cad7d56129fe58fb2d7e30526e",
+    "sampled_minimum_heliocentric_radius_km": 147409269.1410951
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003792229985808416,
+    "maximum_velocity_difference_kms": 1.0006316680730123e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a48c0787b090db773b7fb477fe7b01e796198c30fd5696334dbbbc6af127f99f",
+    "sampled_minimum_heliocentric_radius_km": 147307547.979739
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0047713301381914035,
+    "maximum_velocity_difference_kms": 1.071974842268176e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "50724e55348cafa9db7617c5a8b9626156c06ae26dd5d428cef39fdf06fdfb6e",
+    "sampled_minimum_heliocentric_radius_km": 146316543.38331455
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004170301062138268,
+    "maximum_velocity_difference_kms": 1.072712101221907e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "72466b9a8c4151e0f6510bf439f197526cfe8d85ab555e447ec2c3b5b61ecada",
+    "sampled_minimum_heliocentric_radius_km": 147636266.55507392
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.001561508040323691,
+    "maximum_velocity_difference_kms": 4.309115059066216e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6905cb0cd83610b89ef0edf42a53046aae84ec944dc3483430bf37df75b47782",
+    "sampled_minimum_heliocentric_radius_km": 148250176.38674453
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003842198796413086,
+    "maximum_velocity_difference_kms": 8.988658900197628e-11,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "378c1600e9f133b25df34d6a4e52e283160c20959d56e9a9535f0b6fab72324f",
+    "sampled_minimum_heliocentric_radius_km": 149060616.02479586
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007712185866175236,
+    "maximum_velocity_difference_kms": 1.7127881761696254e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "642510399de0eb75c9fa40d5cca83cbfb45e1c25a1dee26f22b4d35715a5f158",
+    "sampled_minimum_heliocentric_radius_km": 150118180.42347378
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0064287241567369344,
+    "maximum_velocity_difference_kms": 1.3224410498171454e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f10242a773f6b091d3bccabbe7032e0bbe0d279e0c3f37a312fd4eee9eb293a9",
+    "sampled_minimum_heliocentric_radius_km": 149786801.46539724
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008477669855855095,
+    "maximum_velocity_difference_kms": 1.6411215382009148e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "71f632f6db9570b0c767bfaaeabca56e5136ccd1104cd1941f44f549e65d1c5b",
+    "sampled_minimum_heliocentric_radius_km": 152055701.2129722
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008999033868569756,
+    "maximum_velocity_difference_kms": 1.5871829449203157e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c4f3d35b1776a40b568928e2f9556d291c40bb6f44c17358a254fc3600c0b280",
+    "sampled_minimum_heliocentric_radius_km": 102805351.87811048
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.017635431623966438,
+    "maximum_velocity_difference_kms": 3.0036055401397105e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2162d9449f27c7028851df964538b9cf9bbbb01b05aa3ed31a50e5ba72a19747",
+    "sampled_minimum_heliocentric_radius_km": 102664856.33194406
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00723441699370031,
+    "maximum_velocity_difference_kms": 1.6529612181412498e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2b3eb09f9f96dbbfe6e258fbecb0e5ba04368299730d735e51ac3e2b7e70ff73",
+    "sampled_minimum_heliocentric_radius_km": 86040446.9432214
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009503689484395285,
+    "maximum_velocity_difference_kms": 1.677212353645684e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "31a193b5485d75208ae8758d98660f25df18cfddd1e2c7190d341a6abc255685",
+    "sampled_minimum_heliocentric_radius_km": 94900149.83748367
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006197489298568564,
+    "maximum_velocity_difference_kms": 6.097094738087929e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "9655ed9eb0edc9adcd173d842bd8f6152c3a6f4322c5022fac05961b339ed726",
+    "sampled_minimum_heliocentric_radius_km": 105282827.48687507
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.010940867103895035,
+    "maximum_velocity_difference_kms": 1.9235574121409566e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d4ff870de5b166d918fefc0ecdacdc2be458145d9a863b70eb58142fa3d38ff9",
+    "sampled_minimum_heliocentric_radius_km": 94345731.63684635
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.012726357194209604,
+    "maximum_velocity_difference_kms": 2.2153453561351572e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "be673be3e5043ab649b1ba299493f0fcd96893e8f43763b22a33dca2baa1bb2c",
+    "sampled_minimum_heliocentric_radius_km": 93075599.78764892
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006922414374994593,
+    "maximum_velocity_difference_kms": 1.2219788590086708e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "7441874b8b7826e8af1a64eef657a0e1a305b00d703dd4d6018df33e26bd7002",
+    "sampled_minimum_heliocentric_radius_km": 104087398.30050018
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.012418750926289045,
+    "maximum_velocity_difference_kms": 2.1419357142721156e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "006c093d9fa77d77a5b1a74e2ec04c508c02b3e36ecc8362604ddf29a1ac4686",
+    "sampled_minimum_heliocentric_radius_km": 96688597.4370972
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.011206795569988916,
+    "maximum_velocity_difference_kms": 1.8157965445126344e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3b83896649b4e91262fcbb4575046d2af15c549470c962c444d85d789a6e336d",
+    "sampled_minimum_heliocentric_radius_km": 90768534.33511281
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007047388948067081,
+    "maximum_velocity_difference_kms": 1.135721656261796e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "16b866e61a82aacfaa1597e59736cc833dbf3ac4ffdc7fbf7485cee0bfd799b2",
+    "sampled_minimum_heliocentric_radius_km": 88203088.26792054
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004571167759026942,
+    "maximum_velocity_difference_kms": 8.922519793502301e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c6a641b269973ef57fbc8dfee61afcda0a7554714ecdd210a00cee8e5b260bd1",
+    "sampled_minimum_heliocentric_radius_km": 134124811.02177873
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005633391194438358,
+    "maximum_velocity_difference_kms": 6.805758486604128e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "7fe50a758c06e872b50f8f7d6b1d673d823cd515b3d215a7c4f72b53ea1b13fc",
+    "sampled_minimum_heliocentric_radius_km": 146780619.47233018
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008326085110480035,
+    "maximum_velocity_difference_kms": 6.961050165387113e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "599d4c6b94a7c1ca339dff3a4a9c2cc8b967741ac40c960fddd50d22507d85c8",
+    "sampled_minimum_heliocentric_radius_km": 149310245.0620179
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007488593259517467,
+    "maximum_velocity_difference_kms": 1.1760444187151785e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d0fb8721be177c459052cb1f32640a6cf851c06dc728ca06483184fc5092d588",
+    "sampled_minimum_heliocentric_radius_km": 132868722.2355255
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003649705666597353,
+    "maximum_velocity_difference_kms": 6.401346433733204e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0527dcd3de65bd14fcc1e1f257d6e1ea3a7f92980f3fc2d8d9df12d3e1c5f995",
+    "sampled_minimum_heliocentric_radius_km": 149700590.58411714
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004616308181898432,
+    "maximum_velocity_difference_kms": 8.637153446168299e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3b72746bc041f0146a54ebd9daec01baa2e4964f4cd46b87af3388fc9fda7391",
+    "sampled_minimum_heliocentric_radius_km": 134547411.56212786
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007060519822620569,
+    "maximum_velocity_difference_kms": 1.216472695570389e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1dcddca7b52f960eb1cdc3c4c323f37fe3c4d2115d4a0f15231e842bf7147cd5",
+    "sampled_minimum_heliocentric_radius_km": 135603247.3551572
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008188344771130554,
+    "maximum_velocity_difference_kms": 1.3753799834299457e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "8699208e0f92a1a25e242cfde69b0a47ecf520cda228b01f3011bb6fb934b47e",
+    "sampled_minimum_heliocentric_radius_km": 135595231.8849625
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00462306561437469,
+    "maximum_velocity_difference_kms": 4.764932045902792e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "aa917b28e4f0ffb9a2401ddf0cadd24ed4989754ac2afa0d12a4bc4db5aac5fc",
+    "sampled_minimum_heliocentric_radius_km": 137453544.8182905
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006171150164739276,
+    "maximum_velocity_difference_kms": 9.163061455430741e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "fa4dea34593aaa6cd834ce827096d4f8e939e8cd32b6ff3d1ba97778bbb34f06",
+    "sampled_minimum_heliocentric_radius_km": 148927843.45290768
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0050686655924574555,
+    "maximum_velocity_difference_kms": 8.798704571001846e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b9c424a40ba6ff10c952ac9d505e1a53f7f3f92d9d64e10b71587c714c011b79",
+    "sampled_minimum_heliocentric_radius_km": 148394255.00546643
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008296761072643032,
+    "maximum_velocity_difference_kms": 1.5186939723452106e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6c32e22fbd0fea38b912ce1e9c797991035484c3b43b2e0ddb956eaf879d99df",
+    "sampled_minimum_heliocentric_radius_km": 134447371.5160867
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005608315260696281,
+    "maximum_velocity_difference_kms": 9.842646322144552e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3e732f1e6da8be84d4f28e4af59ec58c1f38f9a73a784af010cb1a37a6091bf0",
+    "sampled_minimum_heliocentric_radius_km": 134207278.37809213
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006049490491412374,
+    "maximum_velocity_difference_kms": 1.033951682588467e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "35611381112c8a1453060f85e5d9684b2127d600aa1c9176b072b84bbab4754e",
+    "sampled_minimum_heliocentric_radius_km": 143771766.7212607
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008180308428474196,
+    "maximum_velocity_difference_kms": 1.3903550752815318e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "9cc7bc38f7dea0c5b6f10d8578375f44c5eaefac6ef74d26da744cdf68ec5911",
+    "sampled_minimum_heliocentric_radius_km": 132587561.42168166
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008926213784293572,
+    "maximum_velocity_difference_kms": 1.1164363244177627e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "5ab3df1dca1b00fcb943372fcead79c5b46268e34595f1a85e130de90efbf7fd",
+    "sampled_minimum_heliocentric_radius_km": 146004727.26814908
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004955903481124295,
+    "maximum_velocity_difference_kms": 7.010140698833789e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d44c72adc01e0340b20c9d99756c5b0a9445c0dea9258fd6af6a0974281f473c",
+    "sampled_minimum_heliocentric_radius_km": 146654570.6344623
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005352373198385935,
+    "maximum_velocity_difference_kms": 8.883711875887944e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0ae39db4fb674ae0ad4554ffaefcfb481a802148c374e7824c8d076790c0a229",
+    "sampled_minimum_heliocentric_radius_km": 146495406.17307752
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00885399583122222,
+    "maximum_velocity_difference_kms": 9.361436281723532e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2d4234b504dbde47b90daa326404c31df748781ebd70f71a3078e7704edbeff8",
+    "sampled_minimum_heliocentric_radius_km": 147622830.23635912
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004092787098643503,
+    "maximum_velocity_difference_kms": 6.501022724733259e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "9a191e93eec5dda3bb5c00e8d60863cead6bb5a532f0328940794bfef9fc1408",
+    "sampled_minimum_heliocentric_radius_km": 146772602.21162596
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00729110661019559,
+    "maximum_velocity_difference_kms": 1.2588458573379655e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "8584e560cd45f37e2211284d8afc21ee0ab78c07d5987fd44506f109c4012827",
+    "sampled_minimum_heliocentric_radius_km": 131776551.78900371
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0072671915153836595,
+    "maximum_velocity_difference_kms": 1.3167565744161276e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c0748f7d8619f7c037a5c86fed4ef951c14b111a2c53e39731a5bd9613100782",
+    "sampled_minimum_heliocentric_radius_km": 132481700.47832282
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007686532125061333,
+    "maximum_velocity_difference_kms": 1.3099480915588386e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "9cfc3f130fff5c58d6e0a5fd78f77f39e5d488fb9bb666fb49d0670e7448da09",
+    "sampled_minimum_heliocentric_radius_km": 132201806.08997823
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009120891051087357,
+    "maximum_velocity_difference_kms": 1.6517753386213521e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6864c24d75d921a7d89a9294931620fb500a9d1bc28fa925ac8623b1e6e2f1e3",
+    "sampled_minimum_heliocentric_radius_km": 132913831.99588451
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004422083957018328,
+    "maximum_velocity_difference_kms": 7.968684481332708e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "866afa49fb1a69208685d0a6ed3708007000e67c617b3f4e066e2609bc4f0869",
+    "sampled_minimum_heliocentric_radius_km": 133478378.3582928
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007981675691124714,
+    "maximum_velocity_difference_kms": 1.3975459049042779e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "cdf65d698c249607470ed669e718558df542b19a02f78902357d2d4ef1ed6ef2",
+    "sampled_minimum_heliocentric_radius_km": 131497982.57949825
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007555925084475619,
+    "maximum_velocity_difference_kms": 1.332901872903951e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a30c5a076e87031839c9b8990c8d90357724149bea2aefe1ef1b6fb1553e198b",
+    "sampled_minimum_heliocentric_radius_km": 102691686.69656996
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.010870664835425408,
+    "maximum_velocity_difference_kms": 1.845882981963221e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "02764198b80f0e82585ca6a282b1fb787b157dba654eed9a6bfabd6a61217094",
+    "sampled_minimum_heliocentric_radius_km": 97810015.59285708
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008014777173775828,
+    "maximum_velocity_difference_kms": 1.3657572117326632e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "829133b831689d49b5b502ae15f197249b7cf7194a3d6043982b4c9ce55a9cd0",
+    "sampled_minimum_heliocentric_radius_km": 97222270.16961637
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006960876530639277,
+    "maximum_velocity_difference_kms": 1.2322315011019384e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c6824aa6ca49bb0e1f6cd4497c7808d62182bdf619a35ff0bacf5c11fc1c434c",
+    "sampled_minimum_heliocentric_radius_km": 95110605.80203947
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005410182387894773,
+    "maximum_velocity_difference_kms": 8.918393748898821e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "13181a35e6193ca7cf3135ae1fac605c5ea5f5c6a09a0368c7054e529200b598",
+    "sampled_minimum_heliocentric_radius_km": 105528034.82515764
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006620833510712675,
+    "maximum_velocity_difference_kms": 1.2033795263141144e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "10f220a9c240d41dc28513bd0bce5132aa793ef882bafe110a26a192aade5a2a",
+    "sampled_minimum_heliocentric_radius_km": 95510825.2956211
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0072933273612251805,
+    "maximum_velocity_difference_kms": 1.274555704628657e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a5212e5cc6edb082fdc611d5b9199dd0d2e7392ffa254969ed96db85e9dc580e",
+    "sampled_minimum_heliocentric_radius_km": 105336898.77327868
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00903285821976555,
+    "maximum_velocity_difference_kms": 1.560460442639758e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "05ee07575ac4601c78b3feb9c8b73732a5a0b344d958f0bb5ed909c0b5d82bb1",
+    "sampled_minimum_heliocentric_radius_km": 94778663.16302915
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008837896587693626,
+    "maximum_velocity_difference_kms": 1.052270014097387e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "74f436efcf2f996411e74be10f5f79d9ea871b78b4872e099ec02f0d8c1787b1",
+    "sampled_minimum_heliocentric_radius_km": 91220341.65190963
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006348779779019118,
+    "maximum_velocity_difference_kms": 9.330735108554858e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c77686ff512aa1f9e8baea1dad45644652434573a1f8e125b8084cb4ef2b5975",
+    "sampled_minimum_heliocentric_radius_km": 146463794.35130724
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00725863802222355,
+    "maximum_velocity_difference_kms": 1.2530748661034399e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "83b79cb4e9ec99916b083b4e5df1db825aba9297c210dfc3ef20dba41d3898d0",
+    "sampled_minimum_heliocentric_radius_km": 132895767.82590091
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007475397314162654,
+    "maximum_velocity_difference_kms": 1.2481989061128758e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2a325c084b03685fedb9ddbca870439f04f4dcaded134f6d91630bf0830b7c60",
+    "sampled_minimum_heliocentric_radius_km": 135173332.61697474
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007140901876237175,
+    "maximum_velocity_difference_kms": 1.2232598751031818e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2d20c055e715f7e96ccc5be8537d8c9aa515f0652b1ab5de317011d1f53fce91",
+    "sampled_minimum_heliocentric_radius_km": 135509042.72527415
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0064032904837588505,
+    "maximum_velocity_difference_kms": 1.1585482928038517e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c5f2d979678890a17537090bc73df34710270472adc4cb68f058d0b87c7a48ef",
+    "sampled_minimum_heliocentric_radius_km": 136134550.49934345
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0046461971658664425,
+    "maximum_velocity_difference_kms": 8.504490872471654e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "fcb6b0fa05b91a49c14936e08e957e1c260bc142c1884e257030fe262ba35393",
+    "sampled_minimum_heliocentric_radius_km": 138120239.66610008
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006133455773227042,
+    "maximum_velocity_difference_kms": 9.377951636140507e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c2812a0bbc72e8723d96b37911d42397785e6f1c973f9a714a7057ea6819ed6e",
+    "sampled_minimum_heliocentric_radius_km": 148639233.53067908
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005659755803121761,
+    "maximum_velocity_difference_kms": 9.498622583340225e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "36d8462b23ae9b8552e01a1ca6b8c3768e5ffed5dfb4ba6a6d7b420b1a367f31",
+    "sampled_minimum_heliocentric_radius_km": 148121950.07091725
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006936571896840761,
+    "maximum_velocity_difference_kms": 1.2914214223223327e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "08faf4a14aa255921b1bce1e06b5618bd0cf8d39a0b5c61ddfffeded4f1fa325",
+    "sampled_minimum_heliocentric_radius_km": 134055008.80421548
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007970062291124886,
+    "maximum_velocity_difference_kms": 1.388414294638962e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0386926608698a5dc2bd3870fd0e901dd149d88ed199ccffe86ce1d9798222f9",
+    "sampled_minimum_heliocentric_radius_km": 132097517.20944764
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00835503129841143,
+    "maximum_velocity_difference_kms": 1.4156519843890945e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "06af6d3bc473b12183313194e01210a8fe22a61f46cc31ee0390dd085da6f0aa",
+    "sampled_minimum_heliocentric_radius_km": 132563402.91226614
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007611890569579841,
+    "maximum_velocity_difference_kms": 1.3948253603341018e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "e836786959773326029ad56c22e942765ea9aa8f41c77e77a122ee5f191197dd",
+    "sampled_minimum_heliocentric_radius_km": 133279698.53073782
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006298056985478882,
+    "maximum_velocity_difference_kms": 1.4685562461168825e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "32c566d4c9425a1f59f59c273e3f717f3dd30648ae233c2f981bd07f6850bb2b",
+    "sampled_minimum_heliocentric_radius_km": 146288365.77738997
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008443826362786545,
+    "maximum_velocity_difference_kms": 1.345528171314969e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ba0696d5a236c07b4833e3c95bc161f9bd1456cb491cc7fce5f5b50d65b51be6",
+    "sampled_minimum_heliocentric_radius_km": 132774174.81982729
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0075172927575734745,
+    "maximum_velocity_difference_kms": 1.2920891734251064e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ad67bcb76537d77009d758763d68e4620459792980a74c09f43a175af58e0472",
+    "sampled_minimum_heliocentric_radius_km": 133385443.92994088
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009674225348913157,
+    "maximum_velocity_difference_kms": 1.6531713125266346e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b31b2d475d827a331916673ea08126595f7375d200481c594654c74cd21b9762",
+    "sampled_minimum_heliocentric_radius_km": 132891248.580852
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004163040886331644,
+    "maximum_velocity_difference_kms": 8.662716198638371e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0da2b6ae6aab61ec0fcc80e5ec0022fbfb0d83c959e673fb8fc5fb2e08f0599a",
+    "sampled_minimum_heliocentric_radius_km": 133468022.3614353
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007402229531313256,
+    "maximum_velocity_difference_kms": 1.0533661333179412e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "80bb15f39b4070d6989c09e4d962cba6c5d6d596e87de92c3811272b341bf1bc",
+    "sampled_minimum_heliocentric_radius_km": 131252596.93366839
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009013791827271928,
+    "maximum_velocity_difference_kms": 1.5907670583159782e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1e1c4c103c27e2d16d8365cef345eca2b2c93eb81d2d58d223b04d1096bd2156",
+    "sampled_minimum_heliocentric_radius_km": 102850730.13094622
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0034074243771918386,
+    "maximum_velocity_difference_kms": 8.238194018774287e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "9633279748d928c98639a5614350da74fa6668544c7a8a0dc4eee5d3128bd12f",
+    "sampled_minimum_heliocentric_radius_km": 108354930.42383929
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008033813844782795,
+    "maximum_velocity_difference_kms": 1.3726461216891987e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0d6d14ff19e7d3c55e613f42c140a1055d71da85829e241ce2a54854e4b5ed22",
+    "sampled_minimum_heliocentric_radius_km": 97251273.70418067
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007029899192875744,
+    "maximum_velocity_difference_kms": 1.2837785347654729e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d551b9dec94e96c04941f3d0bd12f143bd336dc31453318af8e4586fd016e696",
+    "sampled_minimum_heliocentric_radius_km": 94460287.05571333
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006830395291633491,
+    "maximum_velocity_difference_kms": 6.609943105294753e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f1b05cd15315f3dc9da3d443c390eb389993cb424c3c799bcdbc09dcb682f712",
+    "sampled_minimum_heliocentric_radius_km": 104016258.26428096
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0056592695717571926,
+    "maximum_velocity_difference_kms": 1.0368241830986611e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "e648227596d1961394552c5b8307f9d2fbd513c6e380d829ca13867e15df9c75",
+    "sampled_minimum_heliocentric_radius_km": 95703768.0717682
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.019150744575832386,
+    "maximum_velocity_difference_kms": 3.3085818033514657e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0de57768339c1048581281456595b81adab45dbe87941b7cb224d8693fb5469f",
+    "sampled_minimum_heliocentric_radius_km": 105989541.35041371
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008211075182378284,
+    "maximum_velocity_difference_kms": 1.1712505290336933e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a65fcd36d05116ade950e2e44d776c37543f984a8ac6e8fceaf5531314200e75",
+    "sampled_minimum_heliocentric_radius_km": 90168884.23727088
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0027788788720655793,
+    "maximum_velocity_difference_kms": 4.2718587357585175e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "24440a95b1be5abab10b157a78449855ba83529e6139eb9a05c208877abc8616",
+    "sampled_minimum_heliocentric_radius_km": 144951456.4078678
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005837997003158666,
+    "maximum_velocity_difference_kms": 8.379629141965679e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "810dc8d316052368de4565f5d30954bbb61d78378354a5912b47f83f53589ab9",
+    "sampled_minimum_heliocentric_radius_km": 149908703.23769328
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0046986880965000375,
+    "maximum_velocity_difference_kms": 8.134498638209035e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "fc7f9703a88bdfd7227a80a8e6838133c88f1e077bad2c3391ac9b02ec0b9d59",
+    "sampled_minimum_heliocentric_radius_km": 135359857.0565563
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008850651391774668,
+    "maximum_velocity_difference_kms": 1.3107404031064703e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "299565d9605b99e3ab0cd6f424ba9cc2d9576bef88a83c614740895c7463828c",
+    "sampled_minimum_heliocentric_radius_km": 136179551.4573415
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005936986729351492,
+    "maximum_velocity_difference_kms": 9.885329823131892e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "975a0fe762294c35e8b122677e24c3c5627c5fc34cc254c51ab5b42143a6f49e",
+    "sampled_minimum_heliocentric_radius_km": 148662353.3172135
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005834783420385943,
+    "maximum_velocity_difference_kms": 1.0324737465794312e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6cf5044e3c397acd6668d86001608c41886e2bf55b16fe759015e18904046ff4",
+    "sampled_minimum_heliocentric_radius_km": 144041432.9314482
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007658408419672083,
+    "maximum_velocity_difference_kms": 1.3545779781817664e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "5af00de9597c5a358cfcbaf29db022261045e46f9c9a8b0775687c15a1b69007",
+    "sampled_minimum_heliocentric_radius_km": 132539199.43496463
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005323308503276951,
+    "maximum_velocity_difference_kms": 9.669377823242e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "9bcdca1ae1b5d0cb3b1e76e00b8a39f56763b3e5b913b70a8ba525c55431111f",
+    "sampled_minimum_heliocentric_radius_km": 145179356.06709564
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005822215728013473,
+    "maximum_velocity_difference_kms": 4.896985596241778e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "359066f2a128ef757d9796811c20e5ac3c68f6d3da246f9a1cc7fc891e9ea9c7",
+    "sampled_minimum_heliocentric_radius_km": 146161226.14308527
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005617803211081989,
+    "maximum_velocity_difference_kms": 8.852739412527333e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a405bdc00b567fab372512bf0cae5f2beb4e3f2a8c038ae28f3e3db9362aef54",
+    "sampled_minimum_heliocentric_radius_km": 146257520.80301848
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.010845229402773235,
+    "maximum_velocity_difference_kms": 2.3027845999556775e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "29aac656818f7f01a5c5ce6b40fdefba96b67d2ce4ee65def1c403dff59ed5e0",
+    "sampled_minimum_heliocentric_radius_km": 147375850.44260767
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.010290800671602032,
+    "maximum_velocity_difference_kms": 1.6584352415186203e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ad05732ddae7c43507785f3b1048f9d04ec6b038216d5122fcceb86610d68cfa",
+    "sampled_minimum_heliocentric_radius_km": 132854109.42586873
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007640551204725503,
+    "maximum_velocity_difference_kms": 1.0386301806221469e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "51b4bf24376c3517a897073a30f8def2c4a6d054a98cd40a2b6f7af228a0ad84",
+    "sampled_minimum_heliocentric_radius_km": 131103656.0754543
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007554748208844439,
+    "maximum_velocity_difference_kms": 1.3323379788318583e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "46a464bb5db03e4225b04653a0c23271b8e37425239af5a7d07a494ecdb03900",
+    "sampled_minimum_heliocentric_radius_km": 102728932.08045523
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008913553729026497,
+    "maximum_velocity_difference_kms": 1.5141987136998633e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "28abdc3d0e21100066606f2f481ba2b6827544aa85af29fa44a2ea1996f84809",
+    "sampled_minimum_heliocentric_radius_km": 98525476.24083377
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008096551770835334,
+    "maximum_velocity_difference_kms": 1.3857988409872526e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "527617f7434a057ab120c0da254b38fb12e604173ccc6c8a47ac95dceb7adda5",
+    "sampled_minimum_heliocentric_radius_km": 96388176.48141983
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008301305643879245,
+    "maximum_velocity_difference_kms": 1.4424719431091633e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "19aad8bc15965e16ca3ee0af6c33c63efcfdddd634cbabdafbaa2e5fb76ad0c1",
+    "sampled_minimum_heliocentric_radius_km": 94231413.30186753
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003564615651166974,
+    "maximum_velocity_difference_kms": 6.243591924646853e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ee1f78640ac3d1109daa2c47e495348377f42f32e9561b56a4de8dd3f18a325f",
+    "sampled_minimum_heliocentric_radius_km": 95907655.68640675
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.010223129057736619,
+    "maximum_velocity_difference_kms": 1.653122204445996e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "330900499608043face54442db082a7253efb3ba7fa0fa0cc960607c4bb3893f",
+    "sampled_minimum_heliocentric_radius_km": 91183956.07988004
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0029418888483664554,
+    "maximum_velocity_difference_kms": 2.7896714190353336e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f3b256bd201411e9024c7d835c54e6ace59f3d5bb774c4050349768cd806f2d1",
+    "sampled_minimum_heliocentric_radius_km": 145149368.0871042
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004072576166715053,
+    "maximum_velocity_difference_kms": 5.770631241632676e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "e3bf6b3fbeccbc710508f05fafcfda90ca257c0d69ecb36129b4954b344e3216",
+    "sampled_minimum_heliocentric_radius_km": 149872578.27301028
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00762075079488412,
+    "maximum_velocity_difference_kms": 1.2361850942524475e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "051b91589518d5ff8aaa18d8ca2d684e350c1adcbd28dcdc60687cc618528dc1",
+    "sampled_minimum_heliocentric_radius_km": 135227765.7347358
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00684448847774958,
+    "maximum_velocity_difference_kms": 1.0936390353391772e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "7e03f967039f83980ef8d7916edec99ff66b8fb9f232f18c393ead23c048e709",
+    "sampled_minimum_heliocentric_radius_km": 136387136.8474907
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006621856588870413,
+    "maximum_velocity_difference_kms": 1.1349879338624739e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a824bbd557b5a51c6a6056d890fb1519128518b4b83d77f9fae5b5cb92b03e76",
+    "sampled_minimum_heliocentric_radius_km": 130036750.83096573
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006856546475881569,
+    "maximum_velocity_difference_kms": 1.0518992731821064e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2927a23f2d5a86133f112406a821c48e93300bd0de14335442fe006fd0b913eb",
+    "sampled_minimum_heliocentric_radius_km": 145560497.4924011
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007563598892728604,
+    "maximum_velocity_difference_kms": 1.3343235329817624e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "15dcd1023b18d0b46bd6403bdfe9388749016f6d09c3c0346214fda58590e25e",
+    "sampled_minimum_heliocentric_radius_km": 133530407.58134039
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007592289050881439,
+    "maximum_velocity_difference_kms": 6.906774232123816e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f38969f79c04b0a1b33baf6ef98e6e87366cd3b3a26cf1f96e0b182b76365a7f",
+    "sampled_minimum_heliocentric_radius_km": 146818136.85267255
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.011056520203143662,
+    "maximum_velocity_difference_kms": 7.595445771584197e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c4b145f181327b7bc76d3da4ea18eaecf6afefbd9333ca8045889de6a9e9371f",
+    "sampled_minimum_heliocentric_radius_km": 147447138.68336767
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009990952121712162,
+    "maximum_velocity_difference_kms": 1.6712537346656213e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a1c3700b4ff661bf6a54ac372ada174212242cc36f6fbaa780d2a3c1752af6e7",
+    "sampled_minimum_heliocentric_radius_km": 132822773.75417022
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007583928103606935,
+    "maximum_velocity_difference_kms": 1.0950850541828034e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "77d142d3fcb40967a1d54c271eccad46cb62cddb89d46c4ce7f55523fad23a14",
+    "sampled_minimum_heliocentric_radius_km": 130951900.23017727
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007863479346195083,
+    "maximum_velocity_difference_kms": 1.3878956209126179e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0751bd0e93b6d8a41e71de3de7079060cfb7de2becc2f896696fcb13eee300a8",
+    "sampled_minimum_heliocentric_radius_km": 102814535.0406068
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.010805993703749373,
+    "maximum_velocity_difference_kms": 1.8309233505248192e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b49bd54dbb1fabed7e6655d9f108ee0b03adf9c1e6b48ba956ceb6c4598dccaa",
+    "sampled_minimum_heliocentric_radius_km": 95312115.77535862
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008310253920196839,
+    "maximum_velocity_difference_kms": 1.4231035962599598e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f7aa2e04cbc1911dea57c574797675eaa5a4b1b22c6797e173ede6b59acc2893",
+    "sampled_minimum_heliocentric_radius_km": 96414646.97933158
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.003331518193376766,
+    "maximum_velocity_difference_kms": 5.820486400094164e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f146b6e5aff59257f0c4b0b75ce3f808fd8414eaa6d996d75949521ecac10527",
+    "sampled_minimum_heliocentric_radius_km": 95217527.61925033
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004839992339665238,
+    "maximum_velocity_difference_kms": 8.129998190368535e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d81946630f2b3059db52ef7478d54d6372d5c5de68a05d05877dfe5c343ccf75",
+    "sampled_minimum_heliocentric_radius_km": 146498410.7461618
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009244941677810198,
+    "maximum_velocity_difference_kms": 1.4526326193097625e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3e372d18e87e051ab841aee24259e7159c2a6c556d06f68d5d542b86fcb8a7f1",
+    "sampled_minimum_heliocentric_radius_km": 132624214.95685744
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007922823241332682,
+    "maximum_velocity_difference_kms": 1.2337527465349583e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "ab0897dfaf33271772fe6af06c7a41a8b7c49401172df83bb430910e106c0e3b",
+    "sampled_minimum_heliocentric_radius_km": 135050619.56668258
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007896681391343592,
+    "maximum_velocity_difference_kms": 1.2320880292159628e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "4bada2171b25dcd70f942e9fc71bc05fbce08d0ff64912e672274f8699203be2",
+    "sampled_minimum_heliocentric_radius_km": 136485594.58163005
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008535073409273298,
+    "maximum_velocity_difference_kms": 9.510709930954097e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "4524f1419e1fc9fab16a28c2b2aba8817746ad8e59a7c79fc58e10e4db95be1e",
+    "sampled_minimum_heliocentric_radius_km": 146718305.6811206
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006535866924270217,
+    "maximum_velocity_difference_kms": 1.0250514945555604e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "46b92f0daa02f627bf32a7855bc868bef6049ead65675a84d6f7900bde380285",
+    "sampled_minimum_heliocentric_radius_km": 145147781.92444032
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007305857350632573,
+    "maximum_velocity_difference_kms": 1.0679263623954187e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "7e02039867608313761fefc8827f49c873d9ea9ff30d976d0ed5c1ee012af282",
+    "sampled_minimum_heliocentric_radius_km": 146814157.09606305
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.013430850305840515,
+    "maximum_velocity_difference_kms": 7.451921151323916e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "22c1516eae2497bbde39932938841cd627bb41c5fc81cb73d046afb3320ea52a",
+    "sampled_minimum_heliocentric_radius_km": 148597805.20659405
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.005377596282819529,
+    "maximum_velocity_difference_kms": 1.060000193524894e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "34330427cdff51c096e05809b839b97c2783a6697b3d24b3bfdc05e880c6c981",
+    "sampled_minimum_heliocentric_radius_km": 133360910.23517387
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009019541151554508,
+    "maximum_velocity_difference_kms": 1.591288534823909e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "507f259120db50550f09b27f9460c03544d440a7ba5012700f8e1bf941ed3d94",
+    "sampled_minimum_heliocentric_radius_km": 102887588.88130043
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008731653150881966,
+    "maximum_velocity_difference_kms": 1.4798766659404655e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "7e4be5e3539d1b3ec42d886feb29c84553d1848d29209eaa9db8806e3f8989a1",
+    "sampled_minimum_heliocentric_radius_km": 98566667.37903641
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00723441699370031,
+    "maximum_velocity_difference_kms": 1.6529612181412498e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "0a85f56dbea576401ef110245c0705a8152e90f9dbff58b3dca4698c084ddcae",
+    "sampled_minimum_heliocentric_radius_km": 86040446.9432214
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0035552856249870613,
+    "maximum_velocity_difference_kms": 6.844384295023942e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "4f57010b266ae8adef9f11952e262acada6fe4fb759ce4cc0cc48b2c154da2f8",
+    "sampled_minimum_heliocentric_radius_km": 93726813.33484791
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.002643181906244658,
+    "maximum_velocity_difference_kms": 2.842603751122846e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "fb7ac92a4a0d130d1b7b972b4e78a344c4ad729708e52686f2f18fb89aa24853",
+    "sampled_minimum_heliocentric_radius_km": 144949524.71525452
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008169880465181906,
+    "maximum_velocity_difference_kms": 1.2467675045690484e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "64bf0a572be0fce952a5e46eb6e2011082cf80aa1230f0bd2e234f0379371e3b",
+    "sampled_minimum_heliocentric_radius_km": 135012493.20964974
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007924247651881796,
+    "maximum_velocity_difference_kms": 1.3237603915572546e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "cfb5ddd6639699dd71f101934e1c49e5edaeac4971d52386062105380e2162d2",
+    "sampled_minimum_heliocentric_radius_km": 136126910.6424361
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004468939356870475,
+    "maximum_velocity_difference_kms": 8.186309941421364e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "4ea41a9af438ce4dad7749a1c53ba2a3723a4028b506dcea9c2139abb212b477",
+    "sampled_minimum_heliocentric_radius_km": 145659213.4623988
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008992762358358622,
+    "maximum_velocity_difference_kms": 1.5565980791218507e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a4d56ee4b568d90309faab43fc982aebc7886b9ad59c00a77de647a73904f9e1",
+    "sampled_minimum_heliocentric_radius_km": 132690557.04814656
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007199228345063522,
+    "maximum_velocity_difference_kms": 9.795227728987059e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "685c7a02006af40dceec977302f0818ff0adac9e2f9c88ac035dad624139262b",
+    "sampled_minimum_heliocentric_radius_km": 146484738.90673602
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006911144876541452,
+    "maximum_velocity_difference_kms": 1.0083090631589442e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "658cc2e3bc63eacbf501b160a26993c74cfaa2899b8de7f1ff57f77c5b46f974",
+    "sampled_minimum_heliocentric_radius_km": 132800999.5049447
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00771940069052833,
+    "maximum_velocity_difference_kms": 1.3624971387233725e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "9e7688db1dedb7743ff061725ce951034d867996796489ca7ddacc2936e6d9cc",
+    "sampled_minimum_heliocentric_radius_km": 103015825.3362539
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.013338324259774825,
+    "maximum_velocity_difference_kms": 2.2660766784003847e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2565ea1f9bdf08bec40fdfa8cfbb5449ee04131f784293585c24a4c1f6235a4e",
+    "sampled_minimum_heliocentric_radius_km": 99439811.54289854
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.01015345918319901,
+    "maximum_velocity_difference_kms": 1.6549241724338175e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "407e2610f8c96800831f47d6ac715e0949cb32243139190fcf1024b044f01078",
+    "sampled_minimum_heliocentric_radius_km": 85945842.8625623
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006633795725000421,
+    "maximum_velocity_difference_kms": 1.1409789241668647e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "64fbb67663b116c3d240291f047ea54257e46977cefa237f14ea7fca2207139f",
+    "sampled_minimum_heliocentric_radius_km": 135742796.0019122
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0066158833610388415,
+    "maximum_velocity_difference_kms": 1.1434798024278704e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "4d131a262979ead1aa01fd77eb63bdcc4f80adc138d84676ab1f8c1b6d535393",
+    "sampled_minimum_heliocentric_radius_km": 135922892.1314511
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00924629457481644,
+    "maximum_velocity_difference_kms": 1.0830772876577358e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "941037798b111bf25884bbe4b62bd4570282d1415a6fc51f29091e056e1273b2",
+    "sampled_minimum_heliocentric_radius_km": 146695086.07828903
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.010547847094352742,
+    "maximum_velocity_difference_kms": 1.8289543093044575e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "1f8de69d54103d3e2328e24fb9207d6a55adf56773061178d808f79dc799da25",
+    "sampled_minimum_heliocentric_radius_km": 132922346.21062529
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00751630022334574,
+    "maximum_velocity_difference_kms": 9.261973268583103e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b28860d895017682ea6bf70e9bf643808d94f65d728f1ce95729a7188aed051d",
+    "sampled_minimum_heliocentric_radius_km": 145973692.76325554
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008329239174551048,
+    "maximum_velocity_difference_kms": 1.3492622405814778e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b0278d0e990f9408e5ef552f14d74a922e17184aadd1039edac26bbfa396101d",
+    "sampled_minimum_heliocentric_radius_km": 132787503.80723196
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007823431863519099,
+    "maximum_velocity_difference_kms": 1.3799429539948839e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "965eb9a593a3f569f48ae12e1eaf28fb92efbcb8fe5b01c576d0a19f475eab6b",
+    "sampled_minimum_heliocentric_radius_km": 102987400.49260284
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008214087683295578,
+    "maximum_velocity_difference_kms": 1.3924869083012784e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a0f8945ad7afde939d6dd0c87fe73f89bad0f0775828ee54c128dd396a30d398",
+    "sampled_minimum_heliocentric_radius_km": 97947084.31568159
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0071420174074932185,
+    "maximum_velocity_difference_kms": 1.2265104329661235e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "5d9d4f06ada0b61ae51f105d92d4b7b780547a7ffff5804063547124a8e3deba",
+    "sampled_minimum_heliocentric_radius_km": 95127191.1183657
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008048617429258309,
+    "maximum_velocity_difference_kms": 1.206935988646274e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "e729e280beedd62d2865ee33cd0c2ba361d9c857cb2b9dd20f48fc1379601297",
+    "sampled_minimum_heliocentric_radius_km": 135233737.5401954
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00791701695481735,
+    "maximum_velocity_difference_kms": 1.213058907635649e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c7cc69113e1eacb47e056bbc3e727d27e04e629c617fc048e736bce6b722e9ce",
+    "sampled_minimum_heliocentric_radius_km": 135491651.56950092
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006837192089498585,
+    "maximum_velocity_difference_kms": 1.0516441095534943e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "14bcaa087c56ad612f3a9115f5115377126ee05c33dac6b3d4ba6e125322f980",
+    "sampled_minimum_heliocentric_radius_km": 146739528.35070893
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008561135700650565,
+    "maximum_velocity_difference_kms": 1.4661631600614693e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "3b53d223b35aefaa81ef486dbe7b453507b99ffbc08fecc01ace78af1a196b63",
+    "sampled_minimum_heliocentric_radius_km": 129824875.19699097
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00769169157209058,
+    "maximum_velocity_difference_kms": 1.0234532585321308e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "c789d4caade8cebc5843a39417cd021bf5e1efd3d984d9f87c889e2702b6f48b",
+    "sampled_minimum_heliocentric_radius_km": 146837767.4262099
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006350018825280479,
+    "maximum_velocity_difference_kms": 1.0366362828758448e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "53b51b1b929d45d5f046df7ceb6468f3fcadf4268773070cca06225d1d3f0b69",
+    "sampled_minimum_heliocentric_radius_km": 132836960.16926736
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007707994501856528,
+    "maximum_velocity_difference_kms": 1.3595960274706151e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a0f1180590cb687b532a0f7c2ce09078f4a09b0d5cc710bc1b4efaf2489ffece",
+    "sampled_minimum_heliocentric_radius_km": 103017127.45715274
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008172466116337106,
+    "maximum_velocity_difference_kms": 1.3951396007074668e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "574dbc31f315f8492ff32cd4037623843c2b0fc7ee284c330a2e08479ea9970e",
+    "sampled_minimum_heliocentric_radius_km": 97981906.95137836
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007294351684954627,
+    "maximum_velocity_difference_kms": 1.2693678712277748e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "7041c75c2abb7c3acb7e3e3e90c89734e0e65157678da52788ed4b3cdf92d1dd",
+    "sampled_minimum_heliocentric_radius_km": 92864807.74956797
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006779771445402318,
+    "maximum_velocity_difference_kms": 1.1798619172705639e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a77ee890b9dcca8c77bf3616b8f3afb3b3c0a48ff385381f49ff08f41085af17",
+    "sampled_minimum_heliocentric_radius_km": 135242426.93992943
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007263991171079893,
+    "maximum_velocity_difference_kms": 1.212783060309812e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "24df8b4cf987d390ed9c32685ec2a09fdb62a6e66ed4d16e6b60b65d2ea8ca84",
+    "sampled_minimum_heliocentric_radius_km": 136379626.20720026
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0062594882190863815,
+    "maximum_velocity_difference_kms": 1.1002645556491037e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "f7f0468e175f6817f9f00591caa50f172db0029beba17c43d24feda1f25a5a88",
+    "sampled_minimum_heliocentric_radius_km": 146724321.45130968
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007982726619076286,
+    "maximum_velocity_difference_kms": 9.236678307063605e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "2fcda6bea15e866cdb28d1b313229e5d8bfbbdd29b9bbe04d43c2962def032b2",
+    "sampled_minimum_heliocentric_radius_km": 146419971.49676713
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008392465807361032,
+    "maximum_velocity_difference_kms": 1.5006468283949362e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "53a70643ca2484168fec0aa19f9d440318318bda6cf5b54f8c2240e9655c4fca",
+    "sampled_minimum_heliocentric_radius_km": 130414560.58643587
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.007961109430556626,
+    "maximum_velocity_difference_kms": 1.4054770269246661e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "a43eb57d40e0523e71e7ec1a05c7d809f44bd6df70174947fda3ec950265cbcc",
+    "sampled_minimum_heliocentric_radius_km": 103051273.11540462
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.009413628271905722,
+    "maximum_velocity_difference_kms": 1.6048928224995897e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "d09b2ca1ff2f850e812215f1d22395d09b5be1877b84418d540090592b86981e",
+    "sampled_minimum_heliocentric_radius_km": 96991672.44979945
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.004060284446314402,
+    "maximum_velocity_difference_kms": 6.547692577812613e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "6afde37ab293d7e5e1e0df493ba49f1aeb75f5c68c78e970ed357623c06ba059",
+    "sampled_minimum_heliocentric_radius_km": 134891809.13807592
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006993124562190363,
+    "maximum_velocity_difference_kms": 1.093572474973008e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "7a73c305b6ba111f3cc122463df09378d5c2ddff1cbc0d4b16e90cc7d34653a9",
+    "sampled_minimum_heliocentric_radius_km": 136052558.4110709
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.00698186914459362,
+    "maximum_velocity_difference_kms": 1.0167013924589673e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "aeb1e407f01b963ab72043319e64ac5d97529838904f1515966d53083a5c8e4c",
+    "sampled_minimum_heliocentric_radius_km": 146153009.1185096
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0053098903774941265,
+    "maximum_velocity_difference_kms": 5.101524271163974e-10,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "88b8d3c0a936186875d48829cc6403febc9bf6620717516054be70ef10a3cb73",
+    "sampled_minimum_heliocentric_radius_km": 145717472.26059654
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008960109418571132,
+    "maximum_velocity_difference_kms": 1.5269711953678013e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "9a554d5006bc77d9650e60ad6efe30fc3a9b68ddeaa8625c2687839e103bc935",
+    "sampled_minimum_heliocentric_radius_km": 130361024.1988007
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.006760982081774954,
+    "maximum_velocity_difference_kms": 1.1936044083503679e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "dae2759bcd1ce3ca102c2479e1dfd9fb6d41ef1e902f453c85afaac21bdabf67",
+    "sampled_minimum_heliocentric_radius_km": 101037285.75492178
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.011042694699293138,
+    "maximum_velocity_difference_kms": 1.9185199603260654e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "b74b0320f714d393c0656721ca53f66ee4f6504a47f27ab1676b88e3f434a8c2",
+    "sampled_minimum_heliocentric_radius_km": 98255488.45182037
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008258913753541739,
+    "maximum_velocity_difference_kms": 1.261023711401814e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "50014316ac738aa1b4e95677221441377a204e5c9a783165790b92816c9b9fd7",
+    "sampled_minimum_heliocentric_radius_km": 136039323.3070271
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.008583217690988113,
+    "maximum_velocity_difference_kms": 1.071357147433947e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "7fe08bf6ac9cda88e1d853c632d95176f77686d0a43ec93a4216b269cf3183ea",
+    "sampled_minimum_heliocentric_radius_km": 146670686.37612003
+  },
+  {
+    "maximum_dop853_endpoint_error_km": 0.0074382122201008235,
+    "maximum_velocity_difference_kms": 1.243625942526341e-09,
+    "passed": true,
+    "nbody_validated": false,
+    "public_id": "85f789d543d36a1003997e6740fe670a13c59f756d6e5c1e077bfd0e98b57ae9",
+    "sampled_minimum_heliocentric_radius_km": 146818757.7181686
+  }
+]

@@ -7,7 +7,7 @@ from pathlib import Path
 import argparse,hashlib,json,os,platform,re,shutil,subprocess,sys,tempfile,zipfile
 
 ROOT=Path(__file__).resolve().parent
-MODULES=['app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search','sequence_timing','dynamics','ephemeris',
+MODULES=['app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search','sequence_timing','dynamics','ephemeris','trajectory_prefixes',
          'horizons_targets','network','search_options','candidate_archive','community','candidate_status','earth_return_seeds','historical_seeds','launch_performance','trajectory_transfer','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
          'presentation','live_gallery','integrate_export','finite_targeting','encounter_preferences','celestia_package','dwarf_planet_patch','moon_screen','baseline_cache',
          'build_database','build_release','restore_diagnostics','trajectory_policy','resonant_shooting_seeds']
@@ -56,10 +56,10 @@ def source_release(baseline):
     files += list((ROOT/'model_assets').glob('*'))
     # Reproducible international capacity samples, without redistributing source
     # papers, provider HTML or third-party calculator Javascript.
-    files += [p for name in ('README.md','silverbird_samples.json','capacity_samples.csv','international_launch_performance.png')
+    files += [p for name in ('README.md','capacity_samples.csv','international_launch_performance.png')
               if (p:=ROOT/'studies/international_launch_performance'/name).is_file()]
     files += [p for p in (ROOT/'.github').rglob('*') if p.is_file()]
-    files += [p for folder in ('docs','tools','gui_assets','departure_seeds','celestia_assets','third_party_licenses','mission_comparison') for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts]
+    files += [p for folder in ('docs','tools','gui_assets','departure_seeds','celestia_assets','third_party_licenses','mission_comparison','test_fixtures') for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts]
     files += [ROOT/name for name in ('LICENSE','THIRD_PARTY_NOTICES.md') if (ROOT/name).is_file()]
     with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
         for path in sorted(set(files)):

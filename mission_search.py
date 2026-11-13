@@ -121,8 +121,8 @@ def normalize(config, config_dir=HERE):
             raise ValueError('Local refinement seed must be finite and within bounds')
     if c['search_objective'] not in ('feasibility','balanced','c3','dsm','arrival','time','outer_time'):
         raise ValueError('Search objective must be feasibility, balanced, c3, dsm, arrival, time or outer_time')
-    if c['mission_profile'] not in ('custom','orbiter','flyby'):
-        raise ValueError('Mission profile must be custom, orbiter or flyby')
+    if c['mission_profile'] not in ('custom','orbiter','flyby','inner'):
+        raise ValueError('Mission profile must be custom, orbiter, flyby or inner')
     if c['transfer_direction'] not in ('prograde','retrograde','both'):
         raise ValueError('Transfer direction must be prograde, retrograde or both')
     if c['target_object']:

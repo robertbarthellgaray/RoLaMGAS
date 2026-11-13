@@ -1,0 +1,68 @@
+{
+  "prefixes_evaluated": 1116,
+  "prefixes_passing": 432,
+  "retargeted_assist_variations_passing": 164,
+  "new_direct_passing": 270,
+  "novel_encounter_day_schedules": 832,
+  "selected": 320,
+  "by_sequence": {
+    "EJ": 106,
+    "EVEEJ": 62,
+    "EVVEJ": 8,
+    "EdvEJ": 143,
+    "EdvJ": 1
+  },
+  "by_launch_year": {
+    "2027": 7,
+    "2028": 11,
+    "2029": 17,
+    "2030": 12,
+    "2031": 13,
+    "2032": 27,
+    "2033": 37,
+    "2034": 13,
+    "2035": 9,
+    "2036": 10,
+    "2037": 14,
+    "2038": 25,
+    "2039": 17,
+    "2040": 7,
+    "2041": 17,
+    "2042": 12,
+    "2043": 4,
+    "2044": 4,
+    "2045": 3,
+    "2046": 2,
+    "2047": 2,
+    "2048": 15,
+    "2049": 4,
+    "2050": 17,
+    "2051": 4,
+    "2052": 4,
+    "2053": 9,
+    "2054": 2,
+    "2055": 2
+  },
+  "limits": {
+    "max_flight_years": 10,
+    "max_arrival_vinf_kms": 15,
+    "max_unpowered_mismatch_mps": 1,
+    "earth_altitude_km": 200,
+    "venus_altitude_km": 300,
+    "max_single_dsm_kms": 0.7,
+    "max_total_dsm_kms": 1
+  },
+  "note": "Solar Lambert coasts with asymptotic unpowered flyby screens. Not finite-radius/n-body validation. Source cruise prefixes are recomputed, not original discoveries. New direct opportunities are a finite grid, not a global optimum.",
+  "numerical_coast_audits_passed": 320,
+  "maximum_numerical_endpoint_error_km": 0.019150744575832386,
+  "canonical_validator_passed": true,
+  "c3_range": [
+    11.459560707920614,
+    99.6299151811328
+  ],
+  "flight_years_range": [
+    1.7942471598452856,
+    9.628313130108177
+  ],
+  "maximum_flyby_mismatch_mps": 0.9301331843385441
+}

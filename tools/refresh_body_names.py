@@ -19,7 +19,9 @@ def resolve_label(body_id):
     data=fetch(url);matches=[r for r in data.get('result',[]) if str(r['spkid'])==body_id]
     if len(matches)==1:
         m=matches[0]
-        return dict(name=m['name'],horizons_id=body_id,designation=m.get('pdes'),object_type=m.get('type'),lookup_url=url)
+        name=m['name'];designation=m.get('pdes')
+        if 'comet' in m.get('type','').lower() and designation and not name.startswith(designation):name=designation+'/'+name
+        return dict(name=name,horizons_id=body_id,designation=designation,object_type=m.get('type'),lookup_url=url)
     # Some named dwarf planets have no exact match in Horizons Lookup. SBDB
     # still provides the exact SPK identity; never select a fuzzy name match.
     url='https://ssd-api.jpl.nasa.gov/sbdb.api?'+urllib.parse.urlencode({'spk':body_id})
@@ -58,6 +60,9 @@ def refresh(live=False,extra=()):
         # Save each identity so an interrupted run can resume without repeat calls.
         output.write_text(json.dumps(saved,indent=2)+'\n',encoding='utf-8');time.sleep(.2)
     for body_id,row in saved['bodies'].items():
+        designation=row.get('designation')
+        if 'comet' in row.get('object_type','').lower() and designation and not row['name'].startswith(designation):
+            row['name']=designation+'/'+row['name'];output.write_text(json.dumps(saved,indent=2)+'\n',encoding='utf-8')
         if int(body_id)<2000000 or row.get('orbit_class'):continue
         url='https://ssd-api.jpl.nasa.gov/sbdb.api?'+urllib.parse.urlencode({'spk':body_id})
         try:

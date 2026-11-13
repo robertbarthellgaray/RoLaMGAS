@@ -296,9 +296,12 @@ class App:
         verified=materialize(record,c,route,get_ephemerides(c,[route]))
         record=public_record(verified,c,route)
         if record is None:raise ValueError('Rechecked trajectory does not meet public screening rules')
-        receipt=exchange(pref['endpoint']+'/v1/candidates',dict(candidates=[record]))
+        from trajectory_prefixes import public_records
+        records=public_records(verified,c,route);ids=[]
+        for i in range(0,len(records),10):ids.extend(exchange(pref['endpoint']+'/v1/candidates',dict(candidates=records[i:i+10])).get('ids',[]))
+        receipt=dict(ids=ids)
         if record['id'] not in receipt.get('ids',[]):raise ValueError('No matching server receipt; please retry')
-        result=dict(record_id=record['id'],message='Submitted to the community library. Same-day duplicates keep the preferred representative.')
+        result=dict(record_id=record['id'],prefixes_submitted=len(records)-1,message=f'Submitted to the community library with {len(records)-1} eligible planet-ending prefixes. Same-day duplicates keep the preferred representative.')
         atomic_json(root/'community_upload.json',result)
         return result
 

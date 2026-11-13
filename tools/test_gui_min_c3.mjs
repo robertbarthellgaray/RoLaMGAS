@@ -82,6 +82,8 @@ test('mission profile selects its appropriate C3 starting boundary',()=>{
  const context=vm.createContext({document:{getElementById:id=>elements[id]??(elements[id]={value:''})}});vm.runInContext(source,context);
  vm.runInContext('applyProfile()',context);assert.equal(elements.c3SeedBoundary.value,'maximum');
  elements.missionProfile.value='orbiter';vm.runInContext('applyProfile()',context);assert.equal(elements.c3SeedBoundary.value,'minimum');
+ elements.missionProfile.value='inner';vm.runInContext('applyProfile()',context);
+ assert.equal(elements.maxC3.value,30);assert.equal(elements.maxYears.value,5);assert.equal(elements.objective.value,'time');assert.equal(elements.c3SeedBoundary.value,'minimum');
 });
 test('obsolete below-minimum toggle is absent and arrival-date controls are not collapsed',()=>{
  const html=fs.readFileSync(new URL('../gui.html',import.meta.url),'utf8');

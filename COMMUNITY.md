@@ -152,6 +152,27 @@ results, it waits for the user's choice to use the results or search locally too
 With fewer, it searches locally automatically. Bundled records provide an offline
 library; failures of the service never turn into a failed numerical search.
 
-Public small-body flights must be shorter than 60 Julian years (365.25 days each),
-measured from their actual encounter epochs. Another 234 historical records at
-or above that duration were purged on 2026-11-03. Eight-planet targets are exempt.
+Public small-body flights must be shorter than 40 Julian years (365.25 days each).
+Trips above C3 170 must take less than 25 years. Actual encounter epochs determine
+duration. Eight-planet targets are exempt from those small-body quality limits.
+
+## Automatic planet-ending prefixes (local preview)
+
+New app searches and explicit Share actions also prepare eligible prefixes. For
+example, `EVEEJUX` can contribute `EV`, `EVEEJ` and `EVEEJU`. Earth-return stopping
+points are skipped. The original candidate stays unchanged.
+
+`trajectory_prefixes.public_records` reruns the same Lambert legs against the
+parent's saved JPL event states, using its original screening limits. Each child
+gets its own arrival V-infinity, flyby checks and maneuver total. DSMs and powered
+flyby burns after its final arrival are removed, including the burn that would
+have redirected it onward at its new destination. Only prefixes passing these
+checks and normal public-library policies are shared. A target-specific arrival
+V-infinity ceiling can reject a prefix even when the parent passes.
+
+Parents and prefixes use the same anonymous field allowlist, opt-out setting,
+same-day duplicate slots, server limits and website trimming. There is no extra
+JPL request for this step. Previously released binaries do not gain this behavior
+until updated. Publication tools can call the same helper; the Jupiter batch
+uses it. The raw API still validates individual science records and cannot
+reconstruct missing planet velocities from older uploads alone.

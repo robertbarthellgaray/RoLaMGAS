@@ -229,11 +229,11 @@ class CommunitySync:
         pref=settings()
         if not pref['share_candidates'] or not pref['endpoint']:return
         try:
-            record=public_record(q,self.c,self.routes[q['sequence']])
-            if record is None:return
-            key=encounter_key(record);rank=record_rank(record)
-            if key in self.seen and self.seen[key]<=rank:return
-            self.queue.put_nowait(record);self.seen[key]=rank
+            from trajectory_prefixes import public_records
+            for record in public_records(q,self.c,self.routes[q['sequence']]):
+                key=encounter_key(record);rank=record_rank(record)
+                if key in self.seen and self.seen[key]<=rank:continue
+                self.queue.put_nowait(record);self.seen[key]=rank
         except (ValueError,KeyError,TypeError,queue.Full):pass
     def _work(self):
         while not self.stop.is_set() or not self.queue.empty():

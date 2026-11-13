@@ -3,7 +3,7 @@
   "source": "JPL Horizons Lookup API",
   "bodies": {
     "1000036": {
-      "name": "Halley",
+      "name": "1P/Halley",
       "horizons_id": "1000036",
       "designation": "1P",
       "object_type": "comet (integrated barycenter)",
@@ -304,6 +304,37 @@
       "orbit_class": "TransNeptunian Object",
       "orbit_class_code": "TNO",
       "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20136199"
+    },
+    "1000017": {
+      "name": "6P/d'Arrest",
+      "horizons_id": "1000017",
+      "designation": "6P",
+      "object_type": "comet (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=1000017"
+    },
+    "1000025": {
+      "name": "2P/Encke",
+      "horizons_id": "1000025",
+      "designation": "2P",
+      "object_type": "comet (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=1000025"
+    },
+    "1000069": {
+      "name": "7P/Pons-Winnecke",
+      "horizons_id": "1000069",
+      "designation": "7P",
+      "object_type": "comet (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=1000069"
+    },
+    "20038628": {
+      "name": "38628 Huya",
+      "horizons_id": "20038628",
+      "designation": "2000 EB173",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20038628",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20038628"
     }
   }
 }

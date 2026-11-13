@@ -61,11 +61,19 @@ test('launch displays exclude VC0 and Falcon 9 RTLS while retaining other config
 });
 
 test('international launchers use independent grids, never extrapolate a study point, and retain source uncertainty',()=>{
- const vehicle={vehicle:'Model',source_label:'SilverBird estimate',data_kind:'third_party_model',query_grid_c3:[0,10,20,28,40],points:[[0,1000],[10,500],[20,0],[28,0]],confidence95_points:[[0,500,2000],[10,0,1500],[20,0,900],[28,0,400]]};
+ const vehicle={vehicle:'Model',source_label:'Synthetic model fixture',data_kind:'third_party_model',query_grid_c3:[0,10,20,28,40],points:[[0,1000],[10,500],[20,0],[28,0]],confidence95_points:[[0,500,2000],[10,0,1500],[20,0,900],[28,0,400]]};
  const d={queries:[{c3:0},{c3:6.25},{c3:10},{c3:20}],vehicles:[vehicle,{vehicle:'Study point',query_grid_c3:[30],points:[[30,3000]]}]};
  const interpolated=m.launchCapacities(d,5)[0];assert.equal(interpolated.capacity_kg,750);assert.match(m.launchCapacitySource(interpolated),/at bracket samples/);assert.match(m.launchCapacitySource(interpolated),/C3 10 → 0–1500 kg/);
  const zero=m.launchCapacities(d,28)[0];assert.equal(zero.capacity_kg,0);assert.match(m.launchCapacitySource(zero),/C3 28 → 0–400 kg/);assert.doesNotMatch(m.launchCapacitySource(zero),/C3 20/);
  assert.equal(m.launchCapacities(d,30)[0].capacity_kg,null);assert.equal(m.launchCapacities(d,29.99)[1].capacity_kg,null);assert.equal(m.launchCapacities(d,30)[1].capacity_kg,3000);
+});
+
+test('published app and website capacity datasets withhold unapproved model outputs',()=>{
+ for(const path of ['../docs/data/launch_performance_curves.json','../gui_assets/launch_performance_curves.json','../docs/data/international_launch_performance.json','../gui_assets/international_launch_performance.json']){
+  const data=JSON.parse(fs.readFileSync(new URL(path,import.meta.url),'utf8'));
+  assert.ok(data.vehicles.length>=4);
+  assert.ok(!data.vehicles.some(v=>v.data_kind==='third_party_model'||/silverbird/i.test(JSON.stringify(v))));
+ }
 });
 
 test('historical missions have continuous playback coverage for every visited planet',()=>{
