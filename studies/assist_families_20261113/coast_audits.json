@@ -1,0 +1,170 @@
+{
+  "eeb2c02a38ccdd9e74eb732a5dbc90c74b3827e4905b15bc08932815a7dbb8d1": {
+    "independent_launch_c3_km2_s2": 22.15225022338587,
+    "maximum_dop853_endpoint_error_km": 0.006988955464475052,
+    "maximum_velocity_difference_kms": 8.576323456906551e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "a0e67972389d607ed703e29aef2d1d1a244e1c4c1da47cd1aef28015eadabebf": {
+    "independent_launch_c3_km2_s2": 21.37985954516953,
+    "maximum_dop853_endpoint_error_km": 0.0072147835101032546,
+    "maximum_velocity_difference_kms": 9.187590221879423e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "ca3775455eb261e77e732d1d2cd3e4d247357bbbfb25a8ffc04ae559c26f503a": {
+    "independent_launch_c3_km2_s2": 17.701276835851676,
+    "maximum_dop853_endpoint_error_km": 0.009055614484753028,
+    "maximum_velocity_difference_kms": 1.0566183303647058e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "8670ca689bd5da692505bc6a165449d923080cb75659cea23d7e67b6ee246614": {
+    "independent_launch_c3_km2_s2": 18.00194710863124,
+    "maximum_dop853_endpoint_error_km": 0.010162150788142355,
+    "maximum_velocity_difference_kms": 1.6419822692377015e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "113fd9d4a2cd3e8bb0b3d47ec70fcc1575a2320c78e1077547d242779da2991d": {
+    "independent_launch_c3_km2_s2": 15.799489228282036,
+    "maximum_dop853_endpoint_error_km": 0.02085388128376135,
+    "maximum_velocity_difference_kms": 3.6656514620487096e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "ec40bea163e1beaa27bb9685608b20850d7ade10435fa06222bcf6c02987e8e3": {
+    "independent_launch_c3_km2_s2": 10.453921728077622,
+    "maximum_dop853_endpoint_error_km": 0.01216239690514172,
+    "maximum_velocity_difference_kms": 2.174172890786365e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "152ebc41f371da1ecfc1594e28d3f31d85b921986d35991049042b47844719ff": {
+    "independent_launch_c3_km2_s2": 16.291467200835335,
+    "maximum_dop853_endpoint_error_km": 0.01017855340981559,
+    "maximum_velocity_difference_kms": 1.8012203072921352e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "437b3f325222bee22eb05e50452c2bb83012a6fc292a6bcc19a2f618dd7d44a3": {
+    "independent_launch_c3_km2_s2": 16.605318243674887,
+    "maximum_dop853_endpoint_error_km": 0.00675412220998464,
+    "maximum_velocity_difference_kms": 1.20401152787682e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "7d4f15a406ca38c89e1b787c1a9f9fd9fbf7f238990229960ed030011269a6f6": {
+    "independent_launch_c3_km2_s2": 19.030976133447595,
+    "maximum_dop853_endpoint_error_km": 0.017497607779827753,
+    "maximum_velocity_difference_kms": 3.0548598318815276e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "7e3a0f8983e1b4f8c1e37e7aee68af604611bdca467506f9d44413804b94d792": {
+    "independent_launch_c3_km2_s2": 11.934172912408686,
+    "maximum_dop853_endpoint_error_km": 0.013094220857207807,
+    "maximum_velocity_difference_kms": 2.1622848037142647e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "0506c8ae23dce726c8f817d396481efe19e6619fb238967b1d49cf72fefa3dd8": {
+    "independent_launch_c3_km2_s2": 13.391752746205203,
+    "maximum_dop853_endpoint_error_km": 0.011025609668792557,
+    "maximum_velocity_difference_kms": 1.8216279263949673e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "262babd2bdb546128fa83ecd3fde0715d097b98ba97b8cc729bcaf01c8eb67b0": {
+    "independent_launch_c3_km2_s2": 24.082596155325444,
+    "maximum_dop853_endpoint_error_km": 0.015436336620775645,
+    "maximum_velocity_difference_kms": 2.622101491166158e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "aa9b1e5a58b22367b02425f281ccdffaff82179397f60f844bb9aaa4a7183342": {
+    "independent_launch_c3_km2_s2": 12.234079953090525,
+    "maximum_dop853_endpoint_error_km": 0.020991925322292153,
+    "maximum_velocity_difference_kms": 3.540812860438069e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "bd1f96b3bfff35970769523d2622fed970428a9455ad48067e1b3c857bdb15d9": {
+    "independent_launch_c3_km2_s2": 21.974158555913053,
+    "maximum_dop853_endpoint_error_km": 0.018238497474648396,
+    "maximum_velocity_difference_kms": 3.0958374185816173e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "008eba701c63d988080771b1ce465b687cc138576515e91c620f7e5dc2219bd9": {
+    "independent_launch_c3_km2_s2": 22.063436336209058,
+    "maximum_dop853_endpoint_error_km": 0.009419248096664322,
+    "maximum_velocity_difference_kms": 1.5260255330621468e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "c6680bee1a0e557351dbef2a7d60ce23abc37a977d180fcab7faba86326d3e2f": {
+    "independent_launch_c3_km2_s2": 17.53457865207682,
+    "maximum_dop853_endpoint_error_km": 0.02050407826601978,
+    "maximum_velocity_difference_kms": 3.3693140094551085e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "996e242b22adad5a9cda8f4432d41243e2867c6b89107b8218759e570430ba75": {
+    "independent_launch_c3_km2_s2": 14.278683568002085,
+    "maximum_dop853_endpoint_error_km": 0.006136802813410041,
+    "maximum_velocity_difference_kms": 4.389515239327064e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "69b4a98961eeb0187aeefce9fe08168a375dc494ac441300a1dd68b96f9235b5": {
+    "independent_launch_c3_km2_s2": 16.71094267372448,
+    "maximum_dop853_endpoint_error_km": 0.005721519092819586,
+    "maximum_velocity_difference_kms": 9.239274722933277e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "66053d31affcfddf6e07de1fe570891e33b10845b4e898006629cc7de0b4162d": {
+    "independent_launch_c3_km2_s2": 29.990000013950425,
+    "maximum_dop853_endpoint_error_km": 0.006923337427237594,
+    "maximum_velocity_difference_kms": 1.1250428960709303e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "187873fb362c5f5b397751c08bbae5290d8a0dcf3d0a93a9d23474b38f494bd6": {
+    "independent_launch_c3_km2_s2": 14.342572327584318,
+    "maximum_dop853_endpoint_error_km": 0.007842995621828951,
+    "maximum_velocity_difference_kms": 2.7408208383234014e-10,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "85664d28d462cfc97938a759fc91c4c87e9211e2ca7cd4be0894e76617ae9e29": {
+    "independent_launch_c3_km2_s2": 29.990000035949972,
+    "maximum_dop853_endpoint_error_km": 0.007983560797711441,
+    "maximum_velocity_difference_kms": 1.2974400934782378e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "97b1c7d16fc09b5e82066312460aad69bbbbb3138874b2f4a270b84bb12c58fb": {
+    "independent_launch_c3_km2_s2": 29.989999998586605,
+    "maximum_dop853_endpoint_error_km": 0.00728976020713208,
+    "maximum_velocity_difference_kms": 2.6831239401781634e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "2e2082b399ceca3d8ee029be5d15464b46685dd64a87e242af85c05fa6a4ed42": {
+    "independent_launch_c3_km2_s2": 11.701269801662482,
+    "maximum_dop853_endpoint_error_km": 0.0288021015950794,
+    "maximum_velocity_difference_kms": 4.700392335277246e-09,
+    "passed": true,
+    "nbody_validated": false
+  },
+  "c593c2a13eaa20e731a4a39eb6a36862af948a0d6120b1168a94918c305965b8": {
+    "independent_launch_c3_km2_s2": 18.172735498992107,
+    "maximum_dop853_endpoint_error_km": 0.005986240732409003,
+    "maximum_velocity_difference_kms": 9.732276212358863e-10,
+    "passed": true,
+    "nbody_validated": false
+  }
+}

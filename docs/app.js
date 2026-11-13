@@ -1,10 +1,11 @@
 import {historicalMatch} from './historical_labels.js?v=20261108b';
+import {matchesGallery,featuredOrder} from './gallery_filters.js?v=20261113a';
 import {publicationDate} from './publication_dates.js?v=20261110b';
 import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261112e';
 import './mission_metrics.js?v=20261110a';
-import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261112i';
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames} from './community.js?v=20261113a';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261108b';
-import {trimAlternatives,groupLaunches,launchTimestamp} from './library_curation.js?v=20261112i';
+import {trimAlternatives,groupLaunches,launchTimestamp} from './library_curation.js?v=20261113a';
 import {storedMismatch,estimateFlybys,FLYBY_BODIES} from './flyby_diagnostics.js?v=20261112d';
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -14,14 +15,15 @@ const catalog = [];
 const openLaunchGroups=new Set();
 const missionNames=(()=>{try{const data=JSON.parse(localStorage.getItem('rolamgas-mission-names')||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?Object.fromEntries(Object.entries(data).filter(([id,label])=>typeof label==='string'&&label.length<=100)):{}}catch{return {}}})();
 let historicalProfiles=[],ownerMissions={},launchPerformance=null,publicationHistory={};
-function annotateMission(c,id=c.id){const a=ownerMissions[id];if(a)Object.assign(c,{mission_label:a.label,featured_priority:a.featured_priority,mission_note:a.note});return c;}
-function carryMissionLabel(from,to){if(from?.mission_label){Object.assign(to,{mission_label:from.mission_label,mission_note:from.mission_note,featured_priority:from.featured_priority});ownerMissions[to.id]={label:from.mission_label,note:from.mission_note,featured_priority:from.featured_priority};}return to;}
+function annotateMission(c,id=c.id){const a=ownerMissions[id];if(a)Object.assign(c,{mission_label:a.label,featured_priority:a.featured_priority,mission_note:a.note,mission_kind:a.mission_kind});return c;}
+function carryMissionLabel(from,to){if(from?.mission_label){Object.assign(to,{mission_label:from.mission_label,mission_note:from.mission_note,featured_priority:from.featured_priority,mission_kind:from.mission_kind});ownerMissions[to.id]={label:from.mission_label,note:from.mission_note,featured_priority:from.featured_priority,mission_kind:from.mission_kind};}return to;}
 const missionName=c=>missionNames[c.id]||c.mission_label||c.historical_match?.label||(/^(?:Rebuilding|Low-energy|Tianwen|Claudius)/.test(c.title)?c.title:'');
 const cache = new Map(), sharedRecords = new Map(), previewCache = new Map(), encounterDays=new Map();
 let duplicateAliases={}, displayAliases={}, pendingHashTarget=null;
 let sharedEndpoint='', sharedSince='1970-01-01T00:00:00.000Z', sharedBusy=false, curatedAliases={}, visibleCount=48;
 let planetEphemerides=null,planetLoad=null,animatePlanets=false;
 let destination = 'All', smallBodyTarget = 'All', selected = null, requestVersion = 0, playing = false, lastTick = 0, fraction = 0;
+let selectedSequence='';
 let yaw = -.35, pitch = .65, zoom = 1, view = '3d', framePending = false;
 const canvas = $('orbit'), ctx = canvas.getContext('2d');
 const bodyColors = {Earth:'#6ea9ff', Venus:'#e3c387', Mercury:'#a7a4a0', Mars:'#e7997e', Jupiter:'#dcc3a6', Saturn:'#f0d28d', Uranus:'#87dfed', Neptune:'#729bff'};
@@ -59,9 +61,9 @@ function syncGraphYears(){for(const suffix of ['min','max'])$('chart-launch-year
 function minimumYear(){return $('launch-year-min').value.trim()===''?-Infinity:Number($('launch-year-min').value)}
 function maximumYear(){return $('launch-year-max').value.trim()===''?Infinity:Number($('launch-year-max').value)}
 function targetRows(){return catalog.filter(c=>targetMatches(c)&&(!CATEGORIES.includes(destination)||smallBodyTarget==='All'||c.target===smallBodyTarget))}
-function matchingRows(){
+function matchingRows(ignoreSequence=false){
  const search=$('search').value.trim().toLowerCase().replace(/\s+/g,'');
- return targetRows().filter(c=>`${missionName(c)} ${c.id} ${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
+ return targetRows().filter(c=>matchesGallery(c,$('mission-kind').value,ignoreSequence?'':selectedSequence)&&`${missionName(c)} ${c.id} ${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
   &&(!c.community||c.classification!=='yellow'||$('include-yellow').checked)&&c.c3<=maximum('max-c3')&&c.vinf<=maximum('max-vinf')&&c.burns_mps<=maximum('max-burns')&&c.years<=maximum('max-years')&&launchYear(c)>=minimumYear()&&launchYear(c)<=maximumYear());
 }
 function gallerySelection(){
@@ -88,7 +90,7 @@ function launchGroupMarkup(group){
 }
 function renderList(revealId=null) {
   const {all,rows,hidden}=gallerySelection(),sort=$('sort').value;
-  rows.sort((a,b) => sort === 'recommended' ? (b.featured_priority || 0) - (a.featured_priority || 0) || Number(b.spotlight) - Number(a.spotlight) || (b.received||0)-(a.received||0) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
+  rows.sort((a,b) => sort === 'recommended' ? featuredOrder(a,b) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
   const groups=groupLaunches(rows);
   if(revealId){const index=groups.findIndex(g=>g.rows.some(c=>c.id===revealId));if(index>=0)visibleCount=Math.max(visibleCount,Math.ceil((index+1)/48)*48);}
   $('result-count').textContent = `${rows.length} trajectories · ${groups.length} launch groups`;
@@ -105,15 +107,16 @@ function drawTradeoff(rows=visibleRows()){
  const target=selectedTarget(),chart=$('tradeoff-chart');
  if(!target){chart.hidden=true;$('tradeoff-status').textContent='Choose a planet or a named small body to compare its trajectories.';return}
  chart.hidden=false;
- if(!rows.length){$('tradeoff-svg').innerHTML='';$('tradeoff-legend').innerHTML='';$('tradeoff-status').textContent=minimumYear()>maximumYear()?'The first launch year must be at or before the last year.':'No trajectories match this target and launch-year range.';return}
+ const available=matchingRows(true),palette=sequenceColors(targetRows());
+ $('tradeoff-legend').innerHTML=`<button type="button" data-sequence="" aria-pressed="${!selectedSequence}">All sequences</button>`+[...palette].filter(([sequence])=>available.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<button type="button" data-sequence="${escapeHtml(sequence)}" aria-pressed="${selectedSequence===sequence}" aria-label="Show only ${escapeHtml(sequence)} trajectories; click again to show all"><i class="sequence-swatch" style="background:${color}"></i>${escapeHtml(sequence)}</button>`).join('');
+ if(!rows.length){$('tradeoff-svg').innerHTML='';$('tradeoff-status').textContent=minimumYear()>maximumYear()?'The first launch year must be at or before the last year.':'No trajectories match these filters. Select another sequence or reset the filters.';return}
  const all=targetRows(),vertical=c=>$('chart-metric').value==='vinf'?c.vinf:c.c3,verticalLabel=$('chart-metric').value==='vinf'?'Arrival V∞ (km/s)':'Launch C3 (km²/s²)';
- const palette=sequenceColors(all),w=1000,h=340,left=74,right=22,top=22,bottom=56,maxX=Math.max(.1,...rows.map(c=>c.years))*1.06,maxY=Math.max(.1,...rows.map(vertical))*1.08;
+ const w=1000,h=340,left=74,right=22,top=22,bottom=56,maxX=Math.max(.1,...rows.map(c=>c.years))*1.06,maxY=Math.max(.1,...rows.map(vertical))*1.08;
  let svg='';
  for(let i=0;i<=5;i++){const x=left+(w-left-right)*i/5,y=h-bottom-(h-top-bottom)*i/5;svg+=`<path d="M${x},${top}V${h-bottom}M${left},${y}H${w-right}" stroke="#26394a" stroke-width="1"/><text x="${x}" y="${h-bottom+22}" text-anchor="middle">${fmt(maxX*i/5,1)}</text><text x="${left-10}" y="${y+4}" text-anchor="end">${fmt(maxY*i/5,maxY<1?2:1)}</text>`}
  svg+=`<text class="axis-label" x="${(left+w-right)/2}" y="${h-5}" text-anchor="middle">Flight time (years)</text><text class="axis-label" transform="translate(17 ${(top+h-bottom)/2}) rotate(-90)" text-anchor="middle">${verticalLabel}</text>`;
  svg+=rows.map(c=>`<circle class="tradeoff-point" data-candidate="${escapeHtml(c.id)}" tabindex="0" role="button" aria-pressed="${c.id===selected?.id}" aria-label="${escapeHtml(c.sequence)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}, ${fmt(c.years)} years, arrival V∞ ${fmt(c.vinf)} km/s; open trajectory and downloads" cx="${left+c.years/maxX*(w-left-right)}" cy="${h-bottom-vertical(c)/maxY*(h-top-bottom)}" r="5" fill="${palette.get(c.sequence)}"><title>${escapeHtml(c.sequence)} · launch ${c.launch_date} · C3 ${fmt(c.c3)} km²/s² · ${fmt(c.years,3)} years · arrival V∞ ${fmt(c.vinf,3)} km/s</title></circle>`).join('');
  $('tradeoff-svg').innerHTML=svg;$('tradeoff-svg').setAttribute('aria-label',`Flight time versus ${verticalLabel}; select a point to inspect and download`);
- $('tradeoff-legend').innerHTML=[...palette].filter(([sequence])=>rows.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<span><i class="sequence-swatch" style="background:${color}"></i>${escapeHtml(sequence)}</span>`).join('');
  $('tradeoff-status').textContent=`${target} · ${rows.length} trajectories · ${Math.min(...rows.map(launchYear))}–${Math.max(...rows.map(launchYear))} launches. Select a dot to inspect and download.`;
 }
 
@@ -418,6 +421,8 @@ $('candidate-list').addEventListener('click', e => { const b=e.target.closest('[
 $('candidate-list').addEventListener('toggle',e=>{const group=e.target;if(group.matches?.('[data-launch-group]')&&group.isConnected){if(group.open)openLaunchGroups.add(group.dataset.launchGroup);else openLaunchGroups.delete(group.dataset.launchGroup);}},true);
 for (const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{syncGraphYears();visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
 $('sort').addEventListener('change',()=>{visibleCount=48;renderList()});
+$('mission-kind').addEventListener('change',()=>{selectedSequence='';visibleCount=48;renderList()});
+$('tradeoff-legend').addEventListener('click',e=>{const b=e.target.closest('[data-sequence]');if(!b)return;selectedSequence=selectedSequence===b.dataset.sequence?'':b.dataset.sequence;visibleCount=48;renderList()});
 $('include-yellow').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('show-trimmed').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('candidate-more').onclick=()=>{const top=$('candidate-list').scrollTop;visibleCount+=48;renderList();$('candidate-list').scrollTop=top};
@@ -426,7 +431,7 @@ for(const suffix of ['min','max'])$('chart-launch-year-'+suffix).addEventListene
 $('chart-metric').onchange=()=>{drawTradeoff();if(selected)updateLocation(selected.id)};
 function selectPoint(e){const point=e.target.closest('[data-candidate]');if(!point)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();selectCandidate(point.dataset.candidate);$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
 $('tradeoff-svg').addEventListener('click',selectPoint);$('tradeoff-svg').addEventListener('keydown',selectPoint);
-function resetDestinationFilters(){for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('show-trimmed').checked=false;$('sort').value='recommended';visibleCount=48;syncGraphYears();}
+function resetDestinationFilters(){for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('show-trimmed').checked=false;$('sort').value='recommended';$('mission-kind').value='both';selectedSequence='';visibleCount=48;syncGraphYears();}
 $('clear-filters').addEventListener('click',()=>{resetDestinationFilters();renderList();if(selected)updateLocation(selected.id);});
 document.querySelector('.projection').addEventListener('click', e => { if (e.target.dataset.view) setView(e.target.dataset.view); });
 $('reset-view').addEventListener('click', () => { zoom=1; setView('3d'); });
@@ -509,11 +514,11 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings,names,historical,annotations,performance,publications]=await Promise.all([fetchJson('data/index.json?v=20261112i'),fetchJson('data/community_seed_catalog.json?v=20261112i').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261112i').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261112d').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261112i').catch(()=>null),fetchJson('data/publication_dates.json?v=20261112d').catch(()=>({candidates:{}}))]);
+ const [data,archive,settings,names,historical,annotations,performance,publications]=await Promise.all([fetchJson('data/index.json?v=20261113a'),fetchJson('data/community_seed_catalog.json?v=20261113a').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261113a').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261113a').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261113a').catch(()=>null),fetchJson('data/publication_dates.json?v=20261112d').catch(()=>({candidates:{}}))]);
  registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  catalog.push(...data.cases.filter(c=>c.c3<=250).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
- const filters=filterStateFromHash(location.hash),initial=canonicalId(filters.mission||'claudius-uop-2045');
+ const filters=filterStateFromHash(location.hash),initial=canonicalId(filters.mission||'4d76acaf1f6f');
  $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;syncGraphYears();const missionFilters=missionFiltersFromHash(location.hash);$('chart-metric').value=missionFilters.metric;for(const [id,key]of [['max-years','maxYears'],['max-c3','maxC3'],['max-vinf','maxVinf'],['max-burns','maxBurns']])$(id).value=missionFilters[key];
  if(filters.target){pendingHashTarget=filters.target;if(applyTargetHash(filters.target))pendingHashTarget=null;makeDestinations()}
  if(filters.mission&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))await syncShared();

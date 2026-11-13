@@ -2,377 +2,591 @@
   "schema_version": 1,
   "source": "Portfolio owner mission identifications; display metadata only, no trajectory states changed",
   "missions": {
+    "ba36e139b812": {
+      "label": "Mercury \u00b7 EVVMe",
+      "mission_kind": "original",
+      "featured_priority": 6,
+      "note": "Original Mercury flyby design with a saved patched-conic export."
+    },
     "8ea27f8c3842a8a9b17a91aed85cfd74c6c55c6052e8a480c0a07a45330f0aca": {
       "label": "Juno recreation",
       "featured_priority": 12,
-      "note": "User-identified Juno reconstruction. Matching encounter calendar days does not establish agreement with the flown state vectors or maneuver budget."
+      "note": "User-identified Juno reconstruction. Matching encounter calendar days does not establish agreement with the flown state vectors or maneuver budget.",
+      "mission_kind": "reconstruction"
     },
     "6ef2b7edc240": {
       "label": "Dragonfly recreation",
       "featured_priority": 11,
-      "note": "User-identified Dragonfly-style Saturn transfer. Titan targeting, atmospheric entry and landing are not modeled; this is not a verified operational Dragonfly trajectory."
+      "note": "User-identified Dragonfly-style Saturn transfer. Titan targeting, atmospheric entry and landing are not modeled; this is not a verified operational Dragonfly trajectory.",
+      "mission_kind": "reconstruction"
     },
     "f768b32a4c2d1122865aa5e7c7a284c498588ff1772e21de9a9634d3d9da76e2": {
-      "label": "New Horizons recreation · near match",
+      "label": "New Horizons recreation \u00c2\u00b7 near match",
       "featured_priority": 10,
-      "note": "User-identified New Horizons near reconstruction; launch is two calendar days later than the actual mission. It is not an exact historical-date or flown-state match."
+      "note": "User-identified New Horizons near reconstruction; launch is two calendar days later than the actual mission. It is not an exact historical-date or flown-state match.",
+      "mission_kind": "reconstruction"
     },
     "claudius-uop-2045": {
       "label": "CLAUDIUS / Uranus Orbiter & Probe",
       "featured_priority": 9,
-      "note": "Original Uranus Orbiter and Probe concept with December 2045 arrival. The assist sequence remains EdvEJU."
+      "note": "Original Uranus Orbiter and Probe concept with December 2045 arrival. The assist sequence remains EdvEJU.",
+      "mission_kind": "original"
     },
     "4fed974cbffb": {
-      "label": "Cassini recreation · later arrival",
+      "label": "Cassini recreation \u00c2\u00b7 later arrival",
       "featured_priority": 7,
-      "note": "Cassini-inspired reconstruction with a later Saturn arrival; not an exact historical-date match."
+      "note": "Cassini-inspired reconstruction with a later Saturn arrival; not an exact historical-date match.",
+      "mission_kind": "reconstruction"
     },
     "f53fc65c9329": {
-      "label": "Trident date-match — added maneuvers",
+      "label": "Trident date-match \u00e2\u20ac\u201d added maneuvers",
       "featured_priority": 8,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "0fc1f2bcd586": {
       "label": "Mars Life Explorer 2035",
       "featured_priority": 3,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "dd67c26fd41f": {
       "label": "Mars Life Explorer 2037",
       "featured_priority": 3,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "9ca55df1c55c": {
       "label": "Mars Life Explorer 2039",
       "featured_priority": 3,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "35bd4d9c6e03": {
-      "label": "CALYPSO — Uranus cruise",
+      "label": "CALYPSO \u00e2\u20ac\u201d Uranus cruise",
       "featured_priority": 3,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "552363ae7812": {
-      "label": "T-OWS 2030 — operations-table recreation",
+      "label": "T-OWS 2030 \u00e2\u20ac\u201d operations-table recreation",
       "featured_priority": 3,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "f6a3008ac24c2458dc784351382194e4db6f275329be4a29184374a77e9c56f7": {
-      "label": "Trident date-match — added maneuvers",
+      "label": "Trident date-match \u00e2\u20ac\u201d added maneuvers",
       "featured_priority": 8,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "5d4dab0be875c8783a31e14557d6b03c0c4f38ce030100e6916cbd5b9658fe1c": {
       "label": "Mars Life Explorer 2035",
       "featured_priority": 3,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "b9014fe931349fbaffab168685d6b5bddbc79c3897852e9cf1ce23a68ce8b2bd": {
       "label": "Mars Life Explorer 2037",
       "featured_priority": 3,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "321bb98fa2a2ecbeea0dde031589fe4ac9db166ef9e87c1b58b69ccf55c9b17d": {
       "label": "Mars Life Explorer 2039",
       "featured_priority": 3,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "917cb46a1443b95e5cf59862af7e23d30394b3be25d7a03d1642525bf58f6b31": {
-      "label": "CALYPSO — Uranus cruise",
+      "label": "CALYPSO \u00e2\u20ac\u201d Uranus cruise",
       "featured_priority": 3,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "6e96d6b564fde4ab44d2b8754693292d44df64180a078928349c6f7639c7b3d7": {
-      "label": "T-OWS 2030 — operations-table recreation",
+      "label": "T-OWS 2030 \u00e2\u20ac\u201d operations-table recreation",
       "featured_priority": 3,
-      "note": "Proposed mission concept reconstruction; see validation and study report for differences."
+      "note": "Proposed mission concept reconstruction; see validation and study report for differences.",
+      "mission_kind": "reconstruction"
     },
     "a602d9b0bc52": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "1e6256286f2255a15803e02a47d340d3fcbbbbdf54129a290033e6bd0a65624f": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "a29e6a582250": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "6d639d8f425d8b928de83a30decbe40c74cbd0d018f0abf2d02f490b70029681": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "34799f4dd0f0": {
       "label": "EVVEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "b7d6d4f4b80e15ba46427833225d3698a45347930bdf60bbcafa2fc2834a90c2": {
       "label": "EVVEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "fd54bf2484be": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "5668741e717f02bfa435b43371c5cbe7f7d3640b2298c1dc3228c5719a7b9351": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "6825e717ab9a": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "981b2e30a30989f09a0a2c3770cd3a542c570bfb1a128122a8348b60f0a74b43": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "8a5fdc72fe2c": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "ab325b13eb16c5e7b97975c3934e631279799a08a6825ad9609d01159183f01d": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "90157970b87b": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "4fc54b0666719d39a3068d5f4cd73025bc07f4e3be90bda4091c82916d8ddcf7": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "b720420bbb11": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "de2ebc7dda890210d1c2a5bac83bb4197189996d85d37dc9d46fcaad3f855e58": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "ba1cfb4c18d8": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "d4beef25b03ebb0533f2b5e9b121b3b47122ee285d79558d82d57350719ede46": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "7f5a2b89c818": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "e55d95592708fae70f4e1a04a3e2aec24ac7aa220e705b063c440556f810b74c": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "f7328d340de1": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "51f7de9a19e5df1ebc71bd3ec84773dfc3e7ebbb861c442787ae78a28e4ea9c8": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "773b1d982ede": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "117f35154156675e64d8dcade6e074e919107b9f80f7c22245a2590365a5b2b6": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "e27f7e68d479": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "087fceb72e6cbccf0a4cabf87ea82c30f83c24517a4ca9f2e69c83a3a902127d": {
       "label": "EVEEJ",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "4e4230a71f50": {
       "label": "Low-C3 Jupiter 2031-05-18",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "09867b4a4139de8c3b15824c7839648b13984f267210cc2d479424ba720ac567": {
       "label": "Low-C3 Jupiter 2031-05-18",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "758dec758cb9": {
       "label": "Low-C3 Jupiter 2031-05-12",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "8ebe947660ba1477c8376f5dce0c3a933b9374c98d9099fecd9daea7324f559e": {
       "label": "Low-C3 Jupiter 2031-05-12",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "abd068a90487": {
       "label": "Low-C3 Jupiter 2031-05-18",
       "featured_priority": 5,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "e87ea304ae29eeae001a8d43a0a14ad3f33218bd6728fe8a5990d6dbff2c42b8": {
       "label": "Low-C3 Jupiter 2031-05-18",
       "featured_priority": 5,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "64c95c89d0a5": {
       "label": "Low-C3 Jupiter 2031-05-22",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "09e6a1e5d469f48af000352acf1d3658c394db4e7c55c9c127ccd73e862171b1": {
       "label": "Low-C3 Jupiter 2031-05-22",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "b64e734031ee": {
       "label": "EVEEJS",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "88e68c5444c0993f5915800ab1375d8ae4e0a90b731e4d1e3825ff7b268900bd": {
       "label": "EVEEJS",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "510033b3140d": {
       "label": "Fast Saturn 2033-02-01",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "a14cfe46da37987ac282e773ce009c6c2e32e442b3e2d2111e13c30bbc8020f2": {
       "label": "Fast Saturn 2033-02-01",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "7c37a5ed4b83": {
       "label": "EVVEJS",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "f001454c5099d65bd1bc02de46394657fe4b4ee00b1eb11564329aaa46883b4b": {
       "label": "EVVEJS",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "43ae5640d01a": {
       "label": "EVVEJS",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "228b72d04f0743ef0dce54c59d097c29b4cf295ed176ada709897d09af18c656": {
       "label": "EVVEJS",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "a5c3c026107a": {
       "label": "EVEEJS",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "26faa477739b0ded2a5856ba3a8a36a4d038571606704b1be0568e89a567be47": {
       "label": "EVEEJS",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "2479d2667a18": {
       "label": "Fast Saturn 2033-04-01",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "fc5a1597b9a55f53fef844080a8ea5e757837c0b7d1b941aecc2676ef0086450": {
       "label": "Fast Saturn 2033-04-01",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "e67fbcbb4ae7": {
       "label": "EVEEJS",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "461dd13a4bb4fa8bde7f0e40e42a29d3e2e2a9dd67349d6a7222d1ed4b8cd4c9": {
       "label": "EVEEJS",
       "featured_priority": 1,
-      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission."
+      "note": "Original low-energy search result; independently checked solar coasts, not a flown mission.",
+      "mission_kind": "original"
     },
     "c16155480c4d": {
-      "label": "ReachStar’s Eight-Planet Grand Tour",
+      "label": "ReachStar\u2019s Eight-Planet Grand Tour",
       "featured_priority": 12,
-      "note": "Original RSS/Principia trajectory design by ReachStar on Bilibili; date-adjusted JPL patched-conic recreation in RoLaMGAS."
+      "note": "Original RSS/Principia trajectory design by ReachStar on Bilibili; date-adjusted JPL patched-conic recreation in RoLaMGAS.",
+      "mission_kind": "reconstruction"
     },
     "2c8de26a2f93": {
-      "label": "Camilla — Jupiter cruise recreation",
+      "label": "Camilla \u00e2\u20ac\u201d Jupiter cruise recreation",
       "featured_priority": 5,
-      "note": "Based on Howell et al. 2018 / supplied Camilla concept chart. Solved Jupiter cruise prefix; Chariklo leg excluded. One explicit July DSM, with independently checked coast endpoints and flyby vectors."
+      "note": "Based on Howell et al. 2018 / supplied Camilla concept chart. Solved Jupiter cruise prefix; Chariklo leg excluded. One explicit July DSM, with independently checked coast endpoints and flyby vectors.",
+      "mission_kind": "reconstruction"
     },
     "e78c56d2619226f876eb5dafa16dcddcf44f0de2a1152603e427d8b88986a2fb": {
-      "label": "Camilla — Jupiter cruise recreation",
+      "label": "Camilla \u00e2\u20ac\u201d Jupiter cruise recreation",
       "featured_priority": 5,
-      "note": "Based on Howell et al. 2018 / supplied Camilla concept chart. Solved Jupiter cruise prefix; Chariklo leg excluded. One explicit July DSM, with independently checked coast endpoints and flyby vectors."
+      "note": "Based on Howell et al. 2018 / supplied Camilla concept chart. Solved Jupiter cruise prefix; Chariklo leg excluded. One explicit July DSM, with independently checked coast endpoints and flyby vectors.",
+      "mission_kind": "reconstruction"
     },
     "404d8229337b4fdc5bf734b6b3a15cff151d1b57f0b5ffb11d66bfdc0caa6708": {
-      "label": "EVEEJ — Jupiter 2037 launch, C3 11.05",
-      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+      "label": "EVEEJ \u00e2\u20ac\u201d Jupiter 2037 launch, C3 11.05",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded.",
+      "mission_kind": "original"
     },
     "404d8229337b": {
-      "label": "EVEEJ — Jupiter 2037 launch, C3 11.05",
-      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+      "label": "EVEEJ \u00e2\u20ac\u201d Jupiter 2037 launch, C3 11.05",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded.",
+      "mission_kind": "original"
     },
     "955be464468e9e3bb159f7cc88adb1d03be90c9b8dbaf752edd782ebbaecd535": {
-      "label": "EVEEJU — Uranus 2037 launch, C3 11.05",
-      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+      "label": "EVEEJU \u00e2\u20ac\u201d Uranus 2037 launch, C3 11.05",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded.",
+      "mission_kind": "original"
     },
     "1028e6930fc8": {
-      "label": "EVEEJU — Uranus 2037 launch, C3 11.05",
-      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+      "label": "EVEEJU \u00e2\u20ac\u201d Uranus 2037 launch, C3 11.05",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded.",
+      "mission_kind": "original"
     },
     "0bbf3c81dfd099476026cf360c5df2145577dd523b1f4f329cfb868045bc0dca": {
-      "label": "EVEES — Saturn 2036 launch, C3 12",
-      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+      "label": "EVEES \u00e2\u20ac\u201d Saturn 2036 launch, C3 12",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded.",
+      "mission_kind": "original"
     },
     "d9331e2d831f": {
-      "label": "EVEES — Saturn 2036 launch, C3 12",
-      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded."
+      "label": "EVEES \u00e2\u20ac\u201d Saturn 2036 launch, C3 12",
+      "note": "Independently rechecked JPL Lambert/Kepler candidate. Zero designed DSM; launch injection, capture and finite-radius export corrections excluded.",
+      "mission_kind": "original"
     },
     "1ddc8bddcfee": {
-      "label": "EVEEJ — earlier Jupiter encounter, C3 10.36",
-      "note": "Local refinement of the 2037 low-C3 family: Jupiter arrival 13 November 2045 instead of 1 April 2046. Still inward at Jupiter; no designed DSM. Independent DOP853 solar-coast endpoint errors below 5 metres. Finite-radius export corrections, launch injection and capture are additional."
+      "label": "EVEEJ \u00e2\u20ac\u201d earlier Jupiter encounter, C3 10.36",
+      "note": "Local refinement of the 2037 low-C3 family: Jupiter arrival 13 November 2045 instead of 1 April 2046. Still inward at Jupiter; no designed DSM. Independent DOP853 solar-coast endpoint errors below 5 metres. Finite-radius export corrections, launch injection and capture are additional.",
+      "mission_kind": "original"
     },
     "1ddc8bddcfee2d90287fa3855292b70f8d393948c0c18818455553edb21746c5": {
-      "label": "EVEEJ — earlier Jupiter encounter, C3 10.36",
-      "note": "Local refinement of the 2037 low-C3 family: Jupiter arrival 13 November 2045 instead of 1 April 2046. Still inward at Jupiter; no designed DSM. Independent DOP853 solar-coast endpoint errors below 5 metres. Finite-radius export corrections, launch injection and capture are additional."
+      "label": "EVEEJ \u00e2\u20ac\u201d earlier Jupiter encounter, C3 10.36",
+      "note": "Local refinement of the 2037 low-C3 family: Jupiter arrival 13 November 2045 instead of 1 April 2046. Still inward at Jupiter; no designed DSM. Independent DOP853 solar-coast endpoint errors below 5 metres. Finite-radius export corrections, launch injection and capture are additional.",
+      "mission_kind": "original"
+    },
+    "tianwen4-concept": {
+      "label": "Tianwen-4 concept reconstruction",
+      "mission_kind": "reconstruction",
+      "featured_priority": 8,
+      "note": "Reconstruction of a proposed mission architecture, not an official operational trajectory."
+    },
+    "4d76acaf1f6f": {
+      "label": "Low-energy Jupiter \u00b7 EdvEVEEJ",
+      "mission_kind": "original",
+      "featured_priority": 20,
+      "note": "Original low-energy Jupiter design with Earth returns, Venus and an explicit deep-space maneuver. Launch C3 6.25 km\u00b2/s\u00b2; launch injection and terminal capture are separate."
+    },
+    "eeb2c02a38ccdd9e74eb732a5dbc90c74b3827e4905b15bc08932815a7dbb8d1": {
+      "label": "EVVEJ \u00b7 2033-02-07",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "a0e67972389d607ed703e29aef2d1d1a244e1c4c1da47cd1aef28015eadabebf": {
+      "label": "EVVEJ \u00b7 2033-02-10",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "ca3775455eb261e77e732d1d2cd3e4d247357bbbfb25a8ffc04ae559c26f503a": {
+      "label": "Low-C3 EVVEJ \u00b7 2033-03-11",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "8670ca689bd5da692505bc6a165449d923080cb75659cea23d7e67b6ee246614": {
+      "label": "Low-C3 EVVEJ \u00b7 2033-03-12",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "113fd9d4a2cd3e8bb0b3d47ec70fcc1575a2320c78e1077547d242779da2991d": {
+      "label": "Low-C3 EVdvEEJ \u00b7 2029-10-07",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "ec40bea163e1beaa27bb9685608b20850d7ade10435fa06222bcf6c02987e8e3": {
+      "label": "Low-C3 EVdvEEJ \u00b7 2029-11-12",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "152ebc41f371da1ecfc1594e28d3f31d85b921986d35991049042b47844719ff": {
+      "label": "Low-C3 EVdvEEJ \u00b7 2029-09-10",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "437b3f325222bee22eb05e50452c2bb83012a6fc292a6bcc19a2f618dd7d44a3": {
+      "label": "Low-C3 EVdvEEJ \u00b7 2029-10-03",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "7d4f15a406ca38c89e1b787c1a9f9fd9fbf7f238990229960ed030011269a6f6": {
+      "label": "Low-C3 EVdvEEJ \u00b7 2029-10-04",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "7e3a0f8983e1b4f8c1e37e7aee68af604611bdca467506f9d44413804b94d792": {
+      "label": "Low-C3 EVdvEEJ \u00b7 2029-10-17",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "0506c8ae23dce726c8f817d396481efe19e6619fb238967b1d49cf72fefa3dd8": {
+      "label": "Low-C3 EVdvEEJ \u00b7 2029-10-11",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "262babd2bdb546128fa83ecd3fde0715d097b98ba97b8cc729bcaf01c8eb67b0": {
+      "label": "EVdvEEJ \u00b7 2029-12-14",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "aa9b1e5a58b22367b02425f281ccdffaff82179397f60f844bb9aaa4a7183342": {
+      "label": "Low-C3 EVdvEEJ \u00b7 2029-11-22",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "bd1f96b3bfff35970769523d2622fed970428a9455ad48067e1b3c857bdb15d9": {
+      "label": "EVdvEEJ \u00b7 2044-05-03",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "008eba701c63d988080771b1ce465b687cc138576515e91c620f7e5dc2219bd9": {
+      "label": "EVdvVEJS \u00b7 2033-03-17",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "c6680bee1a0e557351dbef2a7d60ce23abc37a977d180fcab7faba86326d3e2f": {
+      "label": "Low-C3 EVdvEES \u00b7 2037-07-02",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "66053d31affcfddf6e07de1fe570891e33b10845b4e898006629cc7de0b4162d": {
+      "label": "EVdvVEJS \u00b7 2033-04-04",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "187873fb362c5f5b397751c08bbae5290d8a0dcf3d0a93a9d23474b38f494bd6": {
+      "label": "Low-C3 EVdvVEJS \u00b7 2033-02-14",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "85664d28d462cfc97938a759fc91c4c87e9211e2ca7cd4be0894e76617ae9e29": {
+      "label": "EVdvVEJS \u00b7 2033-04-05",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "97b1c7d16fc09b5e82066312460aad69bbbbb3138874b2f4a270b84bb12c58fb": {
+      "label": "EVdvEES \u00b7 2037-07-30",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "2e2082b399ceca3d8ee029be5d15464b46685dd64a87e242af85c05fa6a4ed42": {
+      "label": "Low-C3 EVdvEES \u00b7 2037-05-31",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "c593c2a13eaa20e731a4a39eb6a36862af948a0d6120b1168a94918c305965b8": {
+      "label": "Low-C3 EVdvEES \u00b7 2037-07-01",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "996e242b22adad5a9cda8f4432d41243e2867c6b89107b8218759e570430ba75": {
+      "label": "Low-C3 EVdvVEJS \u00b7 2033-02-13",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "69b4a98961eeb0187aeefce9fe08168a375dc494ac441300a1dd68b96f9235b5": {
+      "label": "Low-C3 EVdvVEJS \u00b7 2033-03-08",
+      "mission_kind": "original",
+      "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
     }
   }
 }

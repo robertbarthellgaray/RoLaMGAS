@@ -1,0 +1,18 @@
+{
+  "new_schedules": 24,
+  "by_sequence": {
+    "EVVEJ": 4,
+    "EVdvEEJ": 10,
+    "EVdvVEJS": 6,
+    "EVdvEES": 4
+  },
+  "excluded": [
+    {
+      "id": "afa30a284a6d",
+      "reason": "Numerically zero added DSM; existing ballistic architecture retained"
+    }
+  ],
+  "maximum_coast_error_km": 0.0288021015950794,
+  "maximum_flyby_speed_gap_mps": 0.00040754329155845426,
+  "shared_with_planet_prefixes": 64
+}

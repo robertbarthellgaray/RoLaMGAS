@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
 import {transferDocument,finiteRadiusDownload} from '../docs/desktop_transfer.js';
 import {historicalMatch} from '../docs/historical_labels.js';
+import {featuredOrder} from '../docs/gallery_filters.js';
 const root=new URL('../docs/',import.meta.url),load=p=>JSON.parse(fs.readFileSync(new URL(p,root),'utf8'));
 
 test('ReachStar research handoff preserves attribution, resonance controls and disclosed floors',()=>{
@@ -82,16 +83,17 @@ test('identified mission labels are explicit recreations and selected shared mis
  assert.match(annotations[juno].label,/Juno recreation/);assert.ok(archive.some(r=>r.id===juno));assert.match(annotations['6ef2b7edc240'].label,/Dragonfly/);
  assert.match(annotations[near].label,/near match/);assert.match(annotations[near].note,/two calendar days/);assert.match(annotations['claudius-uop-2045'].label,/CLAUDIUS/);
  for(const id of [juno,near,'6ef2b7edc240'])assert.ok(annotations[id].featured_priority>0);
- const app=fs.readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');assert.ok(app.indexOf('(b.featured_priority || 0)')<app.indexOf('Number(b.spotlight)'));
+ assert.ok(featuredOrder({id:'a',featured_priority:12},{id:'b',spotlight:true})<0);
 });
 
 test('destination switches reset restrictive limits and mirrored year inputs',()=>{
  const app=fs.readFileSync(new URL('../docs/app.js',import.meta.url),'utf8'),start=app.indexOf('function resetDestinationFilters(){'),end=app.indexOf("$('clear-filters')",start),source=app.slice(start,end);
- const ids=['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max','chart-launch-year-min','chart-launch-year-max','include-yellow','sort','show-trimmed'];
+ const ids=['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max','chart-launch-year-min','chart-launch-year-max','include-yellow','sort','show-trimmed','mission-kind'];
  const elements=Object.fromEntries(ids.map(id=>[id,{value:'restrictive',checked:false}]));
  const ctx=vm.createContext({$:(id)=>elements[id],syncGraphYears(){for(const suffix of ['min','max'])elements['chart-launch-year-'+suffix].value=elements['launch-year-'+suffix].value;}});
- vm.runInContext('let visibleCount=999;'+source+'resetDestinationFilters()',ctx);
+ vm.runInContext("let visibleCount=999,selectedSequence='EVEEJ';"+source+'resetDestinationFilters()',ctx);
  for(const id of ids.slice(0,9))assert.equal(elements[id].value,'');
  assert.equal(elements['include-yellow'].checked,true);assert.equal(elements['show-trimmed'].checked,false);assert.equal(elements.sort.value,'recommended');
+ assert.equal(elements['mission-kind'].value,'both');assert.equal(vm.runInContext('selectedSequence',ctx),'');
  assert.match(app,/destination!==b.dataset.target.*resetDestinationFilters/);assert.match(app,/smallBodyTarget!==b.dataset.smallBody.*resetDestinationFilters/);
 });
