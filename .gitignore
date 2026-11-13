@@ -21,3 +21,6 @@ community_backend/.wrangler/
 community_settings.json
 private_errors.json
 studies/**/integrated/
+studies/jupiter_library_expansion/all_candidates.json
+studies/jupiter_library_expansion/selected_candidates.json
+studies/jupiter_library_expansion/upload_receipts.json
