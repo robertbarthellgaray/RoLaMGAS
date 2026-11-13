@@ -121,7 +121,8 @@ def build(entries,output,report,existing=None,private_report=None):
     from trajectory_policy import public_energy_reason
     projected=[r for r in projected if not public_energy_reason(r)]
     def long_small_body(r):
-        target=int(r['body_ids'][-1]);return (target==999 or target>=1000) and (r['dates_jd_tdb'][-1]-r['dates_jd_tdb'][0])/365.25>=60
+        from trajectory_policy import public_small_body_reason
+        return bool(public_small_body_reason(r))
     excluded_long=sum(long_small_body(r) for r in projected)
     projected=[r for r in projected if not long_small_body(r)]
     validated=canonical_records(projected)
@@ -133,7 +134,8 @@ def build(entries,output,report,existing=None,private_report=None):
     candidates=sorted(unique,key=lambda r:(r['body_ids'][-1],r['solved_at'],r['id']))
     doc=dict(schema_version=1,description='All recovered historical passing searches, deduplicated by ordered bodies and TDB encounter calendar days. Original search limits and solver versions differ; classifications are submitted and must be revalidated before reuse. Legacy solve timestamps fall back to file save time.',candidates=candidates)
     doc['maximum_public_c3_km2_s2']=250
-    doc['small_body_max_flight_years_exclusive']=60
+    doc['small_body_max_flight_years_exclusive']=40
+    doc['small_body_high_c3_policy']=dict(c3_above=170,max_flight_years_exclusive=25)
     if previous.get('curated_aliases'):doc['curated_aliases']=previous['curated_aliases']
     aliases={**previous.get('duplicate_aliases',{}),**duplicates}
     doc['duplicate_aliases']={old:duplicates.get(new,new) for old,new in aliases.items()}

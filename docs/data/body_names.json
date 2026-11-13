@@ -134,6 +134,176 @@
       "orbit_class": "TransNeptunian Object",
       "orbit_class_code": "TNO",
       "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20028978"
+    },
+    "20004179": {
+      "name": "4179 Toutatis",
+      "horizons_id": "20004179",
+      "designation": "1989 AC",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20004179",
+      "orbit_class": "Apollo",
+      "orbit_class_code": "APO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20004179"
+    },
+    "20005145": {
+      "name": "5145 Pholus",
+      "horizons_id": "20005145",
+      "designation": "1992 AD",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20005145",
+      "orbit_class": "Centaur",
+      "orbit_class_code": "CEN",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20005145"
+    },
+    "20010199": {
+      "name": "10199 Chariklo",
+      "horizons_id": "20010199",
+      "designation": "1997 CU26",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20010199",
+      "orbit_class": "Centaur",
+      "orbit_class_code": "CEN",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20010199"
+    },
+    "20015760": {
+      "name": "15760 Albion",
+      "horizons_id": "20015760",
+      "designation": "1992 QB1",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20015760",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20015760"
+    },
+    "20015810": {
+      "name": "15810 Arawn",
+      "horizons_id": "20015810",
+      "designation": "1994 JR1",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20015810",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20015810"
+    },
+    "20026375": {
+      "name": "26375 (1999 DE9)",
+      "horizons_id": "20026375",
+      "designation": "1999 DE9",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20026375",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20026375"
+    },
+    "20054598": {
+      "name": "54598 Bienor",
+      "horizons_id": "20054598",
+      "designation": "2000 QC243",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20054598",
+      "orbit_class": "Centaur",
+      "orbit_class_code": "CEN",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20054598"
+    },
+    "20066652": {
+      "name": "66652 Borasisi",
+      "horizons_id": "20066652",
+      "designation": "1999 RZ253",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20066652",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20066652"
+    },
+    "20088611": {
+      "name": "88611 Teharonhiawako",
+      "horizons_id": "20088611",
+      "designation": "2001 QT297",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20088611",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20088611"
+    },
+    "20136472": {
+      "name": "136472 Makemake",
+      "horizons_id": "20136472",
+      "designation": "2005 FY9",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20136472",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20136472"
+    },
+    "20208996": {
+      "name": "208996 Achlys",
+      "horizons_id": "20208996",
+      "designation": "2003 AZ84",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20208996",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20208996"
+    },
+    "20594913": {
+      "name": "594913 'Aylo'chaxnim",
+      "horizons_id": "20594913",
+      "designation": "2020 AV2",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=20594913",
+      "orbit_class": "Atira",
+      "orbit_class_code": "IEO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20594913"
+    },
+    "50713036": {
+      "name": "(2014 PN70)",
+      "horizons_id": "50713036",
+      "designation": "2014 PN70",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=50713036",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=50713036"
+    },
+    "54526835": {
+      "name": "(2023 KQ14)",
+      "horizons_id": "54526835",
+      "designation": "2023 KQ14",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=54526835",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=54526835"
+    },
+    "54533005": {
+      "name": "(2017 OF201)",
+      "horizons_id": "54533005",
+      "designation": "2017 OF201",
+      "object_type": "asteroid (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=54533005",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=54533005"
+    },
+    "20136108": {
+      "name": "136108 Haumea",
+      "horizons_id": "20136108",
+      "designation": "136108",
+      "object_type": "asteroid",
+      "lookup_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20136108",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20136108"
+    },
+    "20136199": {
+      "name": "136199 Eris",
+      "horizons_id": "20136199",
+      "designation": "136199",
+      "object_type": "asteroid",
+      "lookup_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20136199",
+      "orbit_class": "TransNeptunian Object",
+      "orbit_class_code": "TNO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20136199"
     }
   }
 }

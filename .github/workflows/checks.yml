@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - run: node --test tools/test_gui_min_c3.mjs community_backend/worker.test.mjs community_backend/preview.test.mjs community_backend/library_analysis.test.mjs community_backend/library_curation.test.mjs community_backend/flyby_diagnostics.test.mjs tools/test_preview_controls.mjs tools/test_results_chart.mjs tools/test_mission_metrics.mjs tools/test_desktop_transfer.mjs tools/test_publication_dates.mjs tools/test_dwarf_patch_gui.mjs tools/test_start_search.mjs
+      - run: node --test tools/test_gui_min_c3.mjs community_backend/worker.test.mjs community_backend/preview.test.mjs community_backend/library_analysis.test.mjs community_backend/library_curation.test.mjs community_backend/small_body_policy.test.mjs community_backend/flyby_diagnostics.test.mjs tools/test_preview_controls.mjs tools/test_results_chart.mjs tools/test_mission_metrics.mjs tools/test_desktop_transfer.mjs tools/test_publication_dates.mjs tools/test_dwarf_patch_gui.mjs tools/test_start_search.mjs
       - run: python -m pip install -r requirements.txt
       - run: python -m unittest discover -p "test_*.py"
       - run: python -m unittest discover -s tools -p "test_*.py"

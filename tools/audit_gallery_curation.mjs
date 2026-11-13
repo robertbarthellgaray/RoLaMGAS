@@ -5,7 +5,7 @@
 import fs from 'node:fs';
 import {summaryFor,registerBodyNames} from '../docs/community.js';
 import {encounterDayKey,betterDuplicate} from '../docs/library_analysis.js';
-import {trimAlternatives,groupLaunches,CURATION_RULE} from '../docs/library_curation.js';
+import {trimAlternatives,groupLaunches,CURATION_RULE,SMALL_BODY_CURATION_RULE} from '../docs/library_curation.js';
 import {historicalMatch} from '../docs/historical_labels.js';
 const load=p=>JSON.parse(fs.readFileSync(new URL('../'+p,import.meta.url),'utf8'));
 registerBodyNames(load('docs/data/body_names.json'));
@@ -26,6 +26,6 @@ const rows=[...byId.values()],protectedIds=new Set(rows.filter(c=>annotations[c.
 const curated=trimAlternatives(rows,protectedIds),families={};
 for(const c of rows){const key=c.target+' / '+c.sequence;families[key]??={target:c.target,sequence:c.sequence,total:0,trimmed:0,retained:0,launch_month_groups:0};families[key].total++;families[key][curated.hidden.has(c.id)?'trimmed':'retained']++;}
 for(const group of groupLaunches(curated.rows))families[group.target+' / '+group.sequence].launch_month_groups++;
-const report={generated_at:new Date().toISOString(),rule:CURATION_RULE,note:'Reversible default-gallery cleanup only. Same target, ordered sequence, launch within three years; no worse C3, flight time, arrival V-infinity or cruise burns, no materially larger stored flyby speed gap, with at least 20% and 2 km2/s2 C3 or 1 year flight-time improvement. Named/featured missions retained. Filters are applied BEFORE curation in the browser, so restricting launch years can restore an otherwise hidden opportunity. Full archive and direct links remain intact.',total:rows.length,retained:curated.rows.length,trimmed:curated.hidden.size,launch_month_groups:groupLaunches(curated.rows).length,families:Object.values(families).sort((a,b)=>b.trimmed-a.trimmed),trimmed_alternatives:Object.fromEntries(curated.hidden)};
+const report={generated_at:new Date().toISOString(),rule:CURATION_RULE,small_body_rule:SMALL_BODY_CURATION_RULE,note:'Reversible default-gallery cleanup only. Same target, ordered sequence, launch within three years; no worse C3, flight time, arrival V-infinity or cruise burns, no materially larger stored flyby speed gap, with at least 20% and 2 km2/s2 C3 or 1 year flight-time improvement. Named/featured missions retained. Filters are applied BEFORE curation in the browser, so restricting launch years can restore an otherwise hidden opportunity. The tighter small-body rule allows 5-year launch spacing, 10% improvements, at least 1 C3 or 0.5 years, at most 25 m/s more cruise burns; slower routes need at least 1 km/s, 20%, and 0.5 km/s per extra flight year of arrival-speed reduction to stay visible against a cheaper/faster witness. Hard-rejected small-body entries have been separately purged; retained trimmed records still support direct links.',total:rows.length,retained:curated.rows.length,trimmed:curated.hidden.size,launch_month_groups:groupLaunches(curated.rows).length,families:Object.values(families).sort((a,b)=>b.trimmed-a.trimmed),trimmed_alternatives:Object.fromEntries(curated.hidden)};
 const output=option('--output');if(output)fs.writeFileSync(output,JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({...report,trimmed_alternatives:undefined,families:report.families.slice(0,18)},null,2));

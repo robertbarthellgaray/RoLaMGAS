@@ -1,0 +1,66 @@
+{
+  "policy": {
+    "max_flight_years_exclusive": 40,
+    "high_c3_above": 170,
+    "high_c3_max_flight_years_exclusive": 25
+  },
+  "catalogs": [
+    {
+      "path": "community_seed_catalog.json",
+      "before": 5255,
+      "after": 4553,
+      "purged": 702,
+      "by_target": {
+        "20000624": 4,
+        "20136199": 67,
+        "20420356": 99,
+        "50666516": 143,
+        "54667839": 31,
+        "999": 10,
+        "20028978": 191,
+        "20225088": 45,
+        "20090377": 112
+      }
+    },
+    {
+      "path": "docs\\data\\community_seed_catalog.json",
+      "before": 5255,
+      "after": 4553,
+      "purged": 702,
+      "by_target": {
+        "20000624": 4,
+        "20136199": 67,
+        "20420356": 99,
+        "50666516": 143,
+        "54667839": 31,
+        "999": 10,
+        "20028978": 191,
+        "20225088": 45,
+        "20090377": 112
+      }
+    }
+  ],
+  "curated_cases_removed": [
+    {
+      "id": "920e1459edd4",
+      "title": "EJP \u00b7 Pluto"
+    }
+  ],
+  "live_database": {
+    "purged": 3057,
+    "retained": 6721,
+    "remaining_policy_violations": 0,
+    "applied_on": "2026-11-12",
+    "private_recovery_table": "quality_purge_20261112"
+  },
+  "makemake_esx_trimming": {
+    "total": 200,
+    "previous_retained": 154,
+    "retained": 36,
+    "trimmed": 164,
+    "longest_retained_years": 29.773285262211445,
+    "arrival_vinf_minimum_reduction_kms": 1,
+    "arrival_vinf_minimum_reduction_fraction": 0.2,
+    "arrival_vinf_minimum_reduction_kms_per_extra_year": 0.5
+  }
+}

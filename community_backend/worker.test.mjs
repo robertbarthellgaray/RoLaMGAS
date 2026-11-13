@@ -47,7 +47,12 @@ test('public C3 ceiling retains exactly 250 and rejects anything higher',async()
 
 test('database-first query filters arrival speed and flight duration',async()=>{const env=localEnv();await post(env,[record()]);assert.equal((await(await get(env,'target=599&max_arrival_vinf=6')).json()).candidates.length,0);assert.equal((await(await get(env,'target=599&max_years=2')).json()).candidates.length,0);assert.equal((await(await get(env,'target=599&max_arrival_vinf=7&max_years=2.7')).json()).candidates.length,1);env.database.close()});
 
-test('small-body 60-year limit uses epochs, preserving shorter trips and planetary tours',async()=>{const env=localEnv(),a=record();a.body_ids=['399','999'];a.dates_jd_tdb=[2460000,2460000+60*365.25];a.segments[0].end_jd=a.dates_jd_tdb[1];a.metrics.duration_years=1;assert.equal((await post(env,[a])).status,400);a.dates_jd_tdb[1]-=.001;a.segments[0].end_jd=a.dates_jd_tdb[1];assert.equal((await post(env,[a])).status,200);a.body_ids=['399','599'];a.dates_jd_tdb[1]+=.001;a.segments[0].end_jd=a.dates_jd_tdb[1];assert.equal((await post(env,[a])).status,200);env.database.close()});
+test('small-body 40-year limit uses epochs, preserving shorter trips and planetary tours',async()=>{const env=localEnv(),a=record();a.body_ids=['399','999'];a.dates_jd_tdb=[2460000,2460000+40*365.25];a.segments[0].end_jd=a.dates_jd_tdb[1];a.metrics.duration_years=1;assert.equal((await post(env,[a])).status,400);a.dates_jd_tdb[1]-=.001;a.segments[0].end_jd=a.dates_jd_tdb[1];assert.equal((await post(env,[a])).status,200);a.body_ids=['399','599'];a.dates_jd_tdb[1]+=.001;a.segments[0].end_jd=a.dates_jd_tdb[1];assert.equal((await post(env,[a])).status,200);env.database.close()});
+
+test('small-body high C3 flight admission cannot be bypassed with a false stored duration',async()=>{
+ const env=localEnv(),a=record();a.body_ids=['399','9'];a.dates_jd_tdb=[2460000,2460000+25*365.25];a.segments[0].end_jd=a.dates_jd_tdb[1];a.metrics.launch_c3_km2_s2=171;a.metrics.duration_years=1;
+ assert.equal((await post(env,[a])).status,400);a.metrics.launch_c3_km2_s2=170;assert.equal((await post(env,[a])).status,200);env.database.close();
+});
 
 function shifted(a,days){const r=structuredClone(a);r.dates_jd_tdb=r.dates_jd_tdb.map(jd=>jd+days);r.segments=r.segments.map(s=>({...s,start_jd:s.start_jd+days,end_jd:s.end_jd+days}));return r;}
 test('same-day encounter slot ignores optimizer noise and atomically keeps the best record',async()=>{

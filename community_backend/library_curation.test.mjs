@@ -3,6 +3,28 @@ import assert from 'node:assert/strict';
 import {clearlyDominates,trimAlternatives,groupLaunches,launchTimestamp} from '../docs/library_curation.js';
 const base={id:'a',target:'Saturn',sequence:'EJS',bodies:['Earth','Jupiter','Saturn'],model:'Shared pass',classification:'pass',start:2466519.5,c3:20,years:8,vinf:6,burns_mps:100};
 const worse={...base,id:'b',c3:35,years:12};
+
+test('small bodies trim modest material losses despite tiny arrival-speed and burn changes',()=>{
+ const a={...base,target:'Pluto',target_id:'999',bodies:['Earth','Jupiter','Pluto'],sequence:'EJX',c3:40,years:20,vinf:10.1,burns_mps:110};
+ const b={...a,id:'b',c3:45,years:21,vinf:10,burns_mps:100,start:a.start+4*365.25};
+ assert.equal(clearlyDominates(a,b),true);
+ assert.equal(clearlyDominates({...a,vinf:11},b),true);
+ assert.equal(clearlyDominates({...a,vinf:13},b),false);
+ assert.equal(clearlyDominates({...a,burns_mps:126},b),false);
+ assert.equal(clearlyDominates({...a,years:22},b),false);
+ const trimmed=trimAlternatives([b,a]);assert.equal(trimmed.hidden.get('b'),'a');
+ assert.equal(trimAlternatives([b,a],new Set(['b'])).hidden.size,0);
+});
+
+test('a long small-body trip must buy substantial arrival speed reduction per extra year',()=>{
+ const fast={...base,target:'Makemake',target_id:'20136472',sequence:'ESX',bodies:['Earth','Saturn','Makemake'],years:20,c3:120,vinf:12};
+ const slow={...fast,id:'slow',years:35,c3:125,vinf:6};
+ assert.equal(clearlyDominates(fast,slow),true); // 6 km/s does not justify 15 extra years.
+ assert.equal(clearlyDominates(fast,{...slow,vinf:4.5}),false); // 7.5 km/s preserves the tradeoff.
+ assert.equal(clearlyDominates(fast,{...slow,years:22.5,vinf:9.7}),true); // Less than 20% improvement.
+ assert.equal(clearlyDominates(fast,{...slow,years:22.5,vinf:9.6}),false);
+ assert.equal(clearlyDominates(fast,{...slow,c3:100}),false); // A lower-energy route stays available.
+});
 test('trim only material same-sequence losses without hiding speed or burn tradeoffs',()=>{
  assert.equal(clearlyDominates(base,worse),true);
  for(const change of [{vinf:5},{burns_mps:0},{c3:15},{years:7},{sequence:'EVEES'},{target:'Neptune'},{bodies:['Earth','Saturn']},{start:base.start+4*365.25},{classification:'yellow'}]){

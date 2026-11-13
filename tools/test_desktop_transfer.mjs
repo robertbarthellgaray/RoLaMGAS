@@ -17,7 +17,7 @@ test('ReachStar research handoff preserves attribution, resonance controls and d
 
 test('refreshed finite downloads reconcile public budgets, source previews and numeric file hashes',()=>{
  const review=load('data/finite_download_review.json'),accepted=review.trajectories.filter(r=>r.accepted);
- assert.equal(accepted.length,review.upgraded);assert.ok(accepted.length>=117);
+ assert.equal(accepted.length,review.upgraded);assert.ok(accepted.length+(review.removed_by_small_body_quality_policy||[]).filter(r=>r.accepted).length>=117);
  for(const row of accepted){
   const c=load('data/cases/'+row.id+'.json'),f=c.trajectory_files,r=load(f.integration_report);
   assert.ok(finiteRadiusDownload(c));assert.ok(c.original_trajectory_files);

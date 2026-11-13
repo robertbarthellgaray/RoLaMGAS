@@ -14,6 +14,22 @@ def fetch(url):
             if attempt==3:raise
             time.sleep(1+attempt)
 
+def resolve_label(body_id):
+    url='https://ssd.jpl.nasa.gov/api/horizons_lookup.api?'+urllib.parse.urlencode({'sstr':body_id})
+    data=fetch(url);matches=[r for r in data.get('result',[]) if str(r['spkid'])==body_id]
+    if len(matches)==1:
+        m=matches[0]
+        return dict(name=m['name'],horizons_id=body_id,designation=m.get('pdes'),object_type=m.get('type'),lookup_url=url)
+    # Some named dwarf planets have no exact match in Horizons Lookup. SBDB
+    # still provides the exact SPK identity; never select a fuzzy name match.
+    url='https://ssd-api.jpl.nasa.gov/sbdb.api?'+urllib.parse.urlencode({'spk':body_id})
+    obj=fetch(url).get('object',{})
+    if str(obj.get('spkid'))!=body_id or not (obj.get('shortname') or obj.get('fullname')):return None
+    kind=obj.get('orbit_class',{})
+    return dict(name=obj.get('shortname') or obj['fullname'],horizons_id=body_id,designation=obj.get('des'),
+                object_type='comet' if str(obj.get('kind','')).startswith('c') else 'asteroid',lookup_url=url,
+                orbit_class=kind.get('name'),orbit_class_code=kind.get('code'),classification_source=url)
+
 def refresh(live=False,extra=()):
     output=ROOT/'docs/data/body_names.json'
     saved=json.loads(output.read_text(encoding='utf-8')) if output.exists() else dict(schema_version=1,source='JPL Horizons Lookup API',bodies={})
@@ -34,12 +50,11 @@ def refresh(live=False,extra=()):
     ids={str(b) for row in rows for b in row['body_ids']}|set(extra)
     for body_id in sorted(ids):
         if int(body_id)<1000 or body_id in saved['bodies']:continue
-        url='https://ssd.jpl.nasa.gov/api/horizons_lookup.api?'+urllib.parse.urlencode({'sstr':body_id})
-        data=fetch(url);matches=[r for r in data.get('result',[]) if str(r['spkid'])==body_id]
-        if len(matches)!=1:
+        row=resolve_label(body_id)
+        if row is None:
             print('No exact JPL identity:',body_id,flush=True);continue
-        m=matches[0];saved['bodies'][body_id]=dict(name=m['name'],horizons_id=body_id,designation=m.get('pdes'),object_type=m.get('type'),lookup_url=url)
-        print(body_id,m['name'],flush=True)
+        saved['bodies'][body_id]=row
+        print(body_id,row['name'],flush=True)
         # Save each identity so an interrupted run can resume without repeat calls.
         output.write_text(json.dumps(saved,indent=2)+'\n',encoding='utf-8');time.sleep(.2)
     for body_id,row in saved['bodies'].items():

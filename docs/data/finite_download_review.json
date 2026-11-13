@@ -2,7 +2,7 @@
   "generated_at": "2026-11-12T18:36:46.855607+00:00",
   "publication_threshold_mps": 100.0,
   "reviewed": 129,
-  "upgraded": 117,
+  "upgraded": 116,
   "original_integrations_retained": [
     {
       "id": "claudius-uop-2045",
@@ -718,16 +718,6 @@
       "total_cruise_mps": 0.010766213325424717,
       "exported_c3": 22.805917865763178,
       "maximum_serialized_midpoint_error_km": 0.09989684581521115
-    },
-    {
-      "id": "920e1459edd4",
-      "title": "EJP \u00b7 Pluto",
-      "accepted": true,
-      "selected_days": 0.0,
-      "patch_mps": 55.25569211993089,
-      "total_cruise_mps": 55.25569211993089,
-      "exported_c3": 119.464616168287,
-      "maximum_serialized_midpoint_error_km": 0.09842323489194903
     },
     {
       "id": "9617e7f77635",
@@ -1517,6 +1507,18 @@
       "total_cruise_mps": 0,
       "exported_c3": 25.510664505873635,
       "maximum_serialized_midpoint_error_km": 0.09951592212471626
+    }
+  ],
+  "removed_by_small_body_quality_policy": [
+    {
+      "id": "920e1459edd4",
+      "title": "EJP \u00b7 Pluto",
+      "accepted": true,
+      "selected_days": 0.0,
+      "patch_mps": 55.25569211993089,
+      "total_cruise_mps": 55.25569211993089,
+      "exported_c3": 119.464616168287,
+      "maximum_serialized_midpoint_error_km": 0.09842323489194903
     }
   ]
 }

@@ -105,6 +105,8 @@ def public_record(q,c,route):
     if classification=='red':return None
     ids=body_ids(c,route)
     if not all(ids):return None
+    from trajectory_policy import public_small_body_reason
+    if public_small_body_reason(dict(body_ids=ids,dates_jd_tdb=q['dates_jd_tdb'],metrics=dict(launch_c3_km2_s2=q['launch_c3_km2_s2']))):return None
     n=len(route['bodies']);controls=[]
     for j,leg in enumerate(route.get('dsm_legs',[])):
         k=n+4*j;x=q['x']
@@ -231,8 +233,6 @@ class CommunitySync:
             if record is None:return
             key=encounter_key(record);rank=record_rank(record)
             if key in self.seen and self.seen[key]<=rank:return
-            target=int(record['body_ids'][-1]);years=(record['dates_jd_tdb'][-1]-record['dates_jd_tdb'][0])/365.25
-            if (target==999 or target>=1000) and years>=60:return
             self.queue.put_nowait(record);self.seen[key]=rank
         except (ValueError,KeyError,TypeError,queue.Full):pass
     def _work(self):

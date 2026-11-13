@@ -36,9 +36,17 @@ advanced local searches can override `max_venus_c3`. The worker rejects new
 above-policy submissions, and the website filters legacy copies. See
 `studies/early2030s_low_c3/README.md` for the audit and replacement examples.
 
-Public small-body flights must be shorter than 60 Julian years (365.25 days each),
-measured from their actual encounter epochs. Another 234 historical records at
-or above that duration were purged on 2026-11-03. Eight-planet targets are exempt.
+Public small-body flights must be shorter than 40 Julian years (365.25 days each).
+Flights above C3 170 km²/s² must take less than 25 years. These limits apply to
+all minor bodies, physical Pluto and the Pluto barycenter. The live API, website,
+client sharing and history imports use these rules. On 2026-11-12, migration
+`0003_small_body_quality.sql` removed 3,057 entries, preserving complete rows in
+the private `quality_purge_20261112` recovery table. Insert/update triggers
+prevent old clients from restoring over-limit entries.
+
+The previous limit was 60 Julian years, measured from actual encounter epochs.
+234 historical records at or above that duration were purged on 2026-11-03.
+Eight-planet targets are exempt from these small-body limits.
 
 ## Same-day encounter deduplication
 
