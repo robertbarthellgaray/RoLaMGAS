@@ -1,0 +1,102 @@
+{
+  "entry_jd_tdb": 2464566.807655844,
+  "arrival_jd_tdb": 2464659.35169173,
+  "saturn_soi_radius_km": 52119890.74816048,
+  "soi_delta_v_vector_ecliptic_j2000_kms": [
+    -0.04741130949078842,
+    -0.2782502695204778,
+    0.03886626898206291
+  ],
+  "soi_delta_v_kms": 0.28492390496487996,
+  "state_before_soi_burn_saturn_relative_km_kms": [
+    -16377599.765281439,
+    -49255286.98647666,
+    4708921.469748775,
+    2.108117198385636,
+    6.04156003028827,
+    -0.5335500295392384
+  ],
+  "state_after_soi_burn_saturn_relative_km_kms": [
+    -16377599.765281439,
+    -49255286.98647666,
+    4708921.469748775,
+    2.0607058888948475,
+    5.763309760767792,
+    -0.49468376055717544
+  ],
+  "titan_relative_entry_state_km_kms": [
+    3342.4189966229023,
+    -1822.7742072219262,
+    -536.5712739969022,
+    -3.4085106509448098,
+    7.645434990741997,
+    0.16825154665051367
+  ],
+  "titan_entry_altitude_km": 1269.999978409293,
+  "titan_relative_inertial_entry_speed_kms": 8.372510354619848,
+  "entry_flight_path_angle_deg": -52.152196836292575,
+  "independent_endpoint_error_km": 0.0011891505694706366,
+  "minimum_sampled_saturn_altitude_km": 1143711.9739447169,
+  "coast_days": 92.54403588594869,
+  "iterations": 8,
+  "endpoint_error_km": 3.561354365908791e-05,
+  "optimizer_success": true,
+  "model": "Sun-only upstream coast; Saturn plus differential Titan point-mass gravity inside Saturn SOI. No solar tide, other moons, Saturn J2/rings, atmosphere or spacecraft navigation uncertainty.",
+  "entry_geometry": "Illustrative inbound shell point, not an optimized entry corridor or landing site. Entry speed is Titan-relative inertial, not atmosphere-relative.",
+  "source_candidate_id": "6ef2b7edc240",
+  "source_sequence": "EdvES",
+  "heliocentric_seed": "moon",
+  "upstream_departure_velocity_change_kms": [
+    0.005846332551481481,
+    -0.008312668268281698,
+    0.03708872341492775
+  ],
+  "upstream_departure_velocity_change_magnitude_kms": 0.03845586382582011,
+  "upstream_note": "Final solar Lambert endpoint changed from planet to Titan center. This departure-vector change requires upstream flyby/DSM reoptimization; it is not a free correction or a verified new mission.",
+  "soi_burn_date": "2035-08-27T07:23:01 TDB",
+  "arrival_date": "2035-11-27T20:26:26 TDB",
+  "source_designed_cruise_delta_v_kms": 0.41472303876110395,
+  "ephemeris_sources": {
+    "Saturn": [
+      {
+        "body": "Saturn",
+        "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27699%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2461406.5%27&STOP_TIME=%27JD2481406.5%27&STEP_SIZE=%271440+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+        "sha256": "123eedde17a23858bbf827b1b59135c0c92ea7dd2db3de02b7c6532668118934",
+        "raw_file": "Saturn_123eedde17a23858.txt",
+        "target_identity": {
+          "name": "Saturn",
+          "id": "699",
+          "command": "699",
+          "kind": "planet"
+        },
+        "npz_sha256": "c5cb8f34052190b96d2d9e6fdcb9240dad879a882fe12e7ef17bc5bb4d151e2c",
+        "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+        "start_jd": 2461406.5,
+        "end_jd": 2481406.5,
+        "max_step_days": 1.0,
+        "records": 20001
+      }
+    ],
+    "Titan": [
+      {
+        "body": "Titan",
+        "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27606%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2463656.2916666665%27&STOP_TIME=%27JD2464662.4166666665%27&STEP_SIZE=%2760+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+        "sha256": "81b76e4c640a3246d49b31655cf8aeecd5826e84389fbc2303e15bd183566a00",
+        "raw_file": "object_606_81b76e4c640a3246.txt",
+        "target_identity": {
+          "name": "Titan",
+          "id": "606",
+          "command": "606",
+          "kind": "natural_satellite",
+          "parent_body": "Saturn"
+        },
+        "npz_sha256": "a8f7ba5e29f637e8e177e78ef6836b3a8b617236cc0f77fb8d29bdce587c3959",
+        "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+        "start_jd": 2463656.2916666665,
+        "end_jd": 2464662.4166666665,
+        "max_step_days": 0.041666666666666664,
+        "records": 24148
+      }
+    ]
+  }
+}
