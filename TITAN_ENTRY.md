@@ -7,17 +7,22 @@ local CPU and does not need an AI service. The bundled reference atmosphere work
 offline. This is a physics-based reference model, **not the operational Dragonfly
 EDL simulation or a validated landing prediction**.
 
-From this checkout:
+From this checkout, the bundled sample runs offline without preparing a JPL cache:
 
 ```powershell
-.\.venv\Scripts\python.exe -X utf8 titan_entry.py --state runs\dragonfly_titan_site\arrival_state.json --cache cache --output runs\titan_entry\ballistic
+.\.venv\Scripts\python.exe -X utf8 titan_entry.py --state docs\downloads\dragonfly-titan-entry-2035-reference-input-state.json --output runs\titan_entry\ballistic
 ```
 
 Default: constant ballistic coefficient 70 kg/m², zero lift, zero winds relative
 to rigid corotation. It stops at Mach 1.5, the approximate supersonic-parachute
 handoff. It does not silently continue a bare aeroshell to the surface.
 
-For a **separately labeled illustrative parachute continuation** to 800 m:
+Add `--scenario illustrative-descent` for a **separately labeled illustrative
+parachute continuation** to 800 m. Replace `--state` with a new arrival-state
+JSON to propagate another incoming trajectory.
+
+The following local-study example also adds Saturn tides and joins the cruise;
+it requires those generated `runs` files and the prepared JPL cache:
 
 ```powershell
 .\.venv\Scripts\python.exe -X utf8 titan_entry.py --state runs\dragonfly_titan_site\arrival_state.json --cache cache --prefix runs\dragonfly_titan_site\trajectory.xyzv --scenario illustrative-descent --output runs\titan_entry\site_reference_descent
