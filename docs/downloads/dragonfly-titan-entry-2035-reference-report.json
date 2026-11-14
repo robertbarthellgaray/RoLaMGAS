@@ -1,0 +1,248 @@
+{
+  "model": "Titan 3-DOF reference-column entry; not an official Dragonfly EDL prediction",
+  "scenario": "illustrative-descent",
+  "outcome": "illustrative_lander_release",
+  "completed": true,
+  "epoch_jd_tdb": 2464659.3516917247,
+  "entry_date": "2035-11-27T20:26:26 TDB",
+  "duration_seconds": 8650.647272718717,
+  "rows": 1679,
+  "initial_state_km_kms": [
+    763.6247475340497,
+    -3240.23813403002,
+    1923.5161200170987,
+    -3.229422299470434,
+    7.845760361464798,
+    0.053734184258758866
+  ],
+  "final_state_km_kms": [
+    290.11586661006027,
+    -1791.5446383378824,
+    1827.4873204440792,
+    0.010745017137284155,
+    0.00238156852613323,
+    -0.0033224336501579492
+  ],
+  "initial_location": {
+    "latitude_deg": 3.9999991216745143,
+    "longitude_east_deg": 162.49999802539594,
+    "rotating_frame_speed_kms": 8.488991043485361,
+    "frame": "IAU_TITAN text-PCK; planetocentric latitude, east-positive longitude",
+    "source": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+    "note": "Body-fixed state subpoint, not a landing prediction. Rotating-frame speed omits winds."
+  },
+  "final_location": {
+    "latitude_deg": 18.34956377356487,
+    "longitude_east_deg": 154.21985352887435,
+    "rotating_frame_speed_kms": 0.0028036977415522137,
+    "frame": "IAU_TITAN text-PCK; planetocentric latitude, east-positive longitude",
+    "source": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+    "note": "Body-fixed state subpoint, not a landing prediction. Rotating-frame speed omits winds."
+  },
+  "initial_air_speed_mps": 8488.99104348536,
+  "initial_air_relative_flight_path_angle_deg": -58.35333611322835,
+  "peak_dynamic_pressure": {
+    "seconds": 163.0,
+    "julian_date_tdb": 2464659.353578299,
+    "phase": "Aeroshell",
+    "altitude_m": 210045.43093599472,
+    "latitude_deg": 16.718038050762335,
+    "longitude_east_deg": 155.21581531050222,
+    "air_relative_flight_path_angle_deg": -44.42776045877242,
+    "density_kg_m3": 0.0011706511678619804,
+    "temperature_k": 180.10295626461598,
+    "pressure_pa": 62.94380309158175,
+    "air_speed_mps": 4917.730414370512,
+    "mach": 17.89955585497437,
+    "dynamic_pressure_pa": 14155.55631599709,
+    "sensed_deceleration_g0": 20.620928970206208,
+    "ballistic_coefficient_kg_m2": 70.0,
+    "zonal_wind_mps": 0.0,
+    "meridional_wind_mps": 0.0
+  },
+  "peak_sensed_deceleration": {
+    "seconds": 163.0,
+    "julian_date_tdb": 2464659.353578299,
+    "phase": "Aeroshell",
+    "altitude_m": 210045.43093599472,
+    "latitude_deg": 16.718038050762335,
+    "longitude_east_deg": 155.21581531050222,
+    "air_relative_flight_path_angle_deg": -44.42776045877242,
+    "density_kg_m3": 0.0011706511678619804,
+    "temperature_k": 180.10295626461598,
+    "pressure_pa": 62.94380309158175,
+    "air_speed_mps": 4917.730414370512,
+    "mach": 17.89955585497437,
+    "dynamic_pressure_pa": 14155.55631599709,
+    "sensed_deceleration_g0": 20.620928970206208,
+    "ballistic_coefficient_kg_m2": 70.0,
+    "zonal_wind_mps": 0.0,
+    "meridional_wind_mps": 0.0
+  },
+  "events": [
+    {
+      "name": "Aeroshell handoff",
+      "seconds": 234.13552306749057,
+      "epoch_jd_tdb": 2464659.3544016266,
+      "altitude_m": 134377.47070809593,
+      "state_km_kms": [
+        212.6233740539991,
+        -1894.3138172330416,
+        1925.0434534941116,
+        -0.12848684051353096,
+        0.36076566092862866,
+        -0.02837952498560114
+      ]
+    },
+    {
+      "name": "Illustrative 8.25 m drogue handoff",
+      "seconds": 7211.746681998378,
+      "epoch_jd_tdb": 2464659.435161015,
+      "altitude_m": 5000.0,
+      "state_km_kms": [
+        274.6429616189767,
+        -1795.04106327553,
+        1832.3647241714225,
+        0.010535753214177535,
+        0.003959469118337123,
+        -0.004969120402250793
+      ]
+    },
+    {
+      "name": "Illustrative 16.7 m main handoff",
+      "seconds": 8650.647272718717,
+      "epoch_jd_tdb": 2464659.451814957,
+      "altitude_m": 800.0,
+      "state_km_kms": [
+        290.11586661006027,
+        -1791.5446383378824,
+        1827.4873204440792,
+        0.010745017137284155,
+        0.00238156852613323,
+        -0.0033224336501579492
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "name": "Aeroshell",
+      "beta": 70.0,
+      "trigger": "mach",
+      "value": 1.5,
+      "start": 0.0,
+      "end": 234.13552306749057
+    },
+    {
+      "name": "Illustrative 8.25 m drogue",
+      "beta": 43.30163098655606,
+      "trigger": "altitude",
+      "value": 5000.0,
+      "start": 234.13552306749057,
+      "end": 7211.746681998378
+    },
+    {
+      "name": "Illustrative 16.7 m main",
+      "beta": 15.059240503390948,
+      "trigger": "altitude",
+      "value": 800.0,
+      "start": 7211.746681998378,
+      "end": 8650.647272718717
+    }
+  ],
+  "energy_work_balance_error_j_kg": 0.000148150692695026,
+  "force_model": "Spherical Titan gravity; aerodynamic force relative to rigidly rotating atmosphere plus specified winds; JPL-prescribed differential Saturn gravity.",
+  "atmosphere": {
+    "file": "hasi_reference.csv",
+    "sha256": "825b680a88a5542c87be7b92ce4a9affccbc402411cc36fa6fc6c53602bb808e",
+    "density_multiplier": 1.0,
+    "metadata": {
+      "model": "Huygens HASI 2005 reference column; corrected archived ACC entry density and descent density",
+      "dataset": "HP-SSA-HASI-2-3-4-MISSION-V1.1",
+      "range_altitude_m": [
+        3.0,
+        1380156.0
+      ],
+      "rows": 2727,
+      "sources": [
+        {
+          "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/ACC/HASI_L4_ACCE_DENSITY.LBL",
+          "sha256": "59d45a57c4497cbe49b0e6d476c4a4437c5df6f1a5ac7d5d598b22157194f678",
+          "bytes": 3792
+        },
+        {
+          "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/ACC/HASI_L4_ACCE_DENSITY.TAB",
+          "sha256": "92b052c6d256dfbfa5dba8ffc08c11e03bd57e8d57af654af8adfdafd47b7095",
+          "bytes": 42826
+        },
+        {
+          "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/PROFILES/HASI_L4_ATMO_PROFILE_ENTRY.LBL",
+          "sha256": "0b7a4ecb3e615b3fa53afba2fddc9ac0325f4d043784f5f99e647902f0e7d414",
+          "bytes": 4707
+        },
+        {
+          "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/PROFILES/HASI_L4_ATMO_PROFILE_ENTRY.TAB",
+          "sha256": "172759400c9f8b1e39ca5461c94baa2b7321bec36995dbe9259dda80ed93a197",
+          "bytes": 44639
+        },
+        {
+          "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/PROFILES/HASI_L4_ATMO_PROFILE_DESCEN.LBL",
+          "sha256": "0b688c2312fb7847e74f449fe41f2b6a7cf7901befcdff8cbc5f58d97dfceb44",
+          "bytes": 4747
+        },
+        {
+          "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/PROFILES/HASI_L4_ATMO_PROFILE_DESCEN.TAB",
+          "sha256": "86273ac14f3ec3a7a52ffa1272a5c0a38f45f70456144c62bdb2a1ce4f9c091f",
+          "bytes": 96013
+        }
+      ],
+      "archived_upper_density_samples": 1127,
+      "eos_fallback_rows": 0,
+      "data_caveat": "The entry profile TAB lacks density despite its label. Its 911 upper samples use the corrected HASI_L4_ACCE_DENSITY.TAB product at exactly matching altitudes; 1,816 lower samples retain the descent density product. No EOS-derived densities are needed in the bundled baseline.",
+      "interpolation": "PCHIP of log density and log pressure; PCHIP temperature. The 146.797\u2013157.3182 km gap is interpolated, not measured. Below the lowest 3 m, hold the lowest profile value to the surface.",
+      "limitations": [
+        "A single 2005 reference column, not a forecast of Titan weather in 2034/2035.",
+        "No measured wind column is supplied here; baseline winds are zero relative to rigid corotation.",
+        "Archived entry densities are instrument-team retrievals from accelerometer deceleration; they inherit the original retrieval assumptions.",
+        "No uncertainty distribution is inferred from this single profile. Density scalings are sensitivity cases, not confidence intervals."
+      ],
+      "gram_upgrade": "Titan-GRAM 2026 is available by request from https://software.nasa.gov/software/MFS-33888-1 ; CSV profiles can replace this reference column."
+    }
+  },
+  "parameters": {
+    "beta_kg_m2": 70.0,
+    "lift_to_drag": 0.0,
+    "bank_deg": 0.0,
+    "zonal_wind_mps": 0.0,
+    "meridional_wind_mps": 0.0
+  },
+  "assumptions": [
+    "Constant aeroshell ballistic coefficient; gamma=1.4 and constant 98% N2 / 2% CH4 gas constant for Mach estimates.",
+    "Zero lift by default. No six-DOF attitude, reefing, heating, ablation or terrain.",
+    "Drogue diameter 8.25 m and main diameter 16.7 m from NASA 2025; each CD=0.7 is an analyst assumption. Mass is held at the published CBE 2309 kg.",
+    "During drogue descent, assumed subsonic capsule CD=1.0 is retained. At 5 km main-chute drag replaces the combined model. No inflation, official drag database or mass-jettison model is included; release speed is computed, not fitted.",
+    "Stops at illustrative 800 m lander release; powered flight and touchdown are not propagated."
+  ],
+  "descent_geometry_source": "https://ntrs.nasa.gov/citations/20240014477",
+  "limitations": [
+    "HASI is a single 2005 atmospheric column, not 2034/2035 weather.",
+    "No heat flux or thermal survivability prediction. Titan radiative heating cannot be replaced by an Earth heating formula.",
+    "No validated parachute/attitude/navigation database; full-descent mode is an illustrative scenario.",
+    "No powered flight, touchdown or landing ellipse prediction."
+  ],
+  "reference": "https://ntrs.nasa.gov/citations/20240007259",
+  "input_state_sha256": "a91dfbdd2dafaf76eada49d4a96e1947a4935507e55b646f2c875e01deb292be",
+  "full_trajectory_join": {
+    "rows": 11288,
+    "position_join_error_km": 0.0,
+    "velocity_join_error_kms": 4.563398575165057e-13,
+    "coordinates": "Heliocentric Ecliptic J2000; JD TDB, km, km/s",
+    "prefix_sha256": "7b3c089155fb031746b0d8f981801cddaf53d62376df68727972bb5983fbc0f6"
+  },
+  "reference_load_check": {
+    "limit_g0": 12.0,
+    "predicted_peak_g0": 20.620928970206208,
+    "exceeds_reference_limit": true,
+    "source": "https://ntrs.nasa.gov/citations/20240014477",
+    "note": "Published Dragonfly study constraint compared with the simplified model; not a vehicle certification or survivability test."
+  }
+}

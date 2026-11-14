@@ -33,3 +33,12 @@ contain orbital/frame/rotation fields derived from Celestia's
 checksums are retained in the JSON snapshots. No meshes or textures are copied. The
 derived snapshot is distributed under GPLv3, permitted by the original
 "or later" license grant; the GPLv3 text is included as `LICENSE`.
+
+Titan atmosphere reference data: ESA Huygens HASI team, dataset
+HP-SSA-HASI-2-3-4-MISSION-V1.1, served by the PDS Planetary Atmospheres Node:
+https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/PROFILES/ . The bundled numerical
+table retains archived descent densities and matches the corrected accelerometer
+density product to the upper pressure/temperature profile at identical altitudes. Raw-file
+URLs, SHA-256 checksums and the missing entry-density-column caveat are in
+`model_assets/titan/hasi_reference.json`. This is not a NASA Titan-GRAM implementation;
+no GRAM source or proprietary aerodynamic database is included.

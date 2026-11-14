@@ -74,4 +74,4 @@ def titan_geography(epoch,relative_state):
         rotating_frame_speed_kms=float(np.linalg.norm(state[3:]-np.cross(omega,state[:3]))),
         frame='IAU_TITAN text-PCK; planetocentric latitude, east-positive longitude',
         source='https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc',
-        note='Entry-interface subpoint or vacuum impact site, not a landing prediction. Rotating-frame speed omits winds.')
+        note='Body-fixed state subpoint, not a landing prediction. Rotating-frame speed omits winds.')

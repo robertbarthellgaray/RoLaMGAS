@@ -62,6 +62,10 @@ def main():
     if pathfile.exists():
         old=json.loads(pathfile.read_text())
         if old.get('integration_validation'):case['integration_validation']=old['integration_validation']
+        if old.get('atmospheric_variant'):
+            case['atmospheric_variant']=old['atmospheric_variant']
+            urls={item['url'] for item in case['additional_downloads']}
+            case['additional_downloads']+=[item for item in old.get('additional_downloads',[]) if item['url'] not in urls]
     pathfile.write_text(json.dumps(case,separators=(',',':')),encoding='utf-8')
     scale=90/max(1.,float(np.max(np.linalg.norm(rows[:,1:3]/AU,axis=1))))
     poly=lambda points:' '.join(f'{160+scale*p[0]:.2f},{105-scale*p[1]:.2f}' for p in points)

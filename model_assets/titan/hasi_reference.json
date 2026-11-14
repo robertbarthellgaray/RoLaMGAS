@@ -1,0 +1,52 @@
+{
+  "model": "Huygens HASI 2005 reference column; corrected archived ACC entry density and descent density",
+  "dataset": "HP-SSA-HASI-2-3-4-MISSION-V1.1",
+  "range_altitude_m": [
+    3.0,
+    1380156.0
+  ],
+  "rows": 2727,
+  "sources": [
+    {
+      "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/ACC/HASI_L4_ACCE_DENSITY.LBL",
+      "sha256": "59d45a57c4497cbe49b0e6d476c4a4437c5df6f1a5ac7d5d598b22157194f678",
+      "bytes": 3792
+    },
+    {
+      "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/ACC/HASI_L4_ACCE_DENSITY.TAB",
+      "sha256": "92b052c6d256dfbfa5dba8ffc08c11e03bd57e8d57af654af8adfdafd47b7095",
+      "bytes": 42826
+    },
+    {
+      "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/PROFILES/HASI_L4_ATMO_PROFILE_ENTRY.LBL",
+      "sha256": "0b7a4ecb3e615b3fa53afba2fddc9ac0325f4d043784f5f99e647902f0e7d414",
+      "bytes": 4707
+    },
+    {
+      "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/PROFILES/HASI_L4_ATMO_PROFILE_ENTRY.TAB",
+      "sha256": "172759400c9f8b1e39ca5461c94baa2b7321bec36995dbe9259dda80ed93a197",
+      "bytes": 44639
+    },
+    {
+      "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/PROFILES/HASI_L4_ATMO_PROFILE_DESCEN.LBL",
+      "sha256": "0b688c2312fb7847e74f449fe41f2b6a7cf7901befcdff8cbc5f58d97dfceb44",
+      "bytes": 4747
+    },
+    {
+      "url": "https://atmos.nmsu.edu/PDS/data/hphasi_0001/DATA/PROFILES/HASI_L4_ATMO_PROFILE_DESCEN.TAB",
+      "sha256": "86273ac14f3ec3a7a52ffa1272a5c0a38f45f70456144c62bdb2a1ce4f9c091f",
+      "bytes": 96013
+    }
+  ],
+  "archived_upper_density_samples": 1127,
+  "eos_fallback_rows": 0,
+  "data_caveat": "The entry profile TAB lacks density despite its label. Its 911 upper samples use the corrected HASI_L4_ACCE_DENSITY.TAB product at exactly matching altitudes; 1,816 lower samples retain the descent density product. No EOS-derived densities are needed in the bundled baseline.",
+  "interpolation": "PCHIP of log density and log pressure; PCHIP temperature. The 146.797\u2013157.3182 km gap is interpolated, not measured. Below the lowest 3 m, hold the lowest profile value to the surface.",
+  "limitations": [
+    "A single 2005 reference column, not a forecast of Titan weather in 2034/2035.",
+    "No measured wind column is supplied here; baseline winds are zero relative to rigid corotation.",
+    "Archived entry densities are instrument-team retrievals from accelerometer deceleration; they inherit the original retrieval assumptions.",
+    "No uncertainty distribution is inferred from this single profile. Density scalings are sensitivity cases, not confidence intervals."
+  ],
+  "gram_upgrade": "Titan-GRAM 2026 is available by request from https://software.nasa.gov/software/MFS-33888-1 ; CSV profiles can replace this reference column."
+}

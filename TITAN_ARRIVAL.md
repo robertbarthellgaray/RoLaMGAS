@@ -107,3 +107,7 @@ It ranks nominal close approaches without a Titan terminal constraint; see
 The published **Dragonfly-style Titan entry** case retains the earlier EdvES
 transfer and targets entry in November 2035. It is an illustrative reconstruction,
 not the official operational Dragonfly ephemeris or a landing simulation.
+
+For a separate atmospheric continuation from the saved Titan-relative endpoint,
+see [TITAN_ENTRY.md](TITAN_ENTRY.md). Default propagation stops at the Mach-1.5
+parachute handoff; its optional full-descent scenario is explicitly illustrative.

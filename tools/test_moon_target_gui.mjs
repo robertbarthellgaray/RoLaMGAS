@@ -53,3 +53,14 @@ test('published Titan branch has a full finite trajectory and an honest 2035 lab
  assert.ok(Math.abs(c.burns.reduce((sum,b)=>sum+b.magnitude_mps,0)-c.burns_mps)<1e-6);
  assert.ok(c.burns_mps<500);assert.ok(r.source_join_position_error_km<.01);
 });
+test('atmospheric downloads disclose assumptions and carry a continuous full-path join',()=>{
+ const root=new URL('../docs/',import.meta.url),read=p=>JSON.parse(fs.readFileSync(new URL(p,root),'utf8'));
+ const c=read('data/cases/dragonfly-titan-entry-2035.json'),a=c.atmospheric_variant;
+ assert.equal(a.official_trajectory,false);assert.equal(a.landing_model_validated,false);assert.match(a.banner,/not a validated/);
+ for(const item of a.files)assert.equal(createHash('sha256').update(fs.readFileSync(new URL(item.url,root))).digest('hex'),item.sha256);
+ const report=read(a.files.find(f=>f.url.endsWith('-report.json')).url);
+ assert.equal(report.scenario,'illustrative-descent');assert.equal(report.atmosphere.metadata.eos_fallback_rows,0);
+ assert.ok(report.full_trajectory_join.position_join_error_km<.01);assert.ok(report.full_trajectory_join.velocity_join_error_kms<1e-6);
+ assert.equal(report.outcome,'illustrative_lander_release');assert.match(report.assumptions.join(' '),/8.25 m/);
+ assert.equal(report.reference_load_check.exceeds_reference_limit,report.reference_load_check.predicted_peak_g0>12);
+});
