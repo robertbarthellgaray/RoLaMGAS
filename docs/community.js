@@ -6,8 +6,22 @@ export function state(r,v,dt){if(!dt)return [r.slice(),v.slice()];const radius=M
 
 export function position(r,v,dt){return state(r,v,dt)[0]}
 export const bodyNames={'9':'Pluto','20090377':'Sedna','20136108':'Haumea','20136472':'Makemake','1000036':'1P/Halley','199':'Mercury','299':'Venus','399':'Earth','499':'Mars','599':'Jupiter','699':'Saturn','799':'Uranus','899':'Neptune','999':'Pluto','20000001':'Ceres','20000624':'624 Hektor','20013579':'13579 Allodd','20136199':'Eris','20420356':'420356 Praamzius','20486958':'Arrokoth','54667839':'2026 ED138','50666516':'2012 VP113'};
-export function registerBodyNames(document){for(const [id,row] of Object.entries(document?.bodies||{}))if(String(row.horizons_id)===id&&typeof row.name==='string'&&row.name.length<161&&!bodyNames[id])bodyNames[id]=row.name;}
-export const bodyName=id=>bodyNames[id]||(Number(id)>=20000000&&Number(id)<30000000?'Asteroid '+(Number(id)-20000000):'Horizons object '+id);
+const fixedBodyNames=new Set(Object.keys(bodyNames));
+const registeredAliases=new Map();
+export function numberedBodyLabel(name,id){
+ const number=Number(id)-20000000;
+ if(!Number.isInteger(number)||number<1||number>=10000000)return String(name).replace(/^\((.*)\)$/,'$1');
+ const text=String(name).replace(new RegExp('^\\(?'+number+'\\)?\\s+'),'').trim().replace(/^\((.*)\)$/,'$1');
+ return text+' ('+number+')';
+}
+for(const [id,name] of Object.entries(bodyNames))if(!['20000001','20090377','20136108','20136199','20136472'].includes(id))bodyNames[id]=numberedBodyLabel(name,id);
+export function registerBodyNames(document){for(const [id,row] of Object.entries(document?.bodies||{}))if(String(row.horizons_id)===id&&typeof row.name==='string'&&row.name.length<161){registeredAliases.set(id,[row.name,row.full_name].filter(Boolean));if(!fixedBodyNames.has(id))bodyNames[id]=numberedBodyLabel(row.name,id);}}
+export const bodyName=id=>bodyNames[id]||(Number(id)>20000000&&Number(id)<30000000?'Minor planet ('+(Number(id)-20000000)+') · name pending':'JPL object '+id+' · name pending');
+export function matchesBodyLabel(id,label){
+ id=String(id);const aliases=[id,bodyName(id),...(registeredAliases.get(id)||[])];
+ if(Number(id)>20000000&&Number(id)<30000000){const number=String(Number(id)-20000000);aliases.push(number,'Asteroid '+number,'Minor planet ('+number+')');}
+ return aliases.some(value=>value.toLocaleLowerCase()===String(label).toLocaleLowerCase());
+}
 const epoch=jd=>new Date((jd-2440587.5)*86400000).toISOString();
 export function missionTiming(record){const dates=record.dates_jd_tdb;if(!Array.isArray(dates)||dates.length<2||!dates.every(Number.isFinite)||dates.at(-1)<=dates[0])throw Error('Invalid mission epochs');const days=dates.at(-1)-dates[0];return {departure:epoch(dates[0]).slice(0,10),arrival:epoch(dates.at(-1)).slice(0,10),days,years:days/365.25}}
 export function mergeLibrary(archive,live,target,min=0,max=1e9){const records=new Map();for(const r of [...archive,...live])if(r?.id&&r.body_ids?.at(-1)===target&&r.metrics?.launch_c3_km2_s2>=min&&r.metrics.launch_c3_km2_s2<=max)records.set(r.id,r);return [...records.values()]}

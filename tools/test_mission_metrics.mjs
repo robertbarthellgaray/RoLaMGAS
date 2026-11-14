@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import '../mission_metrics.js';
-import {bodyName,registerBodyNames} from '../docs/community.js';
+import {bodyName,registerBodyNames,numberedBodyLabel,matchesBodyLabel} from '../docs/community.js';
 const m=globalThis.MissionMetrics;
 test('circular parking injection satisfies Earth hyperbolic energy and separates cruise burns',()=>{
  const p=m.parkingInjection(6.25,200,'Earth');assert.ok(Math.abs(p.deltaVKms-3.5)<.01);
@@ -28,7 +28,18 @@ test('public labels use exact JPL identities, including the previously swapped s
  const names=JSON.parse(fs.readFileSync(new URL('../docs/data/body_names.json',import.meta.url),'utf8'));registerBodyNames(names);
  assert.match(bodyName('20225088'),/Gonggong/);assert.match(bodyName('20469219'),/Kamo/);assert.match(bodyName('20010253'),/Westerwald/);
  assert.equal(bodyName('54667839'),'2026 ED138');assert.equal(bodyName('50666516'),'2012 VP113');
- assert.equal(bodyName('20999999'),'Asteroid 999999');
+ assert.equal(bodyName('20999999'),'Minor planet (999999) · name pending');
+});
+
+test('minor planets show official names before their catalogue numbers, with exact IDs',()=>{
+ const names=JSON.parse(fs.readFileSync(new URL('../docs/data/body_names.json',import.meta.url),'utf8'));registerBodyNames(names);
+ assert.equal(bodyName('20001036'),'Ganymed (1036)');assert.equal(bodyName('20145452'),'Ritona (145452)');assert.equal(bodyName('20055576'),'Amycus (55576)');
+ registerBodyNames({bodies:{'20999998':{horizons_id:'20999998',name:'999998 (2020 AB1)'},'20999997':{horizons_id:'20001036',name:'wrong identity'}}});
+ assert.equal(bodyName('20999998'),'2020 AB1 (999998)');assert.match(bodyName('20999997'),/name pending/);
+ assert.notEqual(bodyName('503'),bodyName('20001036'));
+ assert.equal(numberedBodyLabel('(2014 PN70)','50713036'),'2014 PN70');
+ assert.equal(matchesBodyLabel('20001036','Asteroid 1036'),true);assert.equal(matchesBodyLabel('20001036','1036 Ganymed'),true);assert.equal(matchesBodyLabel('20001036','1036'),true);
+ assert.equal(matchesBodyLabel('20001036','55576'),false);
 });
 test('desktop and public site use byte-identical scientific display calculations',()=>{
  assert.equal(fs.readFileSync(new URL('../mission_metrics.js',import.meta.url),'utf8'),fs.readFileSync(new URL('../docs/mission_metrics.js',import.meta.url),'utf8'));
