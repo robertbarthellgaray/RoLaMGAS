@@ -11,7 +11,7 @@
 *.glb binary
 
 # Preserve the byte-level provenance hash of the bundled atmospheric table.
-model_assets/titan/*.csv -text
+model_assets/titan/*.csv -text whitespace=cr-at-eol
 
 # Keep published numeric download checksums stable on every platform.
 docs/downloads/*.csv text eol=lf
