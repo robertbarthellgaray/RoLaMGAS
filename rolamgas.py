@@ -55,7 +55,7 @@ def main():
         sys.stderr=sys.stdout
     if len(sys.argv)>2 and sys.argv[1]=='--rolamgas-module':
         module=sys.argv[2]
-        if module not in ('gui_worker','integrate_export','moon_screen','mission_search','baseline_cache'):
+        if module not in ('gui_worker','integrate_export','moon_screen','moon_targeting','mission_search','baseline_cache'):
             raise ValueError('Unsupported worker module')
         sys.argv=[module+'.py',*sys.argv[3:]]
         import runpy

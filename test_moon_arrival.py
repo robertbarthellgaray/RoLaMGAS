@@ -2,9 +2,12 @@ import bootstrap  # noqa: F401
 import unittest
 import numpy as np
 from moon_arrival import (SATURN_GM,relative_acceleration,point_mass_gradient,
-                          illustrative_entry_normal,propagate,shoot)
+                          illustrative_entry_normal,propagate,shoot,MoonSystem)
 
 class MoonArrivalTests(unittest.TestCase):
+    def test_stop_interrupts_a_numerical_step(self):
+        with self.assertRaises(InterruptedError):
+            propagate([1e6,0,0,0,5,0],1000,lambda t:np.array([1e7,0,0]),system=MoonSystem(cancelled=lambda:True))
     def test_differential_acceleration_has_the_indirect_term(self):
         r=np.array([100.,-20.,30.]);m=np.array([1e6,2e5,-3e5]);mu=9000.
         actual=relative_acceleration(r,m,primary_mu=0.,moon_mu=mu)

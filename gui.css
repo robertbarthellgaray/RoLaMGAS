@@ -31,3 +31,5 @@ td.failure{color:#ff9fad}
 
 .mission-name-editor{padding:16px 24px;border-top:1px solid #294052;display:flex;gap:12px;align-items:end;flex-wrap:wrap}.mission-name-editor label{flex:1;min-width:200px}.mission-name-editor input{display:block;width:100%;margin-top:6px}.mission-name-editor p{flex-basis:100%;margin:0}.card-title{overflow-wrap:anywhere}#candidateSearch{min-width:210px;max-width:330px}
 .dwarf-patch-controls{max-width:310px}.dwarf-patch-controls .hint{margin:7px 0}#dwarfPatchDialog{max-width:680px}#dwarfPatchDialog p{line-height:1.6}#dwarfPatchDialog input{display:block;width:100%;margin:8px 0}#dwarfPatchDialog .modal-head{padding:0 0 12px}
+
+#moonTargetMenu{border:1px solid var(--line,#294557);padding:14px;margin:12px 0;border-radius:8px}#moonTargetMenu summary{cursor:pointer;font-weight:600}.moon-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.moon-branch-preview{width:100%;max-width:720px;height:auto;margin-top:16px}

@@ -53,6 +53,7 @@ class App:
         self.building = set()
         self.archive_errors = {}
         self.integrations = {}
+        self.moon_jobs = {}
         self.targets_path = HERE/'resolved_targets.json'
         self.targets = read_json(self.targets_path,{})
         self.cache = HERE/'cache'
@@ -113,7 +114,8 @@ class App:
         for p in (RESOURCE_ROOT/'examples').glob('*.json'):
             c = read_json(p,{})
             presets.append(dict(id=p.stem,target=c.get('target'),name=p.stem.replace('_',' ').title()))
-        return dict(version=APP_VERSION,community=community_settings(),minimum_c3_floor=HARD_MIN_C3,token=self.token,planets=[p for p in BODIES if p!='Earth'],
+        from moon_targets import target_options
+        return dict(version=APP_VERSION,moon_targets={body:target_options(body) for body in BODIES if target_options(body)},community=community_settings(),minimum_c3_floor=HARD_MIN_C3,token=self.token,planets=[p for p in BODIES if p!='Earth'],
                     routes=[dict(id=r['id'],target=r['target'],bodies=r['bodies'],dsm_legs=r['dsm_legs']) for r in db['sequences']],
                     custom_routes=['EX','EdvEX','EVX','EVEX','EVEEX','EJX','EdvEJX','EVEEJX','ESX','EJSX'],
                     presets=presets,runs=self.catalog(),cpu_count=os.cpu_count() or 2,active=self.active)
@@ -592,6 +594,52 @@ class App:
             status['report']=read_json(output/'integration_report.json',{})
         return status
 
+    def target_moon(self,name,identifier,moon_id,mode='approach',altitude_km=1000.,max_added_mps=700.,effort='standard',inclination_deg=None,target_latitude_deg=None,target_longitude_deg=None):
+        from moon_targets import validate_options
+        if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
+        root=self.folder(name);candidate=root/'candidates'/(identifier+'.json');q=read_json(candidate)
+        if not q:raise ValueError('Candidate not found')
+        options=validate_options(q['bodies'][-1],moon_id,mode,altitude_km,max_added_mps,effort,inclination_deg,target_latitude_deg,target_longitude_deg)
+        with self.lock:
+            if any(p.poll() is None for p in self.moon_jobs.values()):raise ValueError('A moon-targeting branch is already running. Stop it or wait for it to finish.')
+            branch=secrets.token_hex(6);output=root/'moon_targets'/identifier/branch;output.mkdir(parents=True)
+            config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{}).get('config')
+            if not config:raise ValueError('Saved search settings not found')
+            config=dict(config,cache=str(self.cache));atomic_json(output/'source_config.json',config)
+            baseline=root/'exports'/identifier;baseline_report=read_json(baseline/'integration_report.json',{})
+            reusable=(baseline/'trajectory.xyzv').is_file() and (baseline/'burns.csv').is_file() and baseline_report.get('numerical_validation_passed') and baseline_report.get('source_candidate_sha256')==hashlib.sha256(candidate.read_bytes()).hexdigest()
+            worker_options=dict(parent=options['parent'],moon_id=options['moon']['id'],mode=mode,altitude=options['altitude_km'],max_added_mps=options['max_added_mps'],effort=effort,inclination_deg=options['inclination_deg'],target_latitude_deg=None if options['target_point'] is None else options['target_point']['latitude_deg'],target_longitude_deg=None if options['target_point'] is None else options['target_point']['longitude_east_deg'])
+            request=dict(candidate_file=str(candidate),config_file=str(output/'source_config.json'),cache=str(self.cache),options=worker_options)
+            if reusable:request['baseline_folder']=str(baseline)
+            atomic_json(output/'request.json',request);atomic_json(output/'status.json',dict(state='running',message='Starting moon-targeted branch...',started_unix=time.time()))
+            with (output/'worker.log').open('w',encoding='utf-8') as log:
+                self.moon_jobs[(name,identifier,branch)]=subprocess.Popen(worker_command('moon_targeting','--request',str(output/'request.json')),cwd=HERE,stdout=log,stderr=subprocess.STDOUT,env=worker_environment(output/'worker.log'),creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+            return dict(started=True,branch=branch,parent=options['parent'],moon=options['moon']['name'])
+
+    def moon_target_status(self,name,identifier,branch=None):
+        if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
+        parent=self.folder(name)/'moon_targets'/identifier
+        if branch is None:
+            paths=sorted(parent.glob('*/status.json'),key=lambda p:p.stat().st_mtime,reverse=True) if parent.exists() else []
+            if not paths:return dict(state='none')
+            branch=paths[0].parent.name
+        if not re.fullmatch(r'[a-f0-9]{12}',branch):raise ValueError('Invalid moon branch ID')
+        output=parent/branch;status=read_json(output/'status.json',dict(state='none'));process=self.moon_jobs.get((name,identifier,branch))
+        if status['state']=='running' and process is not None and process.poll() is not None:
+            status=dict(status,state='failed',message='Moon worker exited unexpectedly; inspect worker.log.');atomic_json(output/'status.json',status)
+        return dict(status,branch=branch)
+
+    def stop_moon_target(self,name,identifier,branch):
+        status=self.moon_target_status(name,identifier,branch)
+        output=self.folder(name)/'moon_targets'/identifier/branch
+        if status['state']=='running':(output/'stop.request').touch()
+        return dict(stopping=status['state']=='running')
+
+    def close_moon_jobs(self):
+        for (name,identifier,branch),process in self.moon_jobs.items():
+            if process.poll() is None:
+                (self.folder(name)/'moon_targets'/identifier/branch/'stop.request').touch()
+
     def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,patch_dwarf_planet=False,dwarf_catalog_path=None,refine_patches=True,patch_epoch_shift_days=2.):
         from integrate_export import validate_post_flyby_months,validate_patch_epoch_shift
         from arrival_geometry import validate_inclination
@@ -675,6 +723,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.snapshot(params.get('run',[''])[0]))
             if url.path=='/api/export-status':
                 return self.json(self.app.export_status(params.get('run',[''])[0],params.get('candidate',[''])[0]))
+            if url.path=='/api/moon-target-status':
+                return self.json(self.app.moon_target_status(params.get('run',[''])[0],params.get('candidate',[''])[0],params.get('branch',[None])[0]))
             if url.path.startswith('/files/'):
                 parts = urllib.parse.unquote(url.path).split('/',3)
                 if len(parts)!=4:
@@ -752,6 +802,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.render_candidate(value['run'],value['candidate']))
             if self.path=='/api/integrate':
                 return self.json(self.app.integrate(value['run'],value['candidate'],value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('refine_patches',True),value.get('patch_epoch_shift_days',2.)))
+            if self.path=='/api/target-moon':
+                return self.json(self.app.target_moon(value['run'],value['candidate'],value.get('moon_id'),value.get('mode','approach'),value.get('altitude_km',1000.),value.get('max_added_mps',700.),value.get('effort','standard'),value.get('inclination_deg'),value.get('target_latitude_deg'),value.get('target_longitude_deg')))
+            if self.path=='/api/stop-moon-target':
+                return self.json(self.app.stop_moon_target(value['run'],value['candidate'],value['branch']))
             if self.path=='/api/package':
                 return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('patch_dwarf_planet',False),value.get('dwarf_catalog_path'),value.get('refine_patches',True),value.get('patch_epoch_shift_days',2.)))
             if self.path=='/api/dwarf-patch-info':
@@ -762,6 +816,7 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/api/open-package-folder':
                 return self.json(self.app.open_package_folder(value['run'],value['candidate']))
             if self.path=='/api/shutdown':
+                self.app.close_moon_jobs()
                 if self.app.process is not None and self.app.process.poll() is None:
                     self.app.stop(self.app.active)
                 self.json(dict(closing=True))
@@ -801,6 +856,7 @@ def main():
     try:
         server.serve_forever(poll_interval=.25)
     finally:
+        app.close_moon_jobs()
         app.close_renderer()
         server.server_close()
         if read_json(instance_file,{}).get('instance_id')==server.instance_id:

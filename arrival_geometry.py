@@ -1,6 +1,6 @@
 """Terminal B-plane inclination targeting in geometric Ecliptic J2000 axes.
 
-Pole coefficients are the eight-planet subset of JPL NAIF pck00011.tpc.
+Pole coefficients are the eight planets and Titan from JPL NAIF pck00011.tpc.
 The periodic RA (sine) and DEC (cosine) terms are retained for Mars,
 Jupiter and Neptune. Earth uses the text-PCK approximation, not binary EOP.
 Source: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc
@@ -38,6 +38,7 @@ _POLES={
  'Saturn':(40.589,-.036,83.537,-.004,()),
  'Uranus':(257.311,0.,-15.175,0.,()),
  'Neptune':(299.36,0.,43.46,0.,((357.85,52.316,.70,-.51),)),
+ 'Titan':(39.4827,0.,83.4279,0.,()),
 }
 # NAIF ECLIPJ2000: IAU 1976 mean obliquity, 84381.448 arcseconds.
 _OBLIQUITY=math.radians(84381.448/3600.)
@@ -62,7 +63,7 @@ def validate_inclination(value):
 def planet_pole(body,epoch_jd_tdb):
     """IAU text-PCK north pole, expressed in Horizons Ecliptic J2000 axes."""
     if body not in _POLES:
-        raise ValueError('Arrival inclination targeting requires a supported planet with known pole and GM')
+        raise ValueError('Arrival inclination targeting requires a body with a supported IAU pole')
     epoch=float(epoch_jd_tdb)
     if not math.isfinite(epoch):raise ValueError('Arrival epoch must be finite')
     century=(epoch-2451545.)/36525.

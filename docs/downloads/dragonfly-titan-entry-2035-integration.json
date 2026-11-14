@@ -1,0 +1,237 @@
+{
+  "entry_jd_tdb": 2464570.3793757325,
+  "arrival_jd_tdb": 2464659.3516917247,
+  "saturn_soi_radius_km": 52123723.32813725,
+  "soi_delta_v_vector_ecliptic_j2000_kms": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "soi_delta_v_kms": 0.0,
+  "state_before_soi_burn_saturn_relative_km_kms": [
+    -16162483.924205422,
+    -49320069.01066947,
+    4815333.8179806415,
+    2.1195529039932826,
+    6.020780847134831,
+    -0.5298587043057996
+  ],
+  "state_after_soi_burn_saturn_relative_km_kms": [
+    -16162483.924205422,
+    -49320069.01066947,
+    4815333.8179806415,
+    2.1195529039932826,
+    6.020780847134831,
+    -0.5298587043057996
+  ],
+  "titan_relative_entry_state_km_kms": [
+    3344.1862818708178,
+    -1819.8882736735977,
+    -535.3542052065022,
+    -3.344731475957765,
+    7.802088267252527,
+    0.15425388022782238
+  ],
+  "requested_entry_altitude_km": 1270.0,
+  "titan_entry_altitude_km": 1269.9999849067194,
+  "titan_relative_inertial_entry_speed_kms": 8.490206371804367,
+  "entry_flight_path_angle_deg": -51.2760779530076,
+  "independent_endpoint_error_km": 0.00017684862665921593,
+  "minimum_sampled_saturn_altitude_km": 1143710.933637241,
+  "coast_days": 88.97231599222869,
+  "iterations": 10,
+  "endpoint_error_km": 4.262555598781665e-05,
+  "optimizer_success": true,
+  "model": "Sun-only upstream coast; Saturn plus differential Titan point-mass gravity inside Saturn SOI. No solar tide, other moons, Saturn J2/rings, atmosphere or spacecraft navigation uncertainty.",
+  "entry_geometry": "Illustrative geometry, not an optimized entry corridor or landing site. Speed is moon-relative inertial, not atmosphere-relative.",
+  "target_mode": "entry",
+  "parent_body": "Saturn",
+  "moon_body": "Titan",
+  "upstream_burn_jd_tdb": 2463340.8729733047,
+  "upstream_delta_v_kms": 0.014581449740649679,
+  "upstream_delta_v_vector_kms": [
+    0.012994626008726584,
+    -0.0014317138943233942,
+    0.006458216995210098
+  ],
+  "upstream_burn_fraction": 0.15,
+  "upstream_burn_position_heliocentric_km": [
+    43878706.935632914,
+    467266640.54961705,
+    17610017.99950194
+  ],
+  "upstream_post_burn_velocity_heliocentric_kms": [
+    -11.287444591269372,
+    16.53199379270075,
+    0.4043217910895233
+  ],
+  "soi_velocity_matching_residual_kms": 3.989081878921538e-12,
+  "correction_model": "One real upstream cruise DSM; continuous velocity at Saturn SOI. Entry position/epoch jointly targeted; no SOI burn applied during independent propagation.",
+  "target_entry_position_saturn_relative_km": [
+    565855.7224592041,
+    -967256.8113266027,
+    440212.2611353702
+  ],
+  "independent_solar_endpoint_error_km": 0.0,
+  "independent_solar_velocity_error_kms": 0.0,
+  "independent_sun_and_saturn_titan_propagation_passed": true,
+  "moon_id": "606",
+  "target_altitude_km": 1270.0,
+  "target_epoch_jd_tdb": 2464659.3516917247,
+  "target_date": "2035-11-27T20:26:26 TDB",
+  "added_correction_delta_v_kms": 0.014581449740649679,
+  "parent_export_onboard_delta_v_kms": 0.4138990188105784,
+  "retained_parent_onboard_delta_v_kms": 0.4138989028480604,
+  "total_onboard_delta_v_kms": 0.4284803525887101,
+  "source_candidate_id": "6ef2b7edc240",
+  "source_sequence": "EdvES",
+  "exported_launch_c3_km2_s2": 49.714199546493674,
+  "minimum_found_note": "Lowest added burn among the tested correction epochs; not a global minimum.",
+  "attempts": [
+    {
+      "fraction": 0.15,
+      "passed": true,
+      "delta_v_mps": 14.581449740649678,
+      "burn_date": "2032-04-18T08:57:04 TDB"
+    },
+    {
+      "fraction": 0.35,
+      "passed": true,
+      "delta_v_mps": 16.859756949995656,
+      "burn_date": "2033-02-22T14:28:41 TDB"
+    },
+    {
+      "fraction": 0.55,
+      "passed": true,
+      "delta_v_mps": 25.11591611451286,
+      "burn_date": "2033-12-29T20:00:18 TDB"
+    }
+  ],
+  "added_burn_limit_mps": 700.0,
+  "passes_added_burn_limit": true,
+  "ephemeris_sources": {
+    "Saturn": [
+      {
+        "body": "Saturn",
+        "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27699%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2464536.9166666665%27&STOP_TIME=%27JD2464662.4166666665%27&STEP_SIZE=%2760+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+        "sha256": "cd9d4e63530ae528798283c28fc0831561a35b304140d779555f021fc574ae43",
+        "raw_file": "Saturn_cd9d4e63530ae528.txt",
+        "target_identity": {
+          "name": "Saturn",
+          "id": "699",
+          "command": "699",
+          "kind": "planet"
+        },
+        "npz_sha256": "0ed75aee3f904dd9af6208078adb22b80957c242ec119453e8e173e13def17c7",
+        "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+        "start_jd": 2464536.9166666665,
+        "end_jd": 2464662.4166666665,
+        "max_step_days": 0.041666666666666664,
+        "records": 3013
+      }
+    ],
+    "Titan": [
+      {
+        "body": "Titan",
+        "source": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27606%27&EPHEM_TYPE=%27VECTORS%27&CENTER=%27500%4010%27&START_TIME=%27JD2463656.2916666665%27&STOP_TIME=%27JD2464662.4166666665%27&STEP_SIZE=%2760+m%27&OUT_UNITS=%27KM-S%27&REF_PLANE=%27ECLIPTIC%27&REF_SYSTEM=%27ICRF%27&VEC_CORR=%27NONE%27&VEC_TABLE=%272%27&CSV_FORMAT=%27YES%27&TIME_TYPE=%27TDB%27",
+        "sha256": "81b76e4c640a3246d49b31655cf8aeecd5826e84389fbc2303e15bd183566a00",
+        "raw_file": "object_606_81b76e4c640a3246.txt",
+        "target_identity": {
+          "name": "Titan",
+          "id": "606",
+          "command": "606",
+          "kind": "natural_satellite",
+          "parent_body": "Saturn"
+        },
+        "npz_sha256": "a8f7ba5e29f637e8e177e78ef6836b3a8b617236cc0f77fb8d29bdce587c3959",
+        "format": "Sun-centered Ecliptic J2000, km, km/s, TDB",
+        "start_jd": 2463656.2916666665,
+        "end_jd": 2464662.4166666665,
+        "max_step_days": 0.041666666666666664,
+        "records": 24148
+      }
+    ]
+  },
+  "source_parent_report": "dragonfly-titan-entry-2035-source-integration.json",
+  "force_model": "Sun outside Saturn SOI; Saturn and differential Titan point-mass gravity inside. No atmosphere, landing, rings, J2 or other moons.",
+  "achieved_altitude_km": 1269.9999849067194,
+  "moon_relative_state_km_kms": [
+    3344.1862818708178,
+    -1819.8882736735977,
+    -535.3542052065022,
+    -3.344731475957765,
+    7.802088267252527,
+    0.15425388022782238
+  ],
+  "moon_relative_speed_kms": 8.490206371804367,
+  "numerical_validation_passed": true,
+  "budget_note": "Onboard budget excludes launcher injection and source burns replaced by the new terminal arc.",
+  "force_segments": [
+    {
+      "start_jd_tdb": 2461968.554829294,
+      "end_jd_tdb": 2461970.0464887214,
+      "center": "Earth",
+      "gm_km3_s2": 398600.435436,
+      "soi_radius_km": 939820.0910457362
+    },
+    {
+      "start_jd_tdb": 2461970.0464887214,
+      "end_jd_tdb": 2462538.31422288,
+      "center": "Sun",
+      "gm_km3_s2": 132712440041.27942,
+      "soi_radius_km": null
+    },
+    {
+      "start_jd_tdb": 2462538.31422288,
+      "end_jd_tdb": 2463105.547152887,
+      "center": "Sun",
+      "gm_km3_s2": 132712440041.27942,
+      "soi_radius_km": null
+    },
+    {
+      "start_jd_tdb": 2463105.547152887,
+      "end_jd_tdb": 2463106.5166967246,
+      "center": "Earth",
+      "gm_km3_s2": 398600.435436,
+      "soi_radius_km": 934206.2435494512
+    },
+    {
+      "start_jd_tdb": 2463106.5166967246,
+      "end_jd_tdb": 2463107.4862405625,
+      "center": "Earth",
+      "gm_km3_s2": 398600.435436,
+      "soi_radius_km": 934206.2435494512
+    },
+    {
+      "start_jd_tdb": 2463107.4862405625,
+      "end_jd_tdb": 2463340.8729733047,
+      "center": "Sun",
+      "gm_km3_s2": 132712440041.27942,
+      "soi_radius_km": null
+    },
+    {
+      "center": "Sun",
+      "start_jd_tdb": 2463340.8729733047,
+      "end_jd_tdb": 2464570.3793757325
+    },
+    {
+      "center": "Saturn",
+      "perturbers": [
+        "Titan"
+      ],
+      "start_jd_tdb": 2464570.3793757325,
+      "end_jd_tdb": 2464659.3516917247
+    }
+  ],
+  "source_join_position_error_km": 0.0053351340109578016,
+  "source_join_velocity_error_kms": 2.721356108035635e-08,
+  "added_burn_bracket_seconds": 1.0,
+  "source_path_preserved_until_jd_tdb": 2463340.8729675175,
+  "rows": 9610,
+  "start_jd_tdb": 2461968.554829294,
+  "end_jd_tdb": 2464659.3516917247,
+  "achieved_inclination_deg": 24.462800265783557,
+  "inclination_reference": "Titan equator; IAU north pole",
+  "pole_source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+  "entry_planetocentric_latitude_deg": -15.349049942538846
+}

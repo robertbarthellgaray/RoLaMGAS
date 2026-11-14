@@ -10,10 +10,11 @@ from scipy.interpolate import CubicHermiteSpline
 from scipy.optimize import minimize_scalar
 from ephemeris import Ephemerides,BODIES,DAY,JD0
 
-def audit(catalog,cache):
+def audit(catalog,cache,identifiers=None):
     index=json.loads((catalog/'data/index.json').read_text(encoding='utf-8'));reports={}
     for item in index['cases']:
         if not item['spotlight']:continue
+        if identifiers is not None and item['id'] not in identifiers:continue
         file=catalog/'data/cases'/(item['id']+'.json');case=json.loads(file.read_text(encoding='utf-8'))
         data=np.loadtxt(catalog/case['download'],comments='#');assert np.isfinite(data).all()
         assert np.all(np.diff(data[:,0])>=0)
@@ -47,8 +48,8 @@ def audit(catalog,cache):
         file.write_text(json.dumps(case,ensure_ascii=False,separators=(',',':'),allow_nan=False),encoding='utf-8')
         reports[item['id']]=report
         print(item['id'],'all eight planets and Sun clear; closest altitude',min(c['altitude_km'] for c in clearances.values()),'km',flush=True)
-    file=catalog/'data/catalog_audit.json';doc=json.loads(file.read_text(encoding='utf-8'));doc['integrated_clearance_audits']=reports
+    file=catalog/'data/catalog_audit.json';doc=json.loads(file.read_text(encoding='utf-8'));doc.setdefault('integrated_clearance_audits',{}).update(reports)
     file.write_text(json.dumps(doc,ensure_ascii=False,separators=(',',':'),allow_nan=False),encoding='utf-8')
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--catalog',type=Path,required=True);p.add_argument('--cache',type=Path,required=True);a=p.parse_args();audit(a.catalog,a.cache)
+    p=argparse.ArgumentParser();p.add_argument('--catalog',type=Path,required=True);p.add_argument('--cache',type=Path,required=True);p.add_argument('--case',action='append');a=p.parse_args();audit(a.catalog,a.cache,a.case)

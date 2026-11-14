@@ -9,7 +9,7 @@ import argparse,hashlib,json,os,platform,re,shutil,subprocess,sys,tempfile,zipfi
 ROOT=Path(__file__).resolve().parent
 MODULES=['app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search','sequence_timing','dynamics','ephemeris','trajectory_prefixes',
          'horizons_targets','network','search_options','candidate_archive','community','candidate_status','earth_return_seeds','historical_seeds','launch_performance','trajectory_transfer','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
-         'presentation','live_gallery','integrate_export','finite_targeting','encounter_preferences','celestia_package','dwarf_planet_patch','moon_screen','baseline_cache',
+         'presentation','live_gallery','integrate_export','finite_targeting','encounter_preferences','celestia_package','dwarf_planet_patch','moon_screen','moon_arrival','moon_targets','moon_targeting','baseline_cache',
          'build_database','build_release','restore_diagnostics','trajectory_policy','resonant_shooting_seeds']
 DOCS=['MISSION_STUDIES.md','RESONANT_TRANSFERS.md','LAUNCH_PERFORMANCE.md','WEBSITE_HANDOFF.md','GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md','JUICE_DEPARTURE_SEEDS.md','PREVIEW_AND_RESULTS.md','HISTORICAL_SEEDS.md','CELESTIA_DWARF_PATCH.md']
 DOCS.extend(['REACHSTAR_SEEDS.md','ATMOSPHERIC_FLYBY_LIMITS.md','FINITE_PATCH_TARGETING.md'])

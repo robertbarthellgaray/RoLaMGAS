@@ -286,6 +286,7 @@ async function selectCandidate(id) {
     const files = c.trajectory_files,finite=finiteRadiusDownload(c);
     $('download-csv').textContent=finite?'Trajectory CSV ↓':'Lambert analysis CSV ↓';
     $('download-xyzv').textContent='Flyby trajectory XYZV ↓';
+    $('download-json').textContent=c.desktop_handoff_source?'Open Saturn seed in desktop app ↓':'Use in desktop app ↓';
     for (const [name,key] of [['download-csv','csv'],['download-xyzv','xyzv'],['download-state-readme','readme'],['download-integration-report','integration_report'],['download-burns','burns']]) {
       const link=$(name); link.hidden=!files?.[key];
       if(files?.[key]) link.href=files[key];
@@ -296,6 +297,7 @@ async function selectCandidate(id) {
     const extra=(label,href,download=true)=>{const a=document.createElement('a');a.className='text-link small';a.textContent=label;a.href=href;if(download)a.setAttribute('download','');extras.append(a);return a;};
     if(files?.encounters)extra('Exported encounter dates ↓',files.encounters);
     if(files?.targeting)extra('Targeting changes ↓',files.targeting);
+    for(const item of c.additional_downloads||[])extra(item.label,item.url);
     if(c.original_trajectory_files){const old=c.original_trajectory_files,label=old.finite_radius?'Previous finite export':'Original analysis';extra(label+' CSV ↓',old.csv);extra(label+' XYZV ↓',old.xyzv);}
     if(c.refined_alternative){const id=c.refined_alternative.case_id,a=extra(c.refined_alternative.label,'#mission='+id,false);a.onclick=e=>{e.preventDefault();selectCandidate(id);};}
     extras.hidden=extras.childElementCount===0;
@@ -473,10 +475,10 @@ function downloadBlob(blob, filename) {
 async function exportDesktopCandidate(){
  if(!selected)return;
  try{
-  const c=selected;if(c.desktop_record_url&&!c.desktop_record)c.desktop_record=await fetchJson(c.desktop_record_url);
+  const moonBranch=selected.desktop_handoff_source;const c=moonBranch?await fetchJson('data/cases/'+encodeURIComponent(moonBranch)+'.json'):selected;if(c.desktop_record_url&&!c.desktop_record)c.desktop_record=await fetchJson(c.desktop_record_url);
   const document=transferDocument(c,missionName(c)||c.title);
   downloadBlob(new Blob([JSON.stringify(document,null,2)],{type:'application/json'}),`RoLaMGAS-${c.id}.json`);
-  $('trajectory-download-note').textContent=document.trajectory?'In the desktop app, choose Import options / website trajectory and select this JSON. The selected dates, branches and burns are loaded and checked without another search. Then choose Integrate & export for a finite-radius Celestia XYZV. Exact-candidate loading is available in RoLaMGAS v0.2.4. Older clients can import its search settings.':'Search options downloaded. This is an integrated concept, so the original CSV/XYZV files remain the authoritative trajectory; these settings start a new Lambert search.';
+  $('trajectory-download-note').textContent=moonBranch?'Saturn seed downloaded. Import this JSON in the desktop app, then choose Target a moon → Titan. This JSON loads the parent trajectory; the published moon branch remains available as the complete CSV/XYZV. The moon-targeting controls require the newer local preview.':document.trajectory?'In the desktop app, choose Import options / website trajectory and select this JSON. The selected dates, branches and burns are loaded and checked without another search. Then choose Integrate & export for a finite-radius Celestia XYZV. Exact-candidate loading is available in RoLaMGAS v0.2.4. Older clients can import its search settings.':'Search options downloaded. This is an integrated concept, so the original CSV/XYZV files remain the authoritative trajectory; these settings start a new Lambert search.';
  }catch(error){$('trajectory-download-note').textContent='Could not prepare desktop transfer: '+error.message;}
 }
 $('download-json').addEventListener('click',exportDesktopCandidate);

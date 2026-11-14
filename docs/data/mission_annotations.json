@@ -587,6 +587,12 @@
       "label": "Low-C3 EVdvVEJS \u00b7 2033-03-08",
       "mission_kind": "original",
       "note": "Original continuation-search result, not a mission reconstruction. Independently propagated solar coasts and asymptotic flyby screens. Cruise DSM is explicit; finite-radius targeting corrections, launch injection and capture are separate."
+    },
+    "dragonfly-titan-entry-2035": {
+      "label": "Dragonfly-style Titan entry \u00b7 2035",
+      "mission_kind": "reconstruction",
+      "featured_priority": 17,
+      "note": "Dragonfly-inspired Titan entry; arrives November 2035 rather than the planned late 2034. Atmospheric entry and landing are not propagated."
     }
   }
 }
