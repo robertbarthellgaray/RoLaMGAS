@@ -102,11 +102,13 @@ def normalize(config, config_dir=HERE):
              seed=502, keep=100, cache='cache', max_ephemeris_step_days=1., sequences=[],
              route_overrides={},target_object=None,custom_leg_days=list(OTHER_DEFAULT_DAYS),search_objective='feasibility',cost_refinements=3,powered_flybys=False,
              local_refinement=None,mercury_resonant_seeds=True,earth_return_seeds=True,historical_mission_seeds=True,append_flyby=None,
-             arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom',c3_seed_boundary='minimum',max_venus_c3=30.,prefer_outbound_encounters=True)
+             arrival_date=None,arrival_tolerance_days=0.,transfer_direction='prograde',mission_profile='custom',c3_seed_boundary='minimum',max_venus_c3=30.,prefer_outbound_encounters=True,moon_target=None)
     unknown = set(config)-set(c)-{'event_windows','launch_jd','event_windows_jd','arrival_window_jd','effective_min_c3'}
     if unknown:
         raise ValueError(f'Unknown configuration keys: {sorted(unknown)}')
     c.update(config)
+    from moon_targets import moon_intent
+    c['moon_target']=moon_intent(c.get('moon_target'),c['target'])
     if 'c3_seed_boundary' not in config:c['c3_seed_boundary']='maximum' if c['mission_profile']=='flyby' else 'minimum'
     if not isinstance(c['powered_flybys'],bool):raise ValueError('powered_flybys must be boolean')
     if not isinstance(c['mercury_resonant_seeds'],bool):raise ValueError('mercury_resonant_seeds must be boolean')

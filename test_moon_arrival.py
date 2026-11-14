@@ -2,9 +2,16 @@ import bootstrap  # noqa: F401
 import unittest
 import numpy as np
 from moon_arrival import (SATURN_GM,relative_acceleration,point_mass_gradient,
-                          illustrative_entry_normal,propagate,shoot,MoonSystem)
+                          illustrative_entry_normal,propagate,shoot,MoonSystem,periapsis_validation)
 
 class MoonArrivalTests(unittest.TestCase):
+    def test_periapsis_check_accounts_for_position_error_without_accepting_bad_angles(self):
+        valid=periapsis_validation(np.array([1660.,0,0,.00003,20.,0]),.002)
+        self.assertLess(abs(valid['periapsis_tangency_error_deg']),.001)
+        with self.assertRaisesRegex(ValueError,'radial speed'):
+            periapsis_validation(np.array([1660.,0,0,.01,20.,0]),.002)
+        with self.assertRaises(ValueError):
+            periapsis_validation(np.array([1660.,0,0,.001,20.,0]),.1)
     def test_stop_interrupts_a_numerical_step(self):
         with self.assertRaises(InterruptedError):
             propagate([1e6,0,0,0,5,0],1000,lambda t:np.array([1e7,0,0]),system=MoonSystem(cancelled=lambda:True))

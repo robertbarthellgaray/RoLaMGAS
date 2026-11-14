@@ -31,10 +31,44 @@ test('completed branch offers full states, burn accounting and endpoint download
  const result=node('moonTargetResult');const links=result.children.find(x=>x.tag==='div').children;
  assert.ok(links.find(a=>a.href.endsWith('/trajectory.xyzv')));assert.ok(links.find(a=>a.href.endsWith('/arrival_state.json')));assert.ok(links.find(a=>a.href.endsWith('/burns.csv')));
  assert.match(result.children[0].text,/8.490 km\/s/);assert.match(result.children[1].text,/428.50 m\/s/);assert.equal(node('targetMoon').disabled,false);
+ const use=result.children.find(x=>x.tag==='button');assert.equal(use.text,'Use this moon targeting');assert.equal(typeof use.onclick,'function');
+});
+
+test('active moon branch controls package bytes and restores the original export explicitly',async()=>{
+ const report={moon_body:'Europa',target_mode:'approach',target_date:'2031-10-25 TDB',added_correction_delta_v_kms:.03};
+ const active={state:'finished',export_kind:'moon',branch:'abcdef012345',file_base:'moon_targets/0123456789ab/abcdef012345',report};
+ const calls=[];const {ctx,node}=context(async(path,data)=>{calls.push([path,data]);if(path.includes('moon-target-status'))return {state:'none'};return data?.branch===null?{state:'none'}:active});
+ // checkExport is outside this slice; its contract is to refresh the selection
+ // and links using the backend's authoritative result.
+ ctx.checkExport=async()=>{};ctx.state.boot={planets:['Jupiter']};ctx.state.card={bodies:['Earth','Jupiter']};node('patchTargetMoon').disabled=true;
+ await vm.runInContext("selectMoonExport('abcdef012345')",ctx);
+ assert.equal(calls[0][0],'/api/select-moon-export');assert.equal(calls[0][1].branch,'abcdef012345');assert.equal(ctx.state.moonExport.branch,'abcdef012345');
+ assert.equal(node('patchArrivalPlanet').checked,true);assert.equal(node('patchTargetMoon').checked,true);assert.equal(node('arrivalAltitude').disabled,true);
+ assert.equal(node('usePlanetExport').hidden,false);assert.match(node('exportSourceStatus').textContent,/Europa/);
+ vm.runInContext('showMoonExport('+JSON.stringify(active)+')',ctx);
+ const links=node('exportStatus').children.find(x=>x.tag==='div').children;
+ assert.ok(links.every(a=>a.href.includes('/moon_targets/0123456789ab/abcdef012345/')));
+ await vm.runInContext('selectMoonExport(null)',ctx);
+ assert.equal(ctx.state.moonExport,null);assert.equal(node('patchTargetMoon').disabled,true);assert.equal(node('arrivalAltitude').disabled,false);
 });
 test('Titan-only entry is disabled for airless moons',()=>{
- const {ctx,node}=context(async()=>({state:'none'}));node('moonTargetMode').value='entry';node('moonTargetBody').selectedOptions=[{textContent:'Enceladus'}];
+ const {ctx,node}=context(async()=>({state:'none'}));node('moonTargetMode').value='entry';node('moonTargetBody').value='602';node('moonTargetBody').selectedOptions=[{textContent:'Enceladus'}];
  vm.runInContext('moonTargetControls()',ctx);assert.equal(node('moonTargetMode').value,'approach');assert.equal(node('moonTargetMode').entry.disabled,true);
+});
+
+test('clicking the active moon-targeting button cancels selection and retains its saved downloads',async()=>{
+ const branch='abcdef012345',requests=[];let selected=branch;
+ const report={moon_body:'Europa',target_mode:'approach',target_altitude_km:100,target_date:'2031-10-25 TDB',added_correction_delta_v_kms:.03,passes_added_burn_limit:true};
+ const {ctx,node}=context(async(path,data)=>{if(path==='/api/select-moon-export'){requests.push(data);selected=data.branch;return {state:'none'}}return {state:'finished',message:'Saved',branch,selected_branch:selected,report}});
+ ctx.checkExport=async()=>{};ctx.state.boot={planets:['Jupiter']};ctx.state.card={bodies:['Earth','Jupiter']};
+ await vm.runInContext('checkMoonTarget()',ctx);
+ const button=node('moonTargetResult').children.find(x=>x.tag==='button');
+ assert.match(button.text,/click to cancel/);assert.notEqual(button.disabled,true);assert.equal(button.ariaPressed,'true');
+ await button.onclick();
+ assert.equal(requests.length,1);assert.equal(requests[0].branch,null);assert.equal(ctx.state.moonExport,null);
+ const result=node('moonTargetResult'),use=result.children.find(x=>x.tag==='button');
+ assert.equal(use.text,'Use this moon targeting');assert.equal(use.ariaPressed,'false');
+ assert.ok(result.children.find(x=>x.tag==='div').children.some(a=>a.href.endsWith('/trajectory.xyzv')));
 });
 test('fixed entry point sends east longitude and omits the separate inclination constraint',async()=>{
  const requests=[];const {ctx,node}=context(async(path,data)=>{requests.push([path,data]);return path.includes('status')?{state:'none'}:{branch:'abcdef012345'}});

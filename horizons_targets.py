@@ -22,6 +22,13 @@ def moon_model_notice(descriptor):
     if not parent and (descriptor or {}).get('kind') != 'natural_satellite':
         return None
     location = parent or 'its parent body'
+    from moon_targets import target_options
+    supported=any(m['id']==str(descriptor.get('id')) for m in target_options(parent))
+    if supported:
+        return (f"{descriptor['name']} is a moon of {location}. Search {location} arrivals, "
+                'then choose Target a moon on a candidate to solve an impact or approach at its arrival date. '
+                'This parent-centered arrival stage includes planet gravity and an upstream cruise correction. '
+                'Atmospheric entry and landing are separate models.')
     return (f"{descriptor['name']} is a moon of {location}. Its identity is resolved, but "
             'direct heliocentric moon targeting is not supported. '
             f'Search {location} arrivals first; a parent-centered arrival targeting stage '

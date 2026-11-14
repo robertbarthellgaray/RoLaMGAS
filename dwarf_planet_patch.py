@@ -15,11 +15,11 @@ from horizons_targets import register_target
 ASSET=RESOURCE_ROOT/'celestia_assets/dwarf_planet_orbits.json'
 SMALL_BODY_ASSET=RESOURCE_ROOT/'celestia_assets/small_body_orbits.json'
 CATALOG_NAMES=('dwarfplanets.ssc','asteroids.ssc','comets.ssc','interstellar.ssc','outersys.ssc','solarsys.ssc')
-PROPERTIES={'EllipticalOrbit','OrbitFrame','BodyFrame','UniformRotation','FixedRotation',
+PROPERTIES={'EllipticalOrbit','CustomOrbit','OrbitFrame','BodyFrame','UniformRotation','FixedRotation',
             'PrecessingRotation','CustomRotation','SpiceRotation','ScriptedRotation'}
 TOKENS=re.compile(r'"(?:\\.|[^"\\])*"|\#[^\r\n]*|[{}\[\]]|[^\s{}\[\]#"]+')
 
-def catalog_from_ssc(text):
+def catalog_from_ssc(text,include_major=False):
     """Read balanced blocks, ignoring braces in comments and quoted values."""
     tokens=[m for m in TOKENS.finditer(text) if not m.group().startswith('#')]
     def end_block(start):
@@ -49,11 +49,11 @@ def catalog_from_ssc(text):
             elif key in PROPERTIES and j+1<end:
                 props[key]=text[tokens[j].start():tokens[j+1].end()];j+=2
             else:j+=1
-        if parent=='Sol' and (classification in ('dwarfplanet','asteroid','comet','smallbody') or kind=='ReferencePoint') and 'EllipticalOrbit' in props:
+        if (include_major and classification in ('planet','moon','minormoon') and ('CustomOrbit' in props or 'EllipticalOrbit' in props)) or (parent=='Sol' and (classification in ('dwarfplanet','asteroid','comet','smallbody') or kind=='ReferencePoint') and 'EllipticalOrbit' in props):
             # An unspecified spin period inherits the old orbital period. Pin it
             # before replacing that orbit by an aperiodic sampled trajectory.
             rotation=props.get('UniformRotation','')
-            if rotation and not re.search(r'\bPeriod\b',re.sub(r'#[^\n]*','',rotation)):
+            if rotation and 'EllipticalOrbit' in props and not re.search(r'\bPeriod\b',re.sub(r'#[^\n]*','',rotation)):
                 period=re.search(r'\bPeriod\s+([\d.eE+-]+)',props['EllipticalOrbit'])
                 if period:
                     frame=props.get('OrbitFrame','');relative=bool(re.search(r'Center\s+"(?!Sol")[^"]+"',frame))

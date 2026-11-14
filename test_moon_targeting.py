@@ -5,11 +5,73 @@ from pathlib import Path
 from unittest.mock import patch,Mock
 import numpy as np
 from ephemeris import DAY
-from moon_targets import validate_options
-from moon_targeting import finite_source,retained_burns,stitch_source
+from moon_targets import validate_options,target_options,named_moon
+from moon_targeting import finite_source,retained_burns,stitch_source,optimize_correction_timing,selected_arrival_epoch
 from moon_targets import titan_body_axes,titan_target_normal,titan_geography
 
 class MoonTargetingTests(unittest.TestCase):
+    def test_moon_keeps_selected_arrival_even_if_finite_export_shifted_the_planet_date(self):
+        self.assertEqual(selected_arrival_epoch(dict(dates_jd_tdb=[2451545.,2463165.]),dict(final_encounter_jd_tdb=2463166.)),2463165.)
+        self.assertEqual(selected_arrival_epoch({},dict(final_encounter_jd_tdb=2463166.)),2463166.)
+        with self.assertRaises(ValueError):selected_arrival_epoch(dict(dates_jd_tdb=[]),{})
+        with self.assertRaises(ValueError):selected_arrival_epoch(dict(dates_jd_tdb=[float('nan')]),{})
+    def test_local_ephemeris_steps_preserve_sub_julian_date_precision(self):
+        from scipy.interpolate import CubicHermiteSpline
+        from moon_targeting import BodyVectors
+        from moon_arrival import elapsed_position
+        from ephemeris import JD0
+        epoch=2463165.;center=(epoch-JD0)*DAY
+        spline=CubicHermiteSpline([center-1,center+1],[[0,0,0],[26,0,0]],[[13,0,0],[13,0,0]])
+        ep=Mock(splines={'Europa':spline});body=BodyVectors(ep,'Europa')
+        # A 10-microsecond ODE substep is smaller than the representable JD tick.
+        delta=elapsed_position(body,epoch,.00001)-elapsed_position(body,epoch,0.)
+        self.assertGreater(delta[0],.00012);self.assertLess(delta[0],.00014)
+
+    def test_europa_selection_is_a_jupiter_search_and_survives_options_export(self):
+        from mission_search import normalize
+        from search_options import export_options,import_options
+        self.assertEqual({m['name'] for m in target_options('Jupiter')},{'Europa','Io','Ganymede','Callisto'})
+        config=dict(target='Jupiter',sequences=['EJ'],moon_target=dict(parent='Jupiter',moon_id='502',gm='untrusted'))
+        normalized=normalize(config)
+        self.assertEqual(normalized['moon_target'],dict(parent='Jupiter',moon_id='502',moon_name='Europa'))
+        imported=import_options(export_options(config)['document'])['config']
+        self.assertEqual(imported['moon_target'],normalized['moon_target'])
+        with self.assertRaises(ValueError):normalize(dict(config,target='Saturn'))
+        with self.assertRaises(ValueError):normalize(dict(config,moon_target=dict(parent='Jupiter',moon_id='606')))
+        for parent in ('Mars','Uranus','Neptune'):
+            moon=target_options(parent)[0]
+            self.assertEqual(validate_options(parent,moon['id'],'impact',0)['parent'],parent)
+
+    def test_known_moon_alias_resolves_offline_without_becoming_a_small_body(self):
+        from gui import App
+        with tempfile.TemporaryDirectory() as temp,patch('gui.HERE',Path(temp)),patch('gui.resolve') as remote:
+            app=App();europa=app.lookup('Europa (JII)','2030-01-01')
+            self.assertEqual(europa['id'],'502');self.assertEqual(europa['parent_body'],'Jupiter')
+            self.assertEqual(europa['kind'],'natural_satellite');remote.assert_not_called()
+        self.assertEqual(named_moon('SPK=502')['name'],'Europa')
+        self.assertIsNone(named_moon('52 Europa'))
+        self.assertIsNone(named_moon('20000502'))
+
+    def test_timing_refinement_improves_scan_and_stays_before_soi(self):
+        options=validate_options('Jupiter','502','impact',0)
+        seeds=[]
+        def solve(segment,arrival,parent,moon,base,fraction,system,progress,inclination_deg=None):
+            seeds.append(dict(base))
+            report=dict(upstream_burn_fraction=fraction,upstream_burn_jd_tdb=2451545+fraction*100,
+                        upstream_delta_v_kms=.01+(fraction-.43)**2,entry_jd_tdb=2451624.,
+                        state_before_soi_burn_saturn_relative_km_kms=[1,2,3,4,5,6])
+            return report,np.zeros(2),np.zeros((2,6))
+        with patch('moon_targeting.target_upstream',side_effect=solve):
+            best,attempts=optimize_correction_timing(dict(start_jd=2451545),2451645,None,None,dict(entry_jd_tdb=2451625),options,None,lambda *a,**k:None,lambda:False)
+        scan=min(a['delta_v_mps'] for a in attempts if a['stage']=='scan')
+        self.assertLess(best[0]*1000,scan)
+        self.assertEqual(seeds[0]['entry_jd_tdb'],2451625.)
+        self.assertEqual(seeds[1]['entry_jd_tdb'],2451624.)
+        self.assertLess(abs(best[1]['upstream_burn_fraction']-.43),.015)
+        self.assertTrue(all(100+a['fraction']*100<179 for a in attempts))
+        with self.assertRaises(InterruptedError):
+            optimize_correction_timing(dict(start_jd=100),200,None,None,dict(entry_jd_tdb=180),options,None,lambda *a,**k:None,lambda:True)
+
     def test_rotating_titan_point_is_fixed_on_surface_and_moves_in_inertial_space(self):
         epoch=2464659.3516917247;latitude,longitude=4.,162.5
         axes=titan_body_axes(epoch);np.testing.assert_allclose(axes@axes.T,np.eye(3),atol=1e-14)

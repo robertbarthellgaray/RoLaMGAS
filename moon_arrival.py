@@ -1,6 +1,6 @@
-"""Local Saturn/Titan arrival targeting; no drag, landing or global mission search.
+"""Local parent-planet/moon arrival targeting; no drag or landing model.
 
-Sun-only cruise is patched at Saturn's SOI to Saturn plus Titan point-mass
+Sun-only cruise is patched at the parent's SOI to planet plus moon point-mass
 gravity. The finite Titan entry-interface point is illustrative, not an EDL
 corridor or landing-site solution. Ecliptic J2000 axes, TDB, km, km/s.
 """
@@ -34,11 +34,31 @@ DEFAULT_SYSTEM=MoonSystem()
 def position(callback,date):
     return callback.position(date) if hasattr(callback,'position') else callback(date)[:3]
 
+def elapsed_position(callback,epoch,seconds):
+    """Preserve continuous local ODE time when the ephemeris supports it."""
+    if hasattr(callback,'position_at_elapsed'):return callback.position_at_elapsed(epoch,seconds)
+    return position(callback,epoch+seconds/DAY)
+
 
 def unit(vector):
     vector=np.asarray(vector,float);length=float(np.linalg.norm(vector))
     if not np.isfinite(length) or length<=1e-12:raise ValueError('Nonzero finite direction required')
     return vector/length
+
+def periapsis_validation(relative,position_error_km):
+    """Tangency tolerance consistent with independent endpoint uncertainty.
+
+    A transverse position error e changes the inferred radial velocity by up
+    to |v|e/r. A fixed 1-cm/s threshold alone rejects metre-level endpoints of
+    fast moon flybys. Retain both that floor and a hard 0.001-degree angle cap.
+    """
+    r=np.asarray(relative[:3]);v=np.asarray(relative[3:]);radius=float(np.linalg.norm(r));speed=float(np.linalg.norm(v))
+    radial=float(unit(r)@v);angle=float(np.degrees(np.arcsin(np.clip(radial/speed,-1.,1.))))
+    tolerance=1e-5+speed*max(0.,float(position_error_km))/radius
+    if abs(radial)>tolerance or abs(angle)>.001:
+        raise ValueError(f'Moon approach endpoint is not periapsis: radial speed {radial*1000:.6g} m/s, angle {angle:.6g} deg, independent position error {position_error_km*1000:.6g} m')
+    return dict(periapsis_radial_speed_kms=radial,periapsis_tangency_error_deg=angle,
+                periapsis_radial_speed_tolerance_kms=tolerance,periapsis_angle_tolerance_deg=.001)
 
 def point_mass_gradient(position,mu):
     r=np.asarray(position,float);d=float(np.linalg.norm(r))
@@ -67,7 +87,7 @@ def soi_entry(segment,arrival_jd,saturn_state,system=DEFAULT_SYSTEM):
         return float(np.linalg.norm(solar_state(segment,jd)[:3]-sat[:3])-soi)
     dates=np.linspace(max(start,stop-1000),stop,1001);values=[boundary(t) for t in dates]
     brackets=[(a,b) for a,b,fa,fb in zip(dates[:-1],dates[1:],values[:-1],values[1:]) if fa>0 and fb<=0]
-    if not brackets:raise ValueError('No inbound Saturn SOI crossing on this final solar coast')
+    if not brackets:raise ValueError(f'No inbound {system.parent} SOI crossing on this final solar coast')
     a,b=brackets[0];epoch=brentq(boundary,a,b,xtol=1e-9)
     state=solar_state(segment,epoch)-saturn_state(epoch)
     return float(epoch),state
@@ -89,7 +109,7 @@ def propagate(initial,seconds,moon_position,*,variational=False,rtol=2e-11,atol_
     if variational:initial=np.r_[initial,np.vstack([np.zeros((3,3)),np.eye(3)]).ravel()]
     atol=np.r_[np.full(3,atol_position),np.full(3,1e-11),np.full(18,1e-8)] if variational else np.r_[np.full(3,atol_position),np.full(3,1e-11)]
     fit=solve_ivp(rhs,(0,float(seconds)),initial,method='DOP853',rtol=rtol,atol=atol,dense_output=True,events=[saturn_impact,titan_impact],max_step=2*DAY)
-    if not fit.success or fit.status==1:raise ValueError('Arrival trial intersects Saturn/Titan or integration failed')
+    if not fit.success or fit.status==1:raise ValueError(f'Arrival trial intersects {system.parent}/{system.moon} or integration failed')
     return fit
 
 def shoot(entry_state,seconds,target_position,moon_position,initial_velocity,system=DEFAULT_SYSTEM,moon_surface_stop=True):
@@ -105,7 +125,7 @@ def shoot(entry_state,seconds,target_position,moon_position,initial_velocity,sys
     def jacobian(v):return evaluate(v)[1]/1e5
     fit=least_squares(residual,np.asarray(initial_velocity),jac=jacobian,xtol=1e-12,ftol=1e-12,gtol=1e-12,max_nfev=25,x_scale='jac')
     error,jac,solution=evaluate(fit.x)
-    if np.linalg.norm(error)>.1:raise ValueError('Titan endpoint did not converge within 100 m')
+    if np.linalg.norm(error)>.1:raise ValueError(f'{system.moon} endpoint did not converge within 100 m')
     return fit.x,solution,dict(iterations=fit.nfev,endpoint_error_km=float(np.linalg.norm(error)),optimizer_success=bool(fit.success))
 
 def local_velocity(entry_state,seconds,target,moon,system=DEFAULT_SYSTEM,moon_surface_stop=True):
@@ -131,7 +151,7 @@ def target_arrival(segment,arrival_jd,saturn_state,titan_state,entry_altitude_km
     if target_normal is not None and mode=='approach':raise ValueError('A fixed surface point and tangent-periapsis mode cannot be combined')
     normal=unit(target_normal) if target_normal is not None else illustrative_entry_normal(nominal[3:],titan[:3],gamma_deg,clock_deg)
     target=titan[:3]+normal*(system.moon_radius+entry_altitude_km)
-    moon=lambda t:position(titan_state,entry_jd+t/DAY)-position(saturn_state,entry_jd+t/DAY)
+    moon=lambda t:elapsed_position(titan_state,entry_jd,t)-elapsed_position(saturn_state,entry_jd,t)
     velocity,solution,convergence=local_velocity(incoming,seconds,target,moon,system,mode!='impact')
     if mode=='approach':
         # Rotate the target point within the chosen encounter plane until the
@@ -159,7 +179,7 @@ def target_arrival(segment,arrival_jd,saturn_state,titan_state,entry_altitude_km
     relative_moon=np.array([moon(t) for t in grid]);distances=np.linalg.norm(states[:,:3]-relative_moon,axis=1)
     radii=np.linalg.norm(states[:,:3],axis=1)
     earlier=grid<seconds-1
-    if np.any(distances[earlier]<system.moon_radius+entry_altitude_km-.1):raise ValueError('An earlier sampled Titan entry precedes the target epoch')
+    if np.any(distances[earlier]<system.moon_radius+entry_altitude_km-.1):raise ValueError(f'An earlier sampled {system.moon} entry precedes the target epoch')
     report=dict(entry_jd_tdb=entry_jd,arrival_jd_tdb=arrival_jd,saturn_soi_radius_km=float(np.linalg.norm(incoming[:3])),
         soi_delta_v_vector_ecliptic_j2000_kms=delta.tolist(),soi_delta_v_kms=float(np.linalg.norm(delta)),
         state_before_soi_burn_saturn_relative_km_kms=incoming.tolist(),state_after_soi_burn_saturn_relative_km_kms=np.r_[incoming[:3],velocity].tolist(),
@@ -167,7 +187,7 @@ def target_arrival(segment,arrival_jd,saturn_state,titan_state,entry_altitude_km
         titan_relative_inertial_entry_speed_kms=float(np.linalg.norm(relative[3:])),entry_flight_path_angle_deg=gamma,
         independent_endpoint_error_km=independent_error,minimum_sampled_saturn_altitude_km=float(np.min(radii)-system.parent_radius),
         coast_days=seconds/DAY,**convergence,
-        model='Sun-only upstream coast; Saturn plus differential Titan point-mass gravity inside Saturn SOI. No solar tide, other moons, Saturn J2/rings, atmosphere or spacecraft navigation uncertainty.',
+        model=f'Sun-only upstream coast; {system.parent} plus differential {system.moon} point-mass gravity inside the parent SOI. No solar tide, other moons, planet J2/rings, atmosphere or spacecraft navigation uncertainty.',
         entry_geometry='Illustrative geometry, not an optimized entry corridor or landing site. Speed is moon-relative inertial, not atmosphere-relative.',
         target_mode=mode,parent_body=system.parent,moon_body=system.moon)
     return report,entry_jd+grid/DAY,states
@@ -183,7 +203,7 @@ def target_upstream(segment,arrival_jd,saturn_state,titan_state,base_report,burn
     mode=base_report.get('target_mode','entry')
     burn_jd=segment['start_jd']+burn_fraction*(arrival_jd-segment['start_jd'])
     burn_state=solar_state(segment,burn_jd);entry0=base_report['entry_jd_tdb']
-    if burn_jd>=entry0-1:raise ValueError('Place the cruise DSM before Saturn SOI entry')
+    if burn_jd>=entry0-1:raise ValueError(f'Place the cruise DSM before {system.parent} SOI entry')
     n=unit(base_report['state_before_soi_burn_saturn_relative_km_kms'][:3])
     e1=unit(np.cross(n,np.eye(3)[np.argmin(abs(n))]));e2=np.cross(n,e1)
     titan=titan_state(arrival_jd)-saturn_state(arrival_jd)
@@ -207,7 +227,7 @@ def target_upstream(segment,arrival_jd,saturn_state,titan_state,base_report,burn
             epoch=entry0+z[2];sat=saturn_state(epoch);soi=np.linalg.norm(sat[:3])*(system.parent_mu/MU_SUN)**.4
             r=soi*unit(n+z[0]*e1+z[1]*e2)
             departure,vin=izzo2015(MU_SUN,burn_state[:3],sat[:3]+r,(epoch-burn_jd)*DAY,M=0,prograde=True,low_path=True)
-            moon=lambda t:position(titan_state,epoch+t/DAY)-position(saturn_state,epoch+t/DAY)
+            moon=lambda t:elapsed_position(titan_state,epoch,t)-elapsed_position(saturn_state,epoch,t)
             aim=titan[:3]+target_radius*unit(target_normal*np.cos(z[3])+target_tangent*np.sin(z[3])) if mode=='approach' else target
             if inclination_deg is not None:
                 normal=unit(aim-titan[:3]);clock=z[-1]
@@ -252,7 +272,7 @@ def target_upstream(segment,arrival_jd,saturn_state,titan_state,base_report,burn
         state_before_soi_burn_saturn_relative_km_kms=np.r_[best['r'],actual_incoming].tolist(),state_after_soi_burn_saturn_relative_km_kms=np.r_[best['r'],actual_incoming].tolist(),
         coast_days=seconds/DAY,iterations=fit.nfev,optimizer_success=bool(fit.success),endpoint_error_km=error,
         minimum_sampled_saturn_altitude_km=float(np.min(np.linalg.norm(states[:,:3],axis=1))-system.parent_radius),
-        correction_model='One real upstream cruise DSM; continuous velocity at Saturn SOI. Entry position/epoch jointly targeted; no SOI burn applied during independent propagation.')
+        correction_model=f'One real upstream cruise DSM; continuous velocity at {system.parent} SOI. Entry position/epoch jointly targeted; no SOI burn applied during independent propagation.')
     report['target_entry_position_saturn_relative_km']=target.tolist()
     report['saturn_soi_radius_km']=float(np.linalg.norm(best['r']))
     report['requested_inclination_deg']=inclination_deg
@@ -267,12 +287,12 @@ def verify_upstream_coasts(report,saturn_state,titan_state,system=DEFAULT_SYSTEM
     if not solar.success:raise ValueError('Independent solar propagation failed')
     at_entry=solar.y[:,-1]-saturn_state(entry)
     target=np.array(report.get('target_entry_position_saturn_relative_km',np.array(report['titan_relative_entry_state_km_kms'][:3])+(titan_state(arrival)-saturn_state(arrival))[:3]))
-    moon=lambda t:position(titan_state,entry+t/DAY)-position(saturn_state,entry+t/DAY)
+    moon=lambda t:elapsed_position(titan_state,entry,t)-elapsed_position(saturn_state,entry,t)
     seconds=(arrival-entry)*DAY
     local=propagate(at_entry,seconds,moon,rtol=3e-13,atol_position=1e-7,system=system,moon_surface_stop=mode!='impact')
     if len(local.t_events[1]) and local.t_events[1][0]<seconds-.1:raise ValueError('Moon surface intersects the path before the target epoch')
     error=float(np.linalg.norm(local.y[:3,-1]-target))
-    if error>.1:raise ValueError('Independent Sun-to-Saturn/Titan propagation missed the entry point by '+str(error)+' km')
+    if error>.1:raise ValueError(f'Independent Sun-to-{system.parent}/{system.moon} propagation missed the entry point by {error} km')
     expected=np.array(report['state_before_soi_burn_saturn_relative_km_kms'])
     relative=local.y[:6,-1]-(titan_state(arrival)-saturn_state(arrival))
     if system.moon=='Titan':
@@ -284,15 +304,17 @@ def verify_upstream_coasts(report,saturn_state,titan_state,system=DEFAULT_SYSTEM
             entry_planetocentric_latitude_deg=float(np.degrees(np.arcsin(np.clip(unit(relative[:3])@pole,-1.,1.)))))
         from moon_targets import titan_geography
         report['body_fixed_endpoint']=titan_geography(arrival,relative)
-    if mode=='approach' and abs(float(unit(relative[:3])@relative[3:]))>1e-5:raise ValueError('Moon approach endpoint is not periapsis')
+    if mode=='approach':report.update(periapsis_validation(relative,error))
     grid=np.unique(np.r_[np.arange(0,max(0,seconds-2*DAY),6*3600.),np.arange(max(0,seconds-2*DAY),seconds,60.),seconds]);states=local.sol(grid).T
     earlier=grid<seconds-1;distance=np.array([np.linalg.norm(state[:3]-moon(t)) for t,state in zip(grid,states)])
     shell=report.get('requested_entry_altitude_km',report['titan_entry_altitude_km'])
     if np.any(distance[earlier]<system.moon_radius+shell-.1):
-        raise ValueError('An earlier sampled Titan entry precedes the requested epoch')
+        raise ValueError(f'An earlier sampled {system.moon} entry precedes the requested epoch')
     report.update(independent_solar_endpoint_error_km=float(np.linalg.norm(at_entry[:3]-expected[:3])),
         independent_solar_velocity_error_kms=float(np.linalg.norm(at_entry[3:]-expected[3:])),
         independent_endpoint_error_km=error,independent_sun_and_saturn_titan_propagation_passed=True,
+        independent_sun_and_parent_moon_propagation_passed=True,
+        minimum_sampled_parent_altitude_km=float(np.min(np.linalg.norm(states[:,:3],axis=1))-system.parent_radius),
         state_before_soi_burn_saturn_relative_km_kms=at_entry.tolist(),state_after_soi_burn_saturn_relative_km_kms=at_entry.tolist(),
         titan_relative_entry_state_km_kms=relative.tolist(),titan_entry_altitude_km=float(np.linalg.norm(relative[:3])-system.moon_radius),
         titan_relative_inertial_entry_speed_kms=float(np.linalg.norm(relative[3:])),

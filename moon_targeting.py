@@ -2,7 +2,7 @@
 import bootstrap  # noqa: F401
 from pathlib import Path
 from datetime import datetime,timezone
-import argparse,csv,json,math,os,threading,time,traceback,subprocess,shutil
+import argparse,csv,hashlib,json,math,os,threading,time,traceback,subprocess,shutil
 import numpy as np
 from scipy.interpolate import CubicHermiteSpline
 from ephemeris import BODIES,DAY,JD0,MU_SUN,Ephemerides,atomic_json,calendar,fetch
@@ -15,6 +15,10 @@ class BodyVectors:
     def __init__(self,ep,body):self.ep,self.body=ep,body
     def __call__(self,date):return self.ep.state(self.body,date)
     def position(self,date):return self.ep.splines[self.body]((date-JD0)*DAY)
+    def position_at_elapsed(self,epoch,seconds):
+        # Keep ODE substeps in seconds. Adding them to a 2.4-million-day JD
+        # quantizes moon motion in ~40 microsecond jumps and hurts convergence.
+        return self.ep.splines[self.body]((epoch-JD0)*DAY+seconds)
 
 def cached(cache,body,start,end,step,progress):
     try:return Ephemerides(cache,[body],start,end,step)
@@ -71,6 +75,59 @@ def retained_burns(baseline,burn_epoch):
     onboard=sum(float(b['magnitude_kms']) for b in rows if not b['kind'].startswith('launch_injection'))
     return rows,onboard
 
+def selected_arrival_epoch(candidate,source_report):
+    dates=candidate.get('dates_jd_tdb')
+    if dates is not None and (not isinstance(dates,list) or not dates):
+        raise ValueError('Selected candidate has no valid encounter dates')
+    arrival=float(dates[-1] if dates is not None else source_report['final_encounter_jd_tdb'])
+    if not np.isfinite(arrival):raise ValueError('Selected arrival epoch must be finite')
+    return arrival
+
+def optimize_correction_timing(segment,arrival,parent,satellite,base,options,system,progress,cancel,on_attempt=None):
+    """Compare cruise epochs, then refine near the best feasible timing.
+
+    Each trial independently matches the Sun and parent/moon arcs. This is a
+    local timing search, not proof of a global optimum across encounter geometry.
+    """
+    from scipy.optimize import minimize_scalar
+    span=arrival-segment['start_jd']
+    maximum=min(.9,(base['entry_jd_tdb']-1.01-segment['start_jd'])/span)
+    if maximum<.05:raise ValueError('No cruise interval remains for a correction before the planet SOI')
+    fractions=sorted(set(float(np.clip(f,.05,maximum)) for f in options['burn_fractions']))
+    attempts=[];solutions={};best=None
+    def evaluate(fraction,stage):
+        nonlocal best
+        if cancel():raise InterruptedError('Moon targeting stopped')
+        fraction=float(fraction);key=round(fraction,9)
+        if key in solutions:return solutions[key][0]
+        def update(message):
+            if cancel():raise InterruptedError('Moon targeting stopped')
+            progress(f'Cruise correction timing {len(attempts)+1} ({stage}, {fraction:.3f} of leg): '+message,attempts=attempts)
+        try:
+            seed=dict(base)
+            if best is not None:
+                # Adjacent burn epochs solve almost the same SOI geometry.
+                # Reuse the matched boundary, keeping the original moon target.
+                for field in ('entry_jd_tdb','state_before_soi_burn_saturn_relative_km_kms'):
+                    if field in best[1]:seed[field]=best[1][field]
+            report,dates,states=target_upstream(segment,arrival,parent,satellite,seed,fraction,system,update,inclination_deg=options['inclination_deg'])
+            delta=report['upstream_delta_v_kms'];solutions[key]=(delta,report,dates,states)
+            attempts.append(dict(fraction=fraction,stage=stage,passed=True,delta_v_mps=delta*1000,burn_date=calendar(report['upstream_burn_jd_tdb'])))
+            if best is None or delta<best[0]:best=solutions[key]
+        except InterruptedError:raise
+        except (ValueError,RuntimeError,AssertionError,OverflowError) as error:
+            solutions[key]=(1e9,);attempts.append(dict(fraction=fraction,stage=stage,passed=False,error=str(error)))
+        if on_attempt:on_attempt(attempts)
+        return solutions[key][0]
+    for fraction in fractions:evaluate(fraction,'scan')
+    if best is not None and options['effort']=='standard':
+        winner=best[1]['upstream_burn_fraction'];points=sorted(set([.05,maximum]+fractions));index=points.index(min(points,key=lambda p:abs(p-winner)))
+        lower=points[max(0,index-1)];upper=points[min(len(points)-1,index+1)]
+        if upper-lower>.015:
+            minimize_scalar(lambda f:evaluate(f,'local refinement'),bounds=(lower,upper),method='bounded',options=dict(xatol=.01,maxiter=6))
+    if best is None:raise ValueError('No moon-targeted branch passed. See attempts.json for each correction timing.')
+    return best,attempts
+
 def run(request,output,progress,cancel):
     options=validate_options(**request['options']);q=json.loads(Path(request['candidate_file']).read_text(encoding='utf-8'))
     if q['bodies'][-1]!=options['parent']:raise ValueError('Moon parent differs from the selected final planet')
@@ -89,9 +146,10 @@ def run(request,output,progress,cancel):
     for filename in ('integration_report.json','burns.csv','encounters.csv'):
         origin=baseline/filename;destination=archive/filename
         if origin.is_file() and origin.resolve()!=destination.resolve():shutil.copy2(origin,destination)
-    arrival=source_report['final_encounter_jd_tdb'];cache=Path(request['cache']);parent_name=options['parent'];moon=options['moon']
+    arrival=selected_arrival_epoch(q,source_report);cache=Path(request['cache']);parent_name=options['parent'];moon=options['moon']
     register_target(dict(name=moon['name'],id=moon['id'],command=moon['id'],kind='natural_satellite',parent_body=parent_name))
-    coarse=cached(cache,parent_name,segment['start_jd']-2,arrival+2,1.,progress);entry,_=soi_entry(segment,arrival,BodyVectors(coarse,parent_name))
+    system=MoonSystem(parent_name,moon['name'],BODIES[parent_name][1],BODIES[parent_name][2],moon['gm'],moon['radius_km'],cancel)
+    coarse=cached(cache,parent_name,segment['start_jd']-2,arrival+2,1.,progress);entry,_=soi_entry(segment,arrival,BodyVectors(coarse,parent_name),system)
     fine_start=entry-32;fine_end=arrival+2
     ep_parent=cached(cache,parent_name,fine_start,fine_end,1/24,progress)
     ep_moon=cached(cache,moon['name'],fine_start,fine_end,moon['step_days'],progress)
@@ -99,33 +157,23 @@ def run(request,output,progress,cancel):
     class Parent:
         def __call__(self,t):return fine(t) if fine_start<=t<=fine_end else coarse_view(t)
         def position(self,t):return fine.position(t) if fine_start<=t<=fine_end else coarse_view.position(t)
+        def position_at_elapsed(self,epoch,seconds):
+            t=epoch+seconds/DAY
+            return (fine if fine_start<=t<=fine_end else coarse_view).position_at_elapsed(epoch,seconds)
     parent=Parent();satellite=BodyVectors(ep_moon,moon['name'])
-    system=MoonSystem(parent_name,moon['name'],BODIES[parent_name][1],BODIES[parent_name][2],moon['gm'],moon['radius_km'],cancel)
     progress('Constructing '+moon['name']+' '+options['mode']+' arrival at the selected date...')
     point=options['target_point'];normal=None if point is None else titan_target_normal(arrival,point['latitude_deg'],point['longitude_east_deg'])
     base,_,_=target_arrival(segment,arrival,parent,satellite,options['altitude_km'],system=system,mode=options['mode'],target_normal=normal)
-    attempts=[];best=None
-    for index,fraction in enumerate(options['burn_fractions']):
-        if cancel():raise InterruptedError('Moon targeting stopped')
-        def update(message):
-            if cancel():raise InterruptedError('Moon targeting stopped')
-            progress(f'Correction timing {index+1}/{len(options["burn_fractions"])}: '+message,attempts=attempts)
-        try:
-            report,dates,states=target_upstream(segment,arrival,parent,satellite,base,fraction,system,update,inclination_deg=options['inclination_deg'])
-            delta=report['upstream_delta_v_kms'];attempts.append(dict(fraction=fraction,passed=True,delta_v_mps=delta*1000,burn_date=calendar(report['upstream_burn_jd_tdb'])))
-            if best is None or delta<best[0]:best=(delta,report,dates,states)
-        except InterruptedError:raise
-        except (ValueError,RuntimeError,AssertionError,OverflowError) as error:attempts.append(dict(fraction=fraction,passed=False,error=str(error)))
-        atomic_json(output/'attempts.json',attempts)
-    if best is None:raise ValueError('No moon-targeted branch passed. See attempts.json for each correction timing.')
+    best,attempts=optimize_correction_timing(segment,arrival,parent,satellite,base,options,system,progress,cancel,lambda trials:atomic_json(output/'attempts.json',trials))
     delta,report,dates,states=best
     burns,retained_onboard=retained_burns(baseline,report['upstream_burn_jd_tdb'])
     report.update(parent_body=parent_name,moon_body=moon['name'],moon_id=moon['id'],target_mode=options['mode'],target_altitude_km=options['altitude_km'],
         target_epoch_jd_tdb=float(arrival),target_date=calendar(arrival),added_correction_delta_v_kms=delta,
+        parent_export_arrival_jd_tdb=source_report['final_encounter_jd_tdb'],
         requested_body_fixed_point=point,
         parent_export_onboard_delta_v_kms=source_report['total_onboard_delta_v_kms'],retained_parent_onboard_delta_v_kms=retained_onboard,total_onboard_delta_v_kms=retained_onboard+delta,
         source_candidate_id=q['id'],source_sequence=q['sequence'],exported_launch_c3_km2_s2=source_report['exported_launch_c3_km2_s2'],
-        minimum_found_note='Lowest added burn among the tested correction epochs; not a global minimum.',attempts=attempts,
+        minimum_found_note='Lowest validated burn found in the cruise timing scan'+(' and local timing refinement' if options['effort']=='standard' else '')+'; not a global minimum.',attempts=attempts,
         added_burn_limit_mps=options['max_added_mps'],passes_added_burn_limit=bool(delta*1000<=options['max_added_mps']),
         ephemeris_sources={parent_name:ep_parent.manifest[parent_name],moon['name']:ep_moon.manifest[moon['name']]},
         source_parent_report='source_export/integration_report.json',
@@ -149,6 +197,8 @@ def run(request,output,progress,cancel):
     burns.append(dict(kind='Moon targeting cruise DSM',julian_date_tdb=report['upstream_burn_jd_tdb'],date=calendar(report['upstream_burn_jd_tdb']),magnitude_kms=delta,dx_kms=report['upstream_delta_v_vector_kms'][0],dy_kms=report['upstream_delta_v_vector_kms'][1],dz_kms=report['upstream_delta_v_vector_kms'][2]))
     fields=list(dict.fromkeys(k for b in burns for k in b))
     with (output/'burns.csv').open('w',newline='',encoding='utf-8') as f:w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(burns)
+    report['source_candidate_sha256']=hashlib.sha256(Path(request['candidate_file']).read_bytes()).hexdigest()
+    report['trajectory_sha256']=hashlib.sha256((output/'trajectory.xyzv').read_bytes()).hexdigest()
     atomic_json(output/'moon_report.json',report)
     (output/'README.txt').write_text(f'{moon["name"]} {options["mode"]} branch. Full finite-radius launch-to-moon trajectory.\nEcliptic J2000, Sun-centered km and km/s, JD TDB.\nAdded cruise correction: {delta*1000:.3f} m/s. No SOI burn.\n'+report['force_model']+'\nClosest-approach mode targets a tangent periapsis. Impact is a vacuum geometric surface intersection, not a landing simulation. Entry mode stops at an illustrative atmospheric interface.\n',encoding='utf-8')
     return report

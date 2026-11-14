@@ -53,14 +53,35 @@ def texture_references(path):
     return list(dict.fromkeys(references))
 
 
-def build_package(output,candidate,config,override='auto',patch_dwarf_planet=False,dwarf_catalog_path=None):
+def export_report(output,moon_branch=None):
+    """Validate the actual branch, without claiming a full-system impact audit."""
+    output=Path(output)
+    if moon_branch is None:
+        report=json.loads((output/'integration_report.json').read_text(encoding='utf-8'))
+        if not report.get('numerical_validation_passed'):raise ValueError('The integrated trajectory did not pass its numerical check. Inspect the report first.')
+        if not report.get('no_sample_bracketed_planet_or_sun_impacts'):raise ValueError('The integrated clearance screen found a planet/Sun impact. Inspect the report before packaging.')
+        return report
+    report=json.loads((output/'moon_report.json').read_text(encoding='utf-8'))
+    baseline=json.loads((output/'source_export/integration_report.json').read_text(encoding='utf-8'))
+    if not report.get('numerical_validation_passed') or not report.get('independent_sun_and_parent_moon_propagation_passed'):
+        raise ValueError('The selected moon branch has not passed independent propagation')
+    if not baseline.get('no_sample_bracketed_planet_or_sun_impacts') or report.get('minimum_sampled_parent_altitude_km',-1)<=0:
+        raise ValueError('The moon branch has a failed source/parent clearance screen')
+    # A deliberate impact endpoint is allowed. Other modes must stay above the
+    # modeled mean-radius surface; the numerical solve permits metre errors.
+    if report['target_mode']!='impact' and report['achieved_altitude_km']<=0:raise ValueError('Moon branch endpoint is below the surface')
+    with (output/'burns.csv').open(newline='',encoding='utf-8') as stream:
+        patch_burns=sum(float(r['magnitude_kms']) for r in csv.DictReader(stream) if r['kind']=='finite_patch_junction')
+    return dict(report,export_kind='moon',moon_branch=moon_branch,patch_join_delta_v_kms=patch_burns,
+        clearance_note='Source interplanetary clearance screen retained; new leg checks the parent and targeted moon. Other moons, rings, atmosphere and surface topography are not modeled. Intentional impact is allowed only at the selected moon endpoint.')
+
+
+def build_package(output,candidate,config,override='auto',patch_dwarf_planet=False,dwarf_catalog_path=None,moon_branch=None,patch_planet=False,patch_moon=False,patch_days=None):
+    if moon_branch is not None and not re.fullmatch(r'[a-f0-9]{12}',str(moon_branch)):raise ValueError('Invalid moon branch ID')
     if not isinstance(patch_dwarf_planet,bool):raise ValueError('Patch small body must be a boolean')
     output=Path(output)
-    report=json.loads((output/'integration_report.json').read_text(encoding='utf-8'))
-    if not report.get('numerical_validation_passed'):
-        raise ValueError('The integrated trajectory did not pass its numerical check. Inspect the report first.')
-    if not report.get('no_sample_bracketed_planet_or_sun_impacts'):
-        raise ValueError('The integrated clearance screen found a planet/Sun impact. Inspect the report before packaging.')
+    if not isinstance(patch_planet,bool) or not isinstance(patch_moon,bool):raise ValueError('JPL patch options must be boolean')
+    report=export_report(output,moon_branch)
     maximum=0.
     with (output/'trajectory.csv').open(newline='',encoding='utf-8') as stream:
         for row in csv.DictReader(stream):
@@ -74,7 +95,7 @@ def build_package(output,candidate,config,override='auto',patch_dwarf_planet=Fal
     identifier=candidate['id']
     if not re.fullmatch(r'[a-f0-9]{12}',identifier):
         raise ValueError('Invalid candidate ID')
-    addon_name=f'Trajectory_{identifier}_{selected}'+('_JPL' if patch_dwarf_planet else '')
+    addon_name=f'Trajectory_{identifier}_{selected}'+('_Moon_'+moon_branch if moon_branch else '')+('_JPL' if patch_dwarf_planet or patch_planet or patch_moon else '')
     root=output/'celestia_package'/addon_name
     for sub in ('data','models','reports'):
         (root/sub).mkdir(parents=True,exist_ok=True)
@@ -85,6 +106,12 @@ def build_package(output,candidate,config,override='auto',patch_dwarf_planet=Fal
             stale=(root/name).resolve()
             if not stale.is_relative_to(root.resolve()):raise ValueError('Invalid previous patch artifact path')
             if stale.is_file():stale.unlink()
+        for item in (old.get('planet_moon_patches') or {}).get('patches',[]):
+            for name in item['files']:
+                stale=(root/name).resolve()
+                if not stale.is_relative_to(root.resolve()):raise ValueError('Invalid previous patch artifact path')
+                if stale.is_file():stale.unlink()
+        (root/'reports/planet_moon_patches.json').unlink(missing_ok=True)
     trajectory_name='trajectory_'+identifier+'.xyzv'
     shutil.copy2(output/'trajectory.xyzv',root/'data'/trajectory_name)
     shutil.copy2(source,root/'models'/filename)
@@ -99,7 +126,7 @@ def build_package(output,candidate,config,override='auto',patch_dwarf_planet=Fal
         destination=root/'textures'/'medres'/basename
         destination.parent.mkdir(parents=True,exist_ok=True)
         shutil.copy2(texture,destination)
-    object_name=f'Trajectory {identifier} {selected}'
+    object_name=f'Trajectory {identifier} {selected}'+(' '+report['moon_body']+' '+moon_branch[:6] if moon_branch else '')
     ssc=f'''"{object_name}" "Sol"
 {{
     Class "spacecraft"
@@ -115,12 +142,19 @@ def build_package(output,candidate,config,override='auto',patch_dwarf_planet=Fal
 }}
 '''
     (root/(addon_name+'.ssc')).write_text(ssc,encoding='utf-8')
-    for name in ('integration_report.json','burns.csv','encounters.csv','planet_clearances.csv','trajectory.csv','arrival_state.json','arrival_state.csv'):
+    for name in ('integration_report.json','moon_report.json','burns.csv','encounters.csv','planet_clearances.csv','trajectory.csv','arrival_state.json','arrival_state.csv','attempts.json'):
         if (output/name).is_file():shutil.copy2(output/name,root/'reports'/name)
+    if moon_branch:
+        shutil.copytree(output/'source_export',root/'reports/source_export',dirs_exist_ok=True)
+        atomic_json(root/'reports/export_report.json',report)
     patch=None
     if patch_dwarf_planet:
         from dwarf_planet_patch import create_patch
         patch=create_patch(root,candidate,config,report,dwarf_catalog_path)
+    planet_moon_patches=None
+    if patch_planet or patch_moon:
+        from planet_moon_patch import create_patches
+        planet_moon_patches=create_patches(root,config,report,patch_planet,patch_moon,patch_days)
     from app_paths import APP_VERSION
     manifest=dict(engine_version=APP_VERSION,candidate_id=identifier,model=selected,model_filename=filename,model_selection_reason=reason,
                   source_model_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
@@ -135,12 +169,16 @@ def build_package(output,candidate,config,override='auto',patch_dwarf_planet=Fal
                   candidate_passes_requested_limits=report.get('candidate_passes_requested_limits'),
                   requirement_violations=report.get('requirement_violations',[]),
                   passes_original_onboard_budget=report['passes_original_onboard_budget'],
-                  small_body_patch=patch,dwarf_planet_patch=patch)
+                  small_body_patch=patch,dwarf_planet_patch=patch,planet_moon_patches=planet_moon_patches,
+                  export_kind='moon' if moon_branch else 'planet',moon_branch=moon_branch,
+                  moon_target=report.get('moon_body'),moon_target_mode=report.get('target_mode'),
+                  moon_targeting_delta_v_kms=report.get('added_correction_delta_v_kms'),
+                  clearance_note=report.get('clearance_note'))
     atomic_json(root/'package_manifest.json',manifest)
     (root/'README.txt').write_text(
         f'CELESTIA TRAJECTORY PACKAGE\n\nExtract the ZIP and copy this entire {addon_name} folder into Celestia/extras.\n'
         f'In Celestia select: {object_name}\nFull object path: Sol/{object_name}\n'
-        f'Mission dates: {candidate["launch_date"]} to {candidate["arrival_date"]}\n'
+        f'Mission interval (JD TDB): {report["start_jd_tdb"]} to {report["end_jd_tdb"]}\n'
         f'Included model: {filename}\nSelection: {reason}\n'
         'The mesh is normalized to a 5 m reference radius; edit Radius in the SSC to change the displayed scale.\n'
         'The data file is Sun-centered Ecliptic J2000, JD TDB, km and km/s.\n\n'
@@ -148,7 +186,12 @@ def build_package(output,candidate,config,override='auto',patch_dwarf_planet=Fal
         f'Source candidate status: {candidate.get("status","unknown")}.\n'
         f'Requested-limit violations: {"; ".join(report.get("requirement_violations",[])) or "See integration report and source search."}\n'
         'Numerical conic validation is not an optimized fuel budget or continuous n-body validation.\n'
-        'See reports/integration_report.json and reports/burns.csv for all maneuvers and limitations.\n'+
+        'See reports/ and reports/burns.csv for all maneuvers and limitations.\n'+
+        (f'\nSELECTED MOON BRANCH {moon_branch}: {report["moon_body"]} {report["target_mode"]}.\n'
+         f'Added moon-targeting cruise burn: {report["added_correction_delta_v_kms"]*1000:.3f} m/s.\n'
+         +report['clearance_note']+'\n' if moon_branch else '')+
+        ('\nJPL PLANET/MOON OVERRIDES\n'+planet_moon_patches['limitations']+'\n'+
+         '\n'.join(f'{p["celestia_object"]}: {p["start_date"]} through {p["end_date"]}' for p in planet_moon_patches['patches'])+'\n' if planet_moon_patches else '')+
         (f'\nOPTIONAL JPL SMALL-BODY PATCH\n{patch["celestia_object"]}: {patch["start_date"]} through {patch["end_date"]}.\n'
          +patch['limitations']+'\nOriginal orbit-field source license: '+patch['source_license']+'. See patch provenance for attribution.\n'
          f'Remove {patch["files"][0]} to disable this override. See {patch["report_file"]}.\n' if patch else ''),encoding='utf-8')

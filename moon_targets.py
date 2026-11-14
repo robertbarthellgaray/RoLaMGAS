@@ -1,4 +1,4 @@
-"""Supported local arrival models; JPL SAT441 GM and mean radii.
+"""Supported local arrival models; JPL satellite GMs and mean radii.
 
 Source: https://ssd.jpl.nasa.gov/sats/phys_par/ . No spacecraft, drag or
 non-spherical surface model is inferred from a Horizons name resolution.
@@ -15,8 +15,54 @@ SATURN_MOONS=[
     dict(id='609',name='Phoebe',gm=.55479,radius_km=106.50,step_days=1/24),
 ]
 
+MOON_SYSTEMS={
+    'Mars':('JPL MAR097',[
+        dict(id='401',name='Phobos',gm=.0007087,radius_km=11.08,step_days=1/1440),
+        dict(id='402',name='Deimos',gm=.0000962,radius_km=6.2,step_days=1/288),
+    ]),
+    'Jupiter':('JPL JUP365',[
+        dict(id='502',name='Europa',gm=3202.71210,radius_km=1560.80,step_days=1/288),
+        dict(id='501',name='Io',gm=5959.91547,radius_km=1821.49,step_days=1/288),
+        dict(id='503',name='Ganymede',gm=9887.83275,radius_km=2631.20,step_days=1/144),
+        dict(id='504',name='Callisto',gm=7179.28340,radius_km=2410.30,step_days=1/96),
+    ]),
+    'Saturn':('JPL SAT441',SATURN_MOONS),
+    'Uranus':('JPL URA111',[
+        dict(id='701',name='Ariel',gm=83.5,radius_km=578.9,step_days=1/288),
+        dict(id='702',name='Umbriel',gm=85.1,radius_km=584.7,step_days=1/288),
+        dict(id='703',name='Titania',gm=226.9,radius_km=788.9,step_days=1/144),
+        dict(id='704',name='Oberon',gm=205.3,radius_km=761.4,step_days=1/96),
+        dict(id='705',name='Miranda',gm=4.3,radius_km=235.8,step_days=1/288),
+    ]),
+    'Neptune':('JPL NEP097',[
+        dict(id='801',name='Triton',gm=1428.49546,radius_km=1352.60,step_days=1/288),
+    ]),
+}
+
 def target_options(parent):
-    return [dict(m,parent_body=parent,source='JPL SAT441') for m in SATURN_MOONS] if parent=='Saturn' else []
+    source,moons=MOON_SYSTEMS.get(parent,('',[]))
+    return [dict(m,parent_body=parent,source=source) for m in moons]
+
+def moon_intent(value,parent):
+    """Canonical, portable moon selection; no untrusted physical constants."""
+    if value is None:return None
+    if not isinstance(value,dict) or value.get('parent')!=parent:
+        raise ValueError('Moon selection must match the destination planet')
+    moon=next((m for m in target_options(parent) if m['id']==str(value.get('moon_id'))),None)
+    if moon is None:raise ValueError('This moon has no supported parent-centered targeting model')
+    return dict(parent=parent,moon_id=moon['id'],moon_name=moon['name'])
+
+def named_moon(query):
+    """Known JPL identities also resolve offline; other Horizons names still use JPL."""
+    import re
+    text=re.sub(r'\s*\([JSUNM]\s*[IVX]+\)\s*$','',str(query),flags=re.I).strip().casefold()
+    text=re.sub(r'^spk\s*=\s*','',text)
+    for parent in MOON_SYSTEMS:
+        for moon in target_options(parent):
+            if text in (moon['name'].casefold(),moon['id']):
+                return dict(name=moon['name'],id=moon['id'],command=moon['id'],kind='natural_satellite',parent_body=parent,
+                    source='https://ssd.jpl.nasa.gov/sats/phys_par/',query=str(query),identity_note='Known JPL satellite ID; encounter vectors are fetched when targeting.')
+    return None
 
 def validate_options(parent,moon_id,mode,altitude,max_added_mps=700.,effort='standard',inclination_deg=None,target_latitude_deg=None,target_longitude_deg=None):
     import math
@@ -42,7 +88,7 @@ def validate_options(parent,moon_id,mode,altitude,max_added_mps=700.,effort='sta
         if inclination_deg is not None:raise ValueError('Choose a body-fixed target point or an inclination constraint, not both')
         point=dict(latitude_deg=latitude,longitude_east_deg=longitude%360.)
     return dict(parent=parent,moon=moon,mode=mode,altitude_km=altitude,max_added_mps=cap,effort=effort,
-                burn_fractions=[.35] if effort=='quick' else [.15,.35,.55],inclination_deg=inclination_deg,target_point=point)
+                burn_fractions=[.35] if effort=='quick' else [.1,.3,.5,.7,.85],inclination_deg=inclination_deg,target_point=point)
 
 def titan_body_axes(epoch_jd_tdb):
     """ICRF->IAU_TITAN matrix, expressed against Ecliptic J2000 vectors.

@@ -35,12 +35,21 @@ class ArrivalGuiOptionsTests(unittest.TestCase):
                     app=SimpleNamespace(token='arrival-token',integrate=Mock(return_value={'started':True}),package=Mock(return_value={'state':'finished'}))
                     self.request(app,endpoint,dict(run='saved',candidate=ID,arrival_inclination_deg=desired))
                     expected=('saved',ID,None,None,0.,desired) if method=='integrate' else ('saved',ID,'auto',None,None,0.,desired,False,None)
-                    getattr(app,method).assert_called_once_with(*expected,True,2.)
+                    getattr(app,method).assert_called_once_with(*expected,True,2.,*((False,False,None) if method=='package' else ()))
 
     def test_http_api_forwards_optional_dwarf_patch_catalog(self):
         app=SimpleNamespace(token='arrival-token',package=Mock(return_value={'state':'finished'}))
         self.request(app,'/api/package',dict(run='saved',candidate=ID,patch_dwarf_planet=True,dwarf_catalog_path='/opt/celestia/data/dwarfplanets.ssc'))
-        app.package.assert_called_once_with('saved',ID,'auto',None,None,0.,None,True,'/opt/celestia/data/dwarfplanets.ssc',True,2.)
+        app.package.assert_called_once_with('saved',ID,'auto',None,None,0.,None,True,'/opt/celestia/data/dwarfplanets.ssc',True,2.,False,False,None)
+
+    def test_http_api_forwards_both_jpl_patch_choices_and_explicit_moon_selection(self):
+        app=SimpleNamespace(token='arrival-token',package=Mock(return_value={'state':'finished'}),select_moon_export=Mock(return_value={'state':'finished'}))
+        self.request(app,'/api/package',dict(run='saved',candidate=ID,patch_planet=True,patch_moon=True,patch_days=30.))
+        self.assertEqual(app.package.call_args.args[-3:],(True,True,30.))
+        for branch in ('abcdef123456',None):
+            app.select_moon_export.reset_mock()
+            self.request(app,'/api/select-moon-export',dict(run='saved',candidate=ID,branch=branch))
+            app.select_moon_export.assert_called_once_with('saved',ID,branch)
 
     def test_worker_flags_keep_zero_and_omit_unspecified_inclination(self):
         for desired in (None,0.,90.):

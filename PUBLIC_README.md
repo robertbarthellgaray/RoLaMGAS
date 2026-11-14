@@ -4,7 +4,7 @@
 
 ![RoLaMGAS orbital artwork](docs/images/RoLaMGAS.png)
 
-[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.5) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
+[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.6) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
 
 ## Browse before downloading
 
@@ -24,7 +24,7 @@ API key or subscription is required.
 
 ## Desktop app
 
-Download the v0.2.5 package for your platform: Windows ZIP, Apple Silicon or
+Download the v0.2.6 package for your platform: Windows ZIP, Apple Silicon or
 Intel Mac DMG, or Debian/Ubuntu x64 DEB. They open the same local browser GUI.
 On Windows, extract the ZIP and open RoLaMGAS.exe inside the folder.
 The Mac preview is unsigned/not notarized. See [platform instructions](SHARING.md).
@@ -36,6 +36,18 @@ Searches, exports and extra Horizons downloads are stored in
 `%LOCALAPPDATA%/RoLaMGAS`, separate from the executable. Updating the executable
 preserves your work. An internet connection is needed for targets or epochs not
 already cached. `ROLAMGAS_DATA_DIR` can select another data directory.
+
+## New in v0.2.6
+
+Target supported moons from saved parent-planet arrivals, scan correction
+burn timings, and select the resulting simulation for CSV, XYZV and Celestia
+exports. Click the selected moon-targeting button again to cancel.
+
+Celestia packages can patch both the planet and target moon with JPL vectors.
+Choose a centered patch duration; moon windows expand to at least one orbital
+period and download missing coverage. This release also fixes the Ganymede
+nonfinite-vector export error. See [the release notes](RELEASE_NOTES_0.2.6.md)
+and [moon-targeting guide](MOON_TARGETING.md) for model limits.
 
 ## New in v0.2.5
 
@@ -148,7 +160,7 @@ See `GUI_GUIDE.md`, `SHARING.md` and the original JPL response metadata for deta
 `python -m unittest discover -p "test_*.py"`
 
 Install `requirements-build.txt` and run
-`python build_release.py --native --version 0.2.5` on the target OS to build
+`python build_release.py --native --version 0.2.6` on the target OS to build
 the native EXE, DMG or DEB plus matching GPL source. GitHub Actions can build all
 three platforms; see [SHARING.md](SHARING.md).
 

@@ -123,6 +123,13 @@ class App:
     def lookup(self,query,epoch,refresh=False):
         key = query.strip().casefold()
         with self.lookup_lock:
+            from moon_targets import named_moon
+            moon=named_moon(query)
+            if moon:
+                from horizons_targets import moon_model_notice
+                moon['model_limitation']=moon_model_notice(moon)
+                register_target(moon)
+                return moon
             if not refresh and key in self.targets:
                 return dict(self.targets[key],cached_lookup=True)
             if self.active and read_json(self.folder(self.active)/'gui_status.json',{}).get('state')=='preparing':
@@ -398,7 +405,7 @@ class App:
                       distinct_accepted=max(0,live.get('distinct_accepted',0)-sum(q.get('status','').startswith('passes') for q in live['candidates'])+sum(q.get('status','').startswith('passes') for q in eligible)),
                       excluded_below_hard_c3_floor=len(live['candidates'])-len(eligible),
                       candidates=[dict(q,**plot_status(output/'candidates',q,request)) for q in hydrated])
-        limits={k:request.get(k) for k in ('target','target_object','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years','search_objective','prefer_outbound_encounters')}
+        limits={k:request.get(k) for k in ('target','target_object','moon_target','min_c3','max_c3','arrival_date','arrival_tolerance_days','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms','max_arrival_vinf_kms','vinf_tolerance_mps','max_years','search_objective','prefer_outbound_encounters')}
         limits['effective_min_c3']=max(float(request.get('min_c3') if request.get('min_c3') is not None else DEFAULT_MIN_C3),HARD_MIN_C3)
         return dict(run=name,status=status or dict(state='finished'),live=live,log=logs,candidate_names=read_json(output/'candidate_names.json',{}),
                     heartbeat=read_json(output/'heartbeat.json'),database=read_json(output/'database_first.json',{}),
@@ -543,7 +550,39 @@ class App:
 
 
 
+    def moon_export(self,name,identifier,branch):
+        if not re.fullmatch(r'[a-f0-9]{12}',identifier) or not re.fullmatch(r'[a-f0-9]{12}',str(branch)):raise ValueError('Invalid candidate or moon branch ID')
+        root=self.folder(name);output=root/'moon_targets'/identifier/branch
+        if read_json(output/'status.json',{}).get('state')!='finished':raise ValueError('Select a completed moon-targeting branch')
+        from celestia_package import export_report
+        report=export_report(output,branch)
+        candidate=root/'candidates'/(identifier+'.json');q=read_json(candidate,{})
+        source_hash=report.get('source_candidate_sha256') or read_json(output/'source_export/integration_report.json',{}).get('source_candidate_sha256')
+        if report.get('source_candidate_id')!=identifier or q.get('bodies',[])[-1:]!=[report.get('parent_body')] or source_hash!=hashlib.sha256(candidate.read_bytes()).hexdigest():
+            raise ValueError('Moon branch belongs to a different candidate revision. Recalculate moon targeting.')
+        digest=hashlib.sha256((output/'trajectory.xyzv').read_bytes()).hexdigest()
+        if report.get('trajectory_sha256') and report['trajectory_sha256']!=digest:raise ValueError('Moon trajectory checksum changed; recalculate moon targeting')
+        return output,report,digest
+
+    def selected_moon_export(self,name,identifier):
+        if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
+        selection=read_json(self.folder(name)/'moon_targets'/identifier/'selection.json',{})
+        if not selection.get('branch'):return None
+        output,report,digest=self.moon_export(name,identifier,selection['branch'])
+        if selection.get('trajectory_sha256')!=digest:raise ValueError('Selected moon trajectory changed. Select it again before exporting.')
+        return output,report
+
+    def select_moon_export(self,name,identifier,branch=None):
+        if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
+        selection={}
+        if branch:
+            output,report,digest=self.moon_export(name,identifier,branch)
+            selection=dict(branch=branch,trajectory_sha256=digest)
+        atomic_json(self.folder(name)/'moon_targets'/identifier/'selection.json',selection)
+        return self.export_status(name,identifier)
+
     def integrate(self,name,identifier,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,refine_patches=True,patch_epoch_shift_days=2.):
+        if self.selected_moon_export(name,identifier):return dict(started=False,selected_moon=True)
         from integrate_export import validate_post_flyby_months,validate_patch_epoch_shift
         from arrival_geometry import validate_inclination
         arrival_inclination_deg=validate_inclination(arrival_inclination_deg)
@@ -584,6 +623,11 @@ class App:
     def export_status(self,name,identifier):
         if not re.fullmatch(r'[a-f0-9]{12}',identifier):
             raise ValueError('Invalid candidate ID')
+        selected=self.selected_moon_export(name,identifier)
+        if selected:
+            output,report=selected
+            return dict(state='finished',export_kind='moon',branch=output.name,report=report,
+                file_base=output.relative_to(self.folder(name)).as_posix(),message='Selected moon-targeted branch is ready for export.')
         output=self.folder(name)/'exports'/identifier
         status=read_json(output/'integration_status.json',dict(state='none'))
         process=self.integrations.get((name,identifier))
@@ -627,7 +671,8 @@ class App:
         output=parent/branch;status=read_json(output/'status.json',dict(state='none'));process=self.moon_jobs.get((name,identifier,branch))
         if status['state']=='running' and process is not None and process.poll() is not None:
             status=dict(status,state='failed',message='Moon worker exited unexpectedly; inspect worker.log.');atomic_json(output/'status.json',status)
-        return dict(status,branch=branch)
+        selection=read_json(parent/'selection.json',{})
+        return dict(status,branch=branch,selected_branch=selection.get('branch'))
 
     def stop_moon_target(self,name,identifier,branch):
         status=self.moon_target_status(name,identifier,branch)
@@ -640,7 +685,23 @@ class App:
             if process.poll() is None:
                 (self.folder(name)/'moon_targets'/identifier/branch/'stop.request').touch()
 
-    def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,patch_dwarf_planet=False,dwarf_catalog_path=None,refine_patches=True,patch_epoch_shift_days=2.):
+    def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,patch_dwarf_planet=False,dwarf_catalog_path=None,refine_patches=True,patch_epoch_shift_days=2.,patch_planet=False,patch_moon=False,patch_days=None):
+        if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
+        if patch_planet or patch_moon:
+            from planet_moon_patch import validate_patch_days
+            patch_days=validate_patch_days(patch_days)
+        from celestia_package import build_package
+        root=self.folder(name)
+        candidate=read_json(root/'candidates'/(identifier+'.json'))
+        config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{})['config']
+        config=dict(config,cache=str(self.cache))
+        selected=self.selected_moon_export(name,identifier)
+        if selected:
+            if patch_dwarf_planet:raise ValueError('The selected moon branch uses planet/moon patches, not a small-body patch')
+            output,report=selected
+            result=build_package(output,candidate,config,model,moon_branch=output.name,patch_planet=patch_planet,patch_moon=patch_moon,patch_days=patch_days)
+            return dict(result,file_base=output.relative_to(root).as_posix())
+        if patch_moon:raise ValueError('Use a completed moon-targeting branch before enabling its JPL moon patch')
         from integrate_export import validate_post_flyby_months,validate_patch_epoch_shift
         from arrival_geometry import validate_inclination
         arrival_inclination_deg=validate_inclination(arrival_inclination_deg)
@@ -663,16 +724,14 @@ class App:
             if status['state']!='running':
                 self.integrate(name,identifier,arrival_altitude_km,powered_flybys,post_flyby_months,arrival_inclination_deg,refine_patches,patch_epoch_shift_days)
             return dict(state='integrating',message='Integrating the trajectory before packaging.')
-        from celestia_package import build_package
-        root=self.folder(name)
-        candidate=read_json(root/'candidates'/(identifier+'.json'))
-        config=read_json(root/'request.json') or read_json(root/'run_manifest.json',{})['config']
-        return build_package(root/'exports'/identifier,candidate,config,model,patch_dwarf_planet,dwarf_catalog_path)
+        result=build_package(root/'exports'/identifier,candidate,config,model,patch_dwarf_planet,dwarf_catalog_path,patch_planet=patch_planet,patch_days=patch_days)
+        return dict(result,file_base='exports/'+identifier)
 
     def open_package_folder(self,name,identifier):
         if not re.fullmatch(r'[a-f0-9]{12}',identifier):
             raise ValueError('Invalid candidate ID')
-        folder=self.folder(name)/'exports'/identifier/'celestia_package'
+        selected=self.selected_moon_export(name,identifier)
+        folder=(selected[0] if selected else self.folder(name)/'exports'/identifier)/'celestia_package'
         if not folder.is_dir():
             raise ValueError('Export a Celestia package first')
         if os.name=='nt':
@@ -806,8 +865,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.target_moon(value['run'],value['candidate'],value.get('moon_id'),value.get('mode','approach'),value.get('altitude_km',1000.),value.get('max_added_mps',700.),value.get('effort','standard'),value.get('inclination_deg'),value.get('target_latitude_deg'),value.get('target_longitude_deg')))
             if self.path=='/api/stop-moon-target':
                 return self.json(self.app.stop_moon_target(value['run'],value['candidate'],value['branch']))
+            if self.path=='/api/select-moon-export':
+                return self.json(self.app.select_moon_export(value['run'],value['candidate'],value.get('branch')))
             if self.path=='/api/package':
-                return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('patch_dwarf_planet',False),value.get('dwarf_catalog_path'),value.get('refine_patches',True),value.get('patch_epoch_shift_days',2.)))
+                return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('patch_dwarf_planet',False),value.get('dwarf_catalog_path'),value.get('refine_patches',True),value.get('patch_epoch_shift_days',2.),value.get('patch_planet',False),value.get('patch_moon',False),value.get('patch_days')))
             if self.path=='/api/dwarf-patch-info':
                 from dwarf_planet_patch import patch_info
                 root=self.app.folder(value['run'])

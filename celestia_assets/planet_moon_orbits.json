@@ -1,0 +1,459 @@
+{
+  "objects": [
+    {
+      "name": "Mercury",
+      "aliases": [
+        "Mercury"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "planet",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"vsop87-mercury\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-mercury\""
+      }
+    },
+    {
+      "name": "Venus",
+      "aliases": [
+        "Venus"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "planet",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"vsop87-venus\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t5832.5424\n\t\tInclination\t157.1510\n\t\tAscendingNode\t182.7391\n\t\tMeridianAngle\t19.72\n\t}"
+      }
+    },
+    {
+      "name": "Earth",
+      "aliases": [
+        "Earth"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "planet",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"vsop87-earth\"",
+        "BodyFrame": "BodyFrame\t{ EclipticJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"earth-p03lp\""
+      }
+    },
+    {
+      "name": "Mars",
+      "aliases": [
+        "Mars"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "planet",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"vsop87-mars\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-mars\""
+      }
+    },
+    {
+      "name": "Phobos",
+      "aliases": [
+        "Phobos",
+        "Mars I"
+      ],
+      "parent": "Sol/Mars",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460000  # 2023 Feb 24 12:00\n\t\tPeriod\t0.31891023  # mean\n\t\tSemiMajorAxis\t9378.938\n\t\tEccentricity\t0.01468\n\t\tInclination\t2.097806\n\t\tAscendingNode\t38.701507\n\t\tArgOfPericenter\t66.811489\n\t\tMeanAnomaly\t173.124729\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-phobos\""
+      }
+    },
+    {
+      "name": "Deimos",
+      "aliases": [
+        "Deimos",
+        "Mars II"
+      ],
+      "parent": "Sol/Mars",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2460000  # 2023 Feb 24 12:00\n\t\tPeriod\t1.2624407  # mean\n\t\tSemiMajorAxis\t23459.739\n\t\tEccentricity\t0.000283\n\t\tInclination\t2.217941\n\t\tAscendingNode\t286.210554\n\t\tArgOfPericenter\t125.429446\n\t\tMeanAnomaly\t331.164065\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-deimos\""
+      }
+    },
+    {
+      "name": "Jupiter",
+      "aliases": [
+        "Jupiter"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "planet",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"vsop87-jupiter\"",
+        "BodyFrame": "BodyFrame\t{ EclipticJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t9.92492             # System III (radio emissions)\n\t\tInclination\t2.216451        # J2000\n\t\tAscendingNode\t337.818458  # J2000\n\t\tMeridianAngle\t305.38      # correct System III prime meridian\n\t}"
+      }
+    },
+    {
+      "name": "Io",
+      "aliases": [
+        "Io",
+        "Jupiter I"
+      ],
+      "parent": "Sol/Jupiter",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"io\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-io\""
+      }
+    },
+    {
+      "name": "Europa",
+      "aliases": [
+        "Europa",
+        "Jupiter II"
+      ],
+      "parent": "Sol/Jupiter",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"europa\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-europa\""
+      }
+    },
+    {
+      "name": "Ganymede",
+      "aliases": [
+        "Ganymede",
+        "Jupiter III"
+      ],
+      "parent": "Sol/Jupiter",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"ganymede\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-ganymede\""
+      }
+    },
+    {
+      "name": "Callisto",
+      "aliases": [
+        "Callisto",
+        "Jupiter IV"
+      ],
+      "parent": "Sol/Jupiter",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"callisto\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-callisto\""
+      }
+    },
+    {
+      "name": "Saturn",
+      "aliases": [
+        "Saturn"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "planet",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"vsop87-saturn\"",
+        "BodyFrame": "BodyFrame\t{ EclipticJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod<min>\t634.7\n\t\tInclination\t28.054629\n\t\tAscendingNode\t169.524973\n\t\tMeridianAngle\t358.93  # correct System III prime meridian\n\t}"
+      }
+    },
+    {
+      "name": "Mimas",
+      "aliases": [
+        "Mimas",
+        "Saturn I"
+      ],
+      "parent": "Sol/Saturn",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Saturn\" }\n\t}",
+        "CustomOrbit": "CustomOrbit\t\"mimas\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-mimas\""
+      }
+    },
+    {
+      "name": "Enceladus",
+      "aliases": [
+        "Enceladus",
+        "Saturn II"
+      ],
+      "parent": "Sol/Saturn",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Saturn\" }\n\t}",
+        "CustomOrbit": "CustomOrbit\t\"enceladus\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-enceladus\""
+      }
+    },
+    {
+      "name": "Tethys",
+      "aliases": [
+        "Tethys",
+        "Saturn III"
+      ],
+      "parent": "Sol/Saturn",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Saturn\" }\n\t}",
+        "CustomOrbit": "CustomOrbit\t\"tethys\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-tethys\""
+      }
+    },
+    {
+      "name": "Dione",
+      "aliases": [
+        "Dione",
+        "Saturn IV"
+      ],
+      "parent": "Sol/Saturn",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Saturn\" }\n\t}",
+        "CustomOrbit": "CustomOrbit\t\"dione\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-dione\""
+      }
+    },
+    {
+      "name": "Rhea",
+      "aliases": [
+        "Rhea",
+        "Saturn V"
+      ],
+      "parent": "Sol/Saturn",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Saturn\" }\n\t}",
+        "CustomOrbit": "CustomOrbit\t\"rhea\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-rhea\""
+      }
+    },
+    {
+      "name": "Titan",
+      "aliases": [
+        "Titan",
+        "Saturn VI"
+      ],
+      "parent": "Sol/Saturn",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Saturn\" }\n\t}",
+        "CustomOrbit": "CustomOrbit\t\"titan\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation  # pole location + spin rate case\n\t{\n\t\tInclination\t6.549\n\t\tAscendingNode\t129.45\n\t\tMeridianAngle\t189.64\n\t}"
+      }
+    },
+    {
+      "name": "Hyperion",
+      "aliases": [
+        "Hyperion",
+        "Saturn VII"
+      ],
+      "parent": "Sol/Saturn",
+      "item_type": "Body",
+      "classification": "minormoon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Saturn\" }\n\t}",
+        "CustomOrbit": "CustomOrbit\t\"hyperion\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "PrecessingRotation": "PrecessingRotation\n\t{\n\t\tEpoch\t2453639.0  # 2005 Sept 25 12:00\n\t\tPeriod\t120  # 72 deg/day\n\t\tInclination\t33.4\n\t\tAscendingNode\t45.1\n\t\tMeridianAngle\t115  # approx.\n\t\tPrecessionPeriod<d>\t320\n\t}"
+      }
+    },
+    {
+      "name": "Iapetus",
+      "aliases": [
+        "Iapetus",
+        "Saturn VIII"
+      ],
+      "parent": "Sol/Saturn",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Saturn\" }\n\t}",
+        "CustomOrbit": "CustomOrbit\t\"iapetus\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-iapetus\""
+      }
+    },
+    {
+      "name": "Phoebe",
+      "aliases": [
+        "Phoebe",
+        "Saturn IX"
+      ],
+      "parent": "Sol/Saturn",
+      "item_type": "Body",
+      "classification": "minormoon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Saturn\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2453167.5  # 2004 Jun 11\n\t\tPeriod\t548.167596\n\t\tSemiMajorAxis\t12917060.944\n\t\tEccentricity\t0.152921\n\t\tInclination\t173.212514\n\t\tAscendingNode\t263.558611\n\t\tArgOfPericenter\t2.526169\n\t\tMeanAnomaly\t31.167678\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t9.273653\n\t\tInclination\t12.20\n\t\tAscendingNode\t86.90\n\t\tMeridianAngle\t125.56\n\t}"
+      }
+    },
+    {
+      "name": "Uranus",
+      "aliases": [
+        "Uranus"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "planet",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"vsop87-uranus\"",
+        "BodyFrame": "BodyFrame\t{ EclipticJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t17.247864           # System III (magnetic field)\n\t\tInclination\t97.724832       # J2000\n\t\tAscendingNode\t167.646661  # J2000\n\t\tMeridianAngle\t331.13      # correct System III prime meridian\n\t}"
+      }
+    },
+    {
+      "name": "Miranda",
+      "aliases": [
+        "Miranda",
+        "Uranus V"
+      ],
+      "parent": "Sol/Uranus",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"miranda\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-miranda\""
+      }
+    },
+    {
+      "name": "Ariel",
+      "aliases": [
+        "Ariel",
+        "Uranus I"
+      ],
+      "parent": "Sol/Uranus",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"ariel\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-ariel\""
+      }
+    },
+    {
+      "name": "Umbriel",
+      "aliases": [
+        "Umbriel",
+        "Uranus II"
+      ],
+      "parent": "Sol/Uranus",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"umbriel\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-umbriel\""
+      }
+    },
+    {
+      "name": "Titania",
+      "aliases": [
+        "Titania",
+        "Uranus III"
+      ],
+      "parent": "Sol/Uranus",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"titania\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-titania\""
+      }
+    },
+    {
+      "name": "Oberon",
+      "aliases": [
+        "Oberon",
+        "Uranus IV"
+      ],
+      "parent": "Sol/Uranus",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"oberon\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-oberon\""
+      }
+    },
+    {
+      "name": "Neptune",
+      "aliases": [
+        "Neptune"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "planet",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"vsop87-neptune\"",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-neptune\""
+      }
+    },
+    {
+      "name": "Triton",
+      "aliases": [
+        "Triton",
+        "Neptune I"
+      ],
+      "parent": "Sol/Neptune",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "CustomOrbit": "CustomOrbit\t\"triton\"",
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEquatorJ2000\t{ Center \"Sol/Neptune\" }\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "CustomRotation": "CustomRotation\t\"iau-triton\""
+      }
+    }
+  ],
+  "source": "Celestia data/solarsys.ssc snapshot",
+  "source_sha256": "78243e6aa69ed53da62c3af15f3f8e8c7fc52391cc79655c7f6e1654481669cd",
+  "license": "GPL-2.0-or-later",
+  "attribution": [
+    "# SPDX-FileCopyrightText: 2001-2004, 2006-2009 Chris Laurel",
+    "# SPDX-FileCopyrightText: 2001-2002 Clint Weisbrod",
+    "# SPDX-FileCopyrightText: 2002 Deon Ramsey",
+    "# SPDX-FileCopyrightText: 2003-2006 Fridger Schrempp",
+    "# SPDX-FileCopyrightText: 2003-2005, 2007-2009 Grant Hutchison",
+    "# SPDX-FileCopyrightText: 2005 Pat Suwalski",
+    "# SPDX-FileCopyrightText: 2019, 2026 Askaniy Anpilogov",
+    "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+    "# SPDX-FileCopyrightText: 2021 SevenSpheres",
+    "# SPDX-FileCopyrightText: 2023, 2025 Andrew Tribick",
+    "# SPDX-FileCopyrightText: 2023-2026 AstroChara",
+    "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+    "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+  ]
+}
