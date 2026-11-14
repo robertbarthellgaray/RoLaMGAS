@@ -70,7 +70,7 @@ class NativeReleaseTests(unittest.TestCase):
                 'Launch Command Line.cmd','Setup Python.cmd','.gitignore','.gitattributes',
                 'PUBLIC_README.md','baseline_ephemerides.zip','community_config.json','community_seed_catalog.json')
             for name in required:(root/name).write_text('fixture',encoding='utf-8')
-            for name in ('gui_assets/chart.png','model_assets/spacecraft.3ds','runs/private.json',
+            for name in ('gui_assets/chart.png','model_assets/spacecraft.3ds','model_assets/titan/hasi_reference.csv','runs/private.json',
                          'cache/private.json','.github/workflows/native-builds.yml'):
                 path=root/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(b'fixture')
             with patch.object(build,'ROOT',root),patch.object(build,'MODULES',['rolamgas','network']),patch.object(build,'DOCS',[]):
@@ -78,7 +78,7 @@ class NativeReleaseTests(unittest.TestCase):
             with zipfile.ZipFile(output) as archive:
                 names=archive.namelist()
                 for name in ('network.py','requirements-build.txt','baseline_ephemerides.zip','community_config.json','community_seed_catalog.json',
-                             'gui_assets/chart.png','model_assets/spacecraft.3ds',
+                             'gui_assets/chart.png','model_assets/spacecraft.3ds','model_assets/titan/hasi_reference.csv',
                              '.github/workflows/native-builds.yml'):
                     self.assertIn('RoLaMGAS/'+name,names)
                 self.assertFalse(any('/runs/' in name or '/cache/' in name for name in names))

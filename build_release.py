@@ -53,7 +53,7 @@ def source_release(baseline):
     files += [p for p in (ROOT/'community_backend').rglob('*') if p.is_file() and p.suffix in ('.mjs','.sql','.toml','.md')]
     files += list(ROOT.glob('test_*.py'))
     files += list((ROOT/'examples').glob('*.json'))
-    files += list((ROOT/'model_assets').glob('*'))
+    files += [p for p in (ROOT/'model_assets').rglob('*') if p.is_file() and '__pycache__' not in p.parts]
     # Reproducible international capacity samples, without redistributing source
     # papers, provider HTML or third-party calculator Javascript.
     files += [p for name in ('README.md','capacity_samples.csv','international_launch_performance.png')
