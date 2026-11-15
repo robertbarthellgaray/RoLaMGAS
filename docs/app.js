@@ -23,7 +23,7 @@ let duplicateAliases={}, displayAliases={}, pendingHashTarget=null;
 let sharedEndpoint='', sharedSince='1970-01-01T00:00:00.000Z', sharedBusy=false, curatedAliases={}, visibleCount=48;
 let planetEphemerides=null,planetLoad=null,animatePlanets=false;
 let destination = 'All', smallBodyTarget = 'All', selected = null, requestVersion = 0, playing = false, lastTick = 0, fraction = 0;
-let selectedSequence='';
+const selectedSequences=new Set();
 let yaw = -.35, pitch = .65, zoom = 1, view = '3d', framePending = false;
 const canvas = $('orbit'), ctx = canvas.getContext('2d');
 const bodyColors = {Earth:'#6ea9ff', Venus:'#e3c387', Mercury:'#a7a4a0', Mars:'#e7997e', Jupiter:'#dcc3a6', Saturn:'#f0d28d', Uranus:'#87dfed', Neptune:'#729bff'};
@@ -63,7 +63,7 @@ function maximumYear(){return $('launch-year-max').value.trim()===''?Infinity:Nu
 function targetRows(){return catalog.filter(c=>targetMatches(c)&&(!CATEGORIES.includes(destination)||smallBodyTarget==='All'||c.target===smallBodyTarget))}
 function matchingRows(ignoreSequence=false){
  const search=$('search').value.trim().toLowerCase().replace(/\s+/g,'');
- return targetRows().filter(c=>matchesGallery(c,$('mission-kind').value,ignoreSequence?'':selectedSequence)&&`${missionName(c)} ${c.id} ${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
+ return targetRows().filter(c=>matchesGallery(c,$('mission-kind').value)&&(ignoreSequence||!selectedSequences.size||selectedSequences.has(c.sequence))&&`${missionName(c)} ${c.id} ${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
   &&(!c.community||c.classification!=='yellow'||$('include-yellow').checked)&&c.c3<=maximum('max-c3')&&c.vinf<=maximum('max-vinf')&&c.burns_mps<=maximum('max-burns')&&c.years<=maximum('max-years')&&launchYear(c)>=minimumYear()&&launchYear(c)<=maximumYear());
 }
 function gallerySelection(){
@@ -112,7 +112,7 @@ function drawTradeoff(rows=visibleRows()){
  const available=matchingRows(true),palette=sequenceColors(targetRows()),m=MissionMetrics.chartModel(rows,webChartOptions(),palette);
  $('chart-sampling-note').hidden=!m.sampledDates;
  $('chart-color-legend').hidden=m.color==='sequence'||!m.points.length;$('chart-color-legend').innerHTML=MissionMetrics.chartColorLegend(m);
- $('tradeoff-legend').innerHTML=`<button type="button" data-sequence="" aria-pressed="${!selectedSequence}">All sequences</button>`+[...palette].filter(([sequence])=>available.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<button type="button" data-sequence="${escapeHtml(sequence)}" aria-pressed="${selectedSequence===sequence}" aria-label="Show only ${escapeHtml(sequence)} trajectories; click again to show all">${m.color==='sequence'?`<i class="sequence-swatch" style="background:${color}"></i>`:''}${escapeHtml(sequence)}</button>`).join('');
+ $('tradeoff-legend').innerHTML=`<button type="button" data-sequence="" aria-pressed="${!selectedSequences.size}">All sequences</button>`+[...palette].filter(([sequence])=>available.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<button type="button" data-sequence="${escapeHtml(sequence)}" aria-pressed="${selectedSequences.has(sequence)}" aria-label="${selectedSequences.has(sequence)?'Remove':'Select'} ${escapeHtml(sequence)} trajectories">${m.color==='sequence'?`<i class="sequence-swatch" style="background:${color}"></i>`:''}${escapeHtml(sequence)}</button>`).join('');
  if(!m.points.length){$('tradeoff-svg').innerHTML='';$('tradeoff-status').textContent=minimumYear()>maximumYear()?'The first launch year must be at or before the last year.':rows.length?'No trajectories have valid data for the selected axes and color.':'No trajectories match these filters. Select another sequence or reset the filters.';return}
  const w=1000,h=340,left=108,right=36,top=22,bottom=65;
  let svg=MissionMetrics.chartGrid(m,{w,h,left,right,top,bottom});
@@ -427,8 +427,15 @@ $('candidate-list').addEventListener('click', e => { const b=e.target.closest('[
 $('candidate-list').addEventListener('toggle',e=>{const group=e.target;if(group.matches?.('[data-launch-group]')&&group.isConnected){if(group.open)openLaunchGroups.add(group.dataset.launchGroup);else openLaunchGroups.delete(group.dataset.launchGroup);}},true);
 for (const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{syncGraphYears();visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
 $('sort').addEventListener('change',()=>{visibleCount=48;renderList()});
-$('mission-kind').addEventListener('change',()=>{selectedSequence='';visibleCount=48;renderList()});
-$('tradeoff-legend').addEventListener('click',e=>{const b=e.target.closest('[data-sequence]');if(!b)return;selectedSequence=selectedSequence===b.dataset.sequence?'':b.dataset.sequence;visibleCount=48;renderList()});
+$('mission-kind').addEventListener('change',()=>{selectedSequences.clear();visibleCount=48;renderList()});
+function toggleSequenceFilter(sequence){
+ if(!sequence)selectedSequences.clear();
+ else if(selectedSequences.has(sequence))selectedSequences.delete(sequence);
+ else selectedSequences.add(sequence);
+ visibleCount=48;renderList();
+ [...$('tradeoff-legend').querySelectorAll('[data-sequence]')].find(b=>b.dataset.sequence===sequence)?.focus({preventScroll:true});
+}
+$('tradeoff-legend').addEventListener('click',e=>{const b=e.target.closest('[data-sequence]');if(b)toggleSequenceFilter(b.dataset.sequence)});
 $('include-yellow').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('show-trimmed').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('candidate-more').onclick=()=>{const top=$('candidate-list').scrollTop;visibleCount+=48;renderList();$('candidate-list').scrollTop=top};
@@ -439,7 +446,7 @@ $('chart-porkchop').onclick=()=>setWebChart({x:'departure',y:'arrival',color:'c3
 $('chart-default').onclick=()=>setWebChart({x:'years',y:'c3',color:'sequence'});
 function selectPoint(e){const point=e.target.closest('[data-candidate]');if(!point)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();selectCandidate(point.dataset.candidate);$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
 $('tradeoff-svg').addEventListener('click',selectPoint);$('tradeoff-svg').addEventListener('keydown',selectPoint);
-function resetDestinationFilters(){for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('show-trimmed').checked=false;$('sort').value='recommended';$('mission-kind').value='both';selectedSequence='';visibleCount=48;syncGraphYears();}
+function resetDestinationFilters(){for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('show-trimmed').checked=false;$('sort').value='recommended';$('mission-kind').value='both';selectedSequences.clear();visibleCount=48;syncGraphYears();}
 $('clear-filters').addEventListener('click',()=>{resetDestinationFilters();renderList();if(selected)updateLocation(selected.id);});
 document.querySelector('.projection').addEventListener('click', e => { if (e.target.dataset.view) setView(e.target.dataset.view); });
 $('reset-view').addEventListener('click', () => { zoom=1; setView('3d'); });
