@@ -2,9 +2,9 @@ import {historicalMatch} from './historical_labels.js?v=20261108b';
 import {matchesGallery,featuredOrder} from './gallery_filters.js?v=20261113a';
 import {publicationDate} from './publication_dates.js?v=20261110b';
 import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261112e';
-import './mission_metrics.js?v=20261110a';
+import './mission_metrics.js?v=20261115charts';
 import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames,matchesBodyLabel} from './community.js?v=20261114names';
-import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters} from './library_analysis.js?v=20261108b';
+import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters,chartSettingsFromHash,withChartSettings} from './library_analysis.js?v=20261115charts';
 import {trimAlternatives,groupLaunches,launchTimestamp} from './library_curation.js?v=20261113a';
 import {storedMismatch,estimateFlybys,FLYBY_BODIES} from './flyby_diagnostics.js?v=20261112d';
 const $ = (id) => document.getElementById(id);
@@ -103,21 +103,24 @@ function renderList(revealId=null) {
   if (rows.length && !all.some(c => c.id === selected?.id)) selectCandidate(rows[0].id);
 }
 function selectedTarget(){return CATEGORIES.includes(destination)?(smallBodyTarget==='All'?null:smallBodyTarget):destination==='All'?null:destination}
+function webChartOptions(){return {x:$('chart-x').value,y:$('chart-y').value,color:$('chart-color').value};}
+function setWebChart(options){for(const [id,key]of [['chart-x','x'],['chart-y','y'],['chart-color','color']])$(id).value=options[key];drawTradeoff();if(selected)updateLocation(selected.id);}
 function drawTradeoff(rows=visibleRows()){
  const target=selectedTarget(),chart=$('tradeoff-chart');
- if(!target){chart.hidden=true;$('tradeoff-status').textContent='Choose a planet or a named small body to compare its trajectories.';return}
+ if(!target){chart.hidden=true;$('chart-color-legend').hidden=true;$('chart-sampling-note').hidden=true;$('tradeoff-legend').replaceChildren();$('tradeoff-status').textContent='Choose a planet or a named small body to compare its trajectories.';return}
  chart.hidden=false;
- const available=matchingRows(true),palette=sequenceColors(targetRows());
- $('tradeoff-legend').innerHTML=`<button type="button" data-sequence="" aria-pressed="${!selectedSequence}">All sequences</button>`+[...palette].filter(([sequence])=>available.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<button type="button" data-sequence="${escapeHtml(sequence)}" aria-pressed="${selectedSequence===sequence}" aria-label="Show only ${escapeHtml(sequence)} trajectories; click again to show all"><i class="sequence-swatch" style="background:${color}"></i>${escapeHtml(sequence)}</button>`).join('');
- if(!rows.length){$('tradeoff-svg').innerHTML='';$('tradeoff-status').textContent=minimumYear()>maximumYear()?'The first launch year must be at or before the last year.':'No trajectories match these filters. Select another sequence or reset the filters.';return}
- const all=targetRows(),vertical=c=>$('chart-metric').value==='vinf'?c.vinf:c.c3,verticalLabel=$('chart-metric').value==='vinf'?'Arrival V∞ (km/s)':'Launch C3 (km²/s²)';
- const w=1000,h=340,left=74,right=22,top=22,bottom=56,maxX=Math.max(.1,...rows.map(c=>c.years))*1.06,maxY=Math.max(.1,...rows.map(vertical))*1.08;
- let svg='';
- for(let i=0;i<=5;i++){const x=left+(w-left-right)*i/5,y=h-bottom-(h-top-bottom)*i/5;svg+=`<path d="M${x},${top}V${h-bottom}M${left},${y}H${w-right}" stroke="#26394a" stroke-width="1"/><text x="${x}" y="${h-bottom+22}" text-anchor="middle">${fmt(maxX*i/5,1)}</text><text x="${left-10}" y="${y+4}" text-anchor="end">${fmt(maxY*i/5,maxY<1?2:1)}</text>`}
- svg+=`<text class="axis-label" x="${(left+w-right)/2}" y="${h-5}" text-anchor="middle">Flight time (years)</text><text class="axis-label" transform="translate(17 ${(top+h-bottom)/2}) rotate(-90)" text-anchor="middle">${verticalLabel}</text>`;
- svg+=rows.map(c=>`<circle class="tradeoff-point" data-candidate="${escapeHtml(c.id)}" tabindex="0" role="button" aria-pressed="${c.id===selected?.id}" aria-label="${escapeHtml(c.sequence)}, launch ${c.launch_date}, C3 ${fmt(c.c3)}, ${fmt(c.years)} years, arrival V∞ ${fmt(c.vinf)} km/s; open trajectory and downloads" cx="${left+c.years/maxX*(w-left-right)}" cy="${h-bottom-vertical(c)/maxY*(h-top-bottom)}" r="5" fill="${palette.get(c.sequence)}"><title>${escapeHtml(c.sequence)} · launch ${c.launch_date} · C3 ${fmt(c.c3)} km²/s² · ${fmt(c.years,3)} years · arrival V∞ ${fmt(c.vinf,3)} km/s</title></circle>`).join('');
- $('tradeoff-svg').innerHTML=svg;$('tradeoff-svg').setAttribute('aria-label',`Flight time versus ${verticalLabel}; select a point to inspect and download`);
- $('tradeoff-status').textContent=`${target} · ${rows.length} trajectories · ${Math.min(...rows.map(launchYear))}–${Math.max(...rows.map(launchYear))} launches. Select a dot to inspect and download.`;
+ const available=matchingRows(true),palette=sequenceColors(targetRows()),m=MissionMetrics.chartModel(rows,webChartOptions(),palette);
+ $('chart-sampling-note').hidden=!m.sampledDates;
+ $('chart-color-legend').hidden=m.color==='sequence'||!m.points.length;$('chart-color-legend').innerHTML=MissionMetrics.chartColorLegend(m);
+ $('tradeoff-legend').innerHTML=`<button type="button" data-sequence="" aria-pressed="${!selectedSequence}">All sequences</button>`+[...palette].filter(([sequence])=>available.some(c=>c.sequence===sequence)).map(([sequence,color])=>`<button type="button" data-sequence="${escapeHtml(sequence)}" aria-pressed="${selectedSequence===sequence}" aria-label="Show only ${escapeHtml(sequence)} trajectories; click again to show all">${m.color==='sequence'?`<i class="sequence-swatch" style="background:${color}"></i>`:''}${escapeHtml(sequence)}</button>`).join('');
+ if(!m.points.length){$('tradeoff-svg').innerHTML='';$('tradeoff-status').textContent=minimumYear()>maximumYear()?'The first launch year must be at or before the last year.':rows.length?'No trajectories have valid data for the selected axes and color.':'No trajectories match these filters. Select another sequence or reset the filters.';return}
+ const w=1000,h=340,left=108,right=36,top=22,bottom=65;
+ let svg=MissionMetrics.chartGrid(m,{w,h,left,right,top,bottom});
+ svg+=m.points.map(p=>{const c=p.row,text=`${c.sequence}, departure ${c.launch_date}, arrival ${c.arrival_date}, C3 ${fmt(c.c3)}, ${fmt(c.years,3)} years, arrival V∞ ${fmt(c.vinf,3)} km/s, modeled cruise Δv ${fmt(MissionMetrics.chartValue(c,'burns'),1)} m/s`;
+  return `<circle class="tradeoff-point" data-candidate="${escapeHtml(c.id)}" tabindex="0" role="button" aria-pressed="${c.id===selected?.id}" aria-label="${escapeHtml(text)}; open trajectory and downloads" cx="${left+MissionMetrics.chartPosition(p.x,m.xDomain)*(w-left-right)}" cy="${h-bottom-MissionMetrics.chartPosition(p.y,m.yDomain)*(h-top-bottom)}" r="5" fill="${p.fill}"><title>${escapeHtml(text)}</title></circle>`;
+ }).join('');
+ $('tradeoff-svg').innerHTML=svg;$('tradeoff-svg').setAttribute('aria-label',`${MissionMetrics.chartMetrics[m.x].label} versus ${MissionMetrics.chartMetrics[m.y].label}; select a point to inspect and download`);
+ $('tradeoff-status').textContent=`${target} · ${m.points.length} trajectories · ${Math.min(...m.points.map(p=>launchYear(p.row)))}–${Math.max(...m.points.map(p=>launchYear(p.row)))} launches. Select a dot to inspect and download.${m.skipped?' '+m.skipped+' missing selected data.':''}`;
 }
 
 function renderFlybyDiagnostics(c){
@@ -210,7 +213,7 @@ $('apply-historical-name').addEventListener('click',()=>{if(!selected?.historica
 $('parking-altitude').addEventListener('input',updateParkingEstimate);
 $('animate-planets').addEventListener('click',togglePlanetAnimation);
 function canonicalId(id){return resolveAlias(id,{...duplicateAliases,...curatedAliases,...displayAliases})}
-function updateLocation(id){const hash=withMissionFilters(filterHash({target:selectedTarget()||destination,mission:id,launchMin:$('launch-year-min').value,launchMax:$('launch-year-max').value}),{metric:$('chart-metric').value,maxYears:$('max-years').value,maxC3:$('max-c3').value,maxVinf:$('max-vinf').value,maxBurns:$('max-burns').value});history.replaceState(null,'',`${location.pathname}${location.search}${hash}`)}
+function updateLocation(id){const hash=withChartSettings(withMissionFilters(filterHash({target:selectedTarget()||destination,mission:id,launchMin:$('launch-year-min').value,launchMax:$('launch-year-max').value}),{metric:$('chart-y').value,maxYears:$('max-years').value,maxC3:$('max-c3').value,maxVinf:$('max-vinf').value,maxBurns:$('max-burns').value}),webChartOptions());history.replaceState(null,'',`${location.pathname}${location.search}${hash}`)}
 function applyTargetHash(target){if(!target)return false;if(CATEGORIES.includes(target)||target==='All'||Object.keys(bodyColors).includes(target)){destination=target;smallBodyTarget='All';return true}const row=catalog.find(c=>c.target===target||(c.target_id&&matchesBodyLabel(c.target_id,target)));if(row){destination=category(row);smallBodyTarget=row.target;return true}return false}
 function setPlaying(value) {
   playing = value;
@@ -431,7 +434,9 @@ $('show-trimmed').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('candidate-more').onclick=()=>{const top=$('candidate-list').scrollTop;visibleCount+=48;renderList();$('candidate-list').scrollTop=top};
 $('community-refresh').onclick=()=>syncShared();
 for(const suffix of ['min','max'])$('chart-launch-year-'+suffix).addEventListener('input',()=>{$('launch-year-'+suffix).value=$('chart-launch-year-'+suffix).value;$('launch-year-'+suffix).dispatchEvent(new Event('input'))});
-$('chart-metric').onchange=()=>{drawTradeoff();if(selected)updateLocation(selected.id)};
+for(const id of ['chart-x','chart-y','chart-color'])$(id).onchange=()=>{drawTradeoff();if(selected)updateLocation(selected.id)};
+$('chart-porkchop').onclick=()=>setWebChart({x:'departure',y:'arrival',color:'c3'});
+$('chart-default').onclick=()=>setWebChart({x:'years',y:'c3',color:'sequence'});
 function selectPoint(e){const point=e.target.closest('[data-candidate]');if(!point)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();selectCandidate(point.dataset.candidate);$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
 $('tradeoff-svg').addEventListener('click',selectPoint);$('tradeoff-svg').addEventListener('keydown',selectPoint);
 function resetDestinationFilters(){for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('show-trimmed').checked=false;$('sort').value='recommended';$('mission-kind').value='both';selectedSequence='';visibleCount=48;syncGraphYears();}
@@ -522,7 +527,7 @@ try {
  catalog.push(...data.cases.filter(c=>c.c3<=250).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
  const filters=filterStateFromHash(location.hash),initial=canonicalId(filters.mission||'4d76acaf1f6f');
- $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;syncGraphYears();const missionFilters=missionFiltersFromHash(location.hash);$('chart-metric').value=missionFilters.metric;for(const [id,key]of [['max-years','maxYears'],['max-c3','maxC3'],['max-vinf','maxVinf'],['max-burns','maxBurns']])$(id).value=missionFilters[key];
+ $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;syncGraphYears();const missionFilters=missionFiltersFromHash(location.hash);const chartSettings=chartSettingsFromHash(location.hash);for(const [id,key]of [['chart-x','x'],['chart-y','y'],['chart-color','color']])$(id).value=chartSettings[key];for(const [id,key]of [['max-years','maxYears'],['max-c3','maxC3'],['max-vinf','maxVinf'],['max-burns','maxBurns']])$(id).value=missionFilters[key];
  if(filters.target){pendingHashTarget=filters.target;if(applyTargetHash(filters.target))pendingHashTarget=null;makeDestinations()}
  if(filters.mission&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))await syncShared();
  if(pendingHashTarget&&applyTargetHash(pendingHashTarget)){pendingHashTarget=null;makeDestinations()}

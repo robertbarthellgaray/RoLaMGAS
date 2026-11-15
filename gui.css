@@ -33,3 +33,9 @@ td.failure{color:#ff9fad}
 .dwarf-patch-controls{max-width:310px}.dwarf-patch-controls .hint{margin:7px 0}#dwarfPatchDialog{max-width:680px}#dwarfPatchDialog p{line-height:1.6}#dwarfPatchDialog input{display:block;width:100%;margin:8px 0}#dwarfPatchDialog .modal-head{padding:0 0 12px}
 
 #moonTargetMenu{border:1px solid var(--line,#294557);padding:14px;margin:12px 0;border-radius:8px}#moonTargetMenu summary{cursor:pointer;font-weight:600}.moon-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.moon-branch-preview{width:100%;max-width:720px;height:auto;margin-top:16px}
+
+.chart-presets{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}.chart-color-legend{margin:12px 0;line-height:1.6;font-size:12px}.chart-color-scale{display:flex;align-items:center;gap:10px;margin-top:6px;max-width:380px}.chart-color-ramp{display:block;flex:1;min-width:60px;height:12px;border-radius:3px;background:linear-gradient(to right,rgb(68,1,84),rgb(59,82,139),rgb(33,145,140),rgb(94,201,98),rgb(253,231,37))}
+.results-chart-head{flex-wrap:wrap}.chart-year-controls label{max-width:none;flex:1 1 145px;min-width:0}.chart-year-controls select{width:100%;max-width:220px}#resultsChart{min-width:760px}.chart-scroll{width:100%;overflow-x:auto;padding-bottom:8px}
+@media(max-width:800px){.chart-year-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.chart-year-controls select{max-width:none}.chart-presets>*{flex:1 1 160px}}
+
+@media(max-width:800px){#resultsChart text{font-size:14px}}

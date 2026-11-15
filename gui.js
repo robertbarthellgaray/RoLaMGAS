@@ -76,19 +76,28 @@ function chartLaunchYear(q){const dates=q.dates_jd_tdb;if(Array.isArray(dates)&&
 function chartFlightYears(q){const d=q.dates_jd_tdb;return Array.isArray(d)&&d.length>1&&Number.isFinite(d[0])&&Number.isFinite(d.at(-1))?(d.at(-1)-d[0])/365.25:q.duration_years;}
 function chartYearMatches(q){const lo=$('chartYearFrom')?.value||'',hi=$('chartYearTo')?.value||'';if(!lo&&!hi)return true;const y=chartLaunchYear(q);return y!==null&&(!lo||y>=Number(lo))&&(!hi||y<=Number(hi));}
 function chartSequenceColors(rows){const names=[...new Set(rows.map(q=>q.sequence))].sort();return new Map(names.map((s,i)=>[s,`hsl(${(192+i*137.508)%360} 72% 69%)`]));}
-function chartVertical(q){return $('chartMetric')?.value==='vinf'?q.arrival_vinf_kms:q.launch_c3_km2_s2;}
+function resultsChartOptions(){return {x:$('chartX')?.value,y:$('chartY')?.value,color:$('chartColor')?.value};}
+function setResultsChart(options){for(const [id,key]of [['chartX','x'],['chartY','y'],['chartColor','color']])$(id).value=options[key];renderResultsChart(filtered());}
 function renderResultsChart(rows){
  const svg=$('resultsChart');if(!svg)return;
- const good=rows.filter(q=>Number.isFinite(chartFlightYears(q))&&chartFlightYears(q)>=0&&Number.isFinite(chartVertical(q))&&chartVertical(q)>=0),legend=$('resultsChartLegend');
- $('resultsChartStatus').textContent=good.length?`${good.length} candidate${good.length===1?'':'s'} · click or press Enter on a point to open it`:(+$('chartYearFrom').value>+$('chartYearTo').value&&$('chartYearTo').value?'The first launch year must be at or before the last year.':'No candidates match the current filters.');
- if(!good.length){svg.innerHTML='';legend.replaceChildren();return}
- const palette=chartSequenceColors(state.rows),w=1000,h=300,left=75,right=24,top=18,bottom=54,maxX=Math.max(.1,...good.map(chartFlightYears))*1.06,maxY=Math.max(.1,...good.map(chartVertical))*1.08;
- let html='';for(let i=0;i<=5;i++){const x=left+(w-left-right)*i/5,y=h-bottom-(h-top-bottom)*i/5;html+=`<path d="M${x},${top}V${h-bottom}M${left},${y}H${w-right}" stroke="#2c4056"/><text x="${x}" y="${h-bottom+20}" text-anchor="middle">${fmt(maxX*i/5,1)}</text><text x="${left-10}" y="${y+4}" text-anchor="end">${fmt(maxY*i/5,maxY<1?2:1)}</text>`}
- html+=`<text x="${(left+w-right)/2}" y="${h-6}" text-anchor="middle">Flight time (Julian years)</text><text transform="translate(18 ${(top+h-bottom)/2}) rotate(-90)" text-anchor="middle">${$('chartMetric')?.value==='vinf'?'Arrival V∞ (km/s)':'Launch C3 (km²/s²)'}</text>`;
- // Dataset identifiers and sequences are inserted through DOM APIs below.
- svg.innerHTML=html;
- for(const q of good){const dot=document.createElementNS('http://www.w3.org/2000/svg','circle');dot.setAttribute('cx',left+chartFlightYears(q)/maxX*(w-left-right));dot.setAttribute('cy',h-bottom-chartVertical(q)/maxY*(h-top-bottom));dot.setAttribute('r',5);dot.setAttribute('fill',palette.get(q.sequence));dot.setAttribute('stroke',severity(q)==='failure'?'#ff8b8b':q.id===state.selected?'white':'#102033');dot.setAttribute('stroke-width',q.id===state.selected?'2':'1');dot.setAttribute('tabindex','0');dot.setAttribute('role','button');dot.setAttribute('aria-pressed',q.id===state.selected?'true':'false');dot.dataset.candidate=q.id;dot.setAttribute('aria-label',`${q.sequence}, launch ${dateOnly(q.launch_date)}, C3 ${fmt(q.launch_c3_km2_s2,3)}, flight ${fmt(chartFlightYears(q),3)} years, arrival V∞ ${fmt(q.arrival_vinf_kms,3)} km/s; inspect and download`);const title=document.createElementNS('http://www.w3.org/2000/svg','title');title.textContent=`${q.sequence} · ${dateOnly(q.launch_date)} · C3 ${fmt(q.launch_c3_km2_s2,3)} · ${fmt(chartFlightYears(q),3)} years · V∞ ${fmt(q.arrival_vinf_kms,3)} km/s`;dot.append(title);svg.append(dot)}
- legend.replaceChildren();for(const sequence of [...new Set(good.map(q=>q.sequence))].sort()){const item=element('span',sequence),swatch=element('i');swatch.style.background=palette.get(sequence);item.prepend(swatch);legend.append(item)}
+ const m=MissionMetrics.chartModel(rows,resultsChartOptions(),chartSequenceColors(state.rows)),legend=$('resultsChartLegend');
+ const title=`${MissionMetrics.chartMetrics[m.x].label} vs. ${MissionMetrics.chartMetrics[m.y].label}`;
+ if($('resultsChartTitle'))$('resultsChartTitle').textContent=title;
+ svg.setAttribute('aria-label',title+'; choose a point to inspect its trajectory');
+ if($('chartSamplingNote'))$('chartSamplingNote').hidden=!m.sampledDates;
+ if($('chartColorLegend')){$('chartColorLegend').hidden=m.color==='sequence'||!m.points.length;$('chartColorLegend').innerHTML=MissionMetrics.chartColorLegend(m);}
+ $('resultsChartStatus').textContent=m.points.length?`${m.points.length} candidate${m.points.length===1?'':'s'} · click or press Enter on a point to open it${m.skipped?' · '+m.skipped+' missing selected data':''}`:(+$('chartYearFrom').value>+$('chartYearTo').value&&$('chartYearTo').value?'The first launch year must be at or before the last year.':rows.length?'No candidates have valid data for the selected axes and color.':'No candidates match the current filters.');
+ if(!m.points.length){svg.innerHTML='';legend.replaceChildren();return}
+ const w=1000,h=340,left=108,right=36,top=22,bottom=65;
+ svg.innerHTML=MissionMetrics.chartGrid(m,{w,h,left,right,top,bottom});
+ for(const p of m.points){const q=p.row,dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.setAttribute('cx',left+MissionMetrics.chartPosition(p.x,m.xDomain)*(w-left-right));
+  dot.setAttribute('cy',h-bottom-MissionMetrics.chartPosition(p.y,m.yDomain)*(h-top-bottom));
+  dot.setAttribute('r',5);dot.setAttribute('fill',p.fill);dot.setAttribute('stroke',severity(q)==='failure'?'#ff8b8b':q.id===state.selected?'white':'#102033');dot.setAttribute('stroke-width',q.id===state.selected?'2':'1');dot.setAttribute('tabindex','0');dot.setAttribute('role','button');dot.setAttribute('aria-pressed',q.id===state.selected?'true':'false');dot.dataset.candidate=q.id;
+  const text=`${q.sequence}, launch ${dateOnly(q.launch_date)}, arrival ${dateOnly(q.arrival_date)}, C3 ${fmt(q.launch_c3_km2_s2,3)}, flight ${fmt(chartFlightYears(q),3)} years, arrival V∞ ${fmt(q.arrival_vinf_kms,3)} km/s, modeled cruise Δv ${fmt(MissionMetrics.chartValue(q,'burns'),1)} m/s`;
+  dot.setAttribute('aria-label',text+'; inspect and download');const tooltip=document.createElementNS('http://www.w3.org/2000/svg','title');tooltip.textContent=text;dot.append(tooltip);svg.append(dot);
+ }
+ legend.replaceChildren();for(const sequence of [...new Set(m.points.map(p=>p.row.sequence))].sort()){const item=element('span',sequence);if(m.color==='sequence'){const swatch=element('i');swatch.style.background=chartSequenceColors(state.rows).get(sequence);item.prepend(swatch);}legend.append(item);}
  const choose=e=>{if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;const dot=e.target.closest('[data-candidate]');if(!dot)return;e.preventDefault();inspect(dot.dataset.candidate)};svg.onclick=choose;svg.onkeydown=choose;
 }
 function candidateName(q){return state.names?.[q.id]||q.title||'';}
@@ -250,7 +259,9 @@ $('queryLaunchPerformance').addEventListener('click',async()=>{
  finally{if(version===launchLookupVersion)button.disabled=false;}
 });
 $('parkingAltitude').addEventListener('input',updateParkingEstimate);
-$('chartMetric').addEventListener('change',()=>{const vinf=$('chartMetric').value==='vinf';$('resultsChartTitle').textContent=vinf?'Flight time vs. arrival V∞':'Flight time vs. launch C3';$('resultsChart').setAttribute('aria-label',vinf?'Flight time versus arrival excess speed; choose a point to inspect':'Flight time versus launch C3; choose a point to inspect');renderResultsChart(filtered())});
+for(const id of ['chartX','chartY','chartColor'])$(id).addEventListener('change',()=>renderResultsChart(filtered()));
+$('chartPorkchop').onclick=()=>setResultsChart({x:'departure',y:'arrival',color:'c3'});
+$('chartDefault').onclick=()=>setResultsChart({x:'years',y:'c3',color:'sequence'});
 
 $('candidateSearch').addEventListener('input',render);
 $('saveMissionName').addEventListener('click',async()=>{if(!state.selected)return;try{const result=await api('/api/name-candidate',{run:state.run,candidate:state.selected,name:$('missionName').value});state.names=result.names;$('missionNameStatus').textContent=result.name?'Saved. Search this name in the results gallery.':'Custom name cleared.';$('detailTitle').textContent=(result.name||state.card.sequence)+' · '+state.selected;render()}catch(error){$('missionNameStatus').textContent=error.message}});

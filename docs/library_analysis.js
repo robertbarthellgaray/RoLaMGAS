@@ -37,3 +37,20 @@ export function withMissionFilters(hash,state){
  for(const [key,param] of [['maxYears','max_years'],['maxC3','max_c3'],['maxVinf','max_vinf'],['maxBurns','max_burns']]){const v=state[key];if(v!==''&&v!=null&&Number.isFinite(Number(v))&&Number(v)>=0)p.set(param,v);}
  return '#'+p;
 }
+
+// Explicit chart settings take precedence over the older ?axis=vinf hash field.
+const CHART_AXES=new Set(['years','c3','vinf','burns','departure','arrival']);
+export function chartSettingsFromHash(hash){
+ const p=new URLSearchParams(hash.replace(/^#/,''));
+ return {x:CHART_AXES.has(p.get('chart_x'))?p.get('chart_x'):'years',
+  y:CHART_AXES.has(p.get('chart_y'))?p.get('chart_y'):(p.get('axis')==='vinf'?'vinf':'c3'),
+  color:CHART_AXES.has(p.get('chart_color'))?p.get('chart_color'):'sequence'};
+}
+export function withChartSettings(hash,state){
+ const p=new URLSearchParams(hash.replace(/^#/,''));
+ for(const [key,param,initial]of [['x','chart_x','years'],['y','chart_y','c3'],['color','chart_color','sequence']]){
+  p.delete(param);if(CHART_AXES.has(state[key])&&state[key]!==initial)p.set(param,state[key]);
+ }
+ // Remove the legacy Y-axis field, which would otherwise override a reset.
+ p.delete('axis');return '#'+p;
+}

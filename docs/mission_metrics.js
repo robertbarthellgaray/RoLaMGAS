@@ -69,5 +69,89 @@
     }
     return text;
   }
-  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,visibleLaunchVehicle,launchCapacities,launchCapacitySource});
+  const chartMetrics=Object.freeze({
+    years:{label:'Flight time (Julian years)'}, c3:{label:'Launch C3 (km²/s²)'},
+    vinf:{label:'Arrival V∞ (km/s)'}, burns:{label:'Modeled cruise Δv (m/s)'},
+    departure:{label:'Departure date (TDB)',date:true}, arrival:{label:'Arrival date (TDB)',date:true}
+  });
+  function chartEpoch(row,last=false) {
+    const dates=row.dates_jd_tdb;
+    const jd=Array.isArray(dates)&&dates.length>1?dates[last?dates.length-1:0]:row[last?'end':'start'];
+    if(Number.isFinite(jd))return jd;
+    const text=row[last?'arrival_date':'launch_date'];
+    if(typeof text!=='string')return NaN;
+    // These are calendar labels in TDB. UTC APIs only perform calendar arithmetic;
+    // no UTC/TDB conversion is implied or needed for the display coordinates.
+    const iso=text.trim().replace(/\s*TDB$/,'').replace(' ','T');
+    if(!/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?)?$/.test(iso))return NaN;
+    return Date.parse(iso+(iso.includes('T')?'Z':'T00:00:00Z'))/86400000+2440587.5;
+  }
+  function chartValue(row,key) {
+    if(key==='departure'||key==='arrival')return chartEpoch(row,key==='arrival');
+    if(key==='years'){
+      const start=chartEpoch(row),end=chartEpoch(row,true);
+      return Number.isFinite(start)&&Number.isFinite(end)?(end-start)/365.25:(row.years??row.duration_years);
+    }
+    if(key==='c3')return row.c3??row.launch_c3_km2_s2;
+    if(key==='vinf')return row.vinf??row.arrival_vinf_kms;
+    if(key==='burns')return row.burns_mps??(Number.isFinite(row.total_dsm_kms)?1000*row.total_dsm_kms:NaN);
+    return NaN;
+  }
+  function chartOptions(options={}) {
+    return {x:Object.hasOwn(chartMetrics,options.x)?options.x:'years',y:Object.hasOwn(chartMetrics,options.y)?options.y:'c3',
+      color:options.color==='sequence'||Object.hasOwn(chartMetrics,options.color)?options.color:'sequence'};
+  }
+  function chartDomain(values,key) {
+    let lo=Infinity,hi=-Infinity;
+    for(const v of values)if(Number.isFinite(v)){lo=Math.min(lo,v);hi=Math.max(hi,v);}
+    if(lo===Infinity)return [0,1];
+    if(chartMetrics[key]?.date){const pad=Math.max((hi-lo)*.04,1/24);return [lo-pad,hi+pad];}
+    return [0,Math.max(.1,hi)*1.08];
+  }
+  function chartTick(value,key,span=1) {
+    if(!Number.isFinite(value))return '—';
+    if(chartMetrics[key]?.date){
+      const time=(value-2440587.5)*86400000;
+      if(!Number.isFinite(time)||Math.abs(time)>8.64e15)return '—';
+      const iso=new Date(time).toISOString();
+      return span<3?iso.slice(5,10)+' '+iso.slice(11,16):iso.slice(0,10);
+    }
+    return value.toFixed(span<1?2:1);
+  }
+  function chartColor(value,domain) {
+    const stops=[[68,1,84],[59,82,139],[33,145,140],[94,201,98],[253,231,37]];
+    const t=domain[1]===domain[0] ? 0.5 : Math.max(0,Math.min(1,(value-domain[0])/(domain[1]-domain[0])));
+    const u=t*(stops.length-1),i=Math.min(stops.length-2,Math.floor(u)),f=u-i;
+    return 'rgb('+stops[i].map((v,k)=>Math.round(v+(stops[i+1][k]-v)*f)).join(',')+')';
+  }
+  function chartModel(rows,options={},palette=new Map()) {
+    const opts=chartOptions(options),valid=(v,key)=>Number.isFinite(v)&&(chartMetrics[key].date||v>=0);
+    const points=[];
+    for(const row of rows){const x=chartValue(row,opts.x),y=chartValue(row,opts.y),color=opts.color==='sequence'?null:chartValue(row,opts.color);
+      if(valid(x,opts.x)&&valid(y,opts.y)&&(opts.color==='sequence'||valid(color,opts.color)))points.push({row,x,y,color});
+    }
+    const xDomain=chartDomain(points.map(p=>p.x),opts.x),yDomain=chartDomain(points.map(p=>p.y),opts.y);
+    let colorLo=Infinity,colorHi=-Infinity;for(const p of points)if(p.color!==null){colorLo=Math.min(colorLo,p.color);colorHi=Math.max(colorHi,p.color);}
+    const colorDomain=colorLo===Infinity?[0,1]:[colorLo,colorHi];
+    for(const p of points)p.fill=opts.color==='sequence'?(palette.get(p.row.sequence)||'#79d8f1'):chartColor(p.color,colorDomain);
+    return {...opts,points,xDomain,yDomain,colorDomain,skipped:rows.length-points.length,
+      sampledDates:opts.x==='departure'&&opts.y==='arrival'};
+  }
+  function chartGrid(model,{w=1000,h=340,left=108,right=36,top=22,bottom=65}={}) {
+    const label=(axis,v)=>chartTick(v,model[axis],model[axis+'Domain'][1]-model[axis+'Domain'][0]);
+    let html='';
+    for(let i=0;i<=5;i++){
+      const x=left+(w-left-right)*i/5,y=h-bottom-(h-top-bottom)*i/5;
+      html+=`<path d="M${x},${top}V${h-bottom}M${left},${y}H${w-right}" stroke="#2c4056"/><text x="${x}" y="${h-bottom+22}" text-anchor="middle">${label('x',model.xDomain[0]+(model.xDomain[1]-model.xDomain[0])*i/5)}</text><text x="${left-10}" y="${y+4}" text-anchor="end">${label('y',model.yDomain[0]+(model.yDomain[1]-model.yDomain[0])*i/5)}</text>`;
+    }
+    return html+`<text class="axis-label" x="${(left+w-right)/2}" y="${h-6}" text-anchor="middle">${chartMetrics[model.x].label}</text><text class="axis-label" transform="translate(18 ${(top+h-bottom)/2}) rotate(-90)" text-anchor="middle">${chartMetrics[model.y].label}</text>`;
+  }
+  function chartPosition(value,domain){return (value-domain[0])/(domain[1]-domain[0]);}
+  function chartColorLegend(model) {
+    if(model.color==='sequence'||!model.points.length)return '';
+    const range=model.colorDomain,span=range[1]-range[0];
+    return `<span class="chart-color-title">Color: ${chartMetrics[model.color].label}</span><span class="chart-color-scale"><span>${chartTick(range[0],model.color,span)}</span><i class="chart-color-ramp" aria-hidden="true"></i><span>${chartTick(range[1],model.color,span)}</span></span>`;
+  }
+  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,visibleLaunchVehicle,launchCapacities,launchCapacitySource,
+    chartMetrics,chartEpoch,chartValue,chartOptions,chartDomain,chartTick,chartColor,chartModel,chartGrid,chartPosition,chartColorLegend});
 })(globalThis);
