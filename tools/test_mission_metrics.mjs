@@ -87,6 +87,30 @@ test('published app and website capacity datasets withhold unapproved model outp
  }
 });
 
+test('single launch reference points show their actual coverage without implying zero payload',()=>{
+ const data=JSON.parse(fs.readFileSync(new URL('../docs/data/launch_performance_curves.json',import.meta.url),'utf8'));
+ const lm5=m.launchCapacities(data,28).find(r=>r.international_id==='wang2025_lm5_point');
+ assert.equal(lm5.capacity_kg,null);assert.equal(m.launchCapacityValue(lm5),'Not tabulated');
+ assert.equal(m.launchCapacityCoverage(lm5),'Reference only: 3,000 kg at C3 30');
+ assert.equal(m.launchCapacities(data,30).find(r=>r.international_id===lm5.international_id).capacity_kg,3000);
+ for(const [id,mass] of [['ariane62_manual2021',2600],['ariane64_manual2021',6900]]){
+  assert.equal(m.launchCapacities(data,6.25).find(r=>r.published_id===id).capacity_kg,mass);
+  assert.equal(m.launchCapacities(data,6.26).find(r=>r.published_id===id).capacity_kg,null);
+ }
+});
+
+test('SLS high-energy estimates retain their concept configuration and never extend the study curve',()=>{
+ const data=JSON.parse(fs.readFileSync(new URL('../docs/data/launch_performance_curves.json',import.meta.url),'utf8'));
+ const id='nasa2020_sls_block2_centaur',row=m.launchCapacities(data,158).find(r=>r.published_id===id);
+ assert.equal(row.capacity_kg,5600);assert.match(row.vehicle,/Block 2 \+ Centaur.*2020 concept/);
+ assert.match(row.ground_rules,/unflown/);assert.match(row.ground_rules,/28.5/);assert.match(row.source_url,/ntrs.nasa.gov/);
+ assert.equal(m.launchCapacities(data,59.9).find(r=>r.published_id===id).capacity_kg,null);
+ assert.equal(m.launchCapacities(data,280.1).find(r=>r.published_id===id).capacity_kg,null);
+ assert.ok(!data.vehicles.some(r=>/Atlas V/i.test(r.vehicle)));
+ assert.deepEqual(data,JSON.parse(fs.readFileSync(new URL('../gui_assets/launch_performance_curves.json',import.meta.url),'utf8')));
+ assert.equal(fs.readFileSync(new URL('../mission_metrics.js',import.meta.url),'utf8'),fs.readFileSync(new URL('../docs/mission_metrics.js',import.meta.url),'utf8'));
+});
+
 test('historical missions have continuous playback coverage for every visited planet',()=>{
  const table=JSON.parse(fs.readFileSync(new URL('../docs/data/planet_playback.json',import.meta.url),'utf8'));
  const profiles=JSON.parse(fs.readFileSync(new URL('../docs/data/historical_labels.json',import.meta.url),'utf8')).missions;

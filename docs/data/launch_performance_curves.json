@@ -1033,7 +1033,220 @@
       "query_grid_c3": [
         30.0
       ],
-      "ground_rules": "Wang et al., Aerospace 2025, 12(4), 271, Section 5.1: approximately 3 tonnes at C3=30. Mission-study assumption, not a provider guarantee. A single anchor point; never interpolated/extrapolated into a full curve."
+      "ground_rules": "Wang et al., Aerospace 2025, 12(4), 271, Section 5.3: approximately 3 tonnes at C3=30. Mission-study assumption, not a provider guarantee. A single anchor point; never interpolated/extrapolated into a full curve."
+    },
+    {
+      "published_id": "ariane62_manual2021",
+      "vehicle": "Ariane 62 · manual reference point",
+      "launch_site": "CSG, French Guiana",
+      "source_label": "Arianespace manual · 2021",
+      "source_url": "https://www.arianespace.com/app/uploads/sites/4/2024/10/Mua-6_Issue-2_Revision-0_March-2021.pdf#page=37",
+      "data_kind": "published_reference_point",
+      "source_year": 2021,
+      "points": [
+        [
+          6.25,
+          2600
+        ]
+      ],
+      "ground_rules": "Ariane 6 User's Manual, Issue 2 Revision 0 (February 2021), section 2.4.5, printed p.2-11. V-infinity=2.5 km/s, hence C3=6.25; free declination. Section 2.2 defines payload mass including the adapter/dispenser and any carrying structure. Disposal strategy may require mission-specific optimization. This is one published point, not a full curve or a rating for later booster upgrades. No extrapolation.",
+      "query_grid_c3": [
+        6.25
+      ]
+    },
+    {
+      "published_id": "ariane64_manual2021",
+      "vehicle": "Ariane 64 · manual reference point",
+      "launch_site": "CSG, French Guiana",
+      "source_label": "Arianespace manual · 2021",
+      "source_url": "https://www.arianespace.com/app/uploads/sites/4/2024/10/Mua-6_Issue-2_Revision-0_March-2021.pdf#page=37",
+      "data_kind": "published_reference_point",
+      "source_year": 2021,
+      "points": [
+        [
+          6.25,
+          6900
+        ]
+      ],
+      "ground_rules": "Ariane 6 User's Manual, Issue 2 Revision 0 (February 2021), section 2.4.5, printed p.2-11. V-infinity=2.5 km/s, hence C3=6.25; free declination. Section 2.2 defines payload mass including the adapter/dispenser and any carrying structure. Disposal strategy may require mission-specific optimization. This is one published point, not a full curve or a rating for later booster upgrades. No extrapolation.",
+      "query_grid_c3": [
+        6.25
+      ]
+    },
+    {
+      "published_id": "nasa2020_sls_block1_cargo",
+      "vehicle": "SLS Block 1 cargo · 2020 prediction",
+      "launch_site": "Kennedy Space Center",
+      "source_label": "NASA design curve · 2020 · approximate graph readings",
+      "source_url": "https://ntrs.nasa.gov/api/citations/20205007434/downloads/SLS-PlanetaryDecadal-FINAL-LRP1%20091420.pdf#page=4",
+      "data_kind": "published_design_curve",
+      "source_year": 2020,
+      "display_rounding_kg": 100,
+      "points": [
+        [
+          0,
+          26600
+        ],
+        [
+          10,
+          21800
+        ],
+        [
+          20,
+          18000
+        ],
+        [
+          30,
+          14900
+        ],
+        [
+          40,
+          12400
+        ],
+        [
+          50,
+          10200
+        ],
+        [
+          60,
+          8500
+        ],
+        [
+          70,
+          6900
+        ],
+        [
+          80,
+          5600
+        ],
+        [
+          90,
+          4600
+        ],
+        [
+          100,
+          3600
+        ],
+        [
+          110,
+          2800
+        ],
+        [
+          120,
+          2100
+        ],
+        [
+          130,
+          1400
+        ]
+      ],
+      "ground_rules": "NASA's Space Launch System: Capabilities for Ultra-High C3 Missions (2020), Figure 3. Black SLS Block 1 cargo curve, 5 m fairing; usable payload system mass, not spacecraft dry mass. Approximate digitized readings rounded to 100 kg; graph reading and linear interpolation add uncertainty, not a quantified confidence interval. Historical design prediction, not a current provider commitment. Retained samples cover C3 0-130 only; no extrapolation.",
+      "query_grid_c3": [
+        0,
+        10,
+        20,
+        30,
+        40,
+        50,
+        60,
+        70,
+        80,
+        90,
+        100,
+        110,
+        120,
+        130
+      ]
+    },
+    {
+      "published_id": "nasa2020_sls_block2_centaur",
+      "vehicle": "SLS Block 2 + Centaur · 2020 concept",
+      "launch_site": "Kennedy Space Center",
+      "source_label": "NASA concept curve · 2020 · approximate graph readings",
+      "source_url": "https://ntrs.nasa.gov/api/citations/20205007434/downloads/SLS-PlanetaryDecadal-FINAL-LRP1%20091420.pdf#page=6",
+      "data_kind": "published_design_curve",
+      "source_year": 2020,
+      "display_rounding_kg": 100,
+      "points": [
+        [
+          60,
+          19900
+        ],
+        [
+          80,
+          15500
+        ],
+        [
+          83,
+          14800
+        ],
+        [
+          100,
+          11900
+        ],
+        [
+          120,
+          9300
+        ],
+        [
+          140,
+          7100
+        ],
+        [
+          157,
+          5700
+        ],
+        [
+          158,
+          5600
+        ],
+        [
+          160,
+          5500
+        ],
+        [
+          180,
+          4200
+        ],
+        [
+          200,
+          3100
+        ],
+        [
+          220,
+          2200
+        ],
+        [
+          240,
+          1500
+        ],
+        [
+          260,
+          900
+        ],
+        [
+          280,
+          400
+        ]
+      ],
+      "ground_rules": "NASA's Space Launch System: Capabilities for Ultra-High C3 Missions (2020), Figure 6, solid red SLS Block 2 with an additional Centaur third stage, departure declination 28.5 degrees. This is an unflown study configuration, not the baseline SLS or a currently bookable vehicle. Study assumes mean vehicle mass, nominal liquid engines, low-performance booster and an 8.4 m by 19.1 m fairing; the paper removes the manager's reserve. Usable payload system mass. Approximate graph readings rounded to 100 kg; no quantified performance confidence interval. Retained C3 coverage 60-280 only; no extrapolation.",
+      "query_grid_c3": [
+        60,
+        80,
+        83,
+        100,
+        120,
+        140,
+        157,
+        158,
+        160,
+        180,
+        200,
+        220,
+        240,
+        260,
+        280
+      ]
     }
   ],
   "additional_sources": [
@@ -1044,6 +1257,14 @@
     {
       "label": "Wang et al. 2025 LM-5 study point",
       "url": "https://www.mdpi.com/2226-4310/12/4/271"
+    },
+    {
+      "label": "Arianespace 2021 manual reference points",
+      "url": "https://www.arianespace.com/app/uploads/sites/4/2024/10/Mua-6_Issue-2_Revision-0_March-2021.pdf#page=37"
+    },
+    {
+      "label": "NASA 2020 SLS design-study curves",
+      "url": "https://ntrs.nasa.gov/api/citations/20205007434/downloads/SLS-PlanetaryDecadal-FINAL-LRP1%20091420.pdf#page=4"
     }
   ]
 }

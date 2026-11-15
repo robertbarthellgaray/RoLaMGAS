@@ -1,4 +1,4 @@
-"""Rebuild international C3 data from independently published fits and a study point.
+"""Rebuild supplemental C3 data from independently published references.
 
 No network requests or invented extrapolations. NASA refreshes can be followed
 by this script to reattach the additional, explicitly labeled source rows.
@@ -39,20 +39,28 @@ def build():
     vehicles.append(dict(international_id='wang2025_lm5_point',vehicle='Long March 5 · 2025 study point',launch_site='Wenchang',
         source_label='Published study · 2025',source_url=STUDY2025,data_kind='published_study_point',source_year=2025,
         fairing='Unspecified in study',adapter='Unspecified in study',points=[[30.,3000.]],query_grid_c3=[30.],
-        ground_rules='Wang et al., Aerospace 2025, 12(4), 271, Section 5.1: approximately 3 tonnes at C3=30. Mission-study assumption, not a provider guarantee. A single anchor point; never interpolated/extrapolated into a full curve.'))
+        ground_rules='Wang et al., Aerospace 2025, 12(4), 271, Section 5.3: approximately 3 tonnes at C3=30. Mission-study assumption, not a provider guarantee. A single anchor point; never interpolated/extrapolated into a full curve.'))
     doc=dict(schema_version=1,source='Published historical fits and a published mission-study point',
         interpolation='Within each vehicle\'s own sampled coverage only. Source types and assumptions remain separate.',vehicles=vehicles)
     for path in (ROOT/'gui_assets/international_launch_performance.json',ROOT/'docs/data/international_launch_performance.json'):save(path,doc)
+    references=json.loads((ROOT/'studies/published_launch_performance/samples.json').read_text(encoding='utf-8'))['vehicles']
+    for row in references:
+        points=row['points']
+        assert points and all(math.isfinite(x) and math.isfinite(y) and x>=0 and y>=0 for x,y in points)
+        assert all(a[0]<b[0] and a[1]>=b[1] for a,b in zip(points,points[1:]))
+        row['query_grid_c3']=[x for x,_ in points]
     for path in (ROOT/'gui_assets/launch_performance_curves.json',ROOT/'docs/data/launch_performance_curves.json'):
         base=json.loads(path.read_text(encoding='utf-8'))
-        base['vehicles']=[v for v in base['vehicles'] if not v.get('international_id')]+vehicles
-        base['additional_sources']=[dict(label='Wise et al. 2010 historical fits',url=WISE),dict(label='Wang et al. 2025 LM-5 study point',url=STUDY2025)]
+        base['vehicles']=[v for v in base['vehicles'] if not v.get('international_id') and not v.get('published_id')]+vehicles+references
+        base['additional_sources']=[dict(label='Wise et al. 2010 historical fits',url=WISE),dict(label='Wang et al. 2025 LM-5 study point',url=STUDY2025),
+            dict(label='Arianespace 2021 manual reference points',url=references[0]['source_url']),
+            dict(label='NASA 2020 SLS design-study curves',url=references[2]['source_url'])]
         save(path,base)
     with (STUDY/'capacity_samples.csv').open('w',newline='',encoding='utf-8') as stream:
         writer=csv.writer(stream);writer.writerow(['vehicle','source_type','c3_km2_s2','payload_system_mass_kg','source_url'])
         for v in vehicles:
             writer.writerows([v['vehicle'],v['data_kind'],x,y,v['source_url']] for x,y in v['points'])
-    print('Added',len(vehicles),'international source/configuration rows')
+    print('Added',len(vehicles),'international and',len(references),'additional published source/configuration rows')
     return doc
 
 

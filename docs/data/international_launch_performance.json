@@ -713,7 +713,7 @@
       "query_grid_c3": [
         30.0
       ],
-      "ground_rules": "Wang et al., Aerospace 2025, 12(4), 271, Section 5.1: approximately 3 tonnes at C3=30. Mission-study assumption, not a provider guarantee. A single anchor point; never interpolated/extrapolated into a full curve."
+      "ground_rules": "Wang et al., Aerospace 2025, 12(4), 271, Section 5.3: approximately 3 tonnes at C3=30. Mission-study assumption, not a provider guarantee. A single anchor point; never interpolated/extrapolated into a full curve."
     }
   ]
 }

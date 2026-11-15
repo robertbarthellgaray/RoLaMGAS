@@ -130,10 +130,10 @@ async function renderLaunchPerformance(exact=null){
  }
  if(state.card?.id!==selected)return;
  const rows=(exact?.vehicles||globalThis.MissionMetrics.launchCapacities(launchPerformanceData,q.launch_c3_km2_s2)).filter(globalThis.MissionMetrics.visibleLaunchVehicle);
- $('launchPerformanceStatus').textContent=exact?'NASA response for C3 '+fmt(exact.c3_km2_s2,3)+' · retrieved '+exact.retrieved_at+' · '+(exact.from_cache?'saved exact query':'fresh query'):'Cached launch capacities at C3 '+fmt(q.launch_c3_km2_s2,3)+' · ≈ means interpolated or a published/model estimate; — means no coverage. Sources and uncertainty are shown per row.';
+ $('launchPerformanceStatus').textContent=(exact?'NASA response for C3 '+fmt(exact.c3_km2_s2,3)+' · retrieved '+exact.retrieved_at+' · '+(exact.from_cache?'saved exact query':'fresh query'):'Published/cached capacities at C3 '+fmt(q.launch_c3_km2_s2,3))+' · “Not tabulated” means missing data here, not zero payload or an impossible launch. ≈ marks approximate values. Unlisted kick stages can change capability.';
  if(exact?.availability==='no_vehicles_listed')$('launchPerformanceStatus').textContent='NASA returned no vehicle capacities at C3 '+fmt(exact.c3_km2_s2,3)+'. This is not a zero-capacity estimate.';
- const table=element('table'),head=element('tr');for(const label of ['Vehicle / configuration','Capacity · kg','Site','Source / model uncertainty'])head.append(element('th',label));table.append(head);
- for(const row of rows){const tr=element('tr');for(const text of [row.vehicle,row.capacity_kg==null?'—':(row.interpolated||row.data_kind?'≈ ':'')+fmt(row.capacity_kg,0),row.launch_site,globalThis.MissionMetrics.launchCapacitySource(row)])tr.append(element('td',text));table.append(tr);}
+ const table=element('table'),head=element('tr');for(const label of ['Vehicle / configuration','Capacity at selected C3 · kg','Available data','Site','Source / uncertainty'])head.append(element('th',label));table.append(head);
+ for(const row of rows){const tr=element('tr');for(const text of [row.vehicle,globalThis.MissionMetrics.launchCapacityValue(row),globalThis.MissionMetrics.launchCapacityCoverage(row),row.launch_site,globalThis.MissionMetrics.launchCapacitySource(row)])tr.append(element('td',text));table.append(tr);}
  const rules=element('details');rules.append(element('summary','Vehicle ground rules'));for(const row of rows)rules.append(element('p',row.vehicle+': '+row.ground_rules+' Source: '+(row.source_url||'https://elvperf.ksc.nasa.gov/Pages/Query.aspx'),'hint'));
  $('launchPerformanceTable').replaceChildren(table,rules);
 }

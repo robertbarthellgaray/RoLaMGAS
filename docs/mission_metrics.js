@@ -69,6 +69,17 @@
     }
     return text;
   }
+  function launchCapacityValue(row) {
+    if(!Number.isFinite(row.capacity_kg))return 'Not tabulated';
+    const step=row.display_rounding_kg||1,mass=Math.round(row.capacity_kg/step)*step;
+    return (row.interpolated||row.data_kind?'≈ ':'')+mass.toLocaleString('en-US',{maximumFractionDigits:0});
+  }
+  function launchCapacityCoverage(row) {
+    const points=row.points||[],number=x=>x.toLocaleString('en-US',{maximumFractionDigits:3});
+    if(points.length===1)return 'Reference only: '+number(points[0][1])+' kg at C3 '+number(points[0][0]);
+    if(points.length>1)return 'C3 '+number(points[0][0])+'–'+number(points.at(-1)[0])+'; sampled coverage';
+    return 'Exact NASA query; configuration-specific';
+  }
   const chartMetrics=Object.freeze({
     years:{label:'Flight time (Julian years)'}, c3:{label:'Launch C3 (km²/s²)'},
     vinf:{label:'Arrival V∞ (km/s)'}, burns:{label:'Modeled cruise Δv (m/s)'},
@@ -152,6 +163,6 @@
     const range=model.colorDomain,span=range[1]-range[0];
     return `<span class="chart-color-title">Color: ${chartMetrics[model.color].label}</span><span class="chart-color-scale"><span>${chartTick(range[0],model.color,span)}</span><i class="chart-color-ramp" aria-hidden="true"></i><span>${chartTick(range[1],model.color,span)}</span></span>`;
   }
-  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,visibleLaunchVehicle,launchCapacities,launchCapacitySource,
+  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,visibleLaunchVehicle,launchCapacities,launchCapacitySource,launchCapacityValue,launchCapacityCoverage,
     chartMetrics,chartEpoch,chartValue,chartOptions,chartDomain,chartTick,chartColor,chartModel,chartGrid,chartPosition,chartColorLegend});
 })(globalThis);
