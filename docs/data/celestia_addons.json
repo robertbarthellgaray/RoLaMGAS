@@ -1,0 +1,91 @@
+{
+  "author_page": "https://celestia.mobi/resources/author/MartianBuilder",
+  "retrieved_at": "2026-11-15T22:08:35.947808+00:00",
+  "spacecraft_count": 4,
+  "assets": [
+    {
+      "id": "1955C443-C52C-419B-9736-6703F37ADE65",
+      "slug": "eris-explorer",
+      "title": "Eris Explorer",
+      "source_url": "https://celestia.mobi/resources/item/1955C443-C52C-419B-9736-6703F37ADE65",
+      "image_source_url": "https://celestia.mobi/resources/item/1955C443-C52C-419B-9736-6703F37ADE65/cover.jpg",
+      "image": "images/celestia/eris-explorer.png",
+      "image_width": 1023,
+      "image_height": 639,
+      "image_sha256": "0606de537874bd1fa597edf7662d5ebbbbb35b7fa3147c27ab47bd7e616ef601",
+      "authors": [
+        "DaveBowman2001",
+        "MartianBuilder",
+        "MrSpace43",
+        "Piper"
+      ],
+      "dependencies": [
+        "0F34A456-C3A1-2D02-D599-06AB5EABFD79"
+      ]
+    },
+    {
+      "id": "937503C9-83DB-78C0-4E7C-827899BC5CD1",
+      "slug": "galilean-satellites",
+      "title": "Galilean Satellites (1995–2039)",
+      "source_url": "https://celestia.mobi/resources/item/937503C9-83DB-78C0-4E7C-827899BC5CD1",
+      "image_source_url": "https://celestia.mobi/resources/item/937503C9-83DB-78C0-4E7C-827899BC5CD1/cover.jpg",
+      "image": "images/celestia/galilean-satellites.jpg",
+      "image_width": 1366,
+      "image_height": 530,
+      "image_sha256": "d9e3a312fcbcfb04a3e6984253cf1e5c94fbfcd7337d9a7f1667fcf6e83ea922",
+      "authors": [
+        "DaveBowman2001",
+        "MartianBuilder",
+        "SpaceExplorer"
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "7E7446EC-033E-4798-B08F-AB51CE06FAF3",
+      "slug": "shukrayaan",
+      "title": "Shukrayaan / Venus Orbiter and Probe",
+      "source_url": "https://celestia.mobi/resources/item/7E7446EC-033E-4798-B08F-AB51CE06FAF3",
+      "image_source_url": "https://celestia.mobi/resources/item/7E7446EC-033E-4798-B08F-AB51CE06FAF3/cover.jpg",
+      "image": "images/celestia/shukrayaan.jpg",
+      "image_width": 3840,
+      "image_height": 2160,
+      "image_sha256": "214556f602025bb44c6eefb754e1ac5252d8c6547d70d9f08a735dc97b708506",
+      "authors": [
+        "MartianBuilder"
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "45B5EB94-2DE1-429B-B39E-4326DB7EA7F5",
+      "slug": "tianwen-4",
+      "title": "Tianwen-4",
+      "source_url": "https://celestia.mobi/resources/item/45B5EB94-2DE1-429B-B39E-4326DB7EA7F5",
+      "image_source_url": "https://celestia.mobi/resources/item/45B5EB94-2DE1-429B-B39E-4326DB7EA7F5/cover.jpg",
+      "image": "images/celestia/tianwen-4.jpg",
+      "image_width": 1238,
+      "image_height": 768,
+      "image_sha256": "1e4d233530c355ab6f7b25260211aafc56ba23d6238f1edb2435bea3c365b8a3",
+      "authors": [
+        "MartianBuilder"
+      ],
+      "dependencies": [
+        "937503C9-83DB-78C0-4E7C-827899BC5CD1"
+      ]
+    },
+    {
+      "id": "6723285F-79DA-4696-AF4F-0D8948A84573",
+      "slug": "uranus-orbiter-probe",
+      "title": "Uranus Orbiter and Probe",
+      "source_url": "https://celestia.mobi/resources/item/6723285F-79DA-4696-AF4F-0D8948A84573",
+      "image_source_url": "https://celestia.mobi/resources/item/6723285F-79DA-4696-AF4F-0D8948A84573/cover.jpg",
+      "image": "images/celestia/uranus-orbiter-probe.png",
+      "image_width": 1437,
+      "image_height": 897,
+      "image_sha256": "43fc17fb807a6248368e3ff52ce9351d2d0c56a213daffd368a409bcf0a791c2",
+      "authors": [
+        "MartianBuilder"
+      ],
+      "dependencies": []
+    }
+  ]
+}
