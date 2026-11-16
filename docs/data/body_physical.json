@@ -1,5 +1,5 @@
 {
-  "source": "JPL Small-Body Database physical parameters and osculating elements; retrieved 2026-11-16",
+  "source": "JPL SBDB plus cited NASA and published Herschel TNO diameter measurements; updated 2026-11-16",
   "bodies": {
     "20000001": {
       "name": "1 Ceres",
@@ -43,14 +43,24 @@
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20090377&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 544.0,
-      "sma_au_sigma": "0.15"
+      "sma_au_sigma": "0.15",
+      "diameter_km": 995,
+      "diameter_source_url": "https://doi.org/10.1051/0004-6361/201218874",
+      "diameter_note": "Pál et al. 2012; diameter 995 ±80 km",
+      "diameter_upper_error_km": "+314",
+      "diameter_reference": "2013A&A...557A..60L"
     },
     "20225088": {
       "name": "225088 Gonggong",
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20225088&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 66.9,
-      "sma_au_sigma": "0.0021"
+      "sma_au_sigma": "0.0021",
+      "diameter_km": 1230,
+      "diameter_source_url": "https://arxiv.org/abs/1903.05439",
+      "diameter_note": "Kiss et al. 2019; spherical-primary model diameter 1230 ±50 km",
+      "diameter_upper_error_km": "+210",
+      "diameter_reference": "2012A&A...541A..92S"
     },
     "20420356": {
       "name": "420356 Praamzius",
@@ -92,7 +102,12 @@
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20028978&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 39.3,
-      "sma_au_sigma": "3.2e-05"
+      "sma_au_sigma": "3.2e-05",
+      "diameter_km": 617.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter",
+      "diameter_upper_error_km": "+19",
+      "diameter_reference": "2013A&A...557A..60L"
     },
     "20004179": {
       "name": "4179 Toutatis",
@@ -139,7 +154,12 @@
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20026375&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 55.6,
-      "sma_au_sigma": "0.0011"
+      "sma_au_sigma": "0.0011",
+      "diameter_km": 311.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter",
+      "diameter_upper_error_km": "+29",
+      "diameter_reference": "2013A&A...557A..60L"
     },
     "20054598": {
       "name": "54598 Bienor",
@@ -155,14 +175,24 @@
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20066652&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 43.7,
-      "sma_au_sigma": "0.00085"
+      "sma_au_sigma": "0.00085",
+      "diameter_km": 163.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter; unresolved multiple-system equivalent, not primary alone",
+      "diameter_upper_error_km": "+32",
+      "diameter_reference": "2014A&A...564A..35V"
     },
     "20088611": {
       "name": "88611 Teharonhiawako",
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20088611&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 44.0,
-      "sma_au_sigma": "0.0012"
+      "sma_au_sigma": "0.0012",
+      "diameter_km": 220.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter; unresolved multiple-system equivalent, not primary alone",
+      "diameter_upper_error_km": "+41",
+      "diameter_reference": "2014A&A...564A..35V"
     },
     "20136472": {
       "name": "136472 Makemake",
@@ -179,7 +209,12 @@
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20208996&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 39.7,
-      "sma_au_sigma": "2.2e-05"
+      "sma_au_sigma": "2.2e-05",
+      "diameter_km": 727.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter; unresolved multiple-system equivalent, not primary alone",
+      "diameter_upper_error_km": "+61.9",
+      "diameter_reference": "2012A&A...541A..93M"
     },
     "20594913": {
       "name": "594913 'Aylo'chaxnim",
@@ -234,7 +269,12 @@
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20038628&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 39.3,
-      "sma_au_sigma": "0.00027"
+      "sma_au_sigma": "0.00027",
+      "diameter_km": 458.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter; unresolved multiple-system equivalent, not primary alone",
+      "diameter_upper_error_km": "+9.2",
+      "diameter_reference": "2013A&A...555A..15F Includes SPIRE"
     },
     "20000008": {
       "name": "8 Flora",
@@ -303,14 +343,24 @@
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20079360&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 44.1,
-      "sma_au_sigma": "0.00079"
+      "sma_au_sigma": "0.00079",
+      "diameter_km": 343.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter; unresolved multiple-system equivalent, not primary alone",
+      "diameter_upper_error_km": "+42",
+      "diameter_reference": "2012A&A...541A..94V"
     },
     "20083982": {
       "name": "83982 Crantor",
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20083982&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 19.4,
-      "sma_au_sigma": "4.7e-05"
+      "sma_au_sigma": "4.7e-05",
+      "diameter_km": 59.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter",
+      "diameter_upper_error_km": "+11",
+      "diameter_reference": "2014A&A...564A..92D"
     },
     "20095626": {
       "name": "95626 (2002 GZ32)",
@@ -335,7 +385,12 @@
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20145452&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 41.5,
-      "sma_au_sigma": "1.5e-05"
+      "sma_au_sigma": "1.5e-05",
+      "diameter_km": 679.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter",
+      "diameter_upper_error_km": "+55",
+      "diameter_reference": "2012A&A...541A..94V"
     },
     "20316179": {
       "name": "316179 (2010 EN65)",
@@ -397,35 +452,60 @@
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20026308&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 47.8,
-      "sma_au_sigma": "0.001"
+      "sma_au_sigma": "0.001",
+      "diameter_km": 291.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter; unresolved multiple-system equivalent, not primary alone",
+      "diameter_upper_error_km": "+22",
+      "diameter_reference": "2013A&A...557A..60L"
     },
     "20047171": {
       "name": "47171 Lempo",
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20047171&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 39.7,
-      "sma_au_sigma": "0.00033"
+      "sma_au_sigma": "0.00033",
+      "diameter_km": 393.1,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter; unresolved multiple-system equivalent, not primary alone",
+      "diameter_upper_error_km": "+25.2",
+      "diameter_reference": "2012A&A...541A..93M"
     },
     "20055637": {
       "name": "55637 Uni",
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20055637&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 42.9,
-      "sma_au_sigma": "2.6e-05"
+      "sma_au_sigma": "2.6e-05",
+      "diameter_km": 692.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter; unresolved multiple-system equivalent, not primary alone",
+      "diameter_upper_error_km": "+23",
+      "diameter_reference": "2013A&A...555A..15F Includes SPIRE"
     },
     "20119979": {
       "name": "119979 (2002 WC19)",
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20119979&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 48.3,
-      "sma_au_sigma": "0.0018"
+      "sma_au_sigma": "0.0018",
+      "diameter_km": 348.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter; unresolved multiple-system equivalent, not primary alone",
+      "diameter_upper_error_km": "+45",
+      "diameter_reference": "2013A&A...557A..60L"
     },
     "20148780": {
       "name": "148780 Altjira",
       "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20148780&phys-par=true",
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 44.5,
-      "sma_au_sigma": "0.0086"
+      "sma_au_sigma": "0.0086",
+      "diameter_km": 331.0,
+      "diameter_source_url": "https://public-tnosarecool-lira.obspm.fr/Published-results.html",
+      "diameter_note": "Published radiometric equivalent diameter; unresolved multiple-system equivalent, not primary alone",
+      "diameter_upper_error_km": "+51",
+      "diameter_reference": "2014A&A...564A..35V Hv from 2012A&A...541A..94V"
     },
     "20471143": {
       "name": "471143 Dziewanna",
@@ -461,6 +541,33 @@
       "orbit_epoch_jd": "2461200.5",
       "sma_au": 71.1,
       "sma_au_sigma": "0.031"
+    },
+    "9": {
+      "name": "Pluto",
+      "diameter_km": 2376.6,
+      "sma_au": 39.482,
+      "source_url": "https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+      "diameter_source_url": "https://ssd.jpl.nasa.gov/planets/phys_par.html",
+      "diameter_note": "Twice JPL mean radius; New Horizons measurement",
+      "sma_note": "Rounded J2000 reference; not a live osculating element"
+    },
+    "999": {
+      "name": "Pluto",
+      "diameter_km": 2376.6,
+      "sma_au": 39.482,
+      "source_url": "https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+      "diameter_source_url": "https://ssd.jpl.nasa.gov/planets/phys_par.html",
+      "diameter_note": "Twice JPL mean radius; New Horizons measurement",
+      "sma_note": "Rounded J2000 reference; not a live osculating element"
+    },
+    "20134340": {
+      "name": "Pluto",
+      "diameter_km": 2376.6,
+      "sma_au": 39.482,
+      "source_url": "https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+      "diameter_source_url": "https://ssd.jpl.nasa.gov/planets/phys_par.html",
+      "diameter_note": "Twice JPL mean radius; New Horizons measurement",
+      "sma_note": "Rounded J2000 reference; not a live osculating element"
     }
   }
 }

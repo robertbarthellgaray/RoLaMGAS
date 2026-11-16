@@ -3,13 +3,19 @@ const DWARFS=new Set(['Pluto','Ceres','Eris','Haumea','Makemake','Sedna']);
 const PLANETS=new Set(['Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uranus','Neptune']);
 export const DWARF_CATEGORY='Dwarf planets & TNOs';
 const bodyClasses=new Map();
+const bodyPhysical=new Map();
+export const NEPTUNE_SMA_AU=30.0699;
+export function registerBodyPhysical(document){for(const [id,row] of Object.entries(document?.bodies||{}))bodyPhysical.set(String(id),row);}
 export function registerBodyCategories(document){for(const [id,row] of Object.entries(document?.bodies||{}))if(String(row.horizons_id)===id)bodyClasses.set(id,row);}
 export const CATEGORIES=[DWARF_CATEGORY,'Asteroids','Comets','Other bodies'];
 export function bodyCategory(name,id=''){
  if(PLANETS.has(name))return 'Planets';
+ // Preserve the comet section regardless of semimajor axis.
+ if((Number(id)>=1000000&&Number(id)<2000000)||/^(?:[CPADX]\/|\d+[PD]\/)/i.test(name))return 'Comets';
+ const a=Number(bodyPhysical.get(String(id))?.sma_au);
+ if(Number.isFinite(a)&&a>NEPTUNE_SMA_AU)return DWARF_CATEGORY;
  if(DWARFS.has(name)||['9','999','20000001','20136199','20136108','20136472','20090377','20225088'].includes(String(id)))return DWARF_CATEGORY;
  const metadata=bodyClasses.get(String(id));if(metadata?.orbit_class_code==='TNO'||/trans.?neptun/i.test(metadata?.orbit_class||''))return DWARF_CATEGORY;
- if((Number(id)>=1000000&&Number(id)<2000000)||/^(?:[CPADX]\/|\d+[PD]\/)/i.test(name))return 'Comets';
  if(Number(id)>=2000000||['Arrokoth','624 Hektor','13579 Allodd','420356 Praamzius','2026 ED138','2012 VP113'].includes(name))return 'Asteroids';
  return 'Other bodies';
 }

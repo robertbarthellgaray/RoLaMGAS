@@ -1,0 +1,99 @@
+// Image sources, creator credits and licenses. Thumbnail generation only; no color edits.
+export const WORLD_IMAGES={
+  "mercury": {
+    "file": "mercury.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Mercury_in_true_color.jpg",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Mercury_in_true_color.jpg/960px-Mercury_in_true_color.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Mercury_in_true_color.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "NASA/Johns Hopkins University Applied Physics Laboratory/Arizona State University/Carnegie Institution of Washington",
+    "license": "Public domain",
+    "license_url": "https://commons.wikimedia.org/wiki/File:Mercury_in_true_color.jpg",
+    "changes": "Wikimedia thumbnail, displayed without color edits",
+    "bytes": 125647
+  },
+  "venus": {
+    "file": "venus.png",
+    "page": "https://commons.wikimedia.org/wiki/File:Mariner_10_Venus_calibrated_with_MASCS_spectrum.png",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Mariner_10_Venus_calibrated_with_MASCS_spectrum.png/960px-Mariner_10_Venus_calibrated_with_MASCS_spectrum.png",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Mariner_10_Venus_calibrated_with_MASCS_spectrum.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "Geobica",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+    "changes": "Wikimedia thumbnail, displayed without color edits",
+    "bytes": 335594
+  },
+  "earth": {
+    "file": "earth.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:The_Earth_seen_from_Apollo_17.jpg",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/960px-The_Earth_seen_from_Apollo_17.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "NASA/Apollo 17 crew; taken by either Harrison Schmitt or Ron Evans",
+    "license": "Public domain",
+    "license_url": "https://commons.wikimedia.org/wiki/File:The_Earth_seen_from_Apollo_17.jpg",
+    "changes": "Wikimedia thumbnail, displayed without color edits",
+    "bytes": 267290
+  },
+  "mars": {
+    "file": "mars.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Mars_Valles_Marineris_EDIT.jpg",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Mars_Valles_Marineris_EDIT.jpg/960px-Mars_Valles_Marineris_EDIT.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Mars_Valles_Marineris_EDIT.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "Mars_Valles_Marineris.jpeg: NASA picture derivative work: Lošmi (talk)",
+    "license": "Public domain",
+    "license_url": "https://commons.wikimedia.org/wiki/File:Mars_Valles_Marineris_EDIT.jpg",
+    "changes": "Wikimedia thumbnail, displayed without color edits",
+    "bytes": 146709
+  },
+  "jupiter": {
+    "file": "jupiter.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:J%C3%BApiter_desde_el_Voyager_2.jpg",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/be/J%C3%BApiter_desde_el_Voyager_2.jpg/960px-J%C3%BApiter_desde_el_Voyager_2.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/b/be/J%C3%BApiter_desde_el_Voyager_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "NASA",
+    "license": "Public domain",
+    "license_url": "https://commons.wikimedia.org/wiki/File:J%C3%BApiter_desde_el_Voyager_2.jpg",
+    "changes": "Wikimedia thumbnail, displayed without color edits",
+    "bytes": 86755
+  },
+  "saturn": {
+    "file": "saturn.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Saturn_from_Cassini_Orbiter_(2004-10-06).jpg",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Saturn_from_Cassini_Orbiter_%282004-10-06%29.jpg/960px-Saturn_from_Cassini_Orbiter_%282004-10-06%29.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Saturn_from_Cassini_Orbiter_%282004-10-06%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "NASA/JPL/Space Science Institute",
+    "license": "Public domain",
+    "license_url": "https://commons.wikimedia.org/wiki/File:Saturn_from_Cassini_Orbiter_(2004-10-06).jpg",
+    "changes": "Wikimedia thumbnail, displayed without color edits",
+    "bytes": 27945
+  },
+  "uranus": {
+    "page": "https://science.nasa.gov/uranus/facts/",
+    "image_url": "https://science.nasa.gov/wp-content/uploads/2016/05/uranus-jpg.webp?w=640&quality=85",
+    "credit": "NASA; see linked source page for mission and institutional image credits",
+    "bytes": 16588,
+    "file": "uranus.jpg",
+    "license": "NASA imagery; see source"
+  },
+  "neptune": {
+    "file": "neptune.png",
+    "page": "https://commons.wikimedia.org/wiki/File:Neptune_Voyager2_color_calibrated.png",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/Neptune_Voyager2_color_calibrated.png/960px-Neptune_Voyager2_color_calibrated.png",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/b/b9/Neptune_Voyager2_color_calibrated.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "NASA / Voyager 2 / PDS / OPUS / Ardenau4",
+    "license": "CC0",
+    "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "changes": "Wikimedia thumbnail, displayed without color edits",
+    "bytes": 510820
+  },
+  "pluto": {
+    "file": "pluto.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Pluto_in_True_Color_-_High-Res.jpg",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/Pluto_in_True_Color_-_High-Res.jpg/960px-Pluto_in_True_Color_-_High-Res.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Pluto_in_True_Color_-_High-Res.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "NASA/Johns Hopkins University Applied Physics Laboratory/Southwest Research Institute/Alex Parker",
+    "license": "Public domain",
+    "license_url": "https://commons.wikimedia.org/wiki/File:Pluto_in_True_Color_-_High-Res.jpg",
+    "changes": "Wikimedia thumbnail, displayed without color edits",
+    "bytes": 191701
+  }
+};
