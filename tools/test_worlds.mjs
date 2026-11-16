@@ -23,6 +23,9 @@ test('Pluto aliases show its image and SMA; untrusted labels stay escaped',()=>{
  const physical={bodies:{999:{sma_au:39.482,diameter_km:2376.6}}};
  const out=smallBodyBriefing('Pluto','Dwarf planets & TNOs',physical,[{target:'Pluto',target_id:'9'}]);
  assert.match(out,/pluto.jpg/);assert.match(out,/39\.482/);
+ const haumea=smallBodyBriefing('Haumea','Dwarf planets & TNOs',{bodies:{h:{sma_au:43.1,diameter_km:1430}}},[{target:'Haumea',target_id:'h'}]);
+ assert.match(haumea,/haumea.jpg/);assert.match(haumea,/Artist’s impression/);assert.match(haumea,/Mean reference diameter/);
+ assert.match(smallBodyCards([{target:'Haumea',target_id:'h'}],'All','Dwarf planets & TNOs',{bodies:{h:{diameter_km:1430}}}),/haumea-disc/);
  const html=smallBodyCards([{target:'<img onerror=bad>',target_id:'x'}],'All','Asteroids',{},'diameter');
  assert.doesNotMatch(html,/<img onerror/);assert.match(html,/&lt;img onerror=bad&gt;/);
 });

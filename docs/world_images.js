@@ -95,5 +95,17 @@ export const WORLD_IMAGES={
     "license_url": "https://commons.wikimedia.org/wiki/File:Pluto_in_True_Color_-_High-Res.jpg",
     "changes": "Wikimedia thumbnail, displayed without color edits",
     "bytes": 191701
+  },
+  "haumea": {
+    "file": "haumea.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:2003EL61art.jpg",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/90/2003EL61art.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/9/90/2003EL61art.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "A. Feild (Space Telescope Science Institute)",
+    "license": "Public domain",
+    "license_url": "https://commons.wikimedia.org/wiki/File:2003EL61art.jpg",
+    "changes": "Wikimedia thumbnail, no color edits",
+    "image_note": "Artist’s impression; not a spacecraft photograph",
+    "bytes": 20880
   }
 };
