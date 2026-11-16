@@ -4,6 +4,23 @@ import {readFileSync} from 'node:fs';
 import {localEnv} from './local_server.mjs';
 import {smallBodyQualityReason} from '../docs/library_policy.js';
 
+test('EdvEJU migration archives only over-60 routes and blocks reinsertion/update',()=>{
+ const env=localEnv(),db=env.database;
+ const insert=(id,seq,c3)=>db.prepare('INSERT INTO candidates VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)').run(id,'799',seq,2460000,2465000,c3,'pass','2026-01-01','2026-01-01','{"original":true}','2026-01-01','server receipt',id,1);
+ insert('expensive','EdvEJU',60.01);insert('boundary','EdvEJU',60);insert('other','EJU',160);
+ db.exec(readFileSync(new URL('./migrations/0006_edveju_c3.sql',import.meta.url),'utf8'));
+ assert.deepEqual(db.prepare('SELECT id FROM candidates ORDER BY id').all().map(r=>r.id),['boundary','other']);
+ assert.equal(db.prepare('SELECT payload FROM edveju_c3_purge_20261116').get().payload,'{"original":true}');
+ assert.throws(()=>insert('again','EdvEJU',61),/EdvEJU/);
+ assert.throws(()=>db.prepare("UPDATE candidates SET c3=61 WHERE id='boundary'").run(),/EdvEJU/);
+ insert('jupiter-expensive','EdvEJ',61);insert('jupiter-boundary','EdvEJ',60);
+ db.exec(readFileSync(new URL('./migrations/0007_edvej_c3.sql',import.meta.url),'utf8'));
+ assert.equal(db.prepare("SELECT COUNT(*) n FROM candidates WHERE id='jupiter-expensive'").get().n,0);
+ assert.equal(db.prepare('SELECT COUNT(*) n FROM edvej_c3_purge_20261116').get().n,1);
+ assert.throws(()=>insert('jupiter-again','EdvEJ',61),/EdvEJ/);
+ db.close();
+});
+
 test('high energy needs a short small-body flight; planets are not constrained',()=>{
  for(const id of ['9','999','20090377','54667839','1000036']){
   assert.ok(smallBodyQualityReason(id,170.001,25));assert.equal(smallBodyQualityReason(id,170,25),null);

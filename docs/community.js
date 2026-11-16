@@ -28,7 +28,7 @@ export function mergeLibrary(archive,live,target,min=0,max=1e9){const records=ne
 export function summaryFor(record){
  if(record.metrics.launch_c3_km2_s2>250)throw Error('Public library C3 exceeds 250 km2/s2');
  if(record.metrics.launch_c3_km2_s2>30+1e-8&&record.body_ids.slice(1,-1).includes('299')&&record.body_ids.some(id=>['599','699','799','899'].includes(id)))throw Error('Venus-assisted outer-planet public library C3 exceeds 30 km2/s2');
- const qualityReason=publicLibraryQualityReason(record.body_ids.at(-1),record.metrics.launch_c3_km2_s2,missionTiming(record).years);if(qualityReason)throw Error(qualityReason);
+ const qualityReason=publicLibraryQualityReason(record.body_ids.at(-1),record.metrics.launch_c3_km2_s2,missionTiming(record).years,record.sequence);if(qualityReason)throw Error(qualityReason);
  const t=missionTiming(record),m=record.metrics,bodies=record.body_ids.map(bodyName),target=bodies.at(-1);
  return {id:record.id,target_id:String(record.body_ids.at(-1)),title:record.sequence+' · '+target,target,sequence:record.sequence,bodies,model:'Shared '+record.classification,community:true,classification:record.classification,spotlight:false,start:record.dates_jd_tdb[0],end:record.dates_jd_tdb.at(-1),launch_date:t.departure,arrival_date:t.arrival,years:t.years,c3:m.launch_c3_km2_s2,vinf:m.arrival_vinf_kms,burns_mps:m.total_dsm_kms*1000,mismatch_max_mps:Number.isFinite(m.max_vinf_mismatch_mps)?m.max_vinf_mismatch_mps:null,received:Date.parse(record.received_at||record.solved_at),added_at:record.added_at,added_at_basis:record.added_at_basis};
 }

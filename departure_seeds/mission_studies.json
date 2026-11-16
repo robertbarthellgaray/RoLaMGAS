@@ -72,7 +72,7 @@
       ]
     },
     {
-      "name": "CALYPSO Ariel / KBO concept — Uranus cruise",
+      "name": "CALYPSO Ariel / KBO concept \u2014 Uranus cruise",
       "sequence": "EJU",
       "bodies": [
         "Earth",
@@ -85,7 +85,7 @@
         "2041-11-01"
       ],
       "c3": 121,
-      "section": "Mission design, printed pages 12–13",
+      "section": "Mission design, printed pages 12\u201313",
       "note": "Launch-period opening; 494-day Jupiter leg corresponds to July 11 launch. Uranus proxy only: Ariel flyby and later KBO encounter are not reconstructed.",
       "reference_kind": "Proposed mission study / numerical initialization",
       "seed_eligible": true,
@@ -113,7 +113,7 @@
         "2049-01-20"
       ],
       "c3": 58.084,
-      "section": "Figure 3-5, printed pages 20–21",
+      "section": "Figure 3-5, printed pages 20\u201321",
       "target_object": {
         "name": "433873 (2015 BQ311)",
         "id": "20433873",
@@ -165,7 +165,7 @@
       "c3": 13.435,
       "vinf": 1.95,
       "section": "Appendix A.2.3.2, printed A19",
-      "note": "The cited DSM is about 8.5% through the Venus-return leg; the current app permits 10–90%, so this burn date cannot be represented exactly. Venus capture excluded.",
+      "note": "The cited DSM is about 8.5% through the Venus-return leg; the current app permits 10\u201390%, so this burn date cannot be represented exactly. Venus capture excluded.",
       "reference_kind": "Proposed mission study / numerical initialization",
       "seed_eligible": true,
       "planet_leg_days": [
@@ -185,7 +185,7 @@
       ]
     },
     {
-      "name": "T-OWS 2030 concept — operations-table schedule",
+      "name": "T-OWS 2030 concept \u2014 operations-table schedule",
       "sequence": "EdvJN",
       "bodies": [
         "Earth",
@@ -294,7 +294,7 @@
     {
       "name": "Titan Orbiter and Probe",
       "sequence": "EVEES",
-      "launch_window": "2031–2039",
+      "launch_window": "2031\u20132039",
       "approximate_cruise_years": 10,
       "source": "https://drive.google.com/file/d/1WYBrBXnTBN3cIipb-4GrlDzXiX2ztedG/view",
       "seed_eligible": false,
@@ -318,6 +318,529 @@
       "seed_eligible": false,
       "reference_kind": "Study reference only",
       "note": "Continuous solar electric propulsion; not a ballistic Lambert template"
+    },
+    {
+      "name": "UOP concept 2029-09-30 \u00b7 EVEEJU",
+      "sequence": "EVEEJU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2029-09-30T11:59:59",
+        "2030-04-07T23:37:14",
+        "2031-02-16T18:00:41",
+        "2033-05-24T14:07:31",
+        "2035-11-04T18:33:55",
+        "2044-03-31T19:28:19"
+      ],
+      "c3": 13.715867953632687,
+      "planet_leg_days": [
+        189.4841951862909,
+        314.7662907927297,
+        827.83806859795,
+        894.185000195168,
+        3070.037780852057
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": []
+    },
+    {
+      "name": "UOP concept 2029-10-31 \u00b7 EVEEJU",
+      "sequence": "EVEEJU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2029-10-31T11:59:57",
+        "2030-03-28T04:20:04",
+        "2031-02-14T18:44:44",
+        "2033-05-23T08:14:37",
+        "2035-09-03T13:36:09",
+        "2042-12-07T00:29:31"
+      ],
+      "c3": 11.315347192861298,
+      "planet_leg_days": [
+        147.6806370303966,
+        323.60046352352947,
+        828.5624211863615,
+        833.2232947633602,
+        2651.4537268625572
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": []
+    },
+    {
+      "name": "UOP concept 2031-03-07 \u00b7 EVEdvEJU",
+      "sequence": "EVEdvEJU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2031-03-07T22:53:55",
+        "2032-02-15T01:35:11",
+        "2033-04-08T02:02:59",
+        "2035-08-16T14:47:37",
+        "2037-01-03T06:20:34",
+        "2043-09-06T13:53:55"
+      ],
+      "c3": 17.499999999984745,
+      "planet_leg_days": [
+        344.11199578503147,
+        418.01930184289813,
+        860.5309957289137,
+        505.64787977095693,
+        2437.3148268722
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 2,
+          "date": "2034-04-27T10:57:20",
+          "fraction": 0.446667328868452,
+          "magnitude_kms": 0.05000000115965342
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2031-04-03 \u00b7 EdvEJU",
+      "sequence": "EdvEJU",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2031-04-03T11:34:56",
+        "2033-05-21T20:10:41",
+        "2035-11-20T14:33:59",
+        "2044-10-02T08:34:56"
+      ],
+      "c3": 28.60000000019417,
+      "planet_leg_days": [
+        779.3581618485041,
+        912.7661775820889,
+        3238.750660569407
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2032-01-03T18:14:51",
+          "fraction": 0.3532108102086644,
+          "magnitude_kms": 0.650000000350948
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2031-06-13 \u00b7 EdvEJU",
+      "sequence": "EdvEJU",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2031-06-13T12:00:16",
+        "2033-04-22T09:11:28",
+        "2035-11-30T16:54:52",
+        "2044-11-05T20:24:16"
+      ],
+      "c3": 27.099999998255463,
+      "planet_leg_days": [
+        678.8827818050049,
+        952.3218025774695,
+        3263.14541561855
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2032-05-25T04:03:40",
+          "fraction": 0.5106463670973933,
+          "magnitude_kms": 0.7441657938178738
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2031-06-15 \u00b7 EdvEJU",
+      "sequence": "EdvEJU",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2031-06-15T11:44:22",
+        "2033-04-21T09:50:56",
+        "2035-11-08T10:22:16",
+        "2044-02-26T03:56:22"
+      ],
+      "c3": 26.999999995527272,
+      "planet_leg_days": [
+        675.9212349047884,
+        931.021753905341,
+        3031.7320111333393
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2032-06-14T18:46:53",
+          "fraction": 0.5404378540919719,
+          "magnitude_kms": 0.7200000184527364
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2031-07-18 \u00b7 EVEdvJU",
+      "sequence": "EVEdvJU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2031-07-18T11:59:58",
+        "2032-01-12T19:11:31",
+        "2033-06-17T11:51:56",
+        "2035-10-11T13:10:59",
+        "2043-03-08T22:08:30"
+      ],
+      "c3": 19.763369221708203,
+      "planet_leg_days": [
+        178.29968751361594,
+        521.6947384742089,
+        846.0548938754946,
+        2705.3732817759737
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 2,
+          "date": "2033-09-19T10:01:34",
+          "fraction": 0.11101330972588185,
+          "magnitude_kms": 1.0659551390177378
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2031-08-01 \u00b7 EVEdvJU",
+      "sequence": "EVEdvJU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2031-08-01T12:00:20",
+        "2032-01-10T21:23:46",
+        "2033-06-16T03:00:10",
+        "2035-11-03T03:45:05",
+        "2043-11-04T21:33:02"
+      ],
+      "c3": 18.02088315194098,
+      "planet_leg_days": [
+        162.3912742403336,
+        522.2336085136048,
+        870.0311856246553,
+        2923.741632355377
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 2,
+          "date": "2033-10-01T01:37:14",
+          "fraction": 0.12291790288710168,
+          "magnitude_kms": 1.0500000682411181
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2031-08-09 \u00b7 EVEdvJU",
+      "sequence": "EVEdvJU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2031-08-09T12:00:26",
+        "2032-01-12T22:20:51",
+        "2033-06-18T10:36:31",
+        "2035-11-06T02:03:48",
+        "2043-08-24T02:38:50"
+      ],
+      "c3": 20.23735185541691,
+      "planet_leg_days": [
+        156.43084247782826,
+        522.5108823557384,
+        870.643939002417,
+        2848.0243361620232
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 2,
+          "date": "2033-09-14T14:01:17",
+          "fraction": 0.10123793270441256,
+          "magnitude_kms": 1.0153992296807908
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2032-04-29 \u00b7 EdvEJU",
+      "sequence": "EdvEJU",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2032-04-29T13:19:16",
+        "2034-06-21T21:33:54",
+        "2036-04-26T04:48:59",
+        "2045-02-15T18:07:18"
+      ],
+      "c3": 28.80004576029976,
+      "planet_leg_days": [
+        783.343501102645,
+        674.3021410093643,
+        3217.554387843702
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2033-04-16T19:48:54",
+          "fraction": 0.44970128603747517,
+          "magnitude_kms": 0.6000003396985678
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2032-05-03 \u00b7 EdvEJU",
+      "sequence": "EdvEJU",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2032-05-03T12:00:06",
+        "2034-06-22T13:31:38",
+        "2036-04-19T11:13:03",
+        "2044-07-15T13:12:06"
+      ],
+      "c3": 29.200000000209517,
+      "planet_leg_days": [
+        780.0635681110434,
+        666.9037612238899,
+        3009.082670665346
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2033-05-27T11:02:30",
+          "fraction": 0.4986260333293824,
+          "magnitude_kms": 0.725493666111183
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2032-08-15 \u00b7 EdvEJU",
+      "sequence": "EdvEJU",
+      "bodies": [
+        "Earth",
+        "Earth",
+        "Jupiter",
+        "Uranus"
+      ],
+      "dates": [
+        "2032-08-15T12:51:28",
+        "2035-07-06T20:44:19",
+        "2037-01-06T03:35:08",
+        "2044-06-03T11:39:28"
+      ],
+      "c3": 49.49999908747773,
+      "planet_leg_days": [
+        1055.3283660928719,
+        549.2852911814116,
+        2705.336342856288
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 0,
+          "date": "2034-05-25T15:55:40",
+          "fraction": 0.6141481039147457,
+          "magnitude_kms": 0.420000010388335
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2034-05-27 \u00b7 EVEdvEU",
+      "sequence": "EVEdvEU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Uranus"
+      ],
+      "dates": [
+        "2034-05-27T11:58:31",
+        "2035-04-29T01:06:07",
+        "2036-06-28T06:47:40",
+        "2039-10-21T18:09:58",
+        "2049-08-08T07:10:31"
+      ],
+      "c3": 23.100000000433656,
+      "planet_leg_days": [
+        336.5469349171035,
+        426.2371958740987,
+        1210.4738125316799,
+        3578.5420566769317
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 2,
+          "date": "2038-06-14T18:36:18",
+          "fraction": 0.5919104485329777,
+          "magnitude_kms": 0.6793955555411756
+        }
+      ]
+    },
+    {
+      "name": "UOP concept 2036-02-28 \u00b7 EVEEdvU",
+      "sequence": "EVEEdvU",
+      "bodies": [
+        "Earth",
+        "Venus",
+        "Earth",
+        "Earth",
+        "Uranus"
+      ],
+      "dates": [
+        "2036-02-28T15:01:58",
+        "2037-04-15T07:33:51",
+        "2038-07-02T22:22:16",
+        "2041-10-20T02:46:41",
+        "2051-07-02T13:28:22"
+      ],
+      "c3": 28.23988062726696,
+      "planet_leg_days": [
+        411.68881658418104,
+        443.6169566838071,
+        1205.1836163606495,
+        3542.4456103714183
+      ],
+      "seed_eligible": true,
+      "reference_kind": "Recomputed UOP concept initialization; independently checked solar coasts",
+      "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded. The report maneuver budget can exceed ordinary app defaults; use the matching portable options.",
+      "sources": [
+        "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe.pdf"
+      ],
+      "dsm_events": [
+        {
+          "leg_index": 3,
+          "date": "2043-03-11T00:29:17",
+          "fraction": 0.1430945288489669,
+          "magnitude_kms": 0.49449724872019996
+        }
+      ]
     }
   ]
 }

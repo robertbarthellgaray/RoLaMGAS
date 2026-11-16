@@ -26,6 +26,8 @@ def c3_ceiling(bodies,config):
 
 def public_energy_reason(record):
     energy=record.get('metrics',{}).get('launch_c3_km2_s2',record.get('c3'))
+    if record.get('sequence') in ('EdvEJU','EdvEJ') and energy is not None and energy>60:
+        return record['sequence']+' public-library C3 must not exceed 60 km2/s2.'
     if energy is not None and energy>DEFAULT_VENUS_OUTER_C3+1e-8 and venus_outer_route(record.get('body_ids',record.get('bodies',[]))):
         return 'Venus-assisted outer-planet example exceeds the public C3 ceiling of 30 km2/s2.'
     return None

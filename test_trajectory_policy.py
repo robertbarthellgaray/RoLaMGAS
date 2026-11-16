@@ -8,6 +8,13 @@ from cost_refinement import boundary_seed
 from trajectory_policy import c3_ceiling,public_energy_reason
 
 class VenusDeparturePolicyTests(unittest.TestCase):
+    def test_edveju_public_ceiling_is_sequence_specific(self):
+        def row(sequence,c3):return dict(sequence=sequence,bodies=['Earth','Earth','Jupiter','Uranus'],c3=c3)
+        self.assertIsNone(public_energy_reason(row('EdvEJU',60)))
+        self.assertIn('60',public_energy_reason(row('EdvEJU',60.001)))
+        self.assertIsNone(public_energy_reason(row('EJU',160)))
+        self.assertIsNone(public_energy_reason(row('EdvEJ',60)))
+        self.assertIn('60',public_energy_reason(row('EdvEJ',60.001)))
     def model(self,seq='EVEEJ',**updates):
         target='Mercury' if seq=='EVMe' else 'Jupiter'
         c=normalize(dict(target=target,sequences=[seq],max_c3=100,**updates))

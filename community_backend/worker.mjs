@@ -26,7 +26,7 @@ export async function validate(input){
  const controls=input.dsm_controls.map(d=>{exact(d,['leg_index','fraction','departure_offset_kms']);if(!Number.isInteger(d.leg_index)||d.leg_index<=previous||d.leg_index>=ids.length-1)throw Error('Invalid DSM leg');previous=d.leg_index;return {leg_index:d.leg_index,fraction:number(d.fraction,.1,.9),departure_offset_kms:vector(d.departure_offset_kms,1000)};});
  exact(input.metrics,METRICS);const metrics=Object.fromEntries(METRICS.map(k=>[k,number(input.metrics[k],0,1e9)]));
  if(metrics.launch_c3_km2_s2>250)throw Error('Public library C3 exceeds 250 km2/s2');
- const qualityReason=publicLibraryQualityReason(ids.at(-1),metrics.launch_c3_km2_s2,(dates.at(-1)-dates[0])/365.25);if(qualityReason)throw Error(qualityReason);
+ const qualityReason=publicLibraryQualityReason(ids.at(-1),metrics.launch_c3_km2_s2,(dates.at(-1)-dates[0])/365.25,input.sequence);if(qualityReason)throw Error(qualityReason);
  if(metrics.launch_c3_km2_s2>30+1e-8&&ids.slice(1,-1).includes('299')&&ids.some(id=>['599','699','799','899'].includes(id)))throw Error('Venus-assisted outer-planet public library C3 exceeds 30 km2/s2');
  const time=Date.parse(input.solved_at);if(typeof input.solved_at!=='string'||input.solved_at.length>40||!Number.isFinite(time)||time<0||time>Date.now()+86400000)throw Error('Invalid solve time');
  if(!Array.isArray(input.segments)||input.segments.length<1||input.segments.length>32)throw Error('Invalid segments');

@@ -8,6 +8,15 @@ const record=()=>({schema_version:1,engine_version:'0.2.1-test7',sequence:'EJ',b
 const post=(env,records)=>worker.fetch(new Request('https://example.test/v1/candidates',{method:'POST',headers:{'Content-Type':'application/json','User-Agent':'private computer name','CF-Connecting-IP':'192.0.2.1'},body:JSON.stringify({candidates:records})}),env);
 const get=(env,query='target=599&min_c3=10&max_c3=15')=>worker.fetch(new Request('https://example.test/v1/candidates?'+query),env);
 
+test('EdvEJU C3 ceiling retains 60 exactly and leaves other sequences alone',async()=>{
+ const a={...record(),sequence:'EdvEJU',body_ids:['399','399','599','799'],dates_jd_tdb:[2460000,2460800,2461500,2465000],branches:[[0,true],[0,true],[0,true]]};
+ a.metrics.launch_c3_km2_s2=60;await assert.doesNotReject(()=>validate(a));
+ a.metrics.launch_c3_km2_s2=60.000001;await assert.rejects(()=>validate(a),/EdvEJU/);
+ a.sequence='EJU';await assert.doesNotReject(()=>validate(a));
+ a.sequence='EdvEJ';await assert.rejects(()=>validate(a),/EdvEJ/);
+ a.metrics.launch_c3_km2_s2=60;await assert.doesNotReject(()=>validate(a));
+});
+
 test('Venus-assisted outer-planet library policy caps C3 at 30 without restricting other routes',async()=>{
  const a={...record(),sequence:'EVJ',body_ids:['399','299','599'],dates_jd_tdb:[2460000,2460300,2461000],branches:[[0,true],[0,true]]};
  a.metrics.launch_c3_km2_s2=30;await assert.doesNotReject(()=>validate(a));
