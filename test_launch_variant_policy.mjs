@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {nearDuplicate} from './docs/near_duplicates.js';
+import {publicLibraryQualityReason} from './docs/library_policy.js';
+const a={id:'a',sequence:'EJS',body_ids:['399','599','699'],dates_jd_tdb:[2460000.7,2460600,2461500],metrics:{launch_c3_km2_s2:100,total_dsm_kms:0,arrival_vinf_kms:6,max_vinf_mismatch_mps:.1}};
+const b=structuredClone(a);b.id='b';b.dates_jd_tdb=[2460001.1,2460603,2461505];b.metrics.launch_c3_km2_s2=101;
+assert.ok(nearDuplicate(a,b));b.dates_jd_tdb[1]+=10;assert.ok(!nearDuplicate(a,b));
+b.dates_jd_tdb[1]-=10;b.metrics.launch_c3_km2_s2=110;assert.ok(!nearDuplicate(a,b));
+b.metrics.launch_c3_km2_s2=101;b.metrics.arrival_vinf_kms=5;assert.ok(!nearDuplicate(a,b));
+assert.equal(publicLibraryQualityReason('699',30,19.999),null);assert.match(publicLibraryQualityReason('699',30,20),/20 years/);
+assert.equal(publicLibraryQualityReason('599',30,25),null);
+console.log('PASS: nearby launch variants consolidate; distinct geometry/energy/speed tradeoffs survive; Saturn 20-year boundary enforced.');

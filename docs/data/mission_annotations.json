@@ -593,6 +593,18 @@
       "mission_kind": "reconstruction",
       "featured_priority": 17,
       "note": "Dragonfly-inspired Titan entry; arrives November 2035 rather than the planned late 2034. Atmospheric entry and landing are not propagated."
+    },
+    "faaebce61e7087814c1e25522e0daa12697e5c8526c11d68c7bfa3e749d7023d": {
+      "label": "Pioneer 11",
+      "mission_kind": "reconstruction",
+      "featured_priority": 8,
+      "note": "Pioneer 11-inspired reconstruction with approximate encounter dates: 1973-04-06 \u2192 1974-11-21 \u2192 1979-09-03. Reference days: 1973-04-06 \u2192 1974-12-03 \u2192 1979-09-01. This does not reproduce all flown encounter days."
+    },
+    "864ca8c31892f68454fb39dbed6bbeb3a76f8af3b7d676552f097cb870e862b0": {
+      "label": "Voyager 1",
+      "mission_kind": "reconstruction",
+      "featured_priority": 8,
+      "note": "Calendar-date reconstruction: all three encounter days match the mission. Saved vectors and cruise delta-v remain a Lambert reconstruction, not flown spacecraft data."
     }
   }
 }

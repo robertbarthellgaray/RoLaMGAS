@@ -53,3 +53,6 @@
 @media(max-width:760px){#tradeoff-svg text{font-size:14px}#tradeoff-svg .axis-label{font-size:15px}}
 
 .intro-links{display:flex;flex-wrap:wrap;gap:16px 24px}.site-header{flex-wrap:wrap}.site-header nav{flex-wrap:wrap}
+
+/* Candidate PDF reports and transparent curation labels. */
+.pdf-export-status{padding:0 24px 14px;margin:0}.pdf-export-status:empty{display:none}.variant-inferior{display:block;color:#ffd08a;font-size:11px;line-height:1.6;margin-top:6px}.inferior-note{padding:14px 24px;margin:0;background:#2e2518;color:#ffdca4;border-top:1px solid #69522e;border-bottom:1px solid #69522e;font-size:12px;line-height:1.8}.inferior-note[hidden]{display:none}.inferior-note a{color:#fff0d4;overflow-wrap:anywhere}@media(max-width:760px){.pdf-export-status,.inferior-note{padding-left:16px;padding-right:16px}}

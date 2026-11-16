@@ -7,3 +7,7 @@ export function smallBodyQualityReason(target,c3,years){
  if(c3>SMALL_BODY_POLICY.highC3&&years>=SMALL_BODY_POLICY.highC3MaxYearsExclusive)return 'Small-body flights above C3 170 must take less than 25 years';
  return null;
 }
+export function publicLibraryQualityReason(target,c3,years){
+ if(String(target)==='699'&&years>=20)return 'Saturn flight time must be below 20 years';
+ return smallBodyQualityReason(target,c3,years);
+}

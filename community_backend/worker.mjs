@@ -1,5 +1,5 @@
 // Public science records only. No IP, account, cookie or device identifier is read or stored.
-import {smallBodyQualityReason} from '../docs/library_policy.js';
+import {publicLibraryQualityReason} from '../docs/library_policy.js';
 const KEYS=['schema_version','engine_version','sequence','body_ids','dates_jd_tdb','branches','dsm_controls','classification','solved_at','metrics','segments','id'];
 const METRICS=['launch_c3_km2_s2','total_dsm_kms','arrival_vinf_kms','duration_years','max_vinf_mismatch_mps'];
 function number(value,min,max){if(typeof value!=='number'||!Number.isFinite(value)||value<min||value>max)throw Error('Invalid numeric field');return value;}
@@ -26,7 +26,7 @@ export async function validate(input){
  const controls=input.dsm_controls.map(d=>{exact(d,['leg_index','fraction','departure_offset_kms']);if(!Number.isInteger(d.leg_index)||d.leg_index<=previous||d.leg_index>=ids.length-1)throw Error('Invalid DSM leg');previous=d.leg_index;return {leg_index:d.leg_index,fraction:number(d.fraction,.1,.9),departure_offset_kms:vector(d.departure_offset_kms,1000)};});
  exact(input.metrics,METRICS);const metrics=Object.fromEntries(METRICS.map(k=>[k,number(input.metrics[k],0,1e9)]));
  if(metrics.launch_c3_km2_s2>250)throw Error('Public library C3 exceeds 250 km2/s2');
- const qualityReason=smallBodyQualityReason(ids.at(-1),metrics.launch_c3_km2_s2,(dates.at(-1)-dates[0])/365.25);if(qualityReason)throw Error(qualityReason);
+ const qualityReason=publicLibraryQualityReason(ids.at(-1),metrics.launch_c3_km2_s2,(dates.at(-1)-dates[0])/365.25);if(qualityReason)throw Error(qualityReason);
  if(metrics.launch_c3_km2_s2>30+1e-8&&ids.slice(1,-1).includes('299')&&ids.some(id=>['599','699','799','899'].includes(id)))throw Error('Venus-assisted outer-planet public library C3 exceeds 30 km2/s2');
  const time=Date.parse(input.solved_at);if(typeof input.solved_at!=='string'||input.solved_at.length>40||!Number.isFinite(time)||time<0||time>Date.now()+86400000)throw Error('Invalid solve time');
  if(!Array.isArray(input.segments)||input.segments.length<1||input.segments.length>32)throw Error('Invalid segments');
@@ -81,6 +81,13 @@ export default {async fetch(request,env){
    return response({accepted:records.length,ids:records.map(r=>r.id)},200,origin);
   }
   if(request.method==='GET'){
+   if(url.searchParams.has('resolve_id')){
+    const id=url.searchParams.get('resolve_id');if(!/^[a-f0-9]{64}$/.test(id))throw Error('Invalid candidate ID');
+    const row=await env.DB.prepare(`WITH RECURSIVE chain(id,depth) AS (
+     SELECT ?1,0 UNION ALL SELECT a.new_id,c.depth+1 FROM candidate_aliases a JOIN chain c ON a.old_id=c.id WHERE c.depth<20
+    ) SELECT t.payload,t.received_at,t.added_at,t.added_at_basis FROM chain c JOIN candidates t ON t.id=c.id ORDER BY c.depth DESC LIMIT 1`).bind(id).first();
+    return response({candidate:row?{...JSON.parse(row.payload),received_at:row.received_at,added_at:row.added_at,added_at_basis:row.added_at_basis}:null,resolved_from:id},200,origin,{'Cache-Control':'public, max-age=60'});
+   }
    const p=url.searchParams,target=p.get('target')||'599';if(target!=='all'&&!/^-?\d{1,12}$/.test(target))throw Error('Invalid target ID');
    const lo=number(Number(p.get('min_c3')??0),0,1e9),hi=number(Number(p.get('max_c3')??1e9),lo,1e9);
    const a=number(Number(p.get('launch_start')??2300000),2300000,2700000),b=number(Number(p.get('launch_end')??2700000),a,2700000);
