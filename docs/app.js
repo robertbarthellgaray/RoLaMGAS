@@ -1,12 +1,13 @@
+import {openLibraryCache} from './library_cache.js?v=20261116live';
 import {launchVariantKey,nearDuplicate} from './near_duplicates.js?v=20261115pdf';
 import {historicalMatch} from './historical_labels.js?v=20261108b';
 import {matchesGallery,featuredOrder} from './gallery_filters.js?v=20261113a';
 import {publicationDate} from './publication_dates.js?v=20261110b';
 import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261112e';
 import './mission_metrics.js?v=20261116capacity200';
-import {planetPanel,smallBodyCards,smallBodyBriefing} from './world_guide.js?v=20261116haumea';
-import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames,matchesBodyLabel} from './community.js?v=20261115pdf';
-import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,registerBodyPhysical,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters,chartSettingsFromHash,withChartSettings} from './library_analysis.js?v=20261116haumea';
+import {planetPanel,smallBodyCards,smallBodyBriefing} from './world_guide.js?v=20261116live';
+import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames,matchesBodyLabel} from './community.js?v=20261116live';
+import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,registerBodyPhysical,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters,chartSettingsFromHash,withChartSettings} from './library_analysis.js?v=20261116live';
 import {trimAlternatives,groupLaunches,launchTimestamp,clearlyDominates} from './library_curation.js?v=20261113a';
 import {storedMismatch,estimateFlybys,FLYBY_BODIES} from './flyby_diagnostics.js?v=20261112d';
 const $ = (id) => document.getElementById(id);
@@ -24,6 +25,7 @@ function carryMissionLabel(from,to){if(from?.mission_label){Object.assign(to,{mi
 const missionName=c=>missionNames[c.id]||c.mission_label||c.historical_match?.label||(/^(?:Rebuilding|Low-energy|Tianwen|Claudius)/.test(c.title)?c.title:'');
 const cache = new Map(), sharedRecords = new Map(), previewCache = new Map(), encounterDays=new Map();
 let duplicateAliases={}, displayAliases={}, pendingHashTarget=null;
+let sharedCheckpoint={},liveCache=null;
 let sharedEndpoint='', sharedSince='1970-01-01T00:00:00.000Z', sharedBusy=false, curatedAliases={}, visibleCount=48;
 let planetEphemerides=null,planetLoad=null,animatePlanets=false;
 let exportingPdf=false;
@@ -243,7 +245,7 @@ $('parking-altitude').addEventListener('input',updateParkingEstimate);
 $('animate-planets').addEventListener('click',togglePlanetAnimation);
 function canonicalId(id){return resolveAlias(id,{...duplicateAliases,...curatedAliases,...displayAliases})}
 function updateLocation(id){const hash=withChartSettings(withMissionFilters(filterHash({target:selectedTarget()||destination,mission:id,launchMin:$('launch-year-min').value,launchMax:$('launch-year-max').value}),{metric:$('chart-y').value,maxYears:$('max-years').value,maxC3:$('max-c3').value,maxVinf:$('max-vinf').value,maxBurns:$('max-burns').value}),webChartOptions());history.replaceState(null,'',`${location.pathname}${location.search}${hash}`)}
-function applyTargetHash(target){if(!target)return false;if(['Pluto','Ceres','Eris','Haumea','Makemake'].includes(target)){destination='Dwarf planets & TNOs';smallBodyTarget=target;return true}if(CATEGORIES.includes(target)||target==='All'||Object.keys(bodyColors).includes(target)){destination=target;smallBodyTarget='All';return true}const row=catalog.find(c=>c.target===target||(c.target_id&&matchesBodyLabel(c.target_id,target)));if(row){destination=category(row);smallBodyTarget=row.target;return true}return false}
+function applyTargetHash(target){if(!target)return false;if(['Pluto','Ceres','Eris','Haumea','Makemake','Arrokoth'].includes(target)){destination='Dwarf planets & TNOs';smallBodyTarget=target;return true}if(CATEGORIES.includes(target)||target==='All'||Object.keys(bodyColors).includes(target)){destination=target;smallBodyTarget='All';return true}const row=catalog.find(c=>c.target===target||(c.target_id&&matchesBodyLabel(c.target_id,target)));if(row){destination=category(row);smallBodyTarget=row.target;return true}return false}
 function setPlaying(value) {
   playing = value;
   $('play').textContent = value ? 'Ⅱ' : '▶';
@@ -587,22 +589,43 @@ function addShared(records){let added=0;for(const record of records)try{
 function updateCounts(){if(pendingHashTarget&&applyTargetHash(pendingHashTarget))pendingHashTarget=null;$('total-count').textContent=catalog.length.toLocaleString('en-US');$('destination-count').textContent=new Set(catalog.map(c=>c.target)).size;makeDestinations()}
 async function syncShared(){
  if(sharedBusy||!sharedEndpoint)return;sharedBusy=true;$('community-refresh').disabled=true;
- try{const result=await fetchUpdates(sharedEndpoint,sharedSince);sharedSince=result.watermark;const added=addShared(result.records);
-  if(added){updateCounts();renderList();renderSequenceComparison()}
-  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · live shared library connected · checked ${new Date().toLocaleTimeString()}`;
- }catch{$('community-status').textContent='Showing the complete saved archive. Live service unavailable; retrying automatically.'}
- finally{sharedBusy=false;$('community-refresh').disabled=false}
+ let changed=false,lastPaint=0;
+ try{
+  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · checking live library…`;
+  const result=await fetchUpdates(sharedEndpoint,sharedSince,fetch,{
+   checkpoint:sharedCheckpoint,
+   onPage:async(records,progress)=>{
+    const added=addShared(records);changed=changed||added>0;
+    if(changed&&performance.now()-lastPaint>1500){updateCounts();renderList();changed=false;lastPaint=performance.now();}
+    $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · loading live library · ${progress.count.toLocaleString('en-US')} records downloaded in ${progress.pages} pages`;
+    if(liveCache)try{await liveCache.save(records,progress);}catch{liveCache=null;}
+    await new Promise(resolve=>setTimeout(resolve,0));
+   }
+  });
+  sharedSince=result.watermark;sharedCheckpoint={};
+  if(liveCache)try{await liveCache.save([],null,sharedSince);}catch{liveCache=null;}
+  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · live shared library up to date · checked ${new Date().toLocaleTimeString()}`;
+ }catch{
+  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · live download interrupted; completed pages retained. Retrying from the last page.`;
+ }finally{
+  if(changed){updateCounts();renderList();}renderSequenceComparison();
+  sharedBusy=false;$('community-refresh').disabled=false;
+ }
 }
+
 try {
- const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261115pdf').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261115pdf').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),fetchJson('data/body_physical.json?v=20261116haumea').catch(()=>({bodies:{}}))]);
+ const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261116live').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261115pdf').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),fetchJson('data/body_physical.json?v=20261116live').catch(()=>({bodies:{}}))]);
  bodyPhysical=physical;registerBodyPhysical(physical);registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  libraryRemovals=removals.removed||{};libraryWarnings=removals.review_warnings||{};Object.assign(archive.duplicate_aliases||={},removals.duplicate_aliases||{});
  catalog.push(...data.cases.filter(c=>c.c3<=250&&!libraryRemovals[c.id]).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;
+ liveCache=await openLibraryCache(archive.received_through||'initial');
+ if(liveCache)try{const saved=await liveCache.load();if(saved.records.length){addShared(saved.records);updateCounts();}if(saved.watermark)sharedSince=saved.watermark;if(saved.checkpoint)sharedCheckpoint=saved.checkpoint;}catch{liveCache=null;}
+
  const filters=filterStateFromHash(location.hash),initial=canonicalId(filters.mission||'4d76acaf1f6f');
  $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;syncGraphYears();const missionFilters=missionFiltersFromHash(location.hash);const chartSettings=chartSettingsFromHash(location.hash);for(const [id,key]of [['chart-x','x'],['chart-y','y'],['chart-color','color']])$(id).value=chartSettings[key];for(const [id,key]of [['max-years','maxYears'],['max-c3','maxC3'],['max-vinf','maxVinf'],['max-burns','maxBurns']])$(id).value=missionFilters[key];
  if(filters.target){pendingHashTarget=filters.target;if(applyTargetHash(filters.target))pendingHashTarget=null;makeDestinations()}
- if(filters.mission&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))await syncShared();
+ if(filters.mission&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))syncShared();
  if(pendingHashTarget&&applyTargetHash(pendingHashTarget)){pendingHashTarget=null;makeDestinations()}
  const resolved=canonicalId(initial);if(catalog.some(c=>c.id===resolved)||sharedRecords.has(resolved))await selectCandidate(resolved);
  else if(filters.mission&&sharedEndpoint){try{const found=await fetchJson(sharedEndpoint+'/v1/candidates?resolve_id='+encodeURIComponent(filters.mission));if(found.candidate){displayAliases[filters.mission]=found.candidate.id;addShared([found.candidate]);updateCounts();await selectCandidate(canonicalId(found.candidate.id));}else if(libraryRemovals[filters.mission])$('plot-message').textContent='This trajectory was removed: '+libraryRemovals[filters.mission].reason;}catch{}}

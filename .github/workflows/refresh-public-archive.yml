@@ -1,0 +1,36 @@
+name: Refresh bundled public trajectory archive
+on:
+  schedule:
+    - cron: '43 9 * * *' # Daily at 09:43 UTC; edit here to change cadence.
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: refresh-public-archive
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tools -p 'test_public_archive.py'
+      - run: python tools/refresh_public_archive.py
+      - name: Publish refreshed archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- docs/data/community_seed_catalog.json; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/data/community_seed_catalog.json
+          git commit -m 'Refresh bundled public trajectory archive'
+          git pull --rebase origin main
+          git push origin HEAD:main
+          gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds"

@@ -1,4 +1,4 @@
-import {WORLD_IMAGES} from './world_images.js?v=20261116haumea';
+import {WORLD_IMAGES} from './world_images.js?v=20261116live';
 // Editorial mission-design context. Display data only; never changes solver limits.
 const nasa=name=>`https://science.nasa.gov/${name}/${['venus','jupiter','neptune'].includes(name)?name+'-facts':'facts'}/`;
 export const PLANET_GUIDES={
@@ -15,7 +15,7 @@ const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;
 const number=(x,d=0)=>Number(x).toLocaleString('en-US',{maximumFractionDigits:d});
 function worldPhoto(name){
  const image=WORLD_IMAGES[name.toLowerCase()];if(!image)return '';
- return `<figure class="world-photo"><img src="images/worlds/${esc(image.file)}?v=20261116haumea" alt="${esc(name)}" width="640" height="640"><figcaption><a href="${esc(image.page)}" target="_blank" rel="noopener">${esc(image.credit)} ↗</a> · <a href="${esc(image.license_url||image.page)}" target="_blank" rel="noopener">${esc(image.license)}</a>${image.image_note?`<span class="image-kind">${esc(image.image_note)}</span>`:''}</figcaption></figure>`;
+ return `<figure class="world-photo"><img src="images/worlds/${esc(image.file)}?v=20261116live" alt="${esc(name)}" width="640" height="640"><figcaption><a href="${esc(image.page)}" target="_blank" rel="noopener">${esc(image.credit)} ↗</a> · <a href="${esc(image.license_url||image.page)}" target="_blank" rel="noopener">${esc(image.license)}</a>${image.image_note?`<span class="image-kind">${esc(image.image_note)}</span>`:''}</figcaption></figure>`;
 }
 function physicalFor(name,id,physical){return physical?.bodies?.[String(id)]||(/Pluto/i.test(name)?physical?.bodies?.['999']:null)||Object.values(physical?.bodies||{}).find(p=>p.name===name||String(p.name).replace(/^\d+\s+/, '')===name)||{};}
 export function planetPanel(name,count,mu){
@@ -25,7 +25,7 @@ export function planetPanel(name,count,mu){
 export function smallBodyCards(rows,selected,category,physical,sort='diameter'){
  const grouped=new Map();for(const row of rows){const old=grouped.get(row.target);if(old)old.count++;else grouped.set(row.target,{name:row.target,id:String(row.target_id||''),count:1});}
  const dwarfs=category==='Dwarf planets & TNOs',comets=category==='Comets';
- if(dwarfs)for(const [name,id] of [['Pluto','999'],['Ceres','20000001'],['Eris','20136199'],['Haumea','20136108'],['Makemake','20136472']])if(!grouped.has(name)&&physical?.bodies?.[id])grouped.set(name,{name,id,count:0});
+ if(dwarfs)for(const [name,id] of [['Pluto','999'],['Ceres','20000001'],['Eris','20136199'],['Haumea','20136108'],['Makemake','20136472'],['Arrokoth','20486958']])if(!grouped.has(name)&&physical?.bodies?.[id])grouped.set(name,{name,id,count:0});
  const bodies=[...grouped.values()].map(row=>({...row,physical:physicalFor(row.name,row.id,physical)}));
  const metric=b=>sort==='count'?b.count:sort==='sma'?b.physical.sma_au:b.physical.diameter_km;
  bodies.sort((a,b)=>{const x=metric(a),y=metric(b),hasX=Number.isFinite(x)&&x>0,hasY=Number.isFinite(y)&&y>0;if(hasX!==hasY)return hasX?-1:1;return (hasX?(sort==='sma'?x-y:y-x):0)||a.name.localeCompare(b.name);});
@@ -38,8 +38,8 @@ export function smallBodyCards(rows,selected,category,physical,sort='diameter'){
  }).join('');
 }
 export function smallBodyBriefing(name,category,physical,rows){
- const selected=rows.find(r=>r.target===name),p=physicalFor(name,selected?.target_id,physical),pluto=/Pluto/i.test(name),haumea=/Haumea/i.test(name);
+ const selected=rows.find(r=>r.target===name),p=physicalFor(name,selected?.target_id,physical),pluto=/Pluto/i.test(name),haumea=/Haumea/i.test(name),arrokoth=/Arrokoth/i.test(name);
  const intro=category==='Dwarf planets & TNOs'?'Compare dwarf planets and distant minor planets. Objects beyond Neptune’s semimajor axis are grouped here; comets keep their own section. Ceres is included as a recognized dwarf planet. Disc diameters share a linear size scale; dashed discs mark unknown sizes.':category==='Comets'?'Choose a comet to explore saved encounters. Activity, dust and an uncertain nucleus environment can make a close approach more demanding than the orbit alone suggests.':'Choose a minor planet to explore saved encounters. The silhouettes are illustrative: shape, rotation and weak gravity vary from body to body.';
  const detail=`<div class="small-world-intro"><p class="eyebrow">${esc(category.toUpperCase())} / MISSION CONTEXT</p><h3>${name==='All'?'Small worlds. Different challenges.':esc(name)}</h3><p>${intro}</p>${name!=='All'?`<dl class="world-numbers"><div><dt>Semimajor axis · SMA</dt><dd>${p.sma_au>0?number(p.sma_au,3)+' <small>AU</small>':'Not available'}</dd></div><div><dt>${haumea?'Mean reference diameter':'Estimated diameter'}</dt><dd>${p.diameter_km>0?number(p.diameter_km,1)+' <small>km</small>':'Not available'}</dd></div><div><dt>Saved trajectories</dt><dd>${number(rows.filter(r=>r.target===name).length)}</dd></div>${p.mu_km3_s2>0?`<div><dt>Gravitational parameter · μ</dt><dd>${number(p.mu_km3_s2,5)} <small>km³/s²</small></dd></div>`:''}</dl>${p.diameter_note?`<p class="small quiet">${esc(p.diameter_note)}</p>`:''}`:''}<p class="world-sources"><a href="${esc(p.source_url||'https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html')}" target="_blank" rel="noopener">Orbital data ↗</a> · <a href="${esc(p.diameter_source_url||p.source_url||'https://public-tnosarecool-lira.obspm.fr/Published-results.html')}" target="_blank" rel="noopener">Diameter source ↗</a><span>Diameters are estimates; some radiometric measurements describe an unresolved multiple system. Haumea uses a mean diameter. These illustrations do not show actual shapes. Orbit elements depend on epoch.</span></p></div>`;
- return (pluto||haumea)?`<div class="pluto-briefing">${worldPhoto(pluto?'Pluto':'Haumea')}${detail}</div>`:detail;
+ return (pluto||haumea||arrokoth)?`<div class="pluto-briefing">${worldPhoto(pluto?'Pluto':haumea?'Haumea':'Arrokoth')}${detail}</div>`:detail;
 }

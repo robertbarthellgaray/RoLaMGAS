@@ -86,14 +86,15 @@
   },
   "pluto": {
     "file": "pluto.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Pluto_in_True_Color_-_High-Res.jpg",
-    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/Pluto_in_True_Color_-_High-Res.jpg/960px-Pluto_in_True_Color_-_High-Res.jpg",
-    "original_url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Pluto_in_True_Color_-_High-Res.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
-    "credit": "NASA/Johns Hopkins University Applied Physics Laboratory/Southwest Research Institute/Alex Parker",
+    "page": "https://commons.wikimedia.org/wiki/File:Pluto-Charon-v2-10-1-15.jpg",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Pluto-Charon-v2-10-1-15.jpg/960px-Pluto-Charon-v2-10-1-15.jpg",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/2/23/Pluto-Charon-v2-10-1-15.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "NASA / Johns Hopkins University Applied Physics Laboratory / Southwest Research Institute",
     "license": "Public domain",
-    "license_url": "https://commons.wikimedia.org/wiki/File:Pluto_in_True_Color_-_High-Res.jpg",
-    "changes": "Wikimedia thumbnail, displayed without color edits",
-    "bytes": 191701
+    "license_url": "https://commons.wikimedia.org/wiki/File:Pluto-Charon-v2-10-1-15.jpg",
+    "changes": "Wikimedia thumbnail, no color edits",
+    "image_note": "Enhanced-color composite; Pluto and Charon sizes approximately to scale, separation not to scale",
+    "bytes": 114550
   },
   "haumea": {
     "file": "haumea.jpg",
@@ -106,5 +107,17 @@
     "changes": "Wikimedia thumbnail, no color edits",
     "image_note": "Artist’s impression; not a spacecraft photograph",
     "bytes": 20880
+  },
+  "arrokoth": {
+    "file": "arrokoth.png",
+    "page": "https://commons.wikimedia.org/wiki/File:Reworked_composite_image_of_Arrokoth.png",
+    "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Reworked_composite_image_of_Arrokoth.png/960px-Reworked_composite_image_of_Arrokoth.png",
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Reworked_composite_image_of_Arrokoth.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "credit": "NASA/JHUAPL/SwRI/Roman Tkachenko",
+    "license": "Public domain",
+    "license_url": "https://commons.wikimedia.org/wiki/File:Reworked_composite_image_of_Arrokoth.png",
+    "changes": "Wikimedia thumbnail, no color edits",
+    "image_note": "Processed New Horizons composite; colorized with MVIC data",
+    "bytes": 758720
   }
 }

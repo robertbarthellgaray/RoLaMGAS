@@ -40,6 +40,21 @@ test('live all-target feed follows every page and advances its watermark',async(
  });assert.equal(calls,2);assert.equal(result.records.length,2);assert.equal(result.watermark,'2026-01-03T00:00:00.000Z');
 });
 
+test('live pages are delivered before completion and retry resumes after a failed page',async()=>{
+ const checkpoint={},delivered=[];let failed=false;const cursors=[];
+ const fetcher=async url=>{
+  const cursor=new URL(url).searchParams.get('cursor');cursors.push(cursor);
+  if(cursor==='page2'&&!failed){failed=true;throw Error('Temporary outage');}
+  return {ok:true,json:async()=>({candidates:[{id:cursor?'older':'newest',received_at:cursor?'2026-01-02T00:00:00.000Z':'2026-01-03T00:00:00.000Z'}],next_cursor:cursor?null:'page2'})};
+ };
+ const options={checkpoint,onPage:async rows=>{delivered.push(...rows.map(r=>r.id));}};
+ await assert.rejects(fetchUpdates('https://example.test','2026-01-01T00:00:00.000Z',fetcher,options));
+ assert.deepEqual(delivered,['newest']);assert.equal(checkpoint.cursor,'page2');
+ const result=await fetchUpdates('https://example.test','2026-01-01T00:00:00.000Z',fetcher,options);
+ assert.deepEqual(delivered,['newest','older']);assert.deepEqual(cursors,[null,'page2','page2']);
+ assert.equal(result.watermark,'2026-01-03T00:00:00.000Z');
+});
+
 test('interactive library excludes candidates above the public C3 ceiling',()=>{const r=JSON.parse(readFileSync(new URL('../docs/data/community_seed_catalog.json',import.meta.url),'utf8')).candidates[0];assert.doesNotThrow(()=>summaryFor({...r,metrics:{...r.metrics,launch_c3_km2_s2:250}}));assert.throws(()=>summaryFor({...r,metrics:{...r.metrics,launch_c3_km2_s2:250.000001}}))});
 
 test('small-body preview admission rejects 40 years even if stored duration says less',()=>{const r=JSON.parse(readFileSync(new URL('../docs/data/community_seed_catalog.json',import.meta.url),'utf8')).candidates[0],a=r.dates_jd_tdb[0],long={...r,body_ids:['399','999'],dates_jd_tdb:[a,a+40*365.25]};assert.throws(()=>summaryFor(long));assert.doesNotThrow(()=>summaryFor({...long,dates_jd_tdb:[a,a+40*365.25-.001]}));assert.doesNotThrow(()=>summaryFor({...long,body_ids:['399','599']}))});

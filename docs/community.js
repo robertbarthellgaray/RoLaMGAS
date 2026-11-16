@@ -56,13 +56,21 @@ export function trajectoryRows(record,stepDays=2){
  return rows;
 }
 export function trajectoryText(record,kind){const rows=trajectoryRows(record),header=kind==='csv'?'julian_date_tdb,x_km,y_km,z_km,vx_km_s,vy_km_s,vz_km_s\n':`# RoLaMGAS Sun-only Lambert coasts; planet-center joins, not finite-radius flybys\n# JD(TDB) range ${rows[0][0]} ${rows.at(-1)[0]}\n# JD(TDB) x(km) y(km) z(km) vx(km/s) vy(km/s) vz(km/s)\n`;return header+rows.map(row=>row.map((v,i)=>v.toFixed(i===0?10:9)).join(kind==='csv'?',':' ')).join('\n')+'\n'}
-export async function fetchUpdates(endpoint,since,fetcher=fetch){
- const records=[],cursors=new Set();let cursor=null,watermark=since;
+export async function fetchUpdates(endpoint,since,fetcher=fetch,options={}){
+ const records=[],state=options.checkpoint||{};
+ if(state.since!==since)Object.assign(state,{since,cursor:null,watermark:since,cursors:new Set(),pages:0,count:0});
+ const cursors=state.cursors instanceof Set?state.cursors:new Set(state.cursors||[]);state.cursors=cursors;
+ let cursor=state.cursor,watermark=state.watermark;
  do{
   const q=new URLSearchParams({target:'all',limit:'100',since});if(cursor)q.set('cursor',cursor);
   const response=await fetcher(endpoint+'/v1/candidates?'+q,{cache:'no-store',signal:AbortSignal.timeout(12000)});if(!response.ok)throw Error('Shared library unavailable');const data=await response.json();
+  if(!Array.isArray(data.candidates))throw Error('Invalid library page');
+  const next=data.next_cursor;
+  if(next&&(cursors.has(next)||cursors.size>=1000))throw Error('Invalid library pagination');
   for(const r of data.candidates){records.push(r);if(r.received_at>watermark)watermark=r.received_at}
-  cursor=data.next_cursor;if(cursor){if(cursors.has(cursor)||cursors.size>=1000)throw Error('Invalid library pagination');cursors.add(cursor)}
+  cursor=next;if(cursor)cursors.add(cursor);
+  Object.assign(state,{cursor,watermark,pages:state.pages+1,count:state.count+data.candidates.length});
+  if(options.onPage)await options.onPage(data.candidates,{...state});
  }while(cursor);
  return {records,watermark};
 }
