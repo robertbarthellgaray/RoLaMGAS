@@ -10,7 +10,7 @@ class InternationalCapacityTests(unittest.TestCase):
         website=json.loads((ROOT/'docs/data/launch_performance_curves.json').read_text(encoding='utf-8'))
         self.assertEqual(app,website)
         extra=[v for v in app['vehicles'] if v.get('international_id')]
-        self.assertEqual(len(extra),4)
+        self.assertEqual(len(extra),5)
         for row in extra:
             self.assertTrue(row['source_url'].startswith('https://'));self.assertTrue(row['ground_rules'])
             self.assertEqual(row['points'],sorted(row['points']))
@@ -20,6 +20,18 @@ class InternationalCapacityTests(unittest.TestCase):
                 for x,m in row['points']:
                     self.assertTrue(lo<=x<=hi);self.assertAlmostEqual(m,sum(a*x**i for i,a in enumerate(row['polynomial_ascending'])))
             if row['data_kind']=='published_study_point':self.assertEqual(row['points'],[[30.,3000.]])
+
+    def test_lvm3_is_bounded_and_explicitly_estimated(self):
+        data=json.loads((ROOT/'docs/data/launch_performance_curves.json').read_text(encoding='utf-8'))
+        row=next(v for v in data['vehicles'] if v.get('international_id')=='nsil2025_lvm3_estimate')
+        self.assertEqual(row['data_kind'],'calibrated_stage_estimate')
+        self.assertEqual(row['display_rounding_kg'],100)
+        self.assertEqual(row['valid_c3_range'],[0,30])
+        self.assertLess(row['source_c3_range'][1],0)
+        self.assertIn('not published positive-C3 performance',row['ground_rules'])
+        self.assertTrue(all(a[1]>b[1]>0 for a,b in zip(row['points'],row['points'][1:])))
+        self.assertEqual(row['points'][0][0],0)
+        self.assertEqual(row['points'][-1][0],30)
 
     def test_unapproved_silverbird_numbers_remain_withheld(self):
         for filename in ('gui_assets/launch_performance_curves.json','gui_assets/international_launch_performance.json','docs/data/launch_performance_curves.json'):

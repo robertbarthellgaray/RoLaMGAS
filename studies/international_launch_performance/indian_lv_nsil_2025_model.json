@@ -1,0 +1,383 @@
+{
+  "vehicle": {
+    "international_id": "nsil2025_lvm3_estimate",
+    "vehicle": "LVM3 · NSIL-based estimate",
+    "source_label": "Estimated from NSIL curves · 2025",
+    "source_url": "https://web.archive.org/web/20251113162900/https://www.nsilindia.co.in/sites/default/files/NSIL%20Launch%20Requistion%20opportunity.pdf",
+    "data_kind": "calibrated_stage_estimate",
+    "source_year": 2025,
+    "launch_site": "SDSC-SHAR · source launch azimuth 107°",
+    "fairing": "5 m (source brochure)",
+    "adapter": "Mass accounting unspecified",
+    "display_rounding_kg": 100,
+    "valid_c3_range": [
+      0.0,
+      30.0
+    ],
+    "query_grid_c3": [
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0,
+      11.0,
+      12.0,
+      13.0,
+      14.0,
+      15.0,
+      16.0,
+      17.0,
+      18.0,
+      19.0,
+      20.0,
+      21.0,
+      22.0,
+      23.0,
+      24.0,
+      25.0,
+      26.0,
+      27.0,
+      28.0,
+      29.0,
+      30.0
+    ],
+    "points": [
+      [
+        0.0,
+        2475.257036023474
+      ],
+      [
+        1.0,
+        2390.205827227792
+      ],
+      [
+        2.0,
+        2306.785557307192
+      ],
+      [
+        3.0,
+        2224.952135111772
+      ],
+      [
+        4.0,
+        2144.663036755571
+      ],
+      [
+        5.0,
+        2065.8772363815533
+      ],
+      [
+        6.0,
+        1988.5551405765964
+      ],
+      [
+        7.0,
+        1912.658526213304
+      ],
+      [
+        8.0,
+        1838.150481511132
+      ],
+      [
+        9.0,
+        1764.9953501234113
+      ],
+      [
+        10.0,
+        1693.1586780701982
+      ],
+      [
+        11.0,
+        1622.6071633489355
+      ],
+      [
+        12.0,
+        1553.3086080661924
+      ],
+      [
+        13.0,
+        1485.2318729442231
+      ],
+      [
+        14.0,
+        1418.3468340656573
+      ],
+      [
+        15.0,
+        1352.6243417285787
+      ],
+      [
+        16.0,
+        1288.0361812925476
+      ],
+      [
+        17.0,
+        1224.5550359038143
+      ],
+      [
+        18.0,
+        1162.1544509950436
+      ],
+      [
+        19.0,
+        1100.808800461521
+      ],
+      [
+        20.0,
+        1040.4932544220073
+      ],
+      [
+        21.0,
+        981.1837484780372
+      ],
+      [
+        22.0,
+        922.8569543908561
+      ],
+      [
+        23.0,
+        865.4902521000986
+      ],
+      [
+        24.0,
+        809.0617030129733
+      ],
+      [
+        25.0,
+        753.5500244969417
+      ],
+      [
+        26.0,
+        698.934565512991
+      ],
+      [
+        27.0,
+        645.1952833302612
+      ],
+      [
+        28.0,
+        592.3127212663121
+      ],
+      [
+        29.0,
+        540.2679874005917
+      ],
+      [
+        30.0,
+        489.04273421167363
+      ]
+    ],
+    "ground_rules": "RoLaMGAS model estimate, not published positive-C3 performance or a provider guarantee. Calibrated to approximate readings of NSIL November 2025 brochure p.5, 170 km perigee, launch azimuth 107°, argument of perigee 178°. All source points have negative C3; 0–30 km²/s² is extrapolated. Effective upper-stage model assumes 28 t propellant and 4.334 km/s exhaust speed; velocity offset and effective inert mass are fitted, not measured. Brochure configuration upgrades, reserves, adapters, declination and ascent losses are not independently resolved. Rounded to 100 kg; uncertainty grows with C3. Do not use as a hard feasibility or payload guarantee. No extension beyond C3=30.",
+    "model_parameters": {
+      "effective_velocity_offset_km_s": 3.874184417534743,
+      "fitted_effective_inert_mass_kg": 4164.191602045757,
+      "assumed_propellant_kg": 28000.0,
+      "assumed_effective_exhaust_speed_km_s": 4.334
+    },
+    "source_c3_range": [
+      -24.211694393358933,
+      -1.9306131234458574
+    ],
+    "calibration_c3_range": [
+      -10.931600366693626,
+      -1.9306131234458574
+    ]
+  },
+  "source_samples": [
+    {
+      "apogee_altitude_km": 20000.0,
+      "perigee_altitude_km": 170.0,
+      "c3_km2_s2": -24.211694393358933,
+      "approximate_payload_kg": 5050.0
+    },
+    {
+      "apogee_altitude_km": 30000.0,
+      "perigee_altitude_km": 170.0,
+      "c3_km2_s2": -18.5713971727432,
+      "approximate_payload_kg": 4400.0
+    },
+    {
+      "apogee_altitude_km": 40000.0,
+      "perigee_altitude_km": 170.0,
+      "c3_km2_s2": -15.062478866356622,
+      "approximate_payload_kg": 3950.0
+    },
+    {
+      "apogee_altitude_km": 60000.0,
+      "perigee_altitude_km": 170.0,
+      "c3_km2_s2": -10.931600366693626,
+      "approximate_payload_kg": 3550.0
+    },
+    {
+      "apogee_altitude_km": 80000.0,
+      "perigee_altitude_km": 170.0,
+      "c3_km2_s2": -8.57885342093884,
+      "approximate_payload_kg": 3250.0
+    },
+    {
+      "apogee_altitude_km": 100000.0,
+      "perigee_altitude_km": 170.0,
+      "c3_km2_s2": -7.059480981370198,
+      "approximate_payload_kg": 3100.0
+    },
+    {
+      "apogee_altitude_km": 150000.0,
+      "perigee_altitude_km": 170.0,
+      "c3_km2_s2": -4.89301611107856,
+      "approximate_payload_kg": 2950.0
+    },
+    {
+      "apogee_altitude_km": 200000.0,
+      "perigee_altitude_km": 170.0,
+      "c3_km2_s2": -3.7440230772084044,
+      "approximate_payload_kg": 2800.0
+    },
+    {
+      "apogee_altitude_km": 300000.0,
+      "perigee_altitude_km": 170.0,
+      "c3_km2_s2": -2.547567749456538,
+      "approximate_payload_kg": 2700.0
+    },
+    {
+      "apogee_altitude_km": 400000.0,
+      "perigee_altitude_km": 170.0,
+      "c3_km2_s2": -1.9306131234458574,
+      "approximate_payload_kg": 2650.0
+    }
+  ],
+  "calibration_rms_kg": 21.929621555761226,
+  "alternating_holdout_rms_kg": 28.82489495982995,
+  "sensitivity_note": "Alternative model spread is not a confidence interval; actual error may be larger.",
+  "alternative_exponential_points": [
+    [
+      0.0,
+      2469.436280564765
+    ],
+    [
+      1.0,
+      2381.506322289266
+    ],
+    [
+      2.0,
+      2294.84100259594
+    ],
+    [
+      3.0,
+      2209.415719319779
+    ],
+    [
+      4.0,
+      2125.20649442567
+    ],
+    [
+      5.0,
+      2042.1899541368348
+    ],
+    [
+      6.0,
+      1960.3433098307796
+    ],
+    [
+      7.0,
+      1879.6443396677832
+    ],
+    [
+      8.0,
+      1800.071370918814
+    ],
+    [
+      9.0,
+      1721.6032629614192
+    ],
+    [
+      10.0,
+      1644.219390913885
+    ],
+    [
+      11.0,
+      1567.8996298793527
+    ],
+    [
+      12.0,
+      1492.6243397731287
+    ],
+    [
+      13.0,
+      1418.3743507077115
+    ],
+    [
+      14.0,
+      1345.1309489114228
+    ],
+    [
+      15.0,
+      1272.8758631576102
+    ],
+    [
+      16.0,
+      1201.591251682661
+    ],
+    [
+      17.0,
+      1131.2596895720635
+    ],
+    [
+      18.0,
+      1061.8641565947846
+    ],
+    [
+      19.0,
+      993.3880254671758
+    ],
+    [
+      20.0,
+      925.8150505285885
+    ],
+    [
+      21.0,
+      859.1293568116471
+    ],
+    [
+      22.0,
+      793.3154294910009
+    ],
+    [
+      23.0,
+      728.3581036951109
+    ],
+    [
+      24.0,
+      664.2425546663872
+    ],
+    [
+      25.0,
+      600.9542882556261
+    ],
+    [
+      26.0,
+      538.4791317374047
+    ],
+    [
+      27.0,
+      476.803224933662
+    ],
+    [
+      28.0,
+      415.91301163329354
+    ],
+    [
+      29.0,
+      355.79523129617064
+    ],
+    [
+      30.0,
+      296.4369110304415
+    ]
+  ]
+}

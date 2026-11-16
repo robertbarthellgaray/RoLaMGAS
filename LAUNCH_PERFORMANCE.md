@@ -1,6 +1,6 @@
 # NASA launch performance and addon audits
 
-The local source and website datasets now also include eight explicitly labeled international source/configuration rows: three historical Long March polynomial fits, four SilverBird model estimates, and one LM-5 published study point. Their ground rules and model uncertainty remain separate from NASA data. See [international launch performance research](studies/international_launch_performance/README.md). Reattach these rows after a NASA refresh with `python tools/build_international_launch_performance.py --plot`.
+The local source and website datasets include independently published international references: three historical Long March polynomial fits and one LM-5 study point. A separate, explicitly labeled LVM3 estimate extrapolates the November 2025 NSIL elliptical-orbit curves to C3 0–30; it is not a provider rating. SilverBird-derived estimates are withheld pending permission. The 2012 Indian planetary mission mass ranges remain research because their C3 values are unspecified. See [international launch performance research](studies/international_launch_performance/README.md). Reattach the supported capacity rows after a NASA refresh with `python tools/build_international_launch_performance.py --plot`.
 
 The website and desktop inspector show cached NASA LSP high-energy capacity
 samples at the candidate's C3. Values between adjacent samples are linear

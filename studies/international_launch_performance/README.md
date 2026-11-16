@@ -1,6 +1,6 @@
 # Published international launch payload versus C3
 
-The active dataset contains only independently published examples:
+The active dataset distinguishes published examples from modeled estimates:
 
 - Wise, Lafleur & Saleh, IAC-10.D2.P06 (2010), Table 1, p.7: historical
   LM-3A, LM-3B and LM-3C polynomial fits, restricted to their published C3 domains.
@@ -13,6 +13,18 @@ SilverBird-derived outputs are withheld pending permission. They are absent
 from the active app/site JSON, charts, numerical downloads and source packages.
 The rebuild script does not read or restore those model outputs.
 
+The [2012 ISRO/PLANEX source review](indian_lv_planex_2012.md) records historical
+PSLV, GSLV and LVM3 planetary mission mass ranges. The source does not specify
+their C3, so these ranges are retained as research rather than numerical
+capacity-curve samples.
+
+The [November 2025 NSIL brochure review](indian_lv_nsil_2025.md) identifies
+elliptical-orbit performance curves approaching escape energy. These provide
+calibration data for the explicitly modeled LVM3 positive-C3 estimate now included
+at C3 0–30, with configuration and extrapolation limitations recorded.
+Reproduce its model artifact with `python tools/estimate_indian_launch_performance.py --plot`
+before rebuilding the combined data.
+
 These historical fits and a mission-study assumption are not certified current
 vehicle ratings. Configuration, declination, adapters, reserves, upper-stage
 constraints and launch-window width matter. No extrapolation is performed.
@@ -24,5 +36,6 @@ python tools/build_international_launch_performance.py --plot
 ```
 
 `international_launch_performance.png` and `capacity_samples.csv` contain these
-four published source/configuration rows. Existing NASA provider-ground-rule
+four published source/configuration rows and a fifth, explicitly estimated LVM3
+row. Existing NASA provider-ground-rule
 rows are retained separately in the combined capacity dataset.

@@ -1036,6 +1036,196 @@
       "ground_rules": "Wang et al., Aerospace 2025, 12(4), 271, Section 5.3: approximately 3 tonnes at C3=30. Mission-study assumption, not a provider guarantee. A single anchor point; never interpolated/extrapolated into a full curve."
     },
     {
+      "international_id": "nsil2025_lvm3_estimate",
+      "vehicle": "LVM3 · NSIL-based estimate",
+      "source_label": "Estimated from NSIL curves · 2025",
+      "source_url": "https://web.archive.org/web/20251113162900/https://www.nsilindia.co.in/sites/default/files/NSIL%20Launch%20Requistion%20opportunity.pdf",
+      "data_kind": "calibrated_stage_estimate",
+      "source_year": 2025,
+      "launch_site": "SDSC-SHAR · source launch azimuth 107°",
+      "fairing": "5 m (source brochure)",
+      "adapter": "Mass accounting unspecified",
+      "display_rounding_kg": 100,
+      "valid_c3_range": [
+        0.0,
+        30.0
+      ],
+      "query_grid_c3": [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0,
+        11.0,
+        12.0,
+        13.0,
+        14.0,
+        15.0,
+        16.0,
+        17.0,
+        18.0,
+        19.0,
+        20.0,
+        21.0,
+        22.0,
+        23.0,
+        24.0,
+        25.0,
+        26.0,
+        27.0,
+        28.0,
+        29.0,
+        30.0
+      ],
+      "points": [
+        [
+          0.0,
+          2475.257036023474
+        ],
+        [
+          1.0,
+          2390.205827227792
+        ],
+        [
+          2.0,
+          2306.785557307192
+        ],
+        [
+          3.0,
+          2224.952135111772
+        ],
+        [
+          4.0,
+          2144.663036755571
+        ],
+        [
+          5.0,
+          2065.8772363815533
+        ],
+        [
+          6.0,
+          1988.5551405765964
+        ],
+        [
+          7.0,
+          1912.658526213304
+        ],
+        [
+          8.0,
+          1838.150481511132
+        ],
+        [
+          9.0,
+          1764.9953501234113
+        ],
+        [
+          10.0,
+          1693.1586780701982
+        ],
+        [
+          11.0,
+          1622.6071633489355
+        ],
+        [
+          12.0,
+          1553.3086080661924
+        ],
+        [
+          13.0,
+          1485.2318729442231
+        ],
+        [
+          14.0,
+          1418.3468340656573
+        ],
+        [
+          15.0,
+          1352.6243417285787
+        ],
+        [
+          16.0,
+          1288.0361812925476
+        ],
+        [
+          17.0,
+          1224.5550359038143
+        ],
+        [
+          18.0,
+          1162.1544509950436
+        ],
+        [
+          19.0,
+          1100.808800461521
+        ],
+        [
+          20.0,
+          1040.4932544220073
+        ],
+        [
+          21.0,
+          981.1837484780372
+        ],
+        [
+          22.0,
+          922.8569543908561
+        ],
+        [
+          23.0,
+          865.4902521000986
+        ],
+        [
+          24.0,
+          809.0617030129733
+        ],
+        [
+          25.0,
+          753.5500244969417
+        ],
+        [
+          26.0,
+          698.934565512991
+        ],
+        [
+          27.0,
+          645.1952833302612
+        ],
+        [
+          28.0,
+          592.3127212663121
+        ],
+        [
+          29.0,
+          540.2679874005917
+        ],
+        [
+          30.0,
+          489.04273421167363
+        ]
+      ],
+      "ground_rules": "RoLaMGAS model estimate, not published positive-C3 performance or a provider guarantee. Calibrated to approximate readings of NSIL November 2025 brochure p.5, 170 km perigee, launch azimuth 107°, argument of perigee 178°. All source points have negative C3; 0–30 km²/s² is extrapolated. Effective upper-stage model assumes 28 t propellant and 4.334 km/s exhaust speed; velocity offset and effective inert mass are fitted, not measured. Brochure configuration upgrades, reserves, adapters, declination and ascent losses are not independently resolved. Rounded to 100 kg; uncertainty grows with C3. Do not use as a hard feasibility or payload guarantee. No extension beyond C3=30.",
+      "model_parameters": {
+        "effective_velocity_offset_km_s": 3.874184417534743,
+        "fitted_effective_inert_mass_kg": 4164.191602045757,
+        "assumed_propellant_kg": 28000.0,
+        "assumed_effective_exhaust_speed_km_s": 4.334
+      },
+      "source_c3_range": [
+        -24.211694393358933,
+        -1.9306131234458574
+      ],
+      "calibration_c3_range": [
+        -10.931600366693626,
+        -1.9306131234458574
+      ]
+    },
+    {
       "published_id": "ariane62_manual2021",
       "vehicle": "Ariane 62 · manual reference point",
       "launch_site": "CSG, French Guiana",
@@ -1257,6 +1447,10 @@
     {
       "label": "Wang et al. 2025 LM-5 study point",
       "url": "https://www.mdpi.com/2226-4310/12/4/271"
+    },
+    {
+      "label": "NSIL 2025 LVM3 curves · modeled positive-C3 estimate",
+      "url": "https://web.archive.org/web/20251113162900/https://www.nsilindia.co.in/sites/default/files/NSIL%20Launch%20Requistion%20opportunity.pdf"
     },
     {
       "label": "Arianespace 2021 manual reference points",

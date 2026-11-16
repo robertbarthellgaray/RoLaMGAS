@@ -111,6 +111,17 @@ test('SLS high-energy estimates retain their concept configuration and never ext
  assert.equal(fs.readFileSync(new URL('../mission_metrics.js',import.meta.url),'utf8'),fs.readFileSync(new URL('../docs/mission_metrics.js',import.meta.url),'utf8'));
 });
 
+test('LVM3 estimate is labeled, rounded and restricted to its modeled range',()=>{
+ const data=JSON.parse(fs.readFileSync(new URL('../docs/data/launch_performance_curves.json',import.meta.url),'utf8'));
+ const at=c=>m.launchCapacities(data,c).find(r=>r.international_id==='nsil2025_lvm3_estimate');
+ assert.match(at(10).source_label,/Estimated/);
+ assert.match(at(10).ground_rules,/extrapolated/);
+ assert.match(m.launchCapacityValue(at(10)),/1,700/);
+ assert.match(m.launchCapacityValue(at(15)),/1,400/);
+ assert.equal(at(30.01).capacity_kg,null);
+ assert.equal(at(-.01),undefined);
+});
+
 test('historical missions have continuous playback coverage for every visited planet',()=>{
  const table=JSON.parse(fs.readFileSync(new URL('../docs/data/planet_playback.json',import.meta.url),'utf8'));
  const profiles=JSON.parse(fs.readFileSync(new URL('../docs/data/historical_labels.json',import.meta.url),'utf8')).missions;
