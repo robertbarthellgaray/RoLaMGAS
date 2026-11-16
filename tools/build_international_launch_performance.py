@@ -53,7 +53,9 @@ def build():
         row['query_grid_c3']=[x for x,_ in points]
     for path in (ROOT/'gui_assets/launch_performance_curves.json',ROOT/'docs/data/launch_performance_curves.json'):
         base=json.loads(path.read_text(encoding='utf-8'))
-        base['vehicles']=[v for v in base['vehicles'] if not v.get('international_id') and not v.get('published_id')]+vehicles+references
+        base['vehicles']=[v for v in base['vehicles'] if not v.get('international_id') and not v.get('published_id') and not v.get('kickstage_id')]+vehicles+references
+        from extend_launch_capacity import extend
+        base=extend(base)
         base['additional_sources']=[dict(label='Wise et al. 2010 historical fits',url=WISE),dict(label='Wang et al. 2025 LM-5 study point',url=STUDY2025),
             dict(label='NSIL 2025 LVM3 curves · modeled positive-C3 estimate',url=indian['source_url']),
             dict(label='Arianespace 2021 manual reference points',url=references[0]['source_url']),

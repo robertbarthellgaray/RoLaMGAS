@@ -4,7 +4,9 @@ The local source and website datasets include independently published internatio
 
 The website and desktop inspector show cached NASA LSP high-energy capacity
 samples at the candidate's C3. Values between adjacent samples are linear
-estimates. No extrapolation or missing-vehicle inference is performed. Vehicle
+estimates. Explicitly labeled engineering models extend coverage through C3 200;
+see [model assumptions](studies/published_launch_performance/EXTRAPOLATION.md).
+Published samples take precedence over those estimates. Vehicle
 configurations remain separate: recovery and expendable versions have different
 capacities. The expanders retain NASA's adapter, margin and ground rules.
 

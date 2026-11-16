@@ -10,7 +10,8 @@ Arianespace's February 2021 manual, section 2.4.5 (printed p.2-11, PDF page 37),
 lists 2,600 kg for Ariane 62 and 6,900 kg for Ariane 64 at V-infinity 2.5 km/s.
 Squaring that speed gives C3 6.25 km2/s2. Section 2.2 includes adapters and carrying
 structures in the performance mass convention. These isolated reference points
-are never interpolated or extrapolated. The manual does not provide a public
+remain unchanged. Separate assumed-stage estimates extend these rows through
+C3 200; see [EXTRAPOLATION.md](EXTRAPOLATION.md). The manual does not provide a public
 general-purpose C3 curve in this section. Later booster upgrades are not assumed.
 
 ## SLS

@@ -1,0 +1,134 @@
+vehicle,c3_km2_s2,payload_kg_rounded_100kg,basis
+"Falcon 9 (Full Thrust, ASDS)",10,2200,NASA sample
+"Falcon 9 (Full Thrust, ASDS)",15,1700,extrapolated estimate
+"Falcon 9 (Full Thrust, ASDS)",30,400,extrapolated estimate
+"Falcon 9 (Full Thrust, ASDS)",60,0,extrapolated estimate
+"Falcon 9 (Full Thrust, ASDS)",100,0,extrapolated estimate
+"Falcon 9 (Full Thrust, ASDS)",158,0,extrapolated estimate
+"Falcon 9 (Full Thrust, ASDS)",200,0,extrapolated estimate
+Vulcan (VC2),10,4800,NASA sample
+Vulcan (VC2),15,4200,interpolation
+Vulcan (VC2),30,2800,interpolation
+Vulcan (VC2),60,600,extrapolated estimate
+Vulcan (VC2),100,0,extrapolated estimate
+Vulcan (VC2),158,0,extrapolated estimate
+Vulcan (VC2),200,0,extrapolated estimate
+Falcon Heavy (Recovery),10,5100,NASA sample
+Falcon Heavy (Recovery),15,4500,interpolation
+Falcon Heavy (Recovery),30,2800,interpolation
+Falcon Heavy (Recovery),60,300,extrapolated estimate
+Falcon Heavy (Recovery),100,0,extrapolated estimate
+Falcon Heavy (Recovery),158,0,extrapolated estimate
+Falcon Heavy (Recovery),200,0,extrapolated estimate
+New Glenn (New Glenn),10,4900,NASA sample
+New Glenn (New Glenn),15,3600,interpolation
+New Glenn (New Glenn),30,200,extrapolated estimate
+New Glenn (New Glenn),60,0,extrapolated estimate
+New Glenn (New Glenn),100,0,extrapolated estimate
+New Glenn (New Glenn),158,0,extrapolated estimate
+New Glenn (New Glenn),200,0,extrapolated estimate
+Vulcan (VC4),10,7100,NASA sample
+Vulcan (VC4),15,6500,interpolation
+Vulcan (VC4),30,4800,interpolation
+Vulcan (VC4),60,2200,interpolation
+Vulcan (VC4),100,0,extrapolated estimate
+Vulcan (VC4),158,0,extrapolated estimate
+Vulcan (VC4),200,0,extrapolated estimate
+Vulcan (VC6),10,9100,NASA sample
+Vulcan (VC6),15,8400,interpolation
+Vulcan (VC6),30,6300,interpolation
+Vulcan (VC6),60,3300,interpolation
+Vulcan (VC6),100,800,NASA sample
+Vulcan (VC6),158,0,extrapolated estimate
+Vulcan (VC6),200,0,extrapolated estimate
+Falcon Heavy (Expendable),10,12300,NASA sample
+Falcon Heavy (Expendable),15,11200,interpolation
+Falcon Heavy (Expendable),30,8300,interpolation
+Falcon Heavy (Expendable),60,4100,interpolation
+Falcon Heavy (Expendable),100,800,NASA sample
+Falcon Heavy (Expendable),158,0,extrapolated estimate
+Falcon Heavy (Expendable),200,0,extrapolated estimate
+Long March LM-3A (historical baseline),10,1000,published_historical_fit
+Long March LM-3A (historical baseline),15,700,published_historical_fit
+Long March LM-3A (historical baseline),30,100,extrapolated estimate
+Long March LM-3A (historical baseline),60,0,extrapolated estimate
+Long March LM-3A (historical baseline),100,0,extrapolated estimate
+Long March LM-3A (historical baseline),158,0,extrapolated estimate
+Long March LM-3A (historical baseline),200,0,extrapolated estimate
+Long March LM-3B (historical baseline),10,2600,published_historical_fit
+Long March LM-3B (historical baseline),15,2300,published_historical_fit
+Long March LM-3B (historical baseline),30,1400,published_historical_fit
+Long March LM-3B (historical baseline),60,0,extrapolated estimate
+Long March LM-3B (historical baseline),100,0,extrapolated estimate
+Long March LM-3B (historical baseline),158,0,extrapolated estimate
+Long March LM-3B (historical baseline),200,0,extrapolated estimate
+Long March LM-3C (historical baseline),10,1700,published_historical_fit
+Long March LM-3C (historical baseline),15,1400,published_historical_fit
+Long March LM-3C (historical baseline),30,600,published_historical_fit
+Long March LM-3C (historical baseline),60,0,extrapolated estimate
+Long March LM-3C (historical baseline),100,0,extrapolated estimate
+Long March LM-3C (historical baseline),158,0,extrapolated estimate
+Long March LM-3C (historical baseline),200,0,extrapolated estimate
+Long March 5 · 2025 study point,10,4800,extrapolated estimate
+Long March 5 · 2025 study point,15,4300,extrapolated estimate
+Long March 5 · 2025 study point,30,3000,published_study_point
+Long March 5 · 2025 study point,60,1200,extrapolated estimate
+Long March 5 · 2025 study point,100,0,extrapolated estimate
+Long March 5 · 2025 study point,158,0,extrapolated estimate
+Long March 5 · 2025 study point,200,0,extrapolated estimate
+LVM3 · NSIL-based estimate,10,1700,calibrated_stage_estimate
+LVM3 · NSIL-based estimate,15,1400,calibrated_stage_estimate
+LVM3 · NSIL-based estimate,30,500,calibrated_stage_estimate
+LVM3 · NSIL-based estimate,60,0,extrapolated estimate
+LVM3 · NSIL-based estimate,100,0,extrapolated estimate
+LVM3 · NSIL-based estimate,158,0,extrapolated estimate
+LVM3 · NSIL-based estimate,200,0,extrapolated estimate
+Ariane 62 · manual reference point,10,2300,extrapolated estimate
+Ariane 62 · manual reference point,15,1900,extrapolated estimate
+Ariane 62 · manual reference point,30,900,extrapolated estimate
+Ariane 62 · manual reference point,60,0,extrapolated estimate
+Ariane 62 · manual reference point,100,0,extrapolated estimate
+Ariane 62 · manual reference point,158,0,extrapolated estimate
+Ariane 62 · manual reference point,200,0,extrapolated estimate
+Ariane 64 · manual reference point,10,6300,extrapolated estimate
+Ariane 64 · manual reference point,15,5700,extrapolated estimate
+Ariane 64 · manual reference point,30,4000,extrapolated estimate
+Ariane 64 · manual reference point,60,1600,extrapolated estimate
+Ariane 64 · manual reference point,100,0,extrapolated estimate
+Ariane 64 · manual reference point,158,0,extrapolated estimate
+Ariane 64 · manual reference point,200,0,extrapolated estimate
+SLS Block 1 cargo · 2020 prediction,10,21800,published_design_curve
+SLS Block 1 cargo · 2020 prediction,15,19900,interpolation
+SLS Block 1 cargo · 2020 prediction,30,14900,published_design_curve
+SLS Block 1 cargo · 2020 prediction,60,8500,published_design_curve
+SLS Block 1 cargo · 2020 prediction,100,3600,published_design_curve
+SLS Block 1 cargo · 2020 prediction,158,0,extrapolated estimate
+SLS Block 1 cargo · 2020 prediction,200,0,extrapolated estimate
+SLS Block 2 + Centaur · 2020 concept,10,40300,extrapolated estimate
+SLS Block 2 + Centaur · 2020 concept,15,37500,extrapolated estimate
+SLS Block 2 + Centaur · 2020 concept,30,30300,extrapolated estimate
+SLS Block 2 + Centaur · 2020 concept,60,19900,published_design_curve
+SLS Block 2 + Centaur · 2020 concept,100,11900,published_design_curve
+SLS Block 2 + Centaur · 2020 concept,158,5600,published_design_curve
+SLS Block 2 + Centaur · 2020 concept,200,3100,published_design_curve
+"Falcon 9 (Full Thrust, ASDS) + STAR 48BV · concept",100,500,modeled_kickstage_combination
+"Falcon 9 (Full Thrust, ASDS) + STAR 48BV · concept",158,100,modeled_kickstage_combination
+"Falcon 9 (Full Thrust, ASDS) + STAR 48BV · concept",200,0,modeled_kickstage_combination
+Vulcan (VC2) + STAR 48BV · concept,100,900,modeled_kickstage_combination
+Vulcan (VC2) + STAR 48BV · concept,158,300,modeled_kickstage_combination
+Vulcan (VC2) + STAR 48BV · concept,200,100,modeled_kickstage_combination
+Falcon Heavy (Recovery) + STAR 48BV · concept,100,900,modeled_kickstage_combination
+Falcon Heavy (Recovery) + STAR 48BV · concept,158,300,modeled_kickstage_combination
+Falcon Heavy (Recovery) + STAR 48BV · concept,200,100,modeled_kickstage_combination
+New Glenn (New Glenn) + STAR 48BV · concept,100,700,modeled_kickstage_combination
+New Glenn (New Glenn) + STAR 48BV · concept,158,200,modeled_kickstage_combination
+New Glenn (New Glenn) + STAR 48BV · concept,200,0,modeled_kickstage_combination
+Vulcan (VC4) + STAR 48BV · concept,100,1400,modeled_kickstage_combination
+Vulcan (VC4) + STAR 48BV · concept,158,500,modeled_kickstage_combination
+Vulcan (VC4) + STAR 48BV · concept,200,200,modeled_kickstage_combination
+Vulcan (VC6) + STAR 48BV · concept,100,1900,modeled_kickstage_combination
+Vulcan (VC6) + STAR 48BV · concept,158,700,modeled_kickstage_combination
+Vulcan (VC6) + STAR 48BV · concept,200,300,modeled_kickstage_combination
+Falcon Heavy (Expendable) + STAR 48BV · concept,100,2300,modeled_kickstage_combination
+Falcon Heavy (Expendable) + STAR 48BV · concept,158,800,modeled_kickstage_combination
+Falcon Heavy (Expendable) + STAR 48BV · concept,200,400,modeled_kickstage_combination

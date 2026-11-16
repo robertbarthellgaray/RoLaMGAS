@@ -3,7 +3,7 @@ import {historicalMatch} from './historical_labels.js?v=20261108b';
 import {matchesGallery,featuredOrder} from './gallery_filters.js?v=20261113a';
 import {publicationDate} from './publication_dates.js?v=20261110b';
 import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261112e';
-import './mission_metrics.js?v=20261115launch';
+import './mission_metrics.js?v=20261116capacity200';
 import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames,matchesBodyLabel} from './community.js?v=20261115pdf';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters,chartSettingsFromHash,withChartSettings} from './library_analysis.js?v=20261115charts';
 import {trimAlternatives,groupLaunches,launchTimestamp,clearlyDominates} from './library_curation.js?v=20261113a';
@@ -186,7 +186,7 @@ function renderLaunchPerformance(){
  const rows=globalThis.MissionMetrics.launchCapacities(launchPerformance,selected.c3);
  $('launch-performance-status').textContent=rows.length?'C3 '+fmt(selected.c3,3)+' km²/s² · '+(rows.some(r=>Number.isFinite(r.capacity_kg))?'Available published/cached estimates below.':'No tabulated capacity at this C3.')+' “Not tabulated” means missing data here, not zero payload or an impossible launch. ≈ marks approximate values. Unlisted kick stages can change capability. NASA samples retrieved '+launchPerformance.retrieved_at.slice(0,10)+'.':'Launch capacity data is unavailable for this selection.';
  const body=rows.map(r=>'<tr><td>'+escapeHtml(r.vehicle)+'</td><td>'+escapeHtml(MissionMetrics.launchCapacityValue(r))+'</td><td>'+escapeHtml(MissionMetrics.launchCapacityCoverage(r))+'</td><td>'+escapeHtml(r.launch_site)+'</td><td>'+escapeHtml(MissionMetrics.launchCapacitySource(r))+'</td></tr>').join('');
- const rules=rows.map(r=>'<p><strong>'+escapeHtml(r.vehicle)+'</strong> · '+escapeHtml(r.ground_rules)+' <a href="'+escapeHtml(r.source_url||'https://elvperf.ksc.nasa.gov/Pages/Query.aspx')+'" target="_blank" rel="noopener">Source ↗</a></p>').join('');
+ const rules=rows.map(r=>'<p><strong>'+escapeHtml(r.vehicle)+'</strong> · '+escapeHtml(r.ground_rules+(r.extrapolated?' '+r.extrapolation.assumptions+' '+r.extrapolation.note:''))+' <a href="'+escapeHtml(r.source_url||'https://elvperf.ksc.nasa.gov/Pages/Query.aspx')+'" target="_blank" rel="noopener">Source ↗</a></p>').join('');
  $('launch-performance-table').innerHTML=rows.length?'<div class="table-scroll"><table><thead><tr><th>Vehicle / configuration</th><th>Capacity at selected C3 · kg</th><th>Available data</th><th>Launch site</th><th>Source / uncertainty</th></tr></thead><tbody>'+body+'</tbody></table></div><details><summary>Vehicle ground rules</summary>'+rules+'</details>':'';
 }
 function renderSequenceComparison(){
@@ -584,7 +584,7 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings,names,historical,annotations,performance,publications,removals]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261115pdf').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261115pdf').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261115launch').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}}))]);
+ const [data,archive,settings,names,historical,annotations,performance,publications,removals]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261115pdf').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261115pdf').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}}))]);
  registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  libraryRemovals=removals.removed||{};libraryWarnings=removals.review_warnings||{};Object.assign(archive.duplicate_aliases||={},removals.duplicate_aliases||{});
  catalog.push(...data.cases.filter(c=>c.c3<=250&&!libraryRemovals[c.id]).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();

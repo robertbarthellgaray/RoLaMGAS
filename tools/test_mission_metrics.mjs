@@ -90,12 +90,12 @@ test('published app and website capacity datasets withhold unapproved model outp
 test('single launch reference points show their actual coverage without implying zero payload',()=>{
  const data=JSON.parse(fs.readFileSync(new URL('../docs/data/launch_performance_curves.json',import.meta.url),'utf8'));
  const lm5=m.launchCapacities(data,28).find(r=>r.international_id==='wang2025_lm5_point');
- assert.equal(lm5.capacity_kg,null);assert.equal(m.launchCapacityValue(lm5),'Not tabulated');
- assert.equal(m.launchCapacityCoverage(lm5),'Reference only: 3,000 kg at C3 30');
+ assert.ok(lm5.capacity_kg>3000);assert.equal(lm5.extrapolated,true);
+ assert.match(m.launchCapacityCoverage(lm5),/Model C3 0–200/);
  assert.equal(m.launchCapacities(data,30).find(r=>r.international_id===lm5.international_id).capacity_kg,3000);
  for(const [id,mass] of [['ariane62_manual2021',2600],['ariane64_manual2021',6900]]){
   assert.equal(m.launchCapacities(data,6.25).find(r=>r.published_id===id).capacity_kg,mass);
-  assert.equal(m.launchCapacities(data,6.26).find(r=>r.published_id===id).capacity_kg,null);
+  const extrapolated=m.launchCapacities(data,6.26).find(r=>r.published_id===id);assert.equal(extrapolated.extrapolated,true);assert.ok(extrapolated.capacity_kg<mass);
  }
 });
 
@@ -104,7 +104,7 @@ test('SLS high-energy estimates retain their concept configuration and never ext
  const id='nasa2020_sls_block2_centaur',row=m.launchCapacities(data,158).find(r=>r.published_id===id);
  assert.equal(row.capacity_kg,5600);assert.match(row.vehicle,/Block 2 \+ Centaur.*2020 concept/);
  assert.match(row.ground_rules,/unflown/);assert.match(row.ground_rules,/28.5/);assert.match(row.source_url,/ntrs.nasa.gov/);
- assert.equal(m.launchCapacities(data,59.9).find(r=>r.published_id===id).capacity_kg,null);
+ assert.equal(m.launchCapacities(data,59.9).find(r=>r.published_id===id).extrapolated,true);
  assert.equal(m.launchCapacities(data,280.1).find(r=>r.published_id===id).capacity_kg,null);
  assert.ok(!data.vehicles.some(r=>/Atlas V/i.test(r.vehicle)));
  assert.deepEqual(data,JSON.parse(fs.readFileSync(new URL('../gui_assets/launch_performance_curves.json',import.meta.url),'utf8')));
@@ -118,7 +118,9 @@ test('LVM3 estimate is labeled, rounded and restricted to its modeled range',()=
  assert.match(at(10).ground_rules,/extrapolated/);
  assert.match(m.launchCapacityValue(at(10)),/1,700/);
  assert.match(m.launchCapacityValue(at(15)),/1,400/);
- assert.equal(at(30.01).capacity_kg,null);
+ assert.equal(at(30.01).extrapolated,true);
+ assert.equal(at(200).capacity_kg,0);
+ assert.equal(at(200.01).capacity_kg,null);
  assert.equal(at(-.01),undefined);
 });
 
