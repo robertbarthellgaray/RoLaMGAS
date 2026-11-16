@@ -35,7 +35,7 @@ test('refreshed finite downloads reconcile public budgets, source previews and n
 
 test('curated shared aliases keep the server timestamp for Newest shared ordering',()=>{
  const source=fs.readFileSync(new URL('app.js',root),'utf8'),snippet=source.slice(source.indexOf('function addShared(records)'),source.indexOf('function updateCounts()'));
- const curated={id:'featured',mission_label:'Named mission'},context=vm.createContext({catalog:[curated],sharedRecords:new Map(),curatedAliases:{shared:'featured'},encounterDays:new Map(),displayAliases:{},historicalProfiles:[],annotateMission:x=>x,historicalMatch:()=>null,summaryFor:r=>({id:r.id,received:Date.parse(r.received_at)}),encounterDayKey:()=> 'key',carryMissionLabel:(a,b)=>b,betterDuplicate:()=>true});
+ const curated={id:'featured',mission_label:'Named mission'},context=vm.createContext({libraryRemovals:{},nearLaunches:new Map(),launchVariantKey:()=> 'launch',nearDuplicate:()=>false,catalog:[curated],sharedRecords:new Map(),curatedAliases:{shared:'featured'},encounterDays:new Map(),displayAliases:{},historicalProfiles:[],annotateMission:x=>x,historicalMatch:()=>null,summaryFor:r=>({id:r.id,received:Date.parse(r.received_at)}),encounterDayKey:()=> 'key',carryMissionLabel:(a,b)=>b,betterDuplicate:()=>true});
  vm.runInContext(snippet,context);
  const changed=vm.runInContext("addShared([{id:'shared',received_at:'2026-11-10T18:21:32.938Z'}])",context);
  assert.equal(changed,1);assert.equal(curated.received,Date.parse('2026-11-10T18:21:32.938Z'));assert.equal(context.catalog.length,1);assert.equal(context.catalog[0].mission_label,'Named mission');
