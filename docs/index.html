@@ -15,8 +15,8 @@
   <meta property="og:url" content="https://robertbarthellgaray.github.io/RoLaMGAS/">
   <link rel="icon" type="image/png" sizes="64x64" href="images/rolamgas-icon-64.png">
   <link rel="apple-touch-icon" sizes="180x180" href="images/rolamgas-touch-180.png">
-  <link rel="stylesheet" href="style.css?v=20261115pdf">
-  <script type="module" src="app.js?v=20261116capacity200"></script>
+  <link rel="stylesheet" href="style.css?v=20261116worlds">
+  <script type="module" src="app.js?v=20261116worlds"></script>
 </head>
 <body>
   <a class="skip-link" href="#explorer">Skip to trajectory explorer</a>
@@ -33,6 +33,8 @@
     <section id="explorer" class="explorer" aria-labelledby="explorer-title">
       <div class="section-heading"><div><p class="eyebrow">THE TRAJECTORY EXPLORER</p><span id="community"></span><h2 id="explorer-title">Choose your next world.</h2></div><p class="quiet">Heliocentric · Ecliptic J2000 · Dates in TDB</p></div>
       <div class="destination-tabs" id="destinations" role="group" aria-label="Filter by destination"></div>
+      <section id="world-briefing" class="world-panel" aria-label="Destination mission-design briefing" hidden></section>
+      <p id="body-size-note" class="small quiet" hidden></p>
       <div id="small-body-options" class="small-body-options" role="group" aria-label="Choose a small body" hidden></div>
       <details class="sequence-key"><summary>Read the assist sequences</summary><p>E = Earth · V = Venus · Me = Mercury · M = Mars · J = Jupiter · S = Saturn · U = Uranus · N = Neptune · P = Pluto · Er = Eris · X = a resolved Horizons object. <strong>dv</strong> marks a deep-space maneuver.</p></details>
       <label class="mission-kind-filter">Mission type <select id="mission-kind"><option value="both">Originals & reconstructions</option><option value="original">Original / fictional designs only</option><option value="reconstruction">Real mission reconstructions only</option></select><span class="quiet">Reconstructions include proposed missions; their budgets and state vectors may differ from the mission plans.</span></label>

@@ -4,6 +4,7 @@ import {matchesGallery,featuredOrder} from './gallery_filters.js?v=20261113a';
 import {publicationDate} from './publication_dates.js?v=20261110b';
 import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261112e';
 import './mission_metrics.js?v=20261116capacity200';
+import {planetPanel,smallBodyCards,smallBodyBriefing} from './world_guide.js?v=20261116worlds';
 import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames,matchesBodyLabel} from './community.js?v=20261115pdf';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters,chartSettingsFromHash,withChartSettings} from './library_analysis.js?v=20261115charts';
 import {trimAlternatives,groupLaunches,launchTimestamp,clearlyDominates} from './library_curation.js?v=20261113a';
@@ -17,6 +18,7 @@ const openLaunchGroups=new Set();
 const nearLaunches=new Map();let libraryRemovals={},libraryWarnings={};
 const missionNames=(()=>{try{const data=JSON.parse(localStorage.getItem('rolamgas-mission-names')||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?Object.fromEntries(Object.entries(data).filter(([id,label])=>typeof label==='string'&&label.length<=100)):{}}catch{return {}}})();
 let historicalProfiles=[],ownerMissions={},launchPerformance=null,publicationHistory={};
+let bodyPhysical={bodies:{}};
 function annotateMission(c,id=c.id){c.review_warning=libraryWarnings[id];const a=ownerMissions[id];if(a)Object.assign(c,{mission_label:a.label,featured_priority:a.featured_priority,mission_note:a.note,mission_kind:a.mission_kind});return c;}
 function carryMissionLabel(from,to){if(from?.mission_label){Object.assign(to,{mission_label:from.mission_label,mission_note:from.mission_note,featured_priority:from.featured_priority,mission_kind:from.mission_kind});ownerMissions[to.id]={label:from.mission_label,note:from.mission_note,featured_priority:from.featured_priority,mission_kind:from.mission_kind};}return to;}
 const missionName=c=>missionNames[c.id]||c.mission_label||c.historical_match?.label||(/^(?:Rebuilding|Low-energy|Tianwen|Claudius)/.test(c.title)?c.title:'');
@@ -53,7 +55,13 @@ function makeDestinations() {
   }).join('');
   const grouped=CATEGORIES.includes(destination);
   $('small-body-options').hidden = !grouped;
-  $('small-body-options').innerHTML = ['All',...new Set(catalog.filter(c=>targetMatches(c)).map(c=>c.target))].map(t => `<button type="button" data-small-body="${escapeHtml(t)}" aria-pressed="${smallBodyTarget===t}">${t==='All'?'All '+escapeHtml(destination.toLowerCase()):escapeHtml(t)}</button>`).join('');
+  const bodyRows=catalog.filter(c=>targetMatches(c));
+  $('small-body-options').innerHTML = grouped?smallBodyCards(bodyRows,smallBodyTarget,destination,bodyPhysical):'';
+  const planet=planetPanel(destination,bodyRows.length,globalThis.MissionMetrics.bodies[destination]?.[0]);
+  const briefing=$('world-briefing');briefing.hidden=!(planet||grouped);briefing.className='world-panel'+(planet?' planet-panel':'');
+  briefing.innerHTML=planet||(grouped?smallBodyBriefing(smallBodyTarget,destination,bodyPhysical,bodyRows):'');
+  $('body-size-note').hidden=!grouped;
+  $('body-size-note').textContent=destination==='Dwarf planets & TNOs'?'Relative diameters, not orbital distances. Small discs can be tiny; dashed outlines indicate unknown sizes. Select a world to filter its trajectories.':'Illustrative shapes, not to scale. Select a body to filter its trajectories.';
 }
 function targetMatches(c, t = destination) {
   return t === 'All' || (CATEGORIES.includes(t) ? category(c)===t : c.target === t);
@@ -584,8 +592,8 @@ async function syncShared(){
  finally{sharedBusy=false;$('community-refresh').disabled=false}
 }
 try {
- const [data,archive,settings,names,historical,annotations,performance,publications,removals]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261115pdf').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261115pdf').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}}))]);
- registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
+ const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261115pdf').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261115pdf').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),fetchJson('data/body_physical.json?v=20261116worlds').catch(()=>({bodies:{}}))]);
+ bodyPhysical=physical;registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  libraryRemovals=removals.removed||{};libraryWarnings=removals.review_warnings||{};Object.assign(archive.duplicate_aliases||={},removals.duplicate_aliases||{});
  catalog.push(...data.cases.filter(c=>c.c3<=250&&!libraryRemovals[c.id]).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;

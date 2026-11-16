@@ -1,0 +1,50 @@
+{
+  "mercury": {
+    "page": "https://science.nasa.gov/mercury/facts/",
+    "image_url": "https://science.nasa.gov/wp-content/uploads/2017/10/pia15051-mercury.jpg?w=640&quality=85",
+    "credit": "NASA; see linked source page for mission and institutional image credits",
+    "bytes": 45864
+  },
+  "venus": {
+    "page": "https://science.nasa.gov/venus/venus-facts/",
+    "image_url": "https://science.nasa.gov/wp-content/uploads/2024/03/venus-mariner-10-pia23791-fig2-16x9-1.jpg?w=640&quality=85",
+    "credit": "NASA; see linked source page for mission and institutional image credits",
+    "bytes": 14293
+  },
+  "earth": {
+    "page": "https://science.nasa.gov/earth/facts/",
+    "image_url": "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e002131/GSFC_20171208_Archive_e002131~large.jpg?w=640&quality=85",
+    "credit": "NASA; see linked source page for mission and institutional image credits",
+    "bytes": 441744
+  },
+  "mars": {
+    "page": "https://science.nasa.gov/mars/facts/",
+    "image_url": "https://science.nasa.gov/wp-content/uploads/2017/11/pia17944.jpg?w=640&quality=85",
+    "credit": "NASA; see linked source page for mission and institutional image credits",
+    "bytes": 75893
+  },
+  "jupiter": {
+    "page": "https://science.nasa.gov/jupiter/jupiter-facts/",
+    "image_url": "https://science.nasa.gov/wp-content/uploads/2024/03/jupiter-marble-pia22946-16x9-1.jpg?w=640&quality=85",
+    "credit": "NASA; see linked source page for mission and institutional image credits",
+    "bytes": 23616
+  },
+  "saturn": {
+    "page": "https://science.nasa.gov/saturn/facts/",
+    "image_url": "https://assets.science.nasa.gov/content/dam/science/psd/solar/internal_resources/426/rings_diagram_nolables-1.jpg/jcr:content/renditions/cq5dam.web.1280.1280.jpeg?w=640&quality=85",
+    "credit": "NASA; see linked source page for mission and institutional image credits",
+    "bytes": 104258
+  },
+  "uranus": {
+    "page": "https://science.nasa.gov/uranus/facts/",
+    "image_url": "https://science.nasa.gov/wp-content/uploads/2016/05/uranus-jpg.webp?w=640&quality=85",
+    "credit": "NASA; see linked source page for mission and institutional image credits",
+    "bytes": 16588
+  },
+  "neptune": {
+    "page": "https://science.nasa.gov/neptune/neptune-facts/",
+    "image_url": "https://science.nasa.gov/wp-content/uploads/2024/03/pia01492-neptune-full-disk-16x9-1.jpg?w=640&quality=85",
+    "credit": "NASA; see linked source page for mission and institutional image credits",
+    "bytes": 16496
+  }
+}

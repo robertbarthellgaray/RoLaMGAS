@@ -1,0 +1,466 @@
+{
+  "source": "JPL Small-Body Database physical parameters and osculating elements; retrieved 2026-11-16",
+  "bodies": {
+    "20000001": {
+      "name": "1 Ceres",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20000001&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 939.4,
+      "diameter_km_sigma": "0.2",
+      "mu_km3_s2": 62.6284,
+      "mu_km3_s2_sigma": "0.0009",
+      "sma_au": 2.77,
+      "sma_au_sigma": "1e-11"
+    },
+    "20000624": {
+      "name": "624 Hektor",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20000624&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 225.0,
+      "sma_au": 5.28,
+      "sma_au_sigma": "2.7e-08"
+    },
+    "20010253": {
+      "name": "10253 Westerwald",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20010253&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 2.27,
+      "diameter_km_sigma": "0.185",
+      "sma_au": 2.3,
+      "sma_au_sigma": "6.7e-10"
+    },
+    "20013579": {
+      "name": "13579 Allodd",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20013579&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 5.206,
+      "diameter_km_sigma": "0.245",
+      "sma_au": 2.63,
+      "sma_au_sigma": "8.5e-10"
+    },
+    "20090377": {
+      "name": "90377 Sedna",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20090377&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 544.0,
+      "sma_au_sigma": "0.15"
+    },
+    "20225088": {
+      "name": "225088 Gonggong",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20225088&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 66.9,
+      "sma_au_sigma": "0.0021"
+    },
+    "20420356": {
+      "name": "420356 Praamzius",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20420356&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 42.9,
+      "sma_au_sigma": "0.0026"
+    },
+    "20469219": {
+      "name": "469219 Kamo`oalewa",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20469219&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 1.0,
+      "sma_au_sigma": "8.5e-09"
+    },
+    "20486958": {
+      "name": "486958 Arrokoth",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20486958&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 44.1,
+      "sma_au_sigma": "0.01"
+    },
+    "50666516": {
+      "name": "(2012 VP113)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=50666516&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 268.0,
+      "sma_au_sigma": "0.28"
+    },
+    "54667839": {
+      "name": "(2026 ED138)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=54667839&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 42.9,
+      "sma_au_sigma": "0.00053"
+    },
+    "20028978": {
+      "name": "28978 Ixion",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20028978&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 39.3,
+      "sma_au_sigma": "3.2e-05"
+    },
+    "20004179": {
+      "name": "4179 Toutatis",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20004179&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 5.4,
+      "sma_au": 2.54,
+      "sma_au_sigma": "6.1e-10"
+    },
+    "20005145": {
+      "name": "5145 Pholus",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20005145&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 190.0,
+      "diameter_km_sigma": "26",
+      "sma_au": 20.3,
+      "sma_au_sigma": "4.7e-05"
+    },
+    "20010199": {
+      "name": "10199 Chariklo",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20010199&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 302.0,
+      "diameter_km_sigma": "30",
+      "sma_au": 15.7,
+      "sma_au_sigma": "1.1e-06"
+    },
+    "20015760": {
+      "name": "15760 Albion",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20015760&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 44.1,
+      "sma_au_sigma": "0.0029"
+    },
+    "20015810": {
+      "name": "15810 Arawn",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20015810&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 39.2,
+      "sma_au_sigma": "0.00023"
+    },
+    "20026375": {
+      "name": "26375 (1999 DE9)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20026375&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 55.6,
+      "sma_au_sigma": "0.0011"
+    },
+    "20054598": {
+      "name": "54598 Bienor",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20054598&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 187.5,
+      "diameter_km_sigma": "15.500",
+      "sma_au": 16.6,
+      "sma_au_sigma": "1.4e-06"
+    },
+    "20066652": {
+      "name": "66652 Borasisi",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20066652&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 43.7,
+      "sma_au_sigma": "0.00085"
+    },
+    "20088611": {
+      "name": "88611 Teharonhiawako",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20088611&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 44.0,
+      "sma_au_sigma": "0.0012"
+    },
+    "20136472": {
+      "name": "136472 Makemake",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20136472&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 45.6,
+      "sma_au_sigma": "5.4e-05",
+      "diameter_km": 1434,
+      "diameter_source_url": "https://science.nasa.gov/solar-system/planets/planet-sizes-and-locations-in-our-solar-system/",
+      "diameter_note": "NASA equatorial diameter"
+    },
+    "20208996": {
+      "name": "208996 Achlys",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20208996&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 39.7,
+      "sma_au_sigma": "2.2e-05"
+    },
+    "20594913": {
+      "name": "594913 'Aylo'chaxnim",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20594913&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 0.555,
+      "sma_au_sigma": "1.4e-08"
+    },
+    "50713036": {
+      "name": "(2014 PN70)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=50713036&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 44.0,
+      "sma_au_sigma": "0.0036"
+    },
+    "54526835": {
+      "name": "(2023 KQ14)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=54526835&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 248.0,
+      "sma_au_sigma": "0.16"
+    },
+    "54533005": {
+      "name": "(2017 OF201)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=54533005&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 824.0,
+      "sma_au_sigma": "2.8"
+    },
+    "20136108": {
+      "name": "136108 Haumea",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20136108&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 43.1,
+      "sma_au_sigma": "4e-05",
+      "diameter_km": 1430,
+      "diameter_source_url": "https://ssd.jpl.nasa.gov/planets/phys_par.html",
+      "diameter_note": "Twice the JPL mean radius; Haumea is nonspherical"
+    },
+    "20136199": {
+      "name": "136199 Eris",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20136199&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 67.9,
+      "sma_au_sigma": "0.00025",
+      "diameter_km": 2326,
+      "diameter_source_url": "https://science.nasa.gov/solar-system/planets/planet-sizes-and-locations-in-our-solar-system/",
+      "diameter_note": "NASA reference diameter"
+    },
+    "20038628": {
+      "name": "38628 Huya",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20038628&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 39.3,
+      "sma_au_sigma": "0.00027"
+    },
+    "20000008": {
+      "name": "8 Flora",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20000008&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 147.491,
+      "diameter_km_sigma": "1.025",
+      "sma_au": 2.2,
+      "sma_au_sigma": "1.1e-09"
+    },
+    "20000121": {
+      "name": "121 Hermione",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20000121&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 209.0,
+      "diameter_km_sigma": "4.7",
+      "sma_au": 3.46,
+      "sma_au_sigma": "3.3e-09"
+    },
+    "20001036": {
+      "name": "1036 Ganymed",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20001036&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 37.675,
+      "diameter_km_sigma": "0.399",
+      "sma_au": 2.66,
+      "sma_au_sigma": "1.1e-09"
+    },
+    "20002060": {
+      "name": "2060 Chiron",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20002060&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 166.0,
+      "sma_au": 13.7,
+      "sma_au_sigma": "5.3e-07"
+    },
+    "20003200": {
+      "name": "3200 Phaethon",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20003200&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 6.25,
+      "diameter_km_sigma": "0.15",
+      "sma_au": 1.27,
+      "sma_au_sigma": "1.6e-10"
+    },
+    "20055576": {
+      "name": "55576 Amycus",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20055576&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 100.9,
+      "diameter_km_sigma": "40.100",
+      "sma_au": 24.9,
+      "sma_au_sigma": "7.1e-05"
+    },
+    "20066391": {
+      "name": "66391 Moshup",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20066391&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 1.317,
+      "diameter_km_sigma": "0.040",
+      "sma_au": 0.642,
+      "sma_au_sigma": "1.8e-10"
+    },
+    "20079360": {
+      "name": "79360 Sila-Nunam",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20079360&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 44.1,
+      "sma_au_sigma": "0.00079"
+    },
+    "20083982": {
+      "name": "83982 Crantor",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20083982&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 19.4,
+      "sma_au_sigma": "4.7e-05"
+    },
+    "20095626": {
+      "name": "95626 (2002 GZ32)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20095626&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 230.5,
+      "diameter_km_sigma": "87.500",
+      "sma_au": 23.0,
+      "sma_au_sigma": "6.3e-05"
+    },
+    "20099942": {
+      "name": "99942 Apophis",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20099942&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 0.34,
+      "diameter_km_sigma": "0.04",
+      "sma_au": 0.922,
+      "sma_au_sigma": "1.6e-09"
+    },
+    "20145452": {
+      "name": "145452 Ritona",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20145452&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 41.5,
+      "sma_au_sigma": "1.5e-05"
+    },
+    "20316179": {
+      "name": "316179 (2010 EN65)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20316179&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 30.7,
+      "sma_au_sigma": "0.00032"
+    },
+    "20385571": {
+      "name": "385571 Otrera",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20385571&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 30.3,
+      "sma_au_sigma": "0.01"
+    },
+    "20385695": {
+      "name": "385695 Clete",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20385695&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 30.3,
+      "sma_au_sigma": "0.0071"
+    },
+    "50892324": {
+      "name": "(2019 UO14)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=50892324&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 9.8,
+      "sma_au_sigma": "1.5e-05"
+    },
+    "54188083": {
+      "name": "(2013 VZ70)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=54188083&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 9.19,
+      "sma_au_sigma": "0.00014"
+    },
+    "20000433": {
+      "name": "433 Eros",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20000433&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 16.84,
+      "diameter_km_sigma": "0.06",
+      "mu_km3_s2": 0.0004463,
+      "mu_km3_s2_sigma": "0.001e-04",
+      "sma_au": 1.46,
+      "sma_au_sigma": "1.5e-10"
+    },
+    "20000702": {
+      "name": "702 Alauda",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20000702&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "diameter_km": 190.98,
+      "diameter_km_sigma": "1.973",
+      "sma_au": 3.19,
+      "sma_au_sigma": "3.5e-09"
+    },
+    "20026308": {
+      "name": "26308 (1998 SM165)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20026308&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 47.8,
+      "sma_au_sigma": "0.001"
+    },
+    "20047171": {
+      "name": "47171 Lempo",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20047171&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 39.7,
+      "sma_au_sigma": "0.00033"
+    },
+    "20055637": {
+      "name": "55637 Uni",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20055637&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 42.9,
+      "sma_au_sigma": "2.6e-05"
+    },
+    "20119979": {
+      "name": "119979 (2002 WC19)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20119979&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 48.3,
+      "sma_au_sigma": "0.0018"
+    },
+    "20148780": {
+      "name": "148780 Altjira",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20148780&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 44.5,
+      "sma_au_sigma": "0.0086"
+    },
+    "20471143": {
+      "name": "471143 Dziewanna",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20471143&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 68.9,
+      "sma_au_sigma": "0.0037"
+    },
+    "20496315": {
+      "name": "496315 (2013 GP136)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20496315&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 149.0,
+      "sma_au_sigma": "0.083"
+    },
+    "20528219": {
+      "name": "528219 (2008 KV42)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20528219&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 41.5,
+      "sma_au_sigma": "0.0035"
+    },
+    "20612239": {
+      "name": "612239 (2001 QC298)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20612239&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 46.4,
+      "sma_au_sigma": "0.0027"
+    },
+    "54667840": {
+      "name": "(2026 EE138)",
+      "source_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=54667840&phys-par=true",
+      "orbit_epoch_jd": "2461200.5",
+      "sma_au": 71.1,
+      "sma_au_sigma": "0.031"
+    }
+  }
+}
