@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-const source=fs.readFileSync(new URL('../gui.js',import.meta.url),'utf8').split("$('reuse').onclick=")[0];
+const source=fs.readFileSync(new URL('../launch_energy_review.js',import.meta.url),'utf8')+'\n'+fs.readFileSync(new URL('../gui.js',import.meta.url),'utf8').split("$('reuse').onclick=")[0];
 function gui(){
  const operations={arcs:[],strokes:0,labels:[]},context2d={scale(){},clearRect(){},beginPath(){},moveTo(){},lineTo(){},stroke(){operations.strokes++},arc(x,y,r){operations.arcs.push(r)},fill(){},fillText(text){operations.labels.push(text)},measureText(text){return {width:text.length*5}}};
  const elements={planetMarkers:{checked:true},planetPaths:{checked:true},detail:{open:true},plane:{value:'xy'},detailPlot:{getBoundingClientRect:()=>({width:800,height:500}),getContext:()=>context2d}};

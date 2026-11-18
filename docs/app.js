@@ -1,3 +1,4 @@
+import './launch_energy_review.js?v=20261118energy';
 import {openLibraryCache} from './library_cache.js?v=20261116live';
 import {launchVariantKey,nearDuplicate} from './near_duplicates.js?v=20261115pdf';
 import {historicalMatch} from './historical_labels.js?v=20261108b';
@@ -19,8 +20,8 @@ const openLaunchGroups=new Set();
 const nearLaunches=new Map();let libraryRemovals={},libraryWarnings={};
 const missionNames=(()=>{try{const data=JSON.parse(localStorage.getItem('rolamgas-mission-names')||'{}');return data&&typeof data==='object'&&!Array.isArray(data)?Object.fromEntries(Object.entries(data).filter(([id,label])=>typeof label==='string'&&label.length<=100)):{}}catch{return {}}})();
 let historicalProfiles=[],ownerMissions={},launchPerformance=null,publicationHistory={};
-let bodyPhysical={bodies:{}};
-function annotateMission(c,id=c.id){c.review_warning=libraryWarnings[id];const a=ownerMissions[id];if(a)Object.assign(c,{mission_label:a.label,featured_priority:a.featured_priority,mission_note:a.note,mission_kind:a.mission_kind});return c;}
+let bodyPhysical={bodies:{}};let launchEnergyReference=null;
+function annotateMission(c,id=c.id){c.energy_review=LaunchEnergyReview.review(c,launchEnergyReference);if(c.energy_review.flagged&&c.classification!=='red'){c.submitted_classification??=c.classification;c.classification='yellow';}c.review_warning=libraryWarnings[id];const a=ownerMissions[id];if(a)Object.assign(c,{mission_label:a.label,featured_priority:a.featured_priority,mission_note:a.note,mission_kind:a.mission_kind});return c;}
 function carryMissionLabel(from,to){if(from?.mission_label){Object.assign(to,{mission_label:from.mission_label,mission_note:from.mission_note,featured_priority:from.featured_priority,mission_kind:from.mission_kind});ownerMissions[to.id]={label:from.mission_label,note:from.mission_note,featured_priority:from.featured_priority,mission_kind:from.mission_kind};}return to;}
 const missionName=c=>missionNames[c.id]||c.mission_label||c.historical_match?.label||(/^(?:Rebuilding|Low-energy|Tianwen|Claudius)/.test(c.title)?c.title:'');
 const cache = new Map(), sharedRecords = new Map(), previewCache = new Map(), encounterDays=new Map();
@@ -80,7 +81,7 @@ function targetRows(){return catalog.filter(c=>targetMatches(c)&&(!CATEGORIES.in
 function matchingRows(ignoreSequence=false){
  const search=$('search').value.trim().toLowerCase().replace(/\s+/g,'');
  return targetRows().filter(c=>matchesGallery(c,$('mission-kind').value)&&(ignoreSequence||!selectedSequences.size||selectedSequences.has(c.sequence))&&`${missionName(c)} ${c.id} ${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
-  &&(!c.community||c.classification!=='yellow'||$('include-yellow').checked)&&c.c3<=maximum('max-c3')&&c.vinf<=maximum('max-vinf')&&c.burns_mps<=maximum('max-burns')&&c.years<=maximum('max-years')&&launchYear(c)>=minimumYear()&&launchYear(c)<=maximumYear());
+  &&(c.classification!=='yellow'||$('include-yellow').checked)&&c.c3<=maximum('max-c3')&&c.vinf<=maximum('max-vinf')&&c.burns_mps<=maximum('max-burns')&&c.years<=maximum('max-years')&&launchYear(c)>=minimumYear()&&launchYear(c)<=maximumYear());
 }
 function gallerySelection(){
  const all=matchingRows(),protectedIds=new Set(all.filter(c=>missionName(c)||c.featured_priority||c.spotlight).map(c=>c.id));
@@ -88,6 +89,7 @@ function gallerySelection(){
  return {all,rows:$('show-trimmed').checked?all:trimmed.rows,hidden:trimmed.hidden};
 }
 function visibleRows(){return gallerySelection().rows;}
+function energyAdvisoryMarkup(c){const e=c.energy_review||LaunchEnergyReview.review(c,launchEnergyReference);return `<span class="energy-advisory energy-${e.energy_level}" title="${escapeHtml(e.energy_explanation)}">${escapeHtml(e.energy_label)}</span>`;}
 function launchGroupMarkup(group){
  const c=group.rows[0],range=(key,digits)=>{const values=group.rows.map(c=>c[key]),lo=Math.min(...values),hi=Math.max(...values);return fmt(lo,digits)+(Math.abs(hi-lo)<10**(-digits)?'':'–'+fmt(hi,digits));};
  const title=missionName(c)||group.sequence,open=openLaunchGroups.has(group.key)||group.rows.some(c=>c.id===selected?.id);
@@ -96,18 +98,20 @@ function launchGroupMarkup(group){
   <summary><div class="card-preview"><img loading="lazy" src="${c.community?sharedPreview(c.id):`images/${c.id}.svg`}" width="320" height="220" alt="${escapeHtml(group.sequence)} trajectory preview"></div>
   <div class="card-title">${escapeHtml(title)} <b>${escapeHtml(group.month)}</b></div>
   <p class="card-subtitle">${escapeHtml(group.target)} · ${escapeHtml(group.sequence)} · ${group.rows.length} ${group.rows.length===1?'variant':'variants'}</p>
-  <div class="card-metrics"><div><span>C3 · km²/s²</span>${range('c3',1)}</div><div><span>FLIGHT · yr</span>${range('years',1)}</div></div><span class="group-prompt">Choose an exact departure ▾</span></summary>
+  <div class="card-metrics"><div><span>C3 · km²/s²</span>${range('c3',1)}</div><div><span>FLIGHT · yr</span>${range('years',1)}</div></div>${group.rows.length===1?energyAdvisoryMarkup(c):`<span class="energy-advisory">${group.rows.filter(c=>['high','extreme'].includes(c.energy_review?.energy_level)).length} of ${group.rows.length} variants have high launch energy</span>`}<span class="group-prompt">Choose an exact departure ▾</span></summary>
   <div class="launch-variants">${group.rows.map(c=>`<button type="button" class="candidate-card variant-card" data-id="${escapeHtml(c.id)}" aria-pressed="${c.id===selected?.id}" aria-label="Inspect ${escapeHtml(missionName(c)||c.sequence)}, launch ${launchTimestamp(c)}, C3 ${fmt(c.c3)}">
    ${missionName(c)?`<strong>${escapeHtml(missionName(c))}</strong>`:''}<time>${launchTimestamp(c)}</time>
    <span class="variant-arrival">Arrival ${escapeHtml(c.arrival_date)} · ${fmt(c.years,3)} yr</span>
    <span class="variant-metrics">C3 ${fmt(c.c3,2)} · Modeled Δv ${fmt(c.burns_mps,0)} m/s · V∞ ${fmt(c.vinf,2)} km/s</span>
+   ${energyAdvisoryMarkup(c)}
+   ${c.energy_review?.flagged?'<span class="variant-gap">Yellow · unusually high launch C3; consider C3 refinement</span>':''}
    ${c.mismatch_max_mps>100?`<span class="variant-gap">Flyby speed gap up to ${fmt(c.mismatch_max_mps,1)} m/s</span>`:''}
    ${currentInferiors.has(c.id)?'<span class="variant-inferior">Clearly inferior alternative</span>':''}
    ${c.review_warning?'<span class="variant-gap">Needs flyby revalidation</span>':''}
   </button>`).join('')}</div></details>`;
 }
 function renderList(revealId=null) {
-  const {all,rows,hidden}=gallerySelection(),sort=$('sort').value;
+  const {all,rows,hidden}=gallerySelection(),sort=$('sort').value;const energyNotice=LaunchEnergyReview.notice(all);$('launch-energy-notice').hidden=!energyNotice.show;$('launch-energy-notice-text').textContent=LaunchEnergyReview.warning+' On the website, use “Use in desktop app” to run refinement.';
   currentInferiors=hidden;
   rows.sort((a,b) => sort === 'recommended' ? featuredOrder(a,b) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
   const groups=groupLaunches(rows);
@@ -124,7 +128,7 @@ function renderList(revealId=null) {
 }
 function renderInferiorNote(){
  const note=$('mission-inferior');note.replaceChildren();note.hidden=true;
- const review=$('mission-review'),warning=selected&&libraryWarnings[selected.id];review.hidden=!warning;review.textContent=warning?'Needs flyby revalidation: '+warning.reason+'. Saved metrics have not been changed.':'';
+ const review=$('mission-review'),warning=selected&&libraryWarnings[selected.id];const energy=selected?.energy_review;review.hidden=!selected;review.textContent=(energy?energy.energy_label+'. '+energy.energy_explanation+' ':'')+(warning?'Needs flyby revalidation: '+warning.reason+'. ':'')+(energy?.flagged?'Launch-energy review (yellow): '+energy.reason+' ':'')+(energy?.statistics?'Reference C3: mean '+fmt(energy.statistics.mean)+', median '+fmt(energy.statistics.median)+', σ '+fmt(energy.statistics.stddev)+' from '+energy.statistics.n+' saved candidates. '+energy.scope:'');
  if(!selected)return;
  const row=catalog.find(c=>c.id===selected.id)||selected;
  const witness=catalog.find(c=>c.id===currentInferiors.get(row.id))||catalog.find(c=>c.id!==row.id&&clearlyDominates(c,row));
@@ -614,8 +618,8 @@ async function syncShared(){
 }
 
 try {
- const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261116live').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261115pdf').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),fetchJson('data/body_physical.json?v=20261116live').catch(()=>({bodies:{}}))]);
- bodyPhysical=physical;registerBodyPhysical(physical);registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
+ const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical,energyReference]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261116live').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261115pdf').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),fetchJson('data/body_physical.json?v=20261116live').catch(()=>({bodies:{}})),fetchJson('data/launch_energy_reference.json?v=20261118energy').catch(()=>null)]);
+ launchEnergyReference=energyReference;bodyPhysical=physical;registerBodyPhysical(physical);registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  libraryRemovals=removals.removed||{};libraryWarnings=removals.review_warnings||{};Object.assign(archive.duplicate_aliases||={},removals.duplicate_aliases||{});
  catalog.push(...data.cases.filter(c=>c.c3<=250&&!libraryRemovals[c.id]).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · saved archive loaded`;

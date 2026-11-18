@@ -1,5 +1,5 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import vm from 'node:vm';
-const source=fs.readFileSync(new URL('../gui.js',import.meta.url),'utf8').split("$('reuse').onclick=")[0];
+const source=fs.readFileSync(new URL('../launch_energy_review.js',import.meta.url),'utf8')+'\n'+fs.readFileSync(new URL('../gui.js',import.meta.url),'utf8').split("$('reuse').onclick=")[0];
 function setup(){
  const node=tag=>({tag,children:[],attrs:{},style:{},dataset:{},value:'',set innerHTML(v){this.html=v;this.children=[]},get innerHTML(){return this.html},append(...v){this.children.push(...v)},prepend(v){this.children.unshift(v)},replaceChildren(...v){this.children=[...v]},setAttribute(k,v){this.attrs[k]=String(v)},closest(){return this}});
  const elements={resultsChart:node('svg'),resultsChartLegend:node('div'),resultsChartStatus:node('p'),chartYearFrom:{value:''},chartYearTo:{value:''},showYellow:{checked:true},showRed:{checked:false},onlyPins:{checked:false},routeFilter:{value:''},sort:{value:'newest'}};

@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import '../launch_energy_review.js';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const archive=JSON.parse(fs.readFileSync(path.join(root,'docs/data/community_seed_catalog.json'),'utf8'));
+const reference=LaunchEnergyReview.build(archive.candidates);reference.received_through=archive.received_through;
+const text=JSON.stringify(reference)+'\n';
+for(const file of ['docs/data/launch_energy_reference.json','gui_assets/launch_energy_reference.json'])fs.writeFileSync(path.join(root,file),text);
+fs.copyFileSync(path.join(root,'launch_energy_review.js'),path.join(root,'docs/launch_energy_review.js'));
+console.log('Launch-energy comparison families:',Object.keys(reference.groups).length);

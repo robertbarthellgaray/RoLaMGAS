@@ -39,3 +39,5 @@ td.failure{color:#ff9fad}
 @media(max-width:800px){.chart-year-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.chart-year-controls select{max-width:none}.chart-presets>*{flex:1 1 160px}}
 
 @media(max-width:800px){#resultsChart text{font-size:14px}}
+
+.energy-review-alert{border:1px solid #8d6a28;background:#302719;color:#ffdfa3;padding:14px 18px;border-radius:6px;margin:12px 0;line-height:1.7;font-size:13px}.energy-review-alert[hidden]{display:none}

@@ -21,15 +21,19 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m unittest discover -s tools -p 'test_public_archive.py'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - run: python tools/refresh_public_archive.py
+      - run: node tools/build_launch_energy_reference.mjs
       - name: Publish refreshed archive
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git diff --quiet -- docs/data/community_seed_catalog.json; then exit 0; fi
+          if git diff --quiet -- docs/data/community_seed_catalog.json docs/data/launch_energy_reference.json gui_assets/launch_energy_reference.json; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/data/community_seed_catalog.json
+          git add docs/data/community_seed_catalog.json docs/data/launch_energy_reference.json gui_assets/launch_energy_reference.json
           git commit -m 'Refresh bundled public trajectory archive'
           git pull --rebase origin main
           git push origin HEAD:main

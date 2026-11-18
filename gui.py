@@ -115,7 +115,7 @@ class App:
             c = read_json(p,{})
             presets.append(dict(id=p.stem,target=c.get('target'),name=p.stem.replace('_',' ').title()))
         from moon_targets import target_options
-        return dict(version=APP_VERSION,moon_targets={body:target_options(body) for body in BODIES if target_options(body)},community=community_settings(),minimum_c3_floor=HARD_MIN_C3,token=self.token,planets=[p for p in BODIES if p!='Earth'],
+        return dict(version=APP_VERSION,moon_targets={body:target_options(body) for body in BODIES if target_options(body)},community=community_settings(),minimum_c3_floor=HARD_MIN_C3,token=self.token,planets=list(BODIES),
                     routes=[dict(id=r['id'],target=r['target'],bodies=r['bodies'],dsm_legs=r['dsm_legs']) for r in db['sequences']],
                     custom_routes=['EX','EdvEX','EVX','EVEX','EVEEX','EJX','EdvEJX','EVEEJX','ESX','EJSX'],
                     presets=presets,runs=self.catalog(),cpu_count=os.cpu_count() or 2,active=self.active)
@@ -792,9 +792,9 @@ class Handler(BaseHTTPRequestHandler):
                 path = (root/parts[3]).resolve()
                 if not path.is_relative_to(root) or path.suffix.lower() not in ('.json','.png','.tsv','.html','.md','.log','.csv','.xyzv','.ssc','.txt','.zip'):
                     raise ValueError('File is outside this run')
-            elif url.path in ('/gui_assets/launch_mass_c3.png','/gui_assets/rolamgas-icon.png','/gui_assets/launch_performance_curves.json','/gui_assets/international_launch_performance.png'):
+            elif url.path in ('/gui_assets/launch_mass_c3.png','/gui_assets/rolamgas-icon.png','/gui_assets/launch_performance_curves.json','/gui_assets/international_launch_performance.png','/gui_assets/launch_energy_reference.json'):
                 path=RESOURCE_ROOT/'gui_assets'/url.path.rsplit('/',1)[-1]
-            elif url.path in ('/','/gui.html','/gui.js','/mission_metrics.js','/gui.css'):
+            elif url.path in ('/','/gui.html','/gui.js','/mission_metrics.js','/launch_energy_review.js','/gui.css'):
                 path = RESOURCE_ROOT/('gui.html' if url.path=='/' else url.path[1:])
             else:
                 self.send_error(404)

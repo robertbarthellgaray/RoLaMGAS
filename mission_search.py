@@ -135,8 +135,8 @@ def normalize(config, config_dir=HERE):
         c['target'] = c['target_object']['name']
     else:
         c['target'] = str(c['target']).title()
-    if not c['target_object'] and (c['target'] not in BODIES or (c['target'] == 'Earth' and not c.get('append_flyby'))):
-        raise ValueError('Choose Mercury, Venus, Mars, Jupiter, Saturn, Uranus, or Neptune')
+    if not c['target_object'] and c['target'] not in BODIES:
+        raise ValueError('Choose Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, or Neptune')
     if not isinstance(c['sequences'],list) or not isinstance(c['minimum_altitude_km'],dict):
         raise ValueError('sequences must be a list and minimum_altitude_km a dictionary')
     for name in ('max_years','vinf_tolerance_mps','min_c3','arrival_tolerance_days','max_c3','max_arrival_vinf_kms','max_dsm_kms','max_single_dsm_kms','max_powered_flyby_kms',

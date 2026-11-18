@@ -14,7 +14,7 @@ MODULES=['app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search',
 DOCS=['MISSION_STUDIES.md','RESONANT_TRANSFERS.md','LAUNCH_PERFORMANCE.md','WEBSITE_HANDOFF.md','GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md','JUICE_DEPARTURE_SEEDS.md','PREVIEW_AND_RESULTS.md','HISTORICAL_SEEDS.md','CELESTIA_DWARF_PATCH.md']
 DOCS.extend(['REACHSTAR_SEEDS.md','ATMOSPHERIC_FLYBY_LIMITS.md','FINITE_PATCH_TARGETING.md'])
 DOCS.extend(['RELEASE_NOTES_0.2.5.md','RELEASE_NOTES_0.2.6.md','OUTER_APPROACH_PREFERENCE.md','TITAN_ENTRY.md','MOON_TARGETING.md'])
-DATA_FILES=('departure_seeds','celestia_assets','community_seed_catalog.json','community_config.json','gui.html','gui.js','mission_metrics.js','gui.css','gallery.html','sequence_database.json','examples','model_assets',
+DATA_FILES=('departure_seeds','celestia_assets','community_seed_catalog.json','community_config.json','gui.html','gui.js','mission_metrics.js','launch_energy_review.js','gui.css','gallery.html','sequence_database.json','examples','model_assets',
             'gui_assets','baseline_ephemerides.zip','LICENSE','THIRD_PARTY_NOTICES.md','third_party_licenses')
 
 
@@ -43,7 +43,7 @@ def source_release(baseline):
     release=ROOT/'releases';release.mkdir(exist_ok=True)
     destination=release/'RoLaMGAS-source.zip'
     files=[ROOT/(name+'.py') for name in MODULES]
-    files += [ROOT/name for name in ('gui.html','gui.js','mission_metrics.js','gui.css','gallery.html','sequence_database.json',
+    files += [ROOT/name for name in ('gui.html','gui.js','mission_metrics.js','launch_energy_review.js','gui.css','gallery.html','sequence_database.json',
               'requirements.txt','requirements-build.txt','Launch RoLaMGAS.cmd','Launch Mission Search.cmd','Launch GUI.ps1',
               'Launch Command Line.cmd','Setup Python.cmd','.gitignore','.gitattributes')+tuple(DOCS)]
     # Local historical-comparison work is included when present; a clean clone

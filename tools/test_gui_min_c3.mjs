@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-const source=fs.readFileSync(new URL('../gui.js',import.meta.url),'utf8').split("$('reuse').onclick=")[0];
+const source=fs.readFileSync(new URL('../launch_energy_review.js',import.meta.url),'utf8')+'\n'+fs.readFileSync(new URL('../gui.js',import.meta.url),'utf8').split("$('reuse').onclick=")[0];
 function gui(){
  const elements={showYellow:{checked:true},showRed:{checked:true},onlyPins:{checked:false},routeFilter:{value:''},sort:{value:'launch_c3_km2_s2'},minC3:{value:'999'}};
  const context=vm.createContext({document:{getElementById:id=>elements[id]}});
@@ -16,6 +16,14 @@ const rows=JSON.stringify([
  {id:'red',status:'near_miss_not_accepted',launch_c3_km2_s2:165,sequence:'EJX',max_vinf_mismatch_mps:2500}
 ]);
 function setup(){const g=gui();g.run(`state.limits={min_c3:150,max_single_dsm_kms:.7};state.rows=${rows}`);return g;}
+
+test('energy review makes an inefficient passing route yellow while physical failures remain red',()=>{
+ const g=gui();g.run(`state.limits={min_c3:5,max_single_dsm_kms:.7,max_dsm_kms:1};
+ launchEnergyReference=LaunchEnergyReview.build(Array.from({length:5},(_,i)=>({id:String(i),sequence:'EVJ',body_ids:['399','299','599'],c3:15,years:6})));
+ state.rows=[{id:'costly',status:'passes_configured_patched_conic_screen',sequence:'EVJ',bodies:['Earth','Venus','Jupiter'],launch_c3_km2_s2:120,duration_years:6,total_dsm_kms:0,max_vinf_mismatch_mps:0},
+ {id:'red',status:'passes_configured_patched_conic_screen',sequence:'EVJ',bodies:['Earth','Venus','Jupiter'],launch_c3_km2_s2:120,duration_years:6,total_dsm_kms:0,max_vinf_mismatch_mps:2500}];`);
+ assert.equal(g.run('severity(state.rows[0])'),'warning');assert.equal(g.run('statusLabel(state.rows[0])'),'HIGH C3 / REVIEW');assert.equal(g.run('severity(state.rows[1])'),'failure');
+});
 test('minimum applies even with both yellow and red included',()=>{
  const g=setup();assert.equal(g.run('filtered().map(q=>q.id).join(",")'),'passing,yellow,red');
  assert.equal(g.run('failedLimits(state.rows[0]).includes("C3 below minimum 150")'),true);
