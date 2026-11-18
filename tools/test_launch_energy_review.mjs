@@ -20,16 +20,19 @@ test('both reported examples receive review labels against the saved library',()
  assert.equal(r.review(chiron,ref).flagged,true);assert.equal(r.review(venus,ref).flagged,true);
 });
 test('a batch notice needs several high-energy multigravity-assist candidates',()=>{
- assert.equal(r.notice([row('a',160,5)]).show,false);assert.equal(r.notice([row('a',160,5),row('b',170,6),row('c',180,7)]).show,true);
+ const ref=r.build(Array.from({length:5},(_,i)=>row(String(i),28,6)));
+ assert.equal(r.notice([row('a',160,5)],ref).show,false);assert.equal(r.notice([row('a',160,5),row('b',170,6),row('c',180,7)],ref).show,true);
 });
-test('entry advisories distinguish absolute energy, relative energy and missing comparisons',()=>{
+test('entry advisories compare destinations and distinguish missing comparisons',()=>{
  const ref=JSON.parse(fs.readFileSync(new URL('../docs/data/launch_energy_reference.json',import.meta.url),'utf8'));
  const venus={id:'9df1198af24d8064f1097c3fedc55b4beab1cdeabf5a298f790790d4e91ea3b4',sequence:'EV',body_ids:['399','299'],metrics:{launch_c3_km2_s2:122.927958964,duration_years:.246406571}};
  const advisory=r.review(venus,ref);assert.equal(advisory.energy_level,'extreme');assert.match(advisory.energy_label,/RIDICULOUSLY HIGH/);assert.ok(advisory.statistics.median<20);
  assert.equal(r.review({...venus,metrics:{launch_c3_km2_s2:16,duration_years:.5}},ref).energy_level,'usual');
- assert.equal(r.review(row('unknown',110,6,'UNSEEN','999'),ref).energy_level,'high');
- assert.equal(r.review(row('unknown',180,3,'UNSEEN','999'),ref).energy_level,'extreme');
- assert.equal(r.review(row('unknown',20,3,'UNSEEN','999'),ref).energy_level,'unrated');
+ assert.equal(r.review(row('pluto',158,9.5,'EJP','999'),ref).energy_level,'high');
+ assert.equal(r.review({...venus,metrics:{launch_c3_km2_s2:150,duration_years:.3}},ref).energy_level,'extreme');
+ assert.equal(r.review(row('unknown',180,3,'UNSEEN','UNSEEN'),ref).energy_level,'unrated');
+ assert.equal(r.review(row('unknown',20,3,'UNSEEN','UNSEEN'),ref).energy_level,'unrated');
  const fast=r.review(row('fast',180,3),r.build(Array.from({length:5},(_,i)=>row(String(i),28,6))));
  assert.equal(fast.energy_level,'extreme');assert.equal(fast.flagged,false);
+ assert.equal(r.review(row('pluto-barycenter',158,9.5,'EJP','9'),ref).energy_level,'high');
 });

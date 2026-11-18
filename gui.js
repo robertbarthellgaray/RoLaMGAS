@@ -83,7 +83,7 @@ let launchEnergyReference=null;
 const launchEnergyReviews=new WeakMap();
 function energyReview(q){if(!launchEnergyReviews.has(q)){const target=q.bodies?.at(-1)===state.limits?.target?state.limits?.target_object?.id:undefined;launchEnergyReviews.set(q,LaunchEnergyReview.review(q,launchEnergyReference,target));}return launchEnergyReviews.get(q);}
 function renderLaunchEnergyNotice(){
- const n=LaunchEnergyReview.notice(state.rows.filter(q=>severity(q)!=='failure'));let box=$('launchEnergyNotice');
+ const n=LaunchEnergyReview.notice(state.rows.filter(q=>severity(q)!=='failure'),launchEnergyReference);let box=$('launchEnergyNotice');
  if(!box){box=element('aside',undefined,'energy-review-alert');box.id='launchEnergyNotice';box.setAttribute('role','note');$('gallery').before(box);}
  box.hidden=!n.show||state.energyDismissed===state.run;if(box.hidden)return;
  const text=element('p',LaunchEnergyReview.warning),button=element('button','Dismiss for this search');button.type='button';button.onclick=()=>{state.energyDismissed=state.run;box.hidden=true;};box.replaceChildren(text,button);

@@ -64,7 +64,7 @@ class NativeReleaseTests(unittest.TestCase):
     def test_clean_source_archive_has_rebuild_inputs_without_private_runs(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp)/'project';root.mkdir()
-            required=('rolamgas.py','network.py','gui.html','gui.js','mission_metrics.js','gui.css','gallery.html',
+            required=('rolamgas.py','network.py','gui.html','gui.js','mission_metrics.js','launch_energy_review.js','gui.css','gallery.html',
                 'sequence_database.json','requirements.txt','requirements-build.txt',
                 'Launch RoLaMGAS.cmd','Launch Mission Search.cmd','Launch GUI.ps1',
                 'Launch Command Line.cmd','Setup Python.cmd','.gitignore','.gitattributes',
@@ -77,7 +77,7 @@ class NativeReleaseTests(unittest.TestCase):
                 output=build.source_release(root/'baseline_ephemerides.zip')
             with zipfile.ZipFile(output) as archive:
                 names=archive.namelist()
-                for name in ('network.py','requirements-build.txt','baseline_ephemerides.zip','community_config.json','community_seed_catalog.json',
+                for name in ('network.py','requirements-build.txt','baseline_ephemerides.zip','community_config.json','community_seed_catalog.json','launch_energy_review.js',
                              'gui_assets/chart.png','model_assets/spacecraft.3ds','model_assets/titan/hasi_reference.csv',
                              '.github/workflows/native-builds.yml'):
                     self.assertIn('RoLaMGAS/'+name,names)

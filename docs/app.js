@@ -1,4 +1,4 @@
-import './launch_energy_review.js?v=20261118energy';
+import './launch_energy_review.js?v=20261118energy2';
 import {openLibraryCache} from './library_cache.js?v=20261116live';
 import {launchVariantKey,nearDuplicate} from './near_duplicates.js?v=20261115pdf';
 import {historicalMatch} from './historical_labels.js?v=20261108b';
@@ -111,7 +111,7 @@ function launchGroupMarkup(group){
   </button>`).join('')}</div></details>`;
 }
 function renderList(revealId=null) {
-  const {all,rows,hidden}=gallerySelection(),sort=$('sort').value;const energyNotice=LaunchEnergyReview.notice(all);$('launch-energy-notice').hidden=!energyNotice.show;$('launch-energy-notice-text').textContent=LaunchEnergyReview.warning+' On the website, use “Use in desktop app” to run refinement.';
+  const {all,rows,hidden}=gallerySelection(),sort=$('sort').value;const energyNotice=LaunchEnergyReview.notice(all,launchEnergyReference);$('launch-energy-notice').hidden=!energyNotice.show;$('launch-energy-notice-text').textContent=LaunchEnergyReview.warning+' On the website, use “Use in desktop app” to run refinement.';
   currentInferiors=hidden;
   rows.sort((a,b) => sort === 'recommended' ? featuredOrder(a,b) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
   const groups=groupLaunches(rows);
@@ -128,7 +128,8 @@ function renderList(revealId=null) {
 }
 function renderInferiorNote(){
  const note=$('mission-inferior');note.replaceChildren();note.hidden=true;
- const review=$('mission-review'),warning=selected&&libraryWarnings[selected.id];const energy=selected?.energy_review;review.hidden=!selected;review.textContent=(energy?energy.energy_label+'. '+energy.energy_explanation+' ':'')+(warning?'Needs flyby revalidation: '+warning.reason+'. ':'')+(energy?.flagged?'Launch-energy review (yellow): '+energy.reason+' ':'')+(energy?.statistics?'Reference C3: mean '+fmt(energy.statistics.mean)+', median '+fmt(energy.statistics.median)+', σ '+fmt(energy.statistics.stddev)+' from '+energy.statistics.n+' saved candidates. '+energy.scope:'');
+ const review=$('mission-review'),warning=selected&&libraryWarnings[selected.id];const energy=selected?.energy_review;review.hidden=!warning;review.textContent=warning?'Needs flyby revalidation: '+warning.reason+'. ':'';
+ const badge=$('mission-energy-advisory');badge.hidden=!energy;badge.className='energy-advisory mission-energy-advisory energy-'+(energy?.energy_level||'unrated');badge.textContent=energy?.energy_label||'';badge.title=energy?energy.energy_explanation+(energy.statistics?' Reference C3: mean '+fmt(energy.statistics.mean)+', median '+fmt(energy.statistics.median)+', σ '+fmt(energy.statistics.stddev)+' from '+energy.statistics.n+' saved candidates. '+energy.scope:''):'';
  if(!selected)return;
  const row=catalog.find(c=>c.id===selected.id)||selected;
  const witness=catalog.find(c=>c.id===currentInferiors.get(row.id))||catalog.find(c=>c.id!==row.id&&clearlyDominates(c,row));
