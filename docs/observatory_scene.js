@@ -29,7 +29,7 @@ export class ObservatoryScene{
   this.meshes={};this.labels={};this.labelLayer=document.createElement('div');this.labelLayer.className='scene-labels';stage.append(this.labelLayer);
   for(const body of Object.keys(colors)){
    const mesh=new THREE.Mesh(new THREE.SphereGeometry(1,40,28),new THREE.MeshStandardMaterial({map:texture(body),roughness:.92,metalness:0}));mesh.userData.body=body;this.meshes[body]=mesh;this.scene.add(mesh);this.label(body);
-   if(body==='Saturn'){const ring=new THREE.Mesh(new THREE.RingGeometry(1.35,2.05,64),new THREE.MeshStandardMaterial({color:0xc2b292,side:THREE.DoubleSide,transparent:true,opacity:.6,roughness:1}));ring.rotation.x=-Math.PI/2+.4;mesh.add(ring);}
+   if(body==='Saturn'){mesh.geometry.scale(1,.9,1);const ring=new THREE.Mesh(new THREE.RingGeometry(1.35,2.05,64),new THREE.MeshStandardMaterial({color:0xc2b292,side:THREE.DoubleSide,transparent:true,opacity:.6,roughness:1}));ring.rotation.x=-Math.PI/2+.4;mesh.add(ring);}
   }
   this.targetBody=new THREE.Mesh(new THREE.IcosahedronGeometry(1,3),new THREE.MeshStandardMaterial({color:0xbfd5ca,roughness:1}));this.targetBody.visible=false;this.scene.add(this.targetBody);this.label('Target','target-body');
   this.ship=new THREE.Mesh(new THREE.SphereGeometry(1,16,12),new THREE.MeshBasicMaterial({color:0xc8ffe9}));this.scene.add(this.ship);this.label('Spacecraft','spacecraft');this.label('Sun');this.route=new THREE.Group();this.orbits=new THREE.Group();this.encounters=new THREE.Group();this.scene.add(this.route,this.orbits,this.encounters);this.arcs=[];this.onSelect=onSelect;
@@ -38,7 +38,7 @@ export class ObservatoryScene{
   document.getElementById('focus-system').onclick=()=>this.fit(34);document.getElementById('focus-mission').onclick=()=>this.setFollowing(!this.following);
   document.getElementById('planet-size').addEventListener('input',e=>{this.planetScale=Number(e.target.value);this.updateBodySizes();});
  }
- updateBodySizes(){this.sun.scale.setScalar(.045);this.halo.scale.setScalar(.27);for(const [body,mesh]of Object.entries(this.meshes)){mesh.scale.setScalar(radiiAU[body]*this.planetScale);if(body==='Saturn')mesh.scale.z*=.9;}if(this.targetBody)this.targetBody.scale.setScalar((this.targetBody.userData.radiusAU||.004)*this.planetScale);}
+ updateBodySizes(){this.sun.scale.setScalar(.045);this.halo.scale.setScalar(.27);for(const [body,mesh]of Object.entries(this.meshes)){mesh.scale.setScalar(radiiAU[body]*this.planetScale);}if(this.targetBody)this.targetBody.scale.setScalar((this.targetBody.userData.radiusAU||.004)*this.planetScale);}
  setFollowing(value){const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;this.following=Boolean(value);this.controls.enablePan=!this.following;if(this.following){this.camera.position.add(this.ship.position.clone().sub(this.controls.target));this.controls.target.copy(this.ship.position);this.controls.update();}const button=document.getElementById('focus-mission');button.textContent=this.following?'Stop following':'Follow spacecraft';button.setAttribute('aria-pressed',String(this.following));}
  label(name,cls=''){const el=document.createElement('span');el.className='scene-label '+cls;el.textContent=name;this.labelLayer.append(el);this.labels[name]=el;}
  resize(){const w=this.stage.clientWidth,h=this.stage.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();}
