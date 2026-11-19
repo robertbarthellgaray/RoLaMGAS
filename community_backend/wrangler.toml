@@ -11,9 +11,14 @@ enabled = false
 [vars]
 ALLOWED_ORIGINS = "https://robertbarthellgaray.github.io"
 MAX_DAILY_CANDIDATES = "5000"
+MAX_DAILY_EXPORTS = "100"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "rolamgas-community"
 # Production community library database.
 database_id = "2c623324-5589-49af-98a6-02c4ef77821a"
+
+[[r2_buckets]]
+binding = "EXPORTS"
+bucket_name = "rolamgas-exports"

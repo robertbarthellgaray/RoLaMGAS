@@ -112,11 +112,10 @@ repeated identical uploads are deduplicated. `MAX_DAILY_EXPORTS` defaults to 100
 `GET /v1/exports/SCIENCE_ID/EXPORT_HASH/trajectory.xyzv` (or `trajectory.csv`,
 `burns.csv`, `validation.json`) downloads the actual uploaded states and burns.
 
-Cloudflare returned code 10042 on 2026-11-19: R2 must first be enabled by the
-account owner in the dashboard. Until then downloads return an empty list with
-`storage_ready:false`; uploads report 503, and local exports remain intact.
-After enabling R2, run the pinned Wrangler `r2 bucket create rolamgas-exports`,
-then add this production binding to wrangler.toml and deploy:
+R2 was enabled and the production `rolamgas-exports` bucket connected on
+2026-11-19. The Worker now reports `export_storage_ready:true`. If a deployment
+lacks the binding, downloads return an empty list with `storage_ready:false`
+and uploads report 503; local exports remain intact. Production binding:
 
 ```toml
 [[r2_buckets]]
@@ -127,3 +126,8 @@ bucket_name = "rolamgas-exports"
 No D1 schema migration is needed. The existing daily budget table accounts for
 export uploads separately from candidate submissions. R2 is private; downloads
 are served through the Worker with attachment headers.
+
+Exports are grouped by a hash of the ordered body IDs and TDB encounter days,
+so replacing the preferred same-day candidate does not orphan its downloads.
+The public summary retains both the source ID and the currently linked ID.
+Curated short-ID pages query by encounter days when they lack a science ID.

@@ -18,12 +18,19 @@ export async function checkExport(data,validate){
  return {...data,source};
 }
 export async function exportStore(request,env,validate,encounterKey){
- const url=new URL(request.url),candidate=url.searchParams.get('candidate');
+ const url=new URL(request.url),candidate=url.searchParams.get('candidate'),encounters=url.searchParams.get('encounters');
  if(!env.EXPORTS)return request.method==='GET'?json({storage_ready:false,exports:[]}):json({error:'Export storage is not enabled yet. Your local export is saved.'},503);
  if(url.pathname==='/v1/exports'&&request.method==='GET'){
-  if(!HEX.test(candidate||''))return json({error:'Use a candidate ID'},400);
-  const list=await env.EXPORTS.list({prefix:'exports/'+candidate+'/',limit:50,include:['customMetadata']});
-  return json({storage_ready:true,exports:list.objects.map(o=>JSON.parse(o.customMetadata.summary)),truncated:list.truncated});
+  if(!HEX.test(candidate||'')&&!encounters)return json({error:'Use a candidate ID or encounter days'},400);
+  let dayKey=encounters;
+  if(dayKey&&!/^\d{1,12}(?:\/\d{1,12}){1,29}@\d{7}(?:\/\d{7}){1,29}$/.test(dayKey))return json({error:'Invalid encounter days'},400);
+  if(!dayKey){const row=await env.DB.prepare('SELECT payload FROM candidates WHERE id=?1').bind(candidate).first();if(row)dayKey=encounterKey(JSON.parse(row.payload));}
+  const group=dayKey?await digest(encoder.encode(dayKey)):candidate;
+  const list=await env.EXPORTS.list({prefix:'exports/'+group+'/',limit:50,include:['customMetadata']});
+  // Retain access to the first deployment's candidate-addressed objects.
+  const legacy=candidate&&group!==candidate?await env.EXPORTS.list({prefix:'exports/'+candidate+'/',limit:50,include:['customMetadata']}):{objects:[]};
+  const rows=new Map([...legacy.objects,...list.objects].map(o=>{const summary=JSON.parse(o.customMetadata.summary);return [summary.export_id,summary]}));
+  return json({storage_ready:true,exports:[...rows.values()],truncated:list.truncated});
  }
  if(url.pathname==='/v1/exports'&&request.method==='POST'){
   if(request.headers.get('Content-Type')!=='application/gzip')return json({error:'Use a gzip numeric export'},415);
@@ -31,15 +38,15 @@ export async function exportStore(request,env,validate,encounterKey){
   const data=await checkExport(JSON.parse(new TextDecoder().decode(await bounded(stream,12000000))),validate);
   const linked=await env.DB.prepare('SELECT id FROM candidates WHERE id=?1 OR encounter_key=?2 LIMIT 1').bind(data.source.id,encounterKey(data.source)).first();
   if(!linked)return json({error:'Share the source candidate first'},409);
-  const hash=await digest(encoder.encode(JSON.stringify(data))),key='exports/'+linked.id+'/'+hash+'.json.gz';
-  if(await env.EXPORTS.head(key))return json({candidate_id:linked.id,export_id:hash,duplicate:true});
+  const hash=await digest(encoder.encode(JSON.stringify(data))),group=await digest(encoder.encode(encounterKey(data.source))),key='exports/'+group+'/'+hash+'.json.gz';
+  if(await env.EXPORTS.head(key))return json({candidate_id:linked.id,group_id:group,export_id:hash,duplicate:true});
   const day='exports:'+new Date().toISOString().slice(0,10),limit=Number(env.MAX_DAILY_EXPORTS)||100;
   const budget=await env.DB.prepare('INSERT INTO daily_budget(day,submissions) VALUES(?1,1) ON CONFLICT(day) DO UPDATE SET submissions=submissions+1 WHERE submissions<?2 RETURNING submissions').bind(day,limit).first();
   if(!budget)return json({error:'Daily export sharing budget reached; local export remains available'},429);
-  const summary={candidate_id:linked.id,source_id:data.source.id,export_id:hash,added_at:new Date().toISOString(),rows:data.states.length,start:data.states[0][0],end:data.states.at(-1)[0][0],...data.validation};
+  const summary={candidate_id:linked.id,group_id:group,source_id:data.source.id,export_id:hash,added_at:new Date().toISOString(),rows:data.states.length,start:data.states[0][0],end:data.states.at(-1)[0][0],...data.validation};
   const canonical=encoder.encode(JSON.stringify(data)),gzip=await new Response(new Blob([canonical]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer();
   await env.EXPORTS.put(key,gzip,{httpMetadata:{contentType:'application/gzip'},customMetadata:{summary:JSON.stringify(summary)}});
-  return json({candidate_id:linked.id,export_id:hash});
+  return json({candidate_id:linked.id,group_id:group,export_id:hash});
  }
  const match=url.pathname.match(/^\/v1\/exports\/([a-f0-9]{64})\/([a-f0-9]{64})\/(trajectory\.xyzv|trajectory\.csv|validation\.json|burns\.csv)$/);
  if(request.method!=='GET'||!match)return json({error:'Export not found'},404);

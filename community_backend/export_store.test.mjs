@@ -17,8 +17,11 @@ test('numeric export round trip preserves states, burn costs, source identity an
   const bytes=await gzip(d),request=()=>new Request('https://example.test/v1/exports',{method:'POST',headers:{'Content-Type':'application/gzip'},body:bytes});
   const first=await worker.fetch(request(),env),saved=await first.json();assert.equal(first.status,200);assert.equal(saved.candidate_id,record.id);assert.equal((await(await worker.fetch(request(),env)).json()).duplicate,true);assert.equal(env.EXPORTS.objects.size,1);
   const listing=await(await worker.fetch(new Request('https://example.test/v1/exports?candidate='+record.id),env)).json();assert.equal(listing.exports[0].rows,2);assert.equal(listing.exports[0].total_onboard_delta_v_kms,.01);
-  const url='https://example.test/v1/exports/'+saved.candidate_id+'/'+saved.export_id;
+  const url='https://example.test/v1/exports/'+saved.group_id+'/'+saved.export_id;
   const file=await worker.fetch(new Request(url+'/trajectory.xyzv'),env);assert.match(file.headers.get('Content-Disposition'),/attachment/);const rows=(await file.text()).trim().split('\n').map(r=>r.split(' ').map(Number));assert.deepEqual(rows,d.states);
   const report=await(await worker.fetch(new Request(url+'/validation.json'),env)).json();assert.equal(report.source_id,record.id);assert.equal(report.validation.patch_join_delta_v_kms,.01);
+  const replacement=structuredClone(record);replacement.dates_jd_tdb[0]+=.001;replacement.metrics.launch_c3_km2_s2=10;const newer=await validate(replacement);
+  await worker.fetch(new Request('https://example.test/v1/candidates',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({candidates:[newer]})}),env);
+  const retained=await(await worker.fetch(new Request('https://example.test/v1/exports?candidate='+newer.id),env)).json();assert.equal(retained.exports.length,1,'Replacing a same-day candidate must not orphan integrated downloads');
  }finally{env.database.close()}
 });

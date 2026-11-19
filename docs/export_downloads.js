@@ -1,9 +1,11 @@
 export function exportRecordId(c){return c?.community_record?.id||c?.desktop_record?.id||c?.id||'';}
+export function exportEncounterKey(c){const r=c?.community_record||c?.desktop_record;return r?.body_ids?.length&&r.dates_jd_tdb?.length===r.body_ids.length?r.body_ids.join('/')+'@'+r.dates_jd_tdb.map(t=>Math.floor(t+.5)).join('/'):null;}
 export async function sharedExportDownloads(c,endpoint){
- const id=exportRecordId(c);if(!/^[a-f0-9]{64}$/.test(id)||!endpoint)return [];
- const response=await fetch(endpoint+'/v1/exports?'+new URLSearchParams({candidate:id}));if(!response.ok)return [];
+ const id=exportRecordId(c),encounters=exportEncounterKey(c);if((!/^[a-f0-9]{64}$/.test(id)&&!encounters)||!endpoint)return [];
+ const query=new URLSearchParams();if(/^[a-f0-9]{64}$/.test(id))query.set('candidate',id);if(encounters)query.set('encounters',encounters);
+ const response=await fetch(endpoint+'/v1/exports?'+query);if(!response.ok)return [];
  const data=await response.json();if(!data.storage_ready)return [];
- return (data.exports||[]).filter(row=>/^[a-f0-9]{64}$/.test(row.export_id)&&/^[a-f0-9]{64}$/.test(row.candidate_id)).sort((a,b)=>b.added_at.localeCompare(a.added_at)).map(row=>({...row,url:endpoint+'/v1/exports/'+row.candidate_id+'/'+row.export_id}));
+ return (data.exports||[]).filter(row=>/^[a-f0-9]{64}$/.test(row.export_id)&&/^[a-f0-9]{64}$/.test(row.group_id||row.candidate_id)).sort((a,b)=>b.added_at.localeCompare(a.added_at)).map(row=>({...row,url:endpoint+'/v1/exports/'+(row.group_id||row.candidate_id)+'/'+row.export_id}));
 }
 export function appendSharedExports(container,rows){
  if(!rows.length)return;const section=document.createElement('section');section.className='shared-export-downloads';const title=document.createElement('h3');title.textContent='Shared integrated trajectories';section.append(title);
