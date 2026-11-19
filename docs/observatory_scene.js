@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {OrbitControls} from './vendor/OrbitControls.js';
+import {targetContext} from './observatory_target.js?v=20261119view';
 // Display only: positions and transfer samples are supplied by the existing app.
 const colors={Mercury:0xa8a29c,Venus:0xdac898,Earth:0x71a8df,Mars:0xcb7056,Jupiter:0xd8b790,Saturn:0xd9c59a,Uranus:0x8fcad0,Neptune:0x527dcc};
 // Fixed illustrative radii in AU: zooming or moving the camera never resizes planets.
@@ -30,13 +31,14 @@ export class ObservatoryScene{
    const mesh=new THREE.Mesh(new THREE.SphereGeometry(1,40,28),new THREE.MeshStandardMaterial({map:texture(body),roughness:.92,metalness:0}));mesh.userData.body=body;this.meshes[body]=mesh;this.scene.add(mesh);this.label(body);
    if(body==='Saturn'){const ring=new THREE.Mesh(new THREE.RingGeometry(1.35,2.05,64),new THREE.MeshStandardMaterial({color:0xc2b292,side:THREE.DoubleSide,transparent:true,opacity:.6,roughness:1}));ring.rotation.x=-Math.PI/2+.4;mesh.add(ring);}
   }
+  this.targetBody=new THREE.Mesh(new THREE.IcosahedronGeometry(1,3),new THREE.MeshStandardMaterial({color:0xbfd5ca,roughness:1}));this.targetBody.visible=false;this.scene.add(this.targetBody);this.label('Target','target-body');
   this.ship=new THREE.Mesh(new THREE.SphereGeometry(1,16,12),new THREE.MeshBasicMaterial({color:0xc8ffe9}));this.scene.add(this.ship);this.label('Spacecraft','spacecraft');this.label('Sun');this.route=new THREE.Group();this.orbits=new THREE.Group();this.encounters=new THREE.Group();this.scene.add(this.route,this.orbits,this.encounters);this.arcs=[];this.onSelect=onSelect;
   const ray=new THREE.Raycaster();let down=null;el.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);el.addEventListener('pointerup',e=>{if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;const r=el.getBoundingClientRect();ray.setFromCamera(new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1),this.camera);const hit=ray.intersectObjects(Object.values(this.meshes).filter(m=>m.visible),false)[0];if(hit)this.onSelect(hit.object.userData.body);});
   this.updateBodySizes();new ResizeObserver(()=>this.resize()).observe(stage);this.resize();this.frame=()=>{if(this.following){this.camera.position.add(this.ship.position.clone().sub(this.controls.target));this.controls.target.copy(this.ship.position);}this.controls.update();this.updateLabels();this.renderer.render(this.scene,this.camera);this.raf=requestAnimationFrame(this.frame);};this.frame();
   document.getElementById('focus-system').onclick=()=>this.fit(34);document.getElementById('focus-mission').onclick=()=>this.setFollowing(!this.following);
   document.getElementById('planet-size').addEventListener('input',e=>{this.planetScale=Number(e.target.value);this.updateBodySizes();});
  }
- updateBodySizes(){this.sun.scale.setScalar(.045);this.halo.scale.setScalar(.27);for(const [body,mesh]of Object.entries(this.meshes))mesh.scale.setScalar(radiiAU[body]*this.planetScale);}
+ updateBodySizes(){this.sun.scale.setScalar(.045);this.halo.scale.setScalar(.27);for(const [body,mesh]of Object.entries(this.meshes)){mesh.scale.setScalar(radiiAU[body]*this.planetScale);if(body==='Saturn')mesh.scale.z*=.9;}if(this.targetBody)this.targetBody.scale.setScalar((this.targetBody.userData.radiusAU||.004)*this.planetScale);}
  setFollowing(value){const damping=this.controls.enableDamping;this.controls.enableDamping=false;this.controls.update();this.controls.enableDamping=damping;this.following=Boolean(value);this.controls.enablePan=!this.following;if(this.following){this.camera.position.add(this.ship.position.clone().sub(this.controls.target));this.controls.target.copy(this.ship.position);this.controls.update();}const button=document.getElementById('focus-mission');button.textContent=this.following?'Stop following':'Follow spacecraft';button.setAttribute('aria-pressed',String(this.following));}
  label(name,cls=''){const el=document.createElement('span');el.className='scene-label '+cls;el.textContent=name;this.labelLayer.append(el);this.labels[name]=el;}
  resize(){const w=this.stage.clientWidth,h=this.stage.clientHeight;if(!w||!h)return;this.renderer.setSize(w,h);this.camera.aspect=w/h;this.camera.updateProjectionMatrix();}
@@ -52,10 +54,11 @@ export class ObservatoryScene{
  }
  update({mission,jd,position,ephemerides,interpolate,visible}){
   if(!mission)return;if(this.id!==mission.id)this.build(mission);this.last={mission,jd,position,visible};
-  const contextId=mission.id+(ephemerides?'dated':'');if(this.contextId!==contextId){this.clear(this.orbits);if(ephemerides)for(const body of Object.keys(colors)){
+  const contextId=mission.id+(ephemerides?'dated':'');if(this.contextId!==contextId){this.clear(this.orbits);this.targetOrbitId=null;if(ephemerides)for(const body of Object.keys(colors)){
    const t=ephemerides.bodies[body];if(!t)continue;const mid=(mission.start+mission.end)/2,seg=t.segments.find(s=>s.start<=mid&&s.end>=mid);if(!seg)continue;const a=Math.max(seg.start,mid-t.period_days/2),b=Math.min(seg.end,mid+t.period_days/2),pts=Array.from({length:361},(_,i)=>position(body,a+(b-a)*i/360)).filter(Boolean);if(pts.length>1){const line=this.line(pts,colors[body],.16);line.userData.body=body;this.orbits.add(line);}
   }this.contextId=contextId;}
   for(const [body,mesh]of Object.entries(this.meshes)){const p=position(body,jd);mesh.visible=Boolean(p)&&visible(body,'markers');if(p)mesh.position.copy(v(p));}
+  const target=targetContext(mission,jd,position);this.targetBody.visible=Boolean(target)&&visible(target.name,'markers');if(target){this.targetBody.position.copy(v(target.point));this.targetBody.userData.body=target.name;this.targetBody.userData.radiusAU=target.radiusAU;this.targetBody.scale.setScalar(target.radiusAU*this.planetScale);this.labels.Target.textContent=target.label;if(target.orbit&&this.targetOrbitId!==mission.id){const orbit=this.line(target.orbit,0xb6d7c8,.35);orbit.userData.body=target.name;this.orbits.add(orbit);this.targetOrbitId=mission.id;}}else this.targetOrbitId=null;
   for(const arc of this.orbits.children)arc.visible=visible(arc.userData.body,'orbits');
   for(const {path,trace}of this.arcs){let n=0;if(jd>=path.end)n=path.points.length;else if(jd>path.start){if(path.times){let lo=0,hi=path.times.length;while(lo<hi){const m=(lo+hi)>>1;if(path.times[m]<=jd)lo=m+1;else hi=m;}n=lo;}else n=1+Math.floor((jd-path.start)/(path.end-path.start)*(path.points.length-1));}trace.geometry.setDrawRange(0,n);}
   const p=mission.paths.find(p=>jd>=p.start&&jd<=p.end)||(jd<mission.start?mission.paths[0]:mission.paths.at(-1));this.ship.position.copy(v(interpolate(p,jd)));for(const marker of this.encounters.children)marker.visible=visible(marker.userData.body,'markers');
@@ -63,7 +66,7 @@ export class ObservatoryScene{
  updateLabels(){
   const h=this.stage.clientHeight,w=this.stage.clientWidth,pixel=mesh=>2*this.camera.position.distanceTo(mesh.position)*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2))/h;
   this.ship.scale.setScalar(pixel(this.ship)*2.5);
-  const objects={Sun:this.sun,...this.meshes,Spacecraft:this.ship},placed=[];const priority=['Spacecraft','Sun',...Object.keys(this.meshes).reverse()];
+  const objects={Sun:this.sun,...this.meshes,Target:this.targetBody,Spacecraft:this.ship},placed=[];const priority=['Spacecraft','Target','Sun',...Object.keys(this.meshes).reverse()];
   for(const name of priority){const mesh=objects[name],el=this.labels[name],p=mesh.position.clone().project(this.camera),x=(p.x+1)*w/2,y=(1-p.y)*h/2;let hidden=!mesh.visible||p.z< -1||p.z>1||x<0||x>w-40||y<0||y>h;const labelY=y-10;if(!hidden&&placed.some(q=>Math.abs(q[0]-x)<70&&Math.abs(q[1]-labelY)<17))hidden=true;el.hidden=hidden;if(!hidden){el.style.left=x+'px';el.style.top=labelY+'px';placed.push([x,labelY]);}}
  }
 }

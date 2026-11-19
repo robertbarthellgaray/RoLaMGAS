@@ -1,5 +1,5 @@
 import './launch_energy_review.js?v=20261118energy2';
-import {ObservatoryScene} from './observatory_scene.js?v=20261118observatory1';
+import {ObservatoryScene} from './observatory_scene.js?v=20261119view';
 import {openLibraryCache} from './library_cache.js?v=20261116live';
 import {launchVariantKey,nearDuplicate} from './near_duplicates.js?v=20261115pdf';
 import {historicalMatch} from './historical_labels.js?v=20261108b';
@@ -105,6 +105,7 @@ function launchGroupMarkup(group){
   <div class="launch-variants">${group.rows.map(c=>`<button type="button" class="candidate-card variant-card" data-id="${escapeHtml(c.id)}" aria-pressed="${c.id===selected?.id}" aria-label="Inspect ${escapeHtml(missionName(c)||c.sequence)}, launch ${launchTimestamp(c)}, C3 ${fmt(c.c3)}">
    ${missionName(c)?`<strong>${escapeHtml(missionName(c))}</strong>`:''}<time>${launchTimestamp(c)}</time>
    <span class="variant-arrival">Arrival ${escapeHtml(c.arrival_date)} · ${fmt(c.years,3)} yr</span>
+   <span class="variant-added" title="${escapeHtml(publicationDate(c,publicationHistory).basis)}">Added ${escapeHtml(publicationDate(c,publicationHistory).text)}</span>
    <span class="variant-metrics">C3 ${fmt(c.c3,2)} · Modeled Δv ${fmt(c.burns_mps,0)} m/s · V∞ ${fmt(c.vinf,2)} km/s</span>
    ${energyAdvisoryMarkup(c)}
    ${c.energy_review?.flagged?'<span class="variant-gap">Yellow · unusually high launch C3; consider C3 refinement</span>':''}
@@ -468,7 +469,7 @@ $('destinations').addEventListener('click', e => {
 });
 $('small-body-options').addEventListener('click',e=>{const b=e.target.closest('[data-small-body]');if(!b)return;if(smallBodyTarget!==b.dataset.smallBody)resetDestinationFilters();pendingHashTarget=null;smallBodyTarget=b.dataset.smallBody;visibleCount=48;makeDestinations();renderList();if(selected)updateLocation(selected.id);});
 $('body-sort').addEventListener('change',makeDestinations);
-$('candidate-list').addEventListener('click', e => { const b=e.target.closest('[data-id]'); if (b) selectCandidate(b.dataset.id); });
+$('candidate-list').addEventListener('click', async e => { const b=e.target.closest('[data-id]'); if (b) {await selectCandidate(b.dataset.id);if(matchMedia('(max-width:760px)').matches)$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});} });
 $('candidate-list').addEventListener('toggle',e=>{const group=e.target;if(group.matches?.('[data-launch-group]')&&group.isConnected){if(group.open)openLaunchGroups.add(group.dataset.launchGroup);else openLaunchGroups.delete(group.dataset.launchGroup);}},true);
 for (const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
 $('sort').addEventListener('change',()=>{visibleCount=48;renderList()});
@@ -637,7 +638,9 @@ try {
  if(filters.target){pendingHashTarget=filters.target;if(applyTargetHash(filters.target))pendingHashTarget=null;makeDestinations()}
  if(filters.mission&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))syncShared();
  if(pendingHashTarget&&applyTargetHash(pendingHashTarget)){pendingHashTarget=null;makeDestinations()}
- const resolved=canonicalId(initial);if(catalog.some(c=>c.id===resolved)||sharedRecords.has(resolved))await selectCandidate(resolved);
+ const resolved=canonicalId(initial);
+ if(filters.mission&&!filters.target){const referenced=catalog.find(c=>c.id===resolved);if(referenced&&applyTargetHash(referenced.target))makeDestinations();}
+ if(catalog.some(c=>c.id===resolved)||sharedRecords.has(resolved))await selectCandidate(resolved);
  else if(filters.mission&&sharedEndpoint){try{const found=await fetchJson(sharedEndpoint+'/v1/candidates?resolve_id='+encodeURIComponent(filters.mission));if(found.candidate){displayAliases[filters.mission]=found.candidate.id;addShared([found.candidate]);updateCounts();await selectCandidate(canonicalId(found.candidate.id));}else if(libraryRemovals[filters.mission])$('plot-message').textContent='This trajectory was removed: '+libraryRemovals[filters.mission].reason;}catch{}}
  renderList();syncShared();setInterval(()=>{if(!document.hidden)syncShared()},30000);
 } catch(e) {

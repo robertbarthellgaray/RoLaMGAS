@@ -20,7 +20,14 @@
  view.append(document.querySelector('.gallery-curation'),graph,info);explorer.append(document.querySelector('.catalog-note'));
  const libraryContent=make('div','library-content');libraryContent.append(...library.childNodes);library.append(libraryContent);
  const stage=document.querySelector('.plot-area');const focus=make('div','scene-focus');focus.innerHTML='<button type="button" id="focus-mission" aria-pressed="false">Follow spacecraft</button><button type="button" id="focus-system">Solar system</button><label class="planet-size-control">Planet size<input id="planet-size" type="range" min="0.15" max="1.25" step="0.05" value="0.45" title="Illustrative marker size; orbital distances stay unchanged"></label>';stage.append(focus);
- const note=make('p','scene-note');note.textContent='JPL positions · planet sizes exaggerated · preview arcs, not resolved flybys';stage.append(note);
+ const viewport=make('section','scene-viewport');viewport.setAttribute('aria-label','Planet view and mission timeline');stage.before(viewport);viewport.append(stage,document.querySelector('.playback'));
+ const fullscreen=make('button','scene-fullscreen');fullscreen.id='scene-fullscreen';fullscreen.type='button';fullscreen.textContent='Fullscreen';fullscreen.setAttribute('aria-pressed','false');focus.append(fullscreen);
+ let previousOverflow='';
+ const syncFullscreen=()=>{const active=document.fullscreenElement===viewport||viewport.classList.contains('is-expanded');fullscreen.textContent=active?'Exit fullscreen':'Fullscreen';fullscreen.setAttribute('aria-pressed',String(active));window.dispatchEvent(new Event('resize'));};
+ const expanded=value=>{if(value){previousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';}else document.body.style.overflow=previousOverflow;viewport.classList.toggle('is-expanded',value);syncFullscreen();};
+ fullscreen.onclick=async()=>{if(document.fullscreenElement===viewport){await document.exitFullscreen();return;}if(viewport.classList.contains('is-expanded')){expanded(false);return;}if(viewport.requestFullscreen&&document.fullscreenEnabled){try{await viewport.requestFullscreen();return;}catch{}}expanded(true);};
+ document.addEventListener('fullscreenchange',syncFullscreen);document.addEventListener('keydown',e=>{if(e.key==='Escape'&&viewport.classList.contains('is-expanded'))expanded(false);});
+ const note=make('p','scene-note');note.textContent='JPL positions · body sizes exaggerated · preview arcs, not resolved flybys';stage.append(note);
  // Compact launch-energy labels replace the previous batch banner.
  $('launch-energy-notice').remove();
  $('destinations').addEventListener('click',e=>{const target=e.target.closest('[data-target]')?.dataset.target;if(target)showPicker(['Dwarf planets & TNOs','Asteroids','Comets','Other bodies'].includes(target));});for(const id of ['small-body-options','candidate-list'])$(id).addEventListener('click',e=>{if(e.target.closest('[data-small-body],[data-id]'))showPicker(false);});
