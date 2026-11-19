@@ -1,5 +1,5 @@
 import './launch_energy_review.js?v=20261118energy2';
-import {ObservatoryScene} from './observatory_scene.js?v=20261119view';
+import {ObservatoryScene} from './observatory_scene.js?v=20261119framing';
 import {openLibraryCache} from './library_cache.js?v=20261116live';
 import {launchVariantKey,nearDuplicate} from './near_duplicates.js?v=20261115pdf';
 import {historicalMatch} from './historical_labels.js?v=20261108b';
