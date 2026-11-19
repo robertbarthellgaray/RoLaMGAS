@@ -55,13 +55,15 @@ def main():
         sys.stderr=sys.stdout
     if len(sys.argv)>2 and sys.argv[1]=='--rolamgas-module':
         module=sys.argv[2]
-        if module not in ('gui_worker','integrate_export','moon_screen','moon_targeting','titan_entry','mission_search','baseline_cache'):
+        if module not in ('gui_worker','integrate_export','moon_screen','moon_targeting','moon_continuation','titan_entry','mission_search','baseline_cache'):
             raise ValueError('Unsupported worker module')
         sys.argv=[module+'.py',*sys.argv[3:]]
         import runpy
         try:
             return runpy.run_module(module,run_name='__main__')
         except Exception:
+            # A windowed frozen worker must exit, not wait on PyInstaller's
+            # unhandled-exception dialog while the GUI thinks it is busy.
             import traceback
             traceback.print_exc()
             raise SystemExit(1)

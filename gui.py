@@ -23,7 +23,7 @@ from horizons_targets import resolve,register_target
 from community import settings as community_settings,save_settings as save_community_settings
 from mission_search import DEFAULT_MIN_C3,HERE,load_database,normalize,routes_for,get_ephemerides
 from dynamics import HARD_MIN_C3,supported_launch_energy
-from app_paths import APP_VERSION,RESOURCE_ROOT,ensure_data,worker_command,worker_environment
+from app_paths import APP_VERSION,RESOURCE_ROOT,ensure_data,worker_command,worker_environment,runtime_path
 
 
 def read_json(path,default=None):
@@ -59,6 +59,8 @@ class App:
         self.targets_path = HERE/'resolved_targets.json'
         self.targets = read_json(self.targets_path,{})
         self.cache = HERE/'cache'
+        from update_check import UpdateCheck
+        self.update_check=UpdateCheck(APP_VERSION,HERE/'update_check.json')
         (HERE/'runs').mkdir(exist_ok=True)
 
     def folder(self,name):
@@ -656,8 +658,10 @@ class App:
             return dict(status,stopped=True)
 
     def integrate(self,name,identifier,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,refine_patches=True,patch_epoch_shift_days=2.):
-        if self.selected_moon_export(name,identifier):return dict(started=False,selected_moon=True)
         from integrate_export import validate_post_flyby_months,validate_patch_epoch_shift
+        post_flyby_months=validate_post_flyby_months(post_flyby_months)
+        selected=self.selected_moon_export(name,identifier)
+        if selected:return self.integrate_moon_continuation(name,identifier,selected,post_flyby_months)
         from arrival_geometry import validate_inclination
         arrival_inclination_deg=validate_inclination(arrival_inclination_deg)
         post_flyby_months=validate_post_flyby_months(post_flyby_months)
@@ -696,15 +700,58 @@ class App:
             self.watch_export(name,identifier,output)
             return dict(started=True)
 
+    def integrate_moon_continuation(self,name,identifier,selected,months):
+        from moon_continuation import continuation_path
+        source,report=selected
+        if months==0:
+            atomic_json(source/'continuation_selection.json',{})
+            return dict(started=False,selected_moon=True)
+        if report['target_mode']!='approach':raise ValueError('Post-moon continuation requires closest-approach mode; impact/entry stops at its interface')
+        output=continuation_path(source,months)
+        with self.lock:
+            if self.active_integration():
+                raise ValueError('An integration is already running. Use Cancel integration to stop it before retrying.')
+            output.mkdir(parents=True,exist_ok=True)
+            atomic_json(source/'continuation_selection.json',dict(folder=output.name,months=months))
+            if read_json(output/'integration_status.json',{}).get('state')=='finished':return dict(started=False,selected_moon=True)
+            atomic_json(output/'integration_status.json',dict(state='running',message='Starting unpowered moon-flyby continuation...'))
+            self.integration_outputs[(name,identifier)]=output
+            with (output/'integration.log').open('w',encoding='utf-8') as log:
+                self.integrations[(name,identifier)]=subprocess.Popen(worker_command('moon_continuation',
+                    '--source',str(source),'--output',str(output),'--cache',str(self.cache),'--months',str(months)),
+                    cwd=HERE,stdout=log,stderr=subprocess.STDOUT,env=worker_environment(output/'integration.log'),
+                    creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+        self.watch_export(name,identifier,output,selected[0].name)
+        return dict(started=True,selected_moon=True)
+
+    def moon_continuation_status(self,name,identifier,selected):
+        source,report=selected;choice=read_json(source/'continuation_selection.json',{})
+        if not choice:return source,dict(state='finished',report=report)
+        from moon_continuation import continuation_path
+        output=continuation_path(source,choice['months'])
+        if output.name!=choice.get('folder'):raise ValueError('Moon continuation belongs to a changed source')
+        status=read_json(output/'integration_status.json',dict(state='none'))
+        process=self.integrations.get((name,identifier))
+        if status['state']=='running' and (process is None or process.poll() is not None):
+            status=dict(state='failed',message='Moon continuation exited unexpectedly. See its integration.log.')
+        if status['state']=='finished':
+            from celestia_package import export_report
+            status['report']=export_report(output,source.name)
+            digest=hashlib.sha256((output/'trajectory.xyzv').read_bytes()).hexdigest()
+            if digest!=status['report'].get('trajectory_sha256'):raise ValueError('Moon continuation checksum changed; integrate it again')
+        else:status['report']=report
+        return output,status
+
     def export_status(self,name,identifier):
         if not re.fullmatch(r'[a-f0-9]{12}',identifier):
             raise ValueError('Invalid candidate ID')
         active=self.active_integration()
         selected=self.selected_moon_export(name,identifier)
         if selected:
-            output,report=selected
-            return dict(state='finished',active_integration=active,sharing=self.share_export(name,identifier,output,output.name),export_kind='moon',branch=output.name,report=report,
-                file_base=output.relative_to(self.folder(name)).as_posix(),message='Selected moon-targeted branch is ready for export.')
+            output,status=self.moon_continuation_status(name,identifier,selected)
+            if status['state']=='finished':status['sharing']=self.share_export(name,identifier,output,selected[0].name)
+            return dict(status,active_integration=active,export_kind='moon',branch=selected[0].name,
+                file_base=output.relative_to(self.folder(name)).as_posix(),message=status.get('message','Selected moon-targeted branch is ready for export.'))
         output=self.folder(name)/'exports'/identifier
         status=read_json(output/'integration_status.json',dict(state='none'))
         process=self.integrations.get((name,identifier))
@@ -776,8 +823,13 @@ class App:
         selected=self.selected_moon_export(name,identifier)
         if selected:
             if patch_dwarf_planet:raise ValueError('The selected moon branch uses planet/moon patches, not a small-body patch')
-            output,report=selected
-            result=build_package(output,candidate,config,model,moon_branch=output.name,patch_planet=patch_planet,patch_moon=patch_moon,patch_days=patch_days)
+            from integrate_export import validate_post_flyby_months
+            post_flyby_months=validate_post_flyby_months(post_flyby_months)
+            output,status=self.moon_continuation_status(name,identifier,selected)
+            if status['state']!='finished' or status['report'].get('post_flyby_months',0.)!=post_flyby_months:
+                self.integrate_moon_continuation(name,identifier,selected,post_flyby_months)
+                return dict(state='integrating',message='Preparing the selected moon trajectory with the requested post-flyby duration.')
+            result=build_package(output,candidate,config,model,moon_branch=selected[0].name,patch_planet=patch_planet,patch_moon=patch_moon,patch_days=patch_days)
             return dict(result,file_base=output.relative_to(root).as_posix())
         if patch_moon:raise ValueError('Use a completed moon-targeting branch before enabling its JPL moon patch')
         from integrate_export import validate_post_flyby_months,validate_patch_epoch_shift
@@ -809,7 +861,7 @@ class App:
         if not re.fullmatch(r'[a-f0-9]{12}',identifier):
             raise ValueError('Invalid candidate ID')
         selected=self.selected_moon_export(name,identifier)
-        folder=(selected[0] if selected else self.folder(name)/'exports'/identifier)/'celestia_package'
+        folder=(self.moon_continuation_status(name,identifier,selected)[0] if selected else self.folder(name)/'exports'/identifier)/'celestia_package'
         if not folder.is_dir():
             raise ValueError('Export a Celestia package first')
         if os.name=='nt':
@@ -841,9 +893,11 @@ class Handler(BaseHTTPRequestHandler):
             url = urllib.parse.urlparse(self.path)
             params = urllib.parse.parse_qs(url.query)
             if url.path=='/api/ping':
-                return self.json(dict(app='trajectory-explorer-gui',version=APP_VERSION,instance_id=self.server.instance_id))
+                return self.json(dict(app='trajectory-explorer-gui',version=APP_VERSION,instance_id=self.server.instance_id,runtime_path=runtime_path()))
             if url.path=='/api/bootstrap':
                 return self.json(self.app.bootstrap())
+            if url.path=='/api/update-status':
+                return self.json(self.app.update_check.snapshot())
             if url.path=='/api/cache':
                 return self.json(self.app.cache_status())
             if url.path=='/api/runs':
@@ -906,6 +960,9 @@ class Handler(BaseHTTPRequestHandler):
             value = json.loads(self.rfile.read(size))
             if self.path=='/api/community-settings':
                 return self.json(save_community_settings(value))
+            if self.path=='/api/check-updates':
+                self.app.update_check.start()
+                return self.json(self.app.update_check.snapshot())
             if self.path=='/api/options/export':
                 return self.json(self.app.export_search_options(value.get('config'),value.get('run')))
             if self.path=='/api/options/import':
@@ -937,10 +994,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.name_candidate(value['run'],value['candidate'],value.get('name','')))
             if self.path=='/api/render-candidate':
                 return self.json(self.app.render_candidate(value['run'],value['candidate']))
-            if self.path=='/api/integration/cancel':
-                return self.json(self.app.cancel_integration(value['run'],value['candidate']))
             if self.path=='/api/integrate':
                 return self.json(self.app.integrate(value['run'],value['candidate'],value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('refine_patches',True),value.get('patch_epoch_shift_days',2.)))
+            if self.path=='/api/integration/cancel':
+                return self.json(self.app.cancel_integration(value['run'],value['candidate']))
             if self.path=='/api/target-moon':
                 return self.json(self.app.target_moon(value['run'],value['candidate'],value.get('moon_id'),value.get('mode','approach'),value.get('altitude_km',1000.),value.get('max_added_mps',700.),value.get('effort','standard'),value.get('inclination_deg'),value.get('target_latitude_deg'),value.get('target_longitude_deg')))
             if self.path=='/api/stop-moon-target':
@@ -980,17 +1037,19 @@ def main():
         try:
             with urllib.request.urlopen(previous['url']+'api/ping',timeout=2) as response:
                 ping = json.load(response)
-            if ping.get('app')=='trajectory-explorer-gui' and ping.get('version')==APP_VERSION and ping.get('instance_id')==previous.get('instance_id'):
+            if (ping.get('app')=='trajectory-explorer-gui' and ping.get('version')==APP_VERSION
+                    and ping.get('instance_id')==previous.get('instance_id') and ping.get('runtime_path')==runtime_path()):
                 webbrowser.open(previous['url'])
                 return
         except (OSError,ValueError,KeyError):
             pass
     app = App()
+    app.update_check.start()
     server = ThreadingHTTPServer(('127.0.0.1',args.port),Handler)
     server.app = app
     server.instance_id = secrets.token_hex(12)
     url = f'http://127.0.0.1:{server.server_port}/'
-    atomic_json(instance_file,dict(url=url,version=APP_VERSION,instance_id=server.instance_id,pid=os.getpid()))
+    atomic_json(instance_file,dict(url=url,version=APP_VERSION,instance_id=server.instance_id,pid=os.getpid(),runtime_path=runtime_path()))
     print('RoLaMGAS: '+url,flush=True)
     if not args.no_browser:
         webbrowser.open(url)

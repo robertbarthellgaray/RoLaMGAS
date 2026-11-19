@@ -17,7 +17,8 @@ class ArrivalGuiOptionsTests(unittest.TestCase):
         (root/'candidates'/(ID+'.json')).write_text('{}')
         (root/'request.json').write_text(json.dumps({'target':'Jupiter'}))
         app=App.__new__(App);app.folder=lambda name:root;app.lock=threading.RLock()
-        app.integrations={};app.cache=root/'cache';app.token='arrival-token'
+        app.integrations={};app.integration_outputs={};app.export_shares={};app.watch_export=Mock()
+        app.cache=root/'cache';app.token='arrival-token'
         return app
 
     def request(self,app,path,payload):

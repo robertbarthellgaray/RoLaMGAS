@@ -51,6 +51,7 @@ function app(){
  for(const id of ['resultsChart','resultsChartLegend','resultsChartTitle','resultsChartStatus','chartColorLegend','chartSamplingNote','chartX','chartY','chartColor','chartYearFrom','chartYearTo'])elements[id]=node('div');
  const context=vm.createContext({document:{getElementById:id=>elements[id],createElement:node,createElementNS:(_,tag)=>node(tag)}});
  vm.runInContext(fs.readFileSync(new URL('../mission_metrics.js',import.meta.url),'utf8'),context);
+ vm.runInContext(fs.readFileSync(new URL('../launch_energy_review.js',import.meta.url),'utf8'),context);
  vm.runInContext(fs.readFileSync(new URL('../gui.js',import.meta.url),'utf8').split("$('reuse').onclick=")[0],context);
  const run=code=>vm.runInContext(code,context);run('state.rows='+JSON.stringify(rows)+';state.limits={}');return {run,elements,context};
 }
@@ -65,7 +66,7 @@ test('website uses shared chart values and keeps sequence filters independent of
  const elements={};for(const id of ['chart-x','chart-y','chart-color','tradeoff-chart','tradeoff-svg','chart-color-legend','chart-sampling-note','tradeoff-legend','tradeoff-status'])elements[id]={value:'',setAttribute(){},replaceChildren(){}};
  elements['chart-x'].value='departure';elements['chart-y'].value='arrival';elements['chart-color'].value='c3';
  const publicRows=rows.map(r=>({...r,start:r.dates_jd_tdb[0],end:r.dates_jd_tdb.at(-1),c3:r.launch_c3_km2_s2,years:m.chartValue(r,'years'),vinf:r.arrival_vinf_kms,burns_mps:r.total_dsm_kms*1000,launch_date:'2030-01-01',arrival_date:'2038-01-01'}));
- const context=vm.createContext({MissionMetrics:m,$:id=>elements[id],selectedTarget:()=> 'Jupiter',visibleRows:()=>publicRows,matchingRows:()=>publicRows,targetRows:()=>publicRows,sequenceColors:()=>new Map([['EVEEJ','red'],['EJ','blue']]),selectedSequences:new Set(),selected:null,escapeHtml:s=>String(s).replaceAll('<','&lt;'),fmt:v=>String(v),launchYear:r=>new Date((r.start-2440587.5)*86400000).getUTCFullYear()});
+ const context=vm.createContext({MissionMetrics:m,$:id=>elements[id],selectedTarget:()=> 'Jupiter',visibleRows:()=>publicRows,matchingRows:()=>publicRows,targetRows:()=>publicRows,sequenceColors:()=>new Map([['EVEEJ','red'],['EJ','blue']]),selectedSequences:new Set(),currentInferiors:new Set(),selected:null,escapeHtml:s=>String(s).replaceAll('<','&lt;'),fmt:v=>String(v),launchYear:r=>new Date((r.start-2440587.5)*86400000).getUTCFullYear()});
  const source=fs.readFileSync(new URL('../docs/app.js',import.meta.url),'utf8');vm.runInContext(source.slice(source.indexOf('function webChartOptions()'),source.indexOf('function renderFlybyDiagnostics(c)')),context);vm.runInContext('drawTradeoff()',context);
  assert.equal((elements['tradeoff-svg'].innerHTML.match(/class="tradeoff-point"/g)||[]).length,2);assert.match(elements['tradeoff-legend'].innerHTML,/data-sequence="EVEEJ"/);assert.doesNotMatch(elements['tradeoff-legend'].innerHTML,/sequence-swatch/);assert.equal(elements['chart-sampling-note'].hidden,false);
 });

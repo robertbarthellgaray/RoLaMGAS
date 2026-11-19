@@ -438,7 +438,7 @@ def job_search(job):
         from append_flyby import return_root_seeds
         root_seeds=return_root_seeds(model,branch)
         for x in root_seeds:record(x)
-    if local:record(local['seed_x'])
+    local_start=record(local['seed_x']) if local else None
     for x in boundary_seeds:record(x)
     valid = 0
     for x in samples:
@@ -478,7 +478,10 @@ def job_search(job):
             ranked.append((q['screening_residual_norm']**2,np.asarray(q['x'])))
     ranked.sort(key=lambda row:row[0])
     # Spread refinements across the good random starts, avoid identical basins.
-    starts = [np.asarray(local['seed_x'])] if local and model.c3_in_bounds(model.launch_c3(local['seed_x'],branch)) else []
+    # A selected candidate may be valid only on its original Lambert branch.
+    # Reuse the guarded full-chain evaluation instead of making a second,
+    # unguarded launch solve for every alternate branch in its neighborhood.
+    starts = [np.asarray(local_start['x'])] if local_start is not None else []
     # Reserve a quarter of refinement slots for empirical low-energy Earth
     # departures, even when the user starts ordinary C3 trials at the maximum.
     priority_departures=departure_seeds[:max(1,nstarts//4)]

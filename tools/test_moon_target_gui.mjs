@@ -44,12 +44,32 @@ test('active moon branch controls package bytes and restores the original export
  await vm.runInContext("selectMoonExport('abcdef012345')",ctx);
  assert.equal(calls[0][0],'/api/select-moon-export');assert.equal(calls[0][1].branch,'abcdef012345');assert.equal(ctx.state.moonExport.branch,'abcdef012345');
  assert.equal(node('patchArrivalPlanet').checked,true);assert.equal(node('patchTargetMoon').checked,true);assert.equal(node('arrivalAltitude').disabled,true);
+ assert.equal(node('postFlybyMonths').disabled,false);
  assert.equal(node('usePlanetExport').hidden,false);assert.match(node('exportSourceStatus').textContent,/Europa/);
  vm.runInContext('showMoonExport('+JSON.stringify(active)+')',ctx);
  const links=node('exportStatus').children.find(x=>x.tag==='div').children;
  assert.ok(links.every(a=>a.href.includes('/moon_targets/0123456789ab/abcdef012345/')));
  await vm.runInContext('selectMoonExport(null)',ctx);
  assert.equal(ctx.state.moonExport,null);assert.equal(node('patchTargetMoon').disabled,true);assert.equal(node('arrivalAltitude').disabled,false);
+});
+
+test('moon continuation polls without offering incomplete downloads and blocks extension for impact',()=>{
+ const {ctx,node}=context(async()=>({}));ctx.checkExport=()=>{};ctx.state.boot={planets:['Neptune']};ctx.state.card={bodies:['Earth','Neptune']};
+ const pending={state:'running',export_kind:'moon',branch:'abcdef012345',file_base:'moon_targets/id/branch/continuations/coast',message:'Propagating outgoing arc...',report:{moon_body:'Triton',target_mode:'approach'}};
+ vm.runInContext('exportSource('+JSON.stringify(pending)+');showMoonExport('+JSON.stringify(pending)+')',ctx);
+ assert.equal(node('postFlybyMonths').disabled,false);assert.equal(node('integrate').disabled,true);
+ assert.equal(node('exportStatus').children.length,1);assert.equal(ctx.state.exportPolling,1);
+ pending.report.target_mode='impact';vm.runInContext('exportSource('+JSON.stringify(pending)+')',ctx);
+ assert.equal(node('postFlybyMonths').disabled,true);
+});
+
+test('integrate submits the duration even when a moon branch is selected',async()=>{
+ const calls=[];const {ctx,node}=context(async(path,data)=>calls.push([path,data]));
+ ctx.state.card={};ctx.state.moonExport={branch:'abcdef012345'};ctx.arrivalAltitude=()=>null;ctx.arrivalInclination=()=>null;ctx.checkExport=()=>{};
+ node('postFlybyMonths').value='600';node('patchEpochShift').value='2';
+ vm.runInContext(gui.slice(gui.indexOf('async function integrate(){'),gui.indexOf('async function checkExport(){')),ctx);
+ await vm.runInContext('integrate()',ctx);
+ assert.equal(calls[0][0],'/api/integrate');assert.equal(calls[0][1].post_flyby_months,600);
 });
 test('Titan-only entry is disabled for airless moons',()=>{
  const {ctx,node}=context(async()=>({state:'none'}));node('moonTargetMode').value='entry';node('moonTargetBody').value='602';node('moonTargetBody').selectedOptions=[{textContent:'Enceladus'}];

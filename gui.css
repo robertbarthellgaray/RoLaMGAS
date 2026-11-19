@@ -40,4 +40,6 @@ td.failure{color:#ff9fad}
 
 @media(max-width:800px){#resultsChart text{font-size:14px}}
 
+.update-notice{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;padding:12px 20px;background:#123a40;border-bottom:1px solid #377681;color:#d7f8ff;font-size:13px;line-height:1.6}.update-notice[hidden]{display:none}.update-notice a{color:#a8ecff;text-decoration:underline}.update-notice button{padding:7px 12px}header .header-right{flex-wrap:wrap}@media(max-width:600px){.update-notice{justify-content:flex-start}}
+
 .energy-review-alert{border:1px solid #8d6a28;background:#302719;color:#ffdfa3;padding:14px 18px;border-radius:6px;margin:12px 0;line-height:1.7;font-size:13px}.energy-review-alert[hidden]{display:none}

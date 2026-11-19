@@ -302,7 +302,7 @@ def post_flyby_pieces(node,ep,end,initial):
     return result
 
 
-def sample_piece(piece,exclude_end=False):
+def sample_piece(piece,exclude_end=False,solar_max_step_days=2.):
     a,b = piece['start'],piece['end']
     if exclude_end:
         b -= .02/DAY  # Strictly increasing XYZV epochs around an impulse.
@@ -315,7 +315,7 @@ def sample_piece(piece,exclude_end=False):
         # Midpoint Hermite interpolation error; use a conservative 0.1 km
         # tolerance, with at most 2-day solar samples and 2-hour flyby samples.
         estimate=.5*(y0[:3]+y1[:3])+dt/8*(y0[3:]-y1[3:])
-        maximum = 2. if piece['kind']=='solar' else 2/24
+        maximum = solar_max_step_days if piece['kind']=='solar' else 2/24
         if depth<24 and ((t1-t0)>maximum or np.linalg.norm(estimate-ym[:3])>.1):
             subdivide(t0,y0,tm,ym,depth+1)
             subdivide(tm,ym,t1,y1,depth+1)

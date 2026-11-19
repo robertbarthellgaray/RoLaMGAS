@@ -2,7 +2,7 @@
 from pathlib import Path
 import os,sys,zipfile
 
-APP_VERSION='0.2.6'
+APP_VERSION='0.2.7'
 
 RESOURCE_ROOT=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parent))
 if os.environ.get('ROLAMGAS_DATA_DIR'):
@@ -11,6 +11,11 @@ elif getattr(sys,'frozen',False):
     DATA_ROOT=(Path(os.environ.get('LOCALAPPDATA',Path.home()/'.local/share'))/'RoLaMGAS').resolve()
 else:
     DATA_ROOT=RESOURCE_ROOT
+
+
+def runtime_path():
+    """Identify the launched copy before reusing a browser GUI instance."""
+    return str(Path(sys.executable).resolve() if getattr(sys,'frozen',False) else RESOURCE_ROOT.resolve())
 
 
 def ensure_data():

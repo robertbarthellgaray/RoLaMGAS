@@ -38,7 +38,8 @@ def public_records(q,config,route):
         if body=='Earth' or body not in BODIES:continue
         try:
             r=prefix_route(route,event);c=dict(config,target=body,target_object=None,append_flyby=None,
-                sequences=[r['id']],event_windows_jd=[[t,t] for t in q['dates_jd_tdb'][:event+1]])
+                sequences=[r['id']],event_windows_jd=[[t,t] for t in q['dates_jd_tdb'][:event+1]],
+                arrival_window_jd=None,arrival_date=None,arrival_tolerance_days=0.)
             prefix=dict(parent,sequence=r['id'],body_ids=parent['body_ids'][:event+1],dates_jd_tdb=parent['dates_jd_tdb'][:event+1],
                 branches=parent['branches'][:event],dsm_controls=[d for d in parent['dsm_controls'] if d['leg_index']<event])
             model=Model(r,c,EventStates());x,branches=record_variables(prefix,model);verified=model.evaluate(x,branches)

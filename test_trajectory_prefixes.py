@@ -28,5 +28,10 @@ class TrajectoryPrefixTests(unittest.TestCase):
         q,c,r=self.fixture();q['periapsis_violation']=True;self.assertEqual(public_records(q,c,r),[])
     def test_route_token_slicing_handles_repeated_planets_and_later_dsms(self):
         q,c,r=self.fixture();p=prefix_route(r,1);self.assertEqual(p['id'],'EV');self.assertEqual(p['dsm_legs'],[])
+    def test_parent_arrival_window_does_not_apply_to_an_earlier_planet(self):
+        q,c,r=self.fixture();date=q['dates_jd_tdb'][-1]
+        c.update(arrival_window_jd=[date-.01,date+.01],arrival_date=q['arrival_date'].split()[0],arrival_tolerance_days=.01)
+        records=public_records(q,c,r)
+        self.assertEqual({record['sequence'] for record in records},{'EVdvEEJX','EV','EVdvEEJ'})
 
 if __name__=='__main__':unittest.main()

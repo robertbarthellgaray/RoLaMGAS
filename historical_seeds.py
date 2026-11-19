@@ -103,8 +103,15 @@ def seed_missions(samples,model,branches):
                 except (ValueError,RuntimeError,AssertionError,OverflowError,FloatingPointError,ZeroDivisionError):return np.array([-1e8,-1e8])
             fit=minimize(objective,point[free],method='SLSQP',bounds=[(0.,1.)]*len(free),constraints=[dict(type='ineq',fun=constraints)],options=dict(maxiter=18,ftol=1e-8,eps=2e-6))
             candidate=expanded(np.clip(fit.x,0,1))
-            if model.c3_in_bounds(model.launch_c3(candidate,branches)) and objective(candidate[free])<objective(point[free]):point=candidate
-        if not model.c3_in_bounds(model.launch_c3(point,branches)):
+            # SLSQP may finish at a trial whose dates cannot support the
+            # requested revolution count, even when the original seed is valid.
+            # Reject that trial and retain the feasible historical guess.
+            try:
+                if model.c3_in_bounds(model.launch_c3(candidate,branches)) and objective(candidate[free])<objective(point[free]):point=candidate
+            except (ValueError,RuntimeError,AssertionError,OverflowError,FloatingPointError,ZeroDivisionError):pass
+        try:in_range=model.c3_in_bounds(model.launch_c3(point,branches))
+        except (ValueError,RuntimeError,AssertionError,OverflowError,FloatingPointError,ZeroDivisionError):in_range=False
+        if not in_range:
             stats['c3_rejected']+=1;continue
         if any(np.linalg.norm(point-p)<1e-9 for p in seeds):
             stats['duplicates']+=1;continue

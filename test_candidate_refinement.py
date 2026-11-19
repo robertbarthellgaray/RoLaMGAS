@@ -1,13 +1,37 @@
 import bootstrap  # noqa: F401
 import unittest
 import numpy as np
-from mission_search import normalize,routes_for,branch_families,load_database
+from unittest.mock import patch
+from mission_search import normalize,routes_for,branch_families,load_database,planned_jobs,job_search
 from dynamics import Model
 from candidate_refinement import neighborhood_request
 from mercury_returns import seed_returns,MERCURY_YEAR_DAYS
 
 
 class RefinementTests(unittest.TestCase):
+    def test_neighborhood_search_skips_an_infeasible_alternate_lambert_branch(self):
+        from test_hard_c3_generation import CircularStates
+        c=normalize(dict(target='Venus',sequences=['EV'],launch_start='2030-01-01',launch_end='2030-12-31',
+                         route_overrides={'EV':dict(leg_days=[[90,120]],branch_options=[[[0,True],[1,True]]])},
+                         max_c3=1e5,max_arrival_vinf_kms=1000,samples_per_sequence=8,
+                         refinements_per_sequence=2,branch_families=2,max_nfev=5))
+        ep=CircularStates();route=routes_for(c)[0]
+        parent=Model(route,c,ep).evaluate([.5,.5],[[0,True]]);parent['id']='123456abcdef'
+        local=normalize(neighborhood_request(c,route,parent,'parent',5))
+        route=routes_for(local)[0];model=Model(route,local,ep)
+        with self.assertRaisesRegex(ValueError,'No feasible solution, try lower M'):
+            model.launch_c3(local['local_refinement']['seed_x'],[[1,True]])
+        results=[]
+        with patch('mission_search._WORKER_EP',ep),patch('mission_search._PROGRESS_QUEUE',None):
+            for job in planned_jobs(local,[route]):results.append(job_search(job))
+        self.assertEqual(len(results),2)
+        original=next(r for r in results if r['branch']==[[0,True]])
+        invalid=next(r for r in results if r['branch']==[[1,True]])
+        self.assertTrue(original['accepted'])
+        self.assertTrue(all(q['refinement_source']['parent_candidate']==parent['id'] for q in original['accepted']))
+        self.assertEqual(invalid['valid_random_evaluations'],0)
+        self.assertEqual(invalid['accepted'],[]);self.assertEqual(invalid['near_misses'],[])
+
     def test_parent_dates_and_dsm_controls_survive_new_parameterization(self):
         c=normalize(dict(target='Jupiter',sequences=['EdvEJ'],launch_start='2032-01-01',launch_end='2033-01-01'))
         route=routes_for(c)[0];model=Model(route,c,None)

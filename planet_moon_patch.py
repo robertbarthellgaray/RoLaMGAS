@@ -44,11 +44,41 @@ def spline_states(spline,seconds):
     return np.concatenate([spline(seconds),spline(seconds,1)],axis=-1)
 
 
+def compact_vectors(dates,values,encounter,position_tolerance_km=.05,velocity_tolerance_kms=1e-6,max_step_days=.25):
+    """Thin playback only; test Hermite error at knots and within every source interval."""
+    from scipy.interpolate import CubicHermiteSpline
+    seconds=(np.asarray(dates)-JD0)*DAY;values=np.asarray(values)
+    reference=CubicHermiteSpline(seconds,values[:,:3],values[:,3:],extrapolate=False)
+    checks=np.unique(np.r_[seconds,*[seconds[:-1]+f*np.diff(seconds) for f in (.25,.5,.75)]])
+    truth=spline_states(reference,checks);kept={0,len(seconds)-1,int(np.argmin(abs(dates-encounter)))}
+    max_position=max_velocity=0.
+    def refine(left,right):
+        nonlocal max_position,max_velocity
+        if right-left<=1:return
+        a,b=seconds[left],seconds[right];mask=(checks>a)&(checks<b);t=checks[mask]
+        trial=CubicHermiteSpline([a,b],values[[left,right],:3],values[[left,right],3:])
+        predicted=spline_states(trial,t);actual=truth[mask]
+        pe=float(np.max(np.linalg.norm(predicted[:,:3]-actual[:,:3],axis=1),initial=0))
+        ve=float(np.max(np.linalg.norm(predicted[:,3:]-actual[:,3:],axis=1),initial=0))
+        if b-a>max_step_days*DAY or pe>position_tolerance_km or ve>velocity_tolerance_kms:
+            middle=(left+right)//2;kept.add(middle);refine(left,middle);refine(middle,right)
+        else:max_position=max(max_position,pe);max_velocity=max(max_velocity,ve)
+    boundaries=sorted(kept)
+    for left,right in zip(boundaries,boundaries[1:]):refine(left,right)
+    indices=sorted(kept)
+    return np.asarray(dates)[indices],values[indices],dict(original_rows=len(dates),retained_rows=len(indices),
+        position_tolerance_km=position_tolerance_km,velocity_tolerance_kms=velocity_tolerance_kms,
+        maximum_checked_position_error_km=max_position,maximum_checked_velocity_error_kms=max_velocity,
+        maximum_sample_step_minutes=float(np.max(np.diff(np.asarray(dates)[indices]))*1440),
+        method='Cubic Hermite checked at original source knots and quarter points; encounter and endpoints retained. Solver ephemerides unchanged.')
+
+
 def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_days=None):
     """Use the solver's exact source table for a moon branch; never extrapolate.
 
     The parent is Sun-relative; the satellite is parent-relative, with BOTH
-    position and velocity subtracted. Source knots and encounter epoch are kept.
+    position and velocity subtracted. Playback samples are thinned with checked
+    interpolation error; source solver tables and encounter epoch are retained.
     """
     from ephemeris import BODIES
     if not isinstance(patch_planet,bool) or not isinstance(patch_moon,bool):raise ValueError('JPL patch options must be boolean')
@@ -122,6 +152,7 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
     def states(spline):return spline_states(spline,seconds)
     parent_states=states(parent_spline)
     for name,center,values,manifest in ([(parent,'Sol',parent_states,{parent:parent_source})] if patch_planet else [])+([(moon['name'],'Sol/'+parent,states(moon_spline)-parent_states,{parent:parent_source,moon['name']:moon_source})] if patch_moon else []):
+        output_dates,values,compression=compact_vectors(dates,values,epoch,max_step_days=min(.25,(period or 8)/32) if name!=parent else .25)
         row=next((r for r in stock['objects'] if r['name']==name and r['parent']==center),None)
         if row is None:raise ValueError('No original Celestia orbital definition available for '+name)
         props=row['properties'];old='\n'.join(props.values());spin='\n'.join(v for k,v in props.items() if k not in ('OrbitFrame','EllipticalOrbit','CustomOrbit'))
@@ -132,7 +163,7 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
         stem='jpl_'+name.casefold();filename=stem+'.xyzv';ssc_name=stem+'_patch.ssc'
         (root/'data').mkdir(parents=True,exist_ok=True);(root/'reports').mkdir(parents=True,exist_ok=True)
         if not np.all(np.isfinite(values)):raise ValueError('Nonfinite JPL patch vectors for '+name)
-        np.savetxt(root/'data'/filename,np.c_[dates,values],fmt=['%.12f']+['%.15e']*6)
+        np.savetxt(root/'data'/filename,np.c_[output_dates,values],fmt=['%.12f']+['%.8f']*3+['%.12f']*3)
         ssc=(f'# JPL encounter override; original orbit/rotation attribution in reports/planet_moon_patches.json\n'
              f'Modify "{name}" "{center}"\n{{\n Timeline [\n'
              f' {{ Ending {start:.12f}\n{old}\n }}\n'
@@ -141,7 +172,7 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
              f' {{\n{old}\n }}\n ]\n}}\n')
         (root/ssc_name).write_text(ssc,encoding='utf-8')
         patches.append(dict(body=name,celestia_object=center+'/'+name,center=center,files=[ssc_name,'data/'+filename],
-            start_jd_tdb=start,end_jd_tdb=end,start_date=calendar(start),end_date=calendar(end),rows=len(dates),
+            start_jd_tdb=start,end_jd_tdb=end,start_date=calendar(start),end_date=calendar(end),rows=len(output_dates),compression=compression,
             requested_duration_days=requested_days,effective_duration_days=effective_days,moon_orbital_period_days=period,
             trajectory_sha256=hashlib.sha256((root/'data'/filename).read_bytes()).hexdigest(),
             ephemeris_sources=manifest,original_properties=props))

@@ -1,6 +1,7 @@
 """Historical references remain reproducible, bounded, and first-leg-only."""
 import bootstrap
 import unittest,math
+from types import SimpleNamespace
 from unittest.mock import patch
 import numpy as np
 from dynamics import Model
@@ -76,6 +77,24 @@ class HistoricalSeedTests(unittest.TestCase):
         self.assertEqual(result['historical_mission_seeds']['refinement_evaluated'],6)
         self.assertEqual({q['initialization_reference'] for q in result['accepted']+result['near_misses'] if 'initialization_reference' in q},set(names))
         for point in points:self.assertTrue(any(np.array_equal(point,call.args[1]) for call in solver.call_args_list))
+    def test_infeasible_multirevolution_optimizer_trial_keeps_valid_reference_and_continues(self):
+        m=model();m.route['leg_days'][0]=[60,1500];m.config.update(max_c3=1e5,max_venus_c3=None)
+        sample=np.full((1,m.dimension),.5);branches=[(1,True)]+[(0,True)]*3
+        refs=[dict(name=f'multirevolution reference {i}',bodies=m.bodies,
+                   planet_leg_days=[1200,240+i,700,1000],
+                   departure=dict(selected=dict(c3_km2_s2=25.),direction_rtn=[0,-1,0])) for i in range(2)]
+        valid=timing_guess(m,sample[0],refs[0]);self.assertTrue(m.c3_in_bounds(m.launch_c3(valid,branches)))
+        impossible=valid.copy();impossible[1]=0
+        with self.assertRaisesRegex(ValueError,'No feasible solution, try lower M'):
+            m.launch_c3(impossible,branches)
+        # SLSQP can finish on an infeasible trial even when its starting point
+        # is valid. Both the original seed and the following reference survive.
+        with patch('historical_seeds.matching_references',return_value=refs),patch('historical_seeds.minimize',return_value=SimpleNamespace(x=impossible[:2])):
+            points,stats=seed_missions(sample,m,branches)
+        self.assertEqual(stats['retained'],2)
+        self.assertEqual(stats['missions'],[r['name'] for r in refs])
+        np.testing.assert_array_equal(points[0],valid)
+        for point in points:self.assertTrue(m.c3_in_bounds(m.launch_c3(point,branches)))
     def test_opt_out_and_frozen_cruises_skip_historical_guesses(self):
         for option in ['off','local','extension']:
             m=model()
