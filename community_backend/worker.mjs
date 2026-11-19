@@ -1,5 +1,6 @@
 // Public science records only. No IP, account, cookie or device identifier is read or stored.
 import {publicLibraryQualityReason} from '../docs/library_policy.js';
+import {targetEphemeris} from './target_ephemeris.mjs';
 const KEYS=['schema_version','engine_version','sequence','body_ids','dates_jd_tdb','branches','dsm_controls','classification','solved_at','metrics','segments','id'];
 const METRICS=['launch_c3_km2_s2','total_dsm_kms','arrival_vinf_kms','duration_years','max_vinf_mismatch_mps'];
 function number(value,min,max){if(typeof value!=='number'||!Number.isFinite(value)||value<min||value>max)throw Error('Invalid numeric field');return value;}
@@ -38,7 +39,7 @@ export async function validate(input){
 }
 function headers(origin){return {'Content-Type':'application/json; charset=utf-8','Access-Control-Allow-Origin':origin||'*','Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Content-Type','Vary':'Origin','X-Content-Type-Options':'nosniff'};}
 function response(value,status=200,origin='',extra={}){return new Response(JSON.stringify(value),{status,headers:{...headers(origin),...extra}});}
-export default {async fetch(request,env){
+export default {async fetch(request,env,ctx){
  const origin=request.headers.get('Origin')||'';
  const allowed=(env.ALLOWED_ORIGINS||'').split(',').map(s=>s.trim());
  const local=/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(origin);
@@ -47,6 +48,7 @@ export default {async fetch(request,env){
  const url=new URL(request.url);
  try {
   if(url.pathname==='/v1/health')return response({service:'RoLaMGAS community library',schema_version:1,stores_identity:false},200,origin);
+  if(url.pathname==='/v1/target-vectors'){const result=await targetEphemeris(request,env,ctx);return new Response(result.body,{status:result.status,headers:{...Object.fromEntries(result.headers),...headers(origin)}});}
   if(url.pathname!=='/v1/candidates')return response({error:'Not found'},404,origin);
   if(request.method==='POST'){
    if(!request.headers.get('Content-Type')?.startsWith('application/json'))return response({error:'JSON required'},415,origin);

@@ -81,3 +81,17 @@ Private/full solver histories are untouched.
 Production migration applied on 2026-11-04 after verifying a complete private SQL backup.
 The live library went from 3,242 records to 2,867 unique encounter schedules (375 duplicates removed).
 The post-deployment audit found no duplicate slots, missing keys, C3 violations or 60-year small-body flights.
+
+## Animated small-body targets (2026-11-19)
+
+`GET /v1/target-vectors?target=999&block=2030` returns daily geometric,
+Sun-centered Ecliptic J2000 JPL vectors in AU/AU per day, on TDB dates, for a
+ten-year block. Only exact target IDs already present in the public library are
+accepted. The Worker checks target identity, frame, units and finite ordered
+states, then caches each block for 30 days using the Cloudflare Cache API.
+These caches are location-dependent and evictable; browsers also retain fetched
+blocks in IndexedDB. The viewer requests only the selected target's blocks.
+
+Cubic Hermite interpolation is for display, not close-encounter targeting.
+If coverage cannot be loaded, the explicitly labeled encounter marker remains.
+No spacecraft propagation, personal data, new telemetry or D1 schema is involved.

@@ -1,6 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {targetContext} from '../docs/observatory_target.js';
+import {targetContext,pickPlanet} from '../docs/observatory_target.js';
+test('inner planet picking accepts nearby clicks and prefers the closest center',()=>{
+ const points=[{body:'Mercury',x:100,y:100,inner:true},{body:'Venus',x:130,y:100,inner:true},{body:'Jupiter',x:200,y:100,inner:false}];
+ assert.equal(pickPlanet(points,114,100),'Mercury');assert.equal(pickPlanet(points,124,100),'Venus');assert.equal(pickPlanet(points,216,100),null);assert.equal(pickPlanet(points,216,100,true),'Jupiter');
+});
 
 test('major planets use the existing planet meshes',()=>{
  assert.equal(targetContext({target:'Saturn'},2451545,()=>[1,2,3]),null);

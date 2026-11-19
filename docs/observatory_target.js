@@ -1,5 +1,8 @@
 // Preview context only. Never invent time-dependent small-body ephemerides.
 export const MAJOR_PLANETS=new Set(['Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uranus','Neptune']);
+export function pickPlanet(points,x,y,touch=false){
+ return points.map(p=>({...p,distance:Math.hypot(p.x-x,p.y-y)})).filter(p=>p.distance<=(p.inner?(touch?26:18):(touch?20:12))).sort((a,b)=>a.distance-b.distance)[0]?.body||null;
+}
 export function targetContext(mission,jd,position){
  const name=mission?.target;if(!name||MAJOR_PLANETS.has(name))return null;
  const event=mission.events?.findLast(e=>e.body===name)||mission.events?.at(-1);
