@@ -1,0 +1,245 @@
+{
+  "format": "rolamgas-search-options",
+  "schema_version": 1,
+  "settings": {
+    "target": "Uranus",
+    "launch_start": "2028-01-01",
+    "launch_end": "2045-12-31",
+    "max_years": 30.0,
+    "vinf_tolerance_mps": 1.0,
+    "min_c3": 29.9,
+    "max_c3": 30.1,
+    "max_arrival_vinf_kms": 8.0,
+    "max_dsm_kms": 1.5,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 10.0,
+    "minimum_altitude_km": {
+      "Mercury": 200.0,
+      "Venus": 300.0,
+      "Earth": 200.0,
+      "Mars": 200.0,
+      "Jupiter": 10000.0,
+      "Saturn": 10000.0,
+      "Uranus": 1000.0,
+      "Neptune": 1000.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EdvEdvEU"
+    ],
+    "route_overrides": {
+      "EdvEdvEU": {
+        "leg_days": [
+          [
+            680,
+            1200
+          ],
+          [
+            900,
+            2600
+          ],
+          [
+            3000,
+            6500
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              0,
+              true
+            ],
+            [
+              1,
+              true
+            ],
+            [
+              1,
+              false
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ],
+            [
+              1,
+              true
+            ],
+            [
+              1,
+              false
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "max_venus_c3": 30.0,
+    "prefer_outbound_encounters": true,
+    "moon_target": null
+  },
+  "trajectory": {
+    "schema_version": 1,
+    "engine_version": "0.2.6",
+    "sequence": "EdvEdvEU",
+    "body_ids": [
+      "399",
+      "399",
+      "399",
+      "799"
+    ],
+    "dates_jd_tdb": [
+      2464254.3073123293,
+      2465022.469037442,
+      2467175.7880459535,
+      2473501.699647228
+    ],
+    "branches": [
+      [
+        1,
+        true
+      ],
+      [
+        1,
+        false
+      ],
+      [
+        0,
+        true
+      ]
+    ],
+    "dsm_controls": [
+      {
+        "leg_index": 0,
+        "fraction": 0.48451104504697307,
+        "departure_offset_kms": [
+          4.249723054083903,
+          2.326342463300044,
+          -0.0007467733694244139
+        ]
+      },
+      {
+        "leg_index": 1,
+        "fraction": 0.5067935603040059,
+        "departure_offset_kms": [
+          -2.7905726075727455,
+          -0.5503437786879961,
+          0.0006608038837607744
+        ]
+      }
+    ],
+    "classification": "pass",
+    "solved_at": "2026-11-19T20:36:20.349597+00:00",
+    "metrics": {
+      "launch_c3_km2_s2": 29.999999999999964,
+      "total_dsm_kms": 0.6688876438959133,
+      "arrival_vinf_kms": 4.959622287859909,
+      "duration_years": 25.31798038302113,
+      "max_vinf_mismatch_mps": 6.3368066349767105e-06
+    },
+    "segments": [
+      {
+        "start_jd": 2464254.3073123293,
+        "end_jd": 2464626.4901525285,
+        "r": [
+          135070808.5950123,
+          63011545.127623074,
+          -6613.948671439895
+        ],
+        "v": [
+          -13.800108825206928,
+          32.31279310905898,
+          -0.0029939881046182853
+        ]
+      },
+      {
+        "start_jd": 2464626.4901525285,
+        "end_jd": 2465022.469037442,
+        "r": [
+          -320144034.2520117,
+          -105654647.17270686,
+          11538.37980042972
+        ],
+        "v": [
+          4.719649034277207,
+          -14.239494713287744,
+          0.0011353515976906606
+        ]
+      },
+      {
+        "start_jd": 2465022.469037442,
+        "end_jd": 2466113.757244236,
+        "r": [
+          67599467.29830284,
+          131296415.77394012,
+          -11442.939032375407
+        ],
+        "v": [
+          -33.80633107520546,
+          19.64551195264589,
+          -0.00046541073411294435
+        ]
+      },
+      {
+        "start_jd": 2466113.757244236,
+        "end_jd": 2467175.7880459535,
+        "r": [
+          -474329467.5071684,
+          -694779127.2085406,
+          63862.6898566654
+        ],
+        "v": [
+          5.5414502889300525,
+          -3.7847495742671957,
+          0.0002352663504891529
+        ]
+      },
+      {
+        "start_jd": 2467175.7880459535,
+        "end_jd": 2473501.699647228,
+        "r": [
+          135708684.8721765,
+          61680538.76378321,
+          -6966.870262231197
+        ],
+        "v": [
+          -19.235457541408014,
+          36.28159148893901,
+          -2.0065121557153605
+        ]
+      }
+    ],
+    "id": "91dc982b01c5b116a2078beac10cded83469d8138b0833a4eda2f9ab4ee6add4"
+  }
+}

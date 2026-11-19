@@ -1,0 +1,317 @@
+{
+  "format": "rolamgas-search-options",
+  "schema_version": 1,
+  "settings": {
+    "target": "Uranus",
+    "launch_start": "2028-01-01",
+    "launch_end": "2045-12-31",
+    "max_years": 30.0,
+    "vinf_tolerance_mps": 1.0,
+    "min_c3": 25.0,
+    "max_c3": 90.0,
+    "max_arrival_vinf_kms": 8.0,
+    "max_dsm_kms": 1.5,
+    "max_single_dsm_kms": 0.7,
+    "max_powered_flyby_kms": 0.2,
+    "dsm_velocity_box_kms": 10.0,
+    "minimum_altitude_km": {
+      "Mercury": 200.0,
+      "Venus": 300.0,
+      "Earth": 200.0,
+      "Mars": 200.0,
+      "Jupiter": 10000.0,
+      "Saturn": 10000.0,
+      "Uranus": 1000.0,
+      "Neptune": 1000.0
+    },
+    "samples_per_sequence": 3000,
+    "refinements_per_sequence": 36,
+    "max_nfev": 250,
+    "branch_families": 16,
+    "batches": 1,
+    "seed": 502,
+    "keep": 100,
+    "max_ephemeris_step_days": 1.0,
+    "sequences": [
+      "EdvEdvEU"
+    ],
+    "route_overrides": {
+      "EdvEdvEU": {
+        "leg_days": [
+          [
+            680,
+            1200
+          ],
+          [
+            900,
+            2600
+          ],
+          [
+            3000,
+            6500
+          ]
+        ],
+        "branch_options": [
+          [
+            [
+              0,
+              true
+            ],
+            [
+              0,
+              false
+            ],
+            [
+              1,
+              true
+            ],
+            [
+              1,
+              false
+            ],
+            [
+              2,
+              true
+            ],
+            [
+              2,
+              false
+            ],
+            [
+              3,
+              true
+            ],
+            [
+              3,
+              false
+            ],
+            [
+              4,
+              true
+            ],
+            [
+              4,
+              false
+            ],
+            [
+              5,
+              true
+            ],
+            [
+              5,
+              false
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ],
+            [
+              0,
+              false
+            ],
+            [
+              1,
+              true
+            ],
+            [
+              1,
+              false
+            ],
+            [
+              2,
+              true
+            ],
+            [
+              2,
+              false
+            ],
+            [
+              3,
+              true
+            ],
+            [
+              3,
+              false
+            ],
+            [
+              4,
+              true
+            ],
+            [
+              4,
+              false
+            ],
+            [
+              5,
+              true
+            ],
+            [
+              5,
+              false
+            ]
+          ],
+          [
+            [
+              0,
+              true
+            ]
+          ]
+        ]
+      }
+    },
+    "target_object": null,
+    "custom_leg_days": [
+      30.0,
+      18262.5
+    ],
+    "search_objective": "feasibility",
+    "cost_refinements": 3,
+    "powered_flybys": false,
+    "mercury_resonant_seeds": true,
+    "earth_return_seeds": true,
+    "historical_mission_seeds": true,
+    "arrival_date": null,
+    "arrival_tolerance_days": 0.0,
+    "transfer_direction": "prograde",
+    "mission_profile": "custom",
+    "c3_seed_boundary": "minimum",
+    "max_venus_c3": 30.0,
+    "prefer_outbound_encounters": true,
+    "moon_target": null
+  },
+  "trajectory": {
+    "schema_version": 1,
+    "engine_version": "0.2.6",
+    "sequence": "EdvEdvEU",
+    "body_ids": [
+      "399",
+      "399",
+      "399",
+      "799"
+    ],
+    "dates_jd_tdb": [
+      2466450.9945146586,
+      2467238.613921716,
+      2469393.2113085273,
+      2475304.158921821
+    ],
+    "branches": [
+      [
+        1,
+        true
+      ],
+      [
+        0,
+        true
+      ],
+      [
+        0,
+        true
+      ]
+    ],
+    "dsm_controls": [
+      {
+        "leg_index": 0,
+        "fraction": 0.49522659694998994,
+        "departure_offset_kms": [
+          2.5051863839716715,
+          1.9965493674127965,
+          -0.00026621649311442397
+        ]
+      },
+      {
+        "leg_index": 1,
+        "fraction": 0.5062960410952144,
+        "departure_offset_kms": [
+          -0.37299967181380844,
+          -2.771811327423759,
+          0.0003352126196198846
+        ]
+      }
+    ],
+    "classification": "pass",
+    "solved_at": "2026-11-19T20:52:55.695569+00:00",
+    "metrics": {
+      "launch_c3_km2_s2": 30.000000000000018,
+      "total_dsm_kms": 0.6556266384296336,
+      "arrival_vinf_kms": 4.821559408639497,
+      "duration_years": 24.23864314075965,
+      "max_vinf_mismatch_mps": 3.114664082204399e-08
+    },
+    "segments": [
+      {
+        "start_jd": 2466450.9945146586,
+        "end_jd": 2466841.044593307,
+        "r": [
+          128718673.0165611,
+          74690574.6850638,
+          -8296.072853560185
+        ],
+        "v": [
+          -19.52587053389741,
+          29.279461415622336,
+          -0.0028297887634166075
+        ]
+      },
+      {
+        "start_jd": 2466841.044593307,
+        "end_jd": 2467238.613921716,
+        "r": [
+          -248816155.34700707,
+          -230585416.6708435,
+          24715.125956303185
+        ],
+        "v": [
+          10.134248861738417,
+          -10.909966782687711,
+          0.0010114234284183878
+        ]
+      },
+      {
+        "start_jd": 2467238.613921716,
+        "end_jd": 2468329.4780488126,
+        "r": [
+          5811182.7109850235,
+          147068597.13331053,
+          -14661.099677839138
+        ],
+        "v": [
+          -39.003590138249194,
+          3.6806360871533688,
+          0.0007861989094498429
+        ]
+      },
+      {
+        "start_jd": 2468329.4780488126,
+        "end_jd": 2469393.2113085273,
+        "r": [
+          -143871192.7052263,
+          -829380119.5422494,
+          85952.34074000875
+        ],
+        "v": [
+          6.603975066661935,
+          -1.1471717240456953,
+          -7.072085804642425e-05
+        ]
+      },
+      {
+        "start_jd": 2469393.2113085273,
+        "end_jd": 2475304.158921821,
+        "r": [
+          94554843.20989412,
+          113935491.02124187,
+          -13892.148918537308
+        ],
+        "v": [
+          -32.94384644258964,
+          24.814514773589913,
+          -1.404592869443533
+        ]
+      }
+    ],
+    "id": "aa76f44dd05b939a2fc24f904f26bb44833858f2da0eff138938a81c658044c3"
+  }
+}

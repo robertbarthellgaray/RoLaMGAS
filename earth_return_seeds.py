@@ -51,6 +51,42 @@ def target_departure(earth_state,minimum_c3,maximum_c3):
     return rtn_basis(earth_state)@local*math.sqrt(energy)
 
 
+def expansive_departure(earth_state,energy,radial_angle_deg=0.):
+    """Near-planar prograde start: maximize solar energy, retain radial diversity."""
+    if not math.isfinite(energy) or energy<=0:raise ValueError('Positive launch C3 required')
+    angle=math.radians(radial_angle_deg)
+    return rtn_basis(earth_state)@np.array([math.sin(angle),math.cos(angle),0.])*math.sqrt(energy)
+
+
+def expansive_energies(model):
+    """Sample 25–90 km²/s², clipped to the user's unchanged launch bounds."""
+    lo=max(25.,model.c3_minimum);hi=min(90.,model.c3_maximum)
+    if hi<lo:return []
+    values=sorted(set([lo,hi]+[float(e) for e in range(25,91,5) if lo<=e<=hi]))
+    if model.config.get('c3_seed_boundary','minimum')=='maximum':values.reverse()
+    return values
+
+
+def expansive_point(model,point,branches,angle=0.,energy=None):
+    """Use DSM departure controls to escape the inclined coincident-EE basin."""
+    x=np.array(point,copy=True);launch=model.launch_solution(x,branches);earth=launch['states'][0]
+    if energy is None:energy=model.c3_minimum if model.config.get('c3_seed_boundary','minimum')=='minimum' else model.c3_maximum
+    if not model.c3_in_bounds(energy):return None
+    desired=earth[3:]+expansive_departure(earth,energy,angle);offset=desired-launch['va']
+    k=model.n+4*model.dsm_legs.index(0);x[k+1:k+4]=.5+offset/(2*model.config['dsm_velocity_box_kms'])
+    if np.any(x<0) or np.any(x>1):return None
+    from ephemeris import MU_SUN,DAY
+    radius=np.linalg.norm(earth[:3]);specific=float(desired@desired)/2-MU_SUN/radius
+    if specific<0:
+        a=-MU_SUN/(2*specific);h=np.cross(earth[:3],desired);e=np.linalg.norm(np.cross(desired,h)/MU_SUN-earth[:3]/radius)
+        if e>1e-8:
+            E=math.atan2(float(earth[:3]@desired)/(e*math.sqrt(MU_SUN*a)),(1-radius/a)/e)
+            mean=E-e*math.sin(E);to_apo=((math.pi-mean)%(2*math.pi))/math.sqrt(MU_SUN/a**3)/DAY
+            fraction=to_apo/(model.dates(x)[1]-model.dates(x)[0])
+            if .1<=fraction<=.9:x[k]=(fraction-.1)/.8
+    return x if model.c3_in_bounds(model.launch_c3(x,branches)) else None
+
+
 def seed_departures(samples,model,branches):
     """Project a few first-EE dates toward JUICE's departure in Earth RTN.
 
@@ -73,6 +109,12 @@ def seed_departures(samples,model,branches):
     # for branch families making a different number of heliocentric revolutions.
     m=int(branches[0][0]);reference_days=ref['first_earth_return_days']
     durations=[reference_days,reference_days+(m-1)*365.25,reference_days+m*365.25]
+    boundary=model.c3_minimum if c.get('c3_seed_boundary','minimum')=='minimum' else model.c3_maximum
+    energies=expansive_energies(model)
+    expansive=0 in model.dsm_legs and bool(energies) and any(b in ('Jupiter','Saturn','Uranus','Neptune') for b in model.bodies[2:])
+    if expansive:
+        durations=[730.5,1095.75,1461.];stats['source']='Planar prograde EdvE expansion and aphelion DSM';stats['energy_grid_km2_s2']=energies
+        count=min(len(samples),max(count,len(energies)*2))
     for j in range(count):
         x=np.asarray(samples[j],dtype=float).copy()
         if 0 in model.dsm_legs:
@@ -80,6 +122,12 @@ def seed_departures(samples,model,branches):
         if not windows:
             a,b=model.route['leg_days'][0];duration=durations[j%len(durations)]
             if a+1<duration<b-1:x[1]=(duration-a)/(b-a)
+        if expansive:
+            stats['attempted']+=1
+            try:point=expansive_point(model,x,branches,[0.,-25.,25.,-40.,40.,10.][j%6],energies[j%len(energies)])
+            except (ValueError,RuntimeError,AssertionError,OverflowError,ZeroDivisionError,FloatingPointError):point=None
+            if point is not None:points.append(point);errors.append(0.)
+            continue
         # Some EE Lambert branches include a nearly Earth-following C3≈0
         # basin. Project onto the user's energy boundary before optimizing
         # direction, rather than asking a flat zero-energy basin to escape.
@@ -151,13 +199,28 @@ def _chain_mappings(model):
 def preferred_chain_branch(config,route):
     """Schedule a compatible known family even when branch effort is small."""
     from dynamics import Model
-    mappings=_chain_mappings(Model(route,config,None))
+    model=Model(route,config,None);mappings=_chain_mappings(model)+_double_earth_mappings(model)
     for record,x,branches in mappings:
         if config.get('effective_min_c3',config.get('min_c3',6.25))-1e-8<=record['metrics']['launch_c3_km2_s2']<=config['max_c3']+1e-8:
             return branches
     if mappings and config.get('effective_min_c3',config.get('min_c3',6.25))<=10.:
         return mappings[0][2]
     return None
+
+
+def _double_earth_mappings(model):
+    """Import solver-built Earth-only outer-planet starters under current limits."""
+    path=RESOURCE_ROOT/'departure_seeds/double_earth_uranus.json'
+    if (not path.is_file() or not model.config.get('earth_return_seeds',True)
+            or model.extension or model.config.get('local_refinement')):return []
+    from community import record_variables
+    mappings=[]
+    for record in json.loads(path.read_text(encoding='utf-8')).get('candidates',[]):
+        if record['sequence']!=model.route['id']:continue
+        try:
+            x,branches=record_variables(record,model);mappings.append((record,x,branches))
+        except (ValueError,KeyError,TypeError,RuntimeError,OverflowError):continue
+    return mappings
 
 
 def fit_initial_dsm(model,dates,branches,energy,fractions=(.7,.82,.8999)):
@@ -217,7 +280,7 @@ def verified_chain_seeds(config,routes,ephemerides):
     import time
     candidates=[];stats=dict(mapped=0,rejected=0,accepted=0,continuations=0)
     for route in routes:
-        model=Model(route,config,ephemerides);mappings=_chain_mappings(model)
+        model=Model(route,config,ephemerides);mappings=_chain_mappings(model)+_double_earth_mappings(model)
         in_range=False
         for record,x,branches in mappings:
             stats['mapped']+=1
@@ -230,11 +293,11 @@ def verified_chain_seeds(config,routes,ephemerides):
                 stats['rejected']+=1;continue
             q.update(status='passes_configured_patched_conic_screen',discovered_unix=time.time(),
                      screening_residual_norm=float(np.linalg.norm(model.residual(x,branches))),
-                     reused_from=dict(library='bundled_eevee_chain',candidate=record.get('id'),revalidated=True))
+                     reused_from=dict(library='bundled_double_earth_uranus' if route['id']=='EdvEdvEU' else 'bundled_eevee_chain',candidate=record.get('id'),revalidated=True))
             candidates.append(q);stats['accepted']+=1
         # A narrow interval between the stored energy levels can still use the
         # same complete chain by solving a new, explicitly charged first DSM.
-        if mappings and not in_range and model.c3_minimum<=10.:
+        if mappings and not in_range and model.c3_minimum<=10. and model.dsm_legs==[0]:
             energy=model.c3_minimum if config.get('c3_seed_boundary','minimum')=='minimum' else config['max_c3']
             if energy<=10.:
                 stats['continuations']+=1;record,x,branches=mappings[0]

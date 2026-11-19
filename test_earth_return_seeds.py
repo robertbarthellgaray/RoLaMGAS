@@ -6,7 +6,7 @@ from unittest.mock import patch
 import numpy as np
 from ephemeris import AU,MU_SUN,DAY,JD0,BODIES
 from dynamics import Model
-from earth_return_seeds import hyperbolic_departure,rtn_basis,target_departure,reference,seed_departures
+from earth_return_seeds import hyperbolic_departure,rtn_basis,target_departure,reference,seed_departures,expansive_departure,expansive_point,expansive_energies
 
 class EarthCircle:
     def __init__(self):self.bodies=[]
@@ -22,6 +22,47 @@ def model():
     return Model(route,c,EarthCircle())
 
 class EarthReturnSeedTests(unittest.TestCase):
+    def test_bundled_earth_only_uranus_routes_reproduce_under_current_limits(self):
+        from app_paths import RESOURCE_ROOT
+        from mission_search import normalize,routes_for
+        from earth_return_seeds import verified_chain_seeds,preferred_chain_branch
+        data=json.loads((RESOURCE_ROOT/'departure_seeds/double_earth_uranus.json').read_text(encoding='utf-8'))
+        class StoredStates:
+            def state(self,body,date):
+                event=next(e for e in data['reference_events'] if e['body']==body and abs(e['julian_date_tdb']-date)<1e-6)
+                return np.array(event['planet_state_km_kms'])
+        config=normalize(dict(target='Uranus',sequences=['EdvEdvEU'],launch_start='2028-01-01',launch_end='2045-12-31',
+            min_c3=25,max_c3=90,max_years=30,dsm_velocity_box_kms=40.,max_arrival_vinf_kms=15,max_dsm_kms=1.5,max_single_dsm_kms=.7,vinf_tolerance_mps=1.,minimum_altitude_km={'Earth':200.}))
+        routes=routes_for(config);result=verified_chain_seeds(config,routes,StoredStates())
+        self.assertEqual(result['stats']['accepted'],len(data['candidates']))
+        self.assertIsNotNone(preferred_chain_branch(config,routes[0]))
+        self.assertTrue(all(c['reused_from']['library']=='bundled_double_earth_uranus' for c in result['accepted']))
+        config.update(min_c3=90.,effective_min_c3=90.);self.assertEqual(verified_chain_seeds(config,routes,StoredStates())['accepted'],[])
+    def test_expansion_energy_grid_preserves_user_bounds_and_boundary_order(self):
+        m=model();m.config.update(min_c3=20.,max_c3=100.)
+        self.assertEqual(expansive_energies(m),list(map(float,range(90,24,-5))))
+        m.config.update(c3_seed_boundary='minimum',min_c3=33.,max_c3=42.)
+        self.assertEqual(expansive_energies(m),[33.,35.,40.,42.])
+        m.config.update(min_c3=5.,max_c3=20.);self.assertEqual(expansive_energies(m),[])
+    def test_high_energy_expansion_seed_preserves_c3_and_avoids_normal_launch_velocity(self):
+        earth=np.array([AU,0,0,0,math.sqrt(MU_SUN/AU),0.])
+        for angle in (-25.,0.,25.):
+            vector=expansive_departure(earth,30.,angle)
+            self.assertAlmostEqual(vector@vector,30.,places=12)
+            self.assertAlmostEqual((rtn_basis(earth).T@vector)[2],0.,places=12)
+            self.assertGreater(vector@earth[3:],0.)
+        pro=earth[3:]+expansive_departure(earth,30.)
+        normal=earth[3:]+np.array([0,0,math.sqrt(30.)])
+        self.assertGreater(pro@pro,normal@normal)
+
+    def test_expansive_dsm_controls_reproduce_requested_launch_vector_and_aphelion(self):
+        m=model();m.route['dsm_legs']=[0];m.dsm_legs=[0];m.dimension=m.n+4;m.free_indices=np.arange(m.dimension)
+        m.config.update(min_c3=30.,max_c3=31.,c3_seed_boundary='minimum',dsm_velocity_box_kms=100.)
+        x=np.full(m.dimension,.5);x[1]=(800.-300)/900
+        result=expansive_point(m,x,[(1,True),(0,True)])
+        self.assertIsNotNone(result);self.assertAlmostEqual(m.launch_c3(result,[(1,True),(0,True)]),30.,places=8)
+        self.assertTrue(.1<.1+.8*result[m.n]<.9)
+
     def test_asymptote_recovers_analytic_hyperbola_and_not_finite_speed(self):
         mu=BODIES['Earth'][1];rp=7000.;c3=8.;e=1+rp*c3/mu;p=rp*(1+e);nu=math.radians(60.)
         radius=p/(1+e*math.cos(nu));r=radius*np.array([math.cos(nu),math.sin(nu),0.]);v=math.sqrt(mu/p)*np.array([-math.sin(nu),e+math.cos(nu),0.])

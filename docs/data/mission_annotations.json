@@ -689,6 +689,81 @@
       "mission_kind": "reconstruction",
       "note": "Numerical reconstruction of UOP Exhibit 3-24 (printed p.25), not an official flight solution. Report launch date and rounded C3/time targets; intermediate epochs and DSM placement were solved independently. Unpowered flybys screened at Earth \u2265200 km, Venus \u2265300 km and Jupiter \u226510,000 km. Solar coasts independently integrated; finite-radius targeting, capture/UOI, probe delivery and n-body corrections are excluded.",
       "featured_priority": 3
+    },
+    "1ac7e7875a78da2dfc0a00731ff6d7e350a69a8f46cd1e92e4d791347a9e7c7f": {
+      "label": "Earth-only Uranus \u00b7 2034-10-22 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 22.37 years, C3 55.00, two aphelion DSMs totaling 336.6 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "500fdd2a12278ce64c85af0668a23fd4935adad8da0b9f5c832f45251331a2e6": {
+      "label": "Earth-only Uranus \u00b7 2035-08-26 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 24.23 years, C3 60.00, two aphelion DSMs totaling 337.4 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "0614d231c0b7692142b381088c050df941748d78c7b67f0e8e6de55da884c825": {
+      "label": "Earth-only Uranus \u00b7 2030-08-09 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 19.74 years, C3 55.00, two aphelion DSMs totaling 337.5 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "9c89bb815570af22b0979031dbf4c15140764f9d8010bbbd6a719211c0747af9": {
+      "label": "Earth-only Uranus \u00b7 2036-09-07 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 25.82 years, C3 60.00, two aphelion DSMs totaling 352.6 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "ba008c66954593af38010b10f71716ec2024fc8e261d1118f08a5d10230a0890": {
+      "label": "Earth-only Uranus \u00b7 2035-11-27 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 20.41 years, C3 50.00, two aphelion DSMs totaling 393.5 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "e5a5d51f35ebecf9db72528cc2ea1e7f21fa724de9a817d24d3680e5e3abfe2e": {
+      "label": "Earth-only Uranus \u00b7 2041-11-22 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 25.35 years, C3 30.00, two aphelion DSMs totaling 648.8 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "aa76f44dd05b939a2fc24f904f26bb44833858f2da0eff138938a81c658044c3": {
+      "label": "Earth-only Uranus \u00b7 2040-10-23 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 24.24 years, C3 30.00, two aphelion DSMs totaling 655.6 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "9d76011ba75f3470d3104b1676003c0a811cf0c50bea3a4aa27fc31ec7bf41a6": {
+      "label": "Earth-only Uranus \u00b7 2040-11-11 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 23.80 years, C3 30.00, two aphelion DSMs totaling 657.7 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "987bc38b09063751a8222623bf6e184d0210d18f68c9025a293832522d2df123": {
+      "label": "Earth-only Uranus \u00b7 2038-10-14 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 24.21 years, C3 30.00, two aphelion DSMs totaling 661.8 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "d76de3c77e07b9812a3b3784ded318fe703d9fe12e3ffe869247988f438876aa": {
+      "label": "Earth-only Uranus \u00b7 2038-10-11 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 23.30 years, C3 30.00, two aphelion DSMs totaling 666.7 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "a84c477b48c236c40ff3a252bf0636246cb9ecf8cfaeecd218c2eeee257b77a0": {
+      "label": "Earth-only Uranus \u00b7 2041-09-26 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 22.68 years, C3 30.00, two aphelion DSMs totaling 704.3 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "3c1feca51c607b094164fc17ea1550c68c012f7d903a00214a1b6eb02eaea7de": {
+      "label": "Earth-only Uranus \u00b7 2028-08-30 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 20.41 years, C3 30.00, two aphelion DSMs totaling 738.4 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "1633be0edcaed9eda5c8bd101cef754646150bef7adf3da330355eb30b48e6fb": {
+      "label": "Earth-only Uranus \u00b7 2034-09-23 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 18.43 years, C3 30.00, two aphelion DSMs totaling 765.6 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "efd95d56aef00dd078a7623a07f61ff66d1f3d37e8bc8f108a1210c4c08bfc3f": {
+      "label": "Earth-only Uranus \u00b7 2036-10-21 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 14.64 years, C3 83.30, two aphelion DSMs totaling 950.8 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
+    },
+    "a534740fd8f69c49400620c22b79f5bfe0c8596fad7e0ade99d4725cd72c9a92": {
+      "label": "Earth-only Uranus \u00b7 2040-10-14 \u00b7 EdvEdvEU",
+      "note": "No Venus or Jupiter. 14.05 years, C3 27.92, two aphelion DSMs totaling 1400.0 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
+      "mission_kind": "original"
     }
   }
 }
