@@ -759,6 +759,58 @@
       "orbit_class_code": "CEN",
       "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20433873",
       "resolved_at": "2026-11-18T20:35:12Z"
+    },
+    "1000032": {
+      "name": "21P/Giacobini-Zinner",
+      "horizons_id": "1000032",
+      "designation": "21P",
+      "object_type": "comet (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=1000032",
+      "resolved_at": "2026-11-19T07:29:20Z"
+    },
+    "1000034": {
+      "name": "26P/Grigg-Skjellerup",
+      "horizons_id": "1000034",
+      "designation": "26P",
+      "object_type": "comet (integrated barycenter)",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=1000034",
+      "resolved_at": "2026-11-19T07:29:20Z"
+    },
+    "20000646": {
+      "name": "646 Kastalia",
+      "full_name": "646 Kastalia (A907 RL)",
+      "horizons_id": "20000646",
+      "designation": "646",
+      "object_type": "asteroid",
+      "lookup_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20000646",
+      "orbit_class": "Main-belt Asteroid",
+      "orbit_class_code": "MBA",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20000646",
+      "resolved_at": "2026-11-19T07:29:20Z"
+    },
+    "20005535": {
+      "name": "5535 Annefrank",
+      "full_name": "5535 Annefrank (1942 EM)",
+      "horizons_id": "20005535",
+      "designation": "5535",
+      "object_type": "asteroid",
+      "lookup_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20005535",
+      "orbit_class": "Main-belt Asteroid",
+      "orbit_class_code": "MBA",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20005535",
+      "resolved_at": "2026-11-19T07:29:20Z"
+    },
+    "20006443": {
+      "name": "6443 Harpalion",
+      "full_name": "6443 Harpalion (1988 RH12)",
+      "horizons_id": "20006443",
+      "designation": "6443",
+      "object_type": "asteroid",
+      "lookup_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20006443",
+      "orbit_class": "Jupiter Trojan",
+      "orbit_class_code": "TJN",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20006443",
+      "resolved_at": "2026-11-19T07:29:20Z"
     }
   },
   "live_checked_through": "2026-11-18T18:32:35.802Z"
