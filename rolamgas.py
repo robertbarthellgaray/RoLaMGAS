@@ -59,7 +59,12 @@ def main():
             raise ValueError('Unsupported worker module')
         sys.argv=[module+'.py',*sys.argv[3:]]
         import runpy
-        return runpy.run_module(module,run_name='__main__')
+        try:
+            return runpy.run_module(module,run_name='__main__')
+        except Exception:
+            import traceback
+            traceback.print_exc()
+            raise SystemExit(1)
     if len(sys.argv)>2 and sys.argv[1]=='--self-check-file':
         from pathlib import Path
         output=Path(sys.argv[2]);output.parent.mkdir(parents=True,exist_ok=True)

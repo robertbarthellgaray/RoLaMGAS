@@ -95,3 +95,35 @@ blocks in IndexedDB. The viewer requests only the selected target's blocks.
 Cubic Hermite interpolation is for display, not close-encounter targeting.
 If coverage cannot be loaded, the explicitly labeled encounter marker remains.
 No spacecraft propagation, personal data, new telemetry or D1 schema is involved.
+
+## Shared integrated downloads
+
+The desktop sharing preference also applies to successful Validate / Build /
+Celestia exports. Only source science records, seven-column heliocentric states,
+a fixed numeric validation summary and burn vectors are uploaded. Models,
+private files, full reports, logs and filesystem paths are excluded. Numerical
+and clearance checks must pass; original-budget violations are disclosed.
+The server checks the data format, not orbital dynamics.
+
+`POST /v1/exports` accepts a gzip JSON science document (6 MB compressed,
+12 MB expanded, 100000 states). Immutable R2 objects are content addressed;
+repeated identical uploads are deduplicated. `MAX_DAILY_EXPORTS` defaults to 100.
+`GET /v1/exports?candidate=SCIENCE_ID` lists available variants.
+`GET /v1/exports/SCIENCE_ID/EXPORT_HASH/trajectory.xyzv` (or `trajectory.csv`,
+`burns.csv`, `validation.json`) downloads the actual uploaded states and burns.
+
+Cloudflare returned code 10042 on 2026-11-19: R2 must first be enabled by the
+account owner in the dashboard. Until then downloads return an empty list with
+`storage_ready:false`; uploads report 503, and local exports remain intact.
+After enabling R2, run the pinned Wrangler `r2 bucket create rolamgas-exports`,
+then add this production binding to wrangler.toml and deploy:
+
+```toml
+[[r2_buckets]]
+binding = "EXPORTS"
+bucket_name = "rolamgas-exports"
+```
+
+No D1 schema migration is needed. The existing daily budget table accounts for
+export uploads separately from candidate submissions. R2 is private; downloads
+are served through the Worker with attachment headers.

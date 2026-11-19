@@ -1,6 +1,7 @@
 // Public science records only. No IP, account, cookie or device identifier is read or stored.
 import {publicLibraryQualityReason} from '../docs/library_policy.js';
 import {targetEphemeris} from './target_ephemeris.mjs';
+import {exportStore} from './export_store.mjs';
 const KEYS=['schema_version','engine_version','sequence','body_ids','dates_jd_tdb','branches','dsm_controls','classification','solved_at','metrics','segments','id'];
 const METRICS=['launch_c3_km2_s2','total_dsm_kms','arrival_vinf_kms','duration_years','max_vinf_mismatch_mps'];
 function number(value,min,max){if(typeof value!=='number'||!Number.isFinite(value)||value<min||value>max)throw Error('Invalid numeric field');return value;}
@@ -47,7 +48,8 @@ export default {async fetch(request,env,ctx){
  if(request.method==='OPTIONS')return new Response(null,{status:204,headers:headers(origin)});
  const url=new URL(request.url);
  try {
-  if(url.pathname==='/v1/health')return response({service:'RoLaMGAS community library',schema_version:1,stores_identity:false},200,origin);
+  if(url.pathname==='/v1/health')return response({service:'RoLaMGAS community library',schema_version:1,stores_identity:false,export_storage_ready:Boolean(env.EXPORTS)},200,origin);
+  if(url.pathname==='/v1/exports'||url.pathname.startsWith('/v1/exports/')){const result=await exportStore(request,env,validate,encounterKey),h=new Headers(result.headers);for(const [key,value]of Object.entries(headers(origin)))if(key!=='Content-Type')h.set(key,value);return new Response(result.body,{status:result.status,headers:h});}
   if(url.pathname==='/v1/target-vectors'){const result=await targetEphemeris(request,env,ctx);return new Response(result.body,{status:result.status,headers:{...Object.fromEntries(result.headers),...headers(origin)}});}
   if(url.pathname!=='/v1/candidates')return response({error:'Not found'},404,origin);
   if(request.method==='POST'){

@@ -53,6 +53,8 @@ class App:
         self.building = set()
         self.archive_errors = {}
         self.integrations = {}
+        self.integration_outputs = {}
+        self.export_shares = {}
         self.moon_jobs = {}
         self.targets_path = HERE/'resolved_targets.json'
         self.targets = read_json(self.targets_path,{})
@@ -581,6 +583,78 @@ class App:
         atomic_json(self.folder(name)/'moon_targets'/identifier/'selection.json',selection)
         return self.export_status(name,identifier)
 
+    def share_export(self,name,identifier,output,moon_branch=None):
+        """Nonblocking sharing never changes success or availability of local exports."""
+        from community import settings
+        pref=settings()
+        if not pref['share_candidates'] or not pref['endpoint']:return dict(state='disabled',message='Export sharing is off or not configured.')
+        output=Path(output)
+        if not (output/'trajectory.xyzv').is_file():return dict(state='none')
+        stamp=(output/'trajectory.xyzv').stat().st_mtime_ns
+        key=str(output)
+        with self.lock:
+            prior=self.export_shares.get(key) or read_json(output/'export_sharing.json',{})
+            if prior.get('stamp')==stamp and (prior.get('state') in ('sharing','shared','not_shared') or prior.get('retry_after',0)>time.time()):return prior
+            status=dict(state='sharing',stamp=stamp,message='Sharing integrated trajectory in the background...')
+            self.export_shares[key]=status
+        def upload():
+            try:
+                from export_sharing import publish,bundle
+                root=self.folder(name);candidate=read_json(root/'candidates'/(identifier+'.json'))
+                config=normalize(read_json(root/'run_manifest.json',{}).get('config') or read_json(root/'request.json'),HERE)
+                route=next(r for r in routes_for(config) if r['id']==candidate['sequence'])
+                with self.lock:
+                    if (output/'trajectory.xyzv').stat().st_mtime_ns!=stamp:return
+                    prepared=bundle(output,candidate,config,route,moon_branch)
+                result=publish(output,candidate,config,route,moon_branch,prepared=prepared)
+            except ValueError as exc:result=dict(state='not_shared',message=str(exc))
+            except Exception as exc:
+                pending=getattr(exc,'code',None)==503
+                result=dict(state='pending',message='Export sharing pending: '+('Cloudflare file storage is not enabled yet.' if pending else 'Upload unavailable; local files are saved.'),retry_after=time.time()+300)
+            result['stamp']=stamp;self.export_shares[key]=result;atomic_json(output/'export_sharing.json',result)
+        threading.Thread(target=upload,daemon=True).start()
+        return status
+
+    def watch_export(self,name,identifier,output,moon_branch=None):
+        process=self.integrations[(name,identifier)]
+        if not callable(getattr(process,'wait',None)):return
+        def finished():
+            process.wait()
+            if read_json(output/'integration_status.json',{}).get('state')=='finished':self.share_export(name,identifier,output,moon_branch)
+        threading.Thread(target=finished,daemon=True).start()
+
+    def active_integration(self):
+        """Terminal worker status releases the slot even during frozen-app shutdown."""
+        with self.lock:
+            for (name,identifier),process in self.integrations.items():
+                if process.poll() is not None:continue
+                output=self.integration_outputs.get((name,identifier),self.folder(name)/'exports'/identifier)
+                status=read_json(output/'integration_status.json',{})
+                if status.get('state') in ('failed','cancelled'):
+                    process.terminate()
+                    try:process.wait(timeout=2)
+                    except subprocess.TimeoutExpired:process.kill();process.wait(timeout=3)
+                    continue
+                if status.get('state')=='finished':continue
+                return dict(run=name,candidate=identifier,message=status.get('message','Integration running'))
+        return None
+
+    def cancel_integration(self,name,identifier):
+        self.folder(name)
+        if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
+        with self.lock:
+            process=self.integrations.get((name,identifier))
+            output=self.integration_outputs.get((name,identifier),self.folder(name)/'exports'/identifier)
+            status=read_json(output/'integration_status.json',dict(state='none'))
+            if not process or process.poll() is not None or status.get('state')=='finished':
+                return dict(stopped=False,state=status.get('state','none'))
+            process.terminate()
+            try:process.wait(timeout=2)
+            except subprocess.TimeoutExpired:process.kill();process.wait(timeout=3)
+            status=dict(state='cancelled',message='Integration cancelled. Saved candidates and previous completed exports are preserved. Change the settings and integrate again.')
+            atomic_json(output/'integration_status.json',status)
+            return dict(status,stopped=True)
+
     def integrate(self,name,identifier,arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,refine_patches=True,patch_epoch_shift_days=2.):
         if self.selected_moon_export(name,identifier):return dict(started=False,selected_moon=True)
         from integrate_export import validate_post_flyby_months,validate_patch_epoch_shift
@@ -601,8 +675,8 @@ class App:
         if not candidate.is_file():
             raise ValueError('Candidate not found')
         with self.lock:
-            if any(p.poll() is None for p in self.integrations.values()):
-                raise ValueError('An integration is already running. Wait for it to finish.')
+            if self.active_integration():
+                raise ValueError('An integration is already running. Use Cancel integration to stop it before retrying.')
             output=root/'exports'/identifier
             if (output/'integration_report.json').is_file():
                 shutil.copytree(output,root/'export_history'/(identifier+'_'+datetime.now().strftime('%Y%m%d_%H%M%S_%f')))
@@ -613,30 +687,34 @@ class App:
             config=output/'request.json'
             atomic_json(config,request)
             atomic_json(output/'integration_status.json',dict(state='running',message='Starting finite-radius integration…'))
+            self.integration_outputs[(name,identifier)]=output
             flags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0
             with (output/'integration.log').open('w',encoding='utf-8') as log:
                 self.integrations[(name,identifier)]=subprocess.Popen(worker_command('integrate_export',
                        '--candidate',str(candidate),'--config',str(config),'--output',str(output),'--post-flyby-months',str(post_flyby_months),'--refine-patches' if refine_patches else '--no-refine-patches','--patch-epoch-shift-days',str(patch_epoch_shift_days))+(['--arrival-altitude-km',str(arrival_altitude_km)] if arrival_altitude_km is not None else [])+(['--powered-flybys' if powered_flybys else '--no-powered-flybys'] if powered_flybys is not None else [])+(['--arrival-inclination-deg',str(arrival_inclination_deg)] if arrival_inclination_deg is not None else []),
                        cwd=HERE,stdout=log,stderr=subprocess.STDOUT,creationflags=flags,env=worker_environment(output/'integration.log'))
+            self.watch_export(name,identifier,output)
             return dict(started=True)
 
     def export_status(self,name,identifier):
         if not re.fullmatch(r'[a-f0-9]{12}',identifier):
             raise ValueError('Invalid candidate ID')
+        active=self.active_integration()
         selected=self.selected_moon_export(name,identifier)
         if selected:
             output,report=selected
-            return dict(state='finished',export_kind='moon',branch=output.name,report=report,
+            return dict(state='finished',active_integration=active,sharing=self.share_export(name,identifier,output,output.name),export_kind='moon',branch=output.name,report=report,
                 file_base=output.relative_to(self.folder(name)).as_posix(),message='Selected moon-targeted branch is ready for export.')
         output=self.folder(name)/'exports'/identifier
         status=read_json(output/'integration_status.json',dict(state='none'))
         process=self.integrations.get((name,identifier))
-        if status['state']=='running' and process is not None and process.poll() is not None:
+        if status['state']=='running' and (process is None or process.poll() is not None):
             status=dict(state='failed',message='Integration exited unexpectedly. See its integration.log.')
             atomic_json(output/'integration_status.json',status)
         if status['state']=='finished':
             status['report']=read_json(output/'integration_report.json',{})
-        return status
+            status['sharing']=self.share_export(name,identifier,output)
+        return dict(status,active_integration=active)
 
     def target_moon(self,name,identifier,moon_id,mode='approach',altitude_km=1000.,max_added_mps=700.,effort='standard',inclination_deg=None,target_latitude_deg=None,target_longitude_deg=None):
         from moon_targets import validate_options
@@ -859,6 +937,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(self.app.name_candidate(value['run'],value['candidate'],value.get('name','')))
             if self.path=='/api/render-candidate':
                 return self.json(self.app.render_candidate(value['run'],value['candidate']))
+            if self.path=='/api/integration/cancel':
+                return self.json(self.app.cancel_integration(value['run'],value['candidate']))
             if self.path=='/api/integrate':
                 return self.json(self.app.integrate(value['run'],value['candidate'],value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('refine_patches',True),value.get('patch_epoch_shift_days',2.)))
             if self.path=='/api/target-moon':

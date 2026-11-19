@@ -1,4 +1,5 @@
 import {combinedMismatch} from './mismatch_screen.js?v=20261119motion';
+import {sharedExportDownloads,appendSharedExports} from './export_downloads.js?v=20261119exports';
 import {targetMotion,targetPosition,loadTargetMotion} from './target_motion.js?v=20261119motion';
 import './launch_energy_review.js?v=20261118energy2';
 import {ObservatoryScene} from './observatory_scene.js?v=20261119motion';
@@ -361,6 +362,7 @@ async function selectCandidate(id) {
     if(c.original_trajectory_files){const old=c.original_trajectory_files,label=old.finite_radius?'Previous finite export':'Original analysis';extra(label+' CSV ↓',old.csv);extra(label+' XYZV ↓',old.xyzv);}
     if(c.refined_alternative){const id=c.refined_alternative.case_id,a=extra(c.refined_alternative.label,'#mission='+id,false);a.onclick=e=>{e.preventDefault();selectCandidate(id);};}
     extras.hidden=extras.childElementCount===0;
+    sharedExportDownloads(c,sharedEndpoint).then(rows=>{if(selected?.id===c.id)appendSharedExports(extras,rows);}).catch(()=>{});
     if(!finite){$('download-xyzv').hidden=true;$('trajectory-download-note').textContent='Preview / analysis CSV uses ideal Lambert coasts joined at planet centers. For Celestia flybys, choose Use in desktop app, load the downloaded file, then choose Integrate & export to construct finite-radius SOI patches and list their extra burns. RoLaMGAS v0.2.4 loads exact candidates; older clients import the search settings.';}
     if(c.community_record){$('download-csv').hidden=false;$('download-csv').href='#analysis-csv';}
     if(!finite){$('download-xyzv').removeAttribute('href');$('download-xyzv').removeAttribute('download');}else $('download-xyzv').setAttribute('download','');
