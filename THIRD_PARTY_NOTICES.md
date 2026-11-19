@@ -1,5 +1,10 @@
 # Third-party notices
 
+The website includes Three.js 0.185.1 and OrbitControls (MIT), copyright
+2010–2026 Three.js Authors. Their license is retained in `docs/vendor/LICENSE`.
+Source: https://github.com/mrdoob/three.js/tree/r185 . These files are used by
+the browser's 3D observatory and are not bundled into the desktop solver.
+
 The Windows preview bundles Python and scientific libraries. Their license texts are retained under `third_party_licenses/`. Build dependencies are also documented; listing a package does not imply every component is bundled.
 
 - truststore 0.10.5: third_party_licenses/truststore/LICENSE (MIT)

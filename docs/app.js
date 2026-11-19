@@ -1,4 +1,5 @@
 import './launch_energy_review.js?v=20261118energy2';
+import {ObservatoryScene} from './observatory_scene.js?v=20261118observatory1';
 import {openLibraryCache} from './library_cache.js?v=20261116live';
 import {launchVariantKey,nearDuplicate} from './near_duplicates.js?v=20261115pdf';
 import {historicalMatch} from './historical_labels.js?v=20261108b';
@@ -32,10 +33,12 @@ let planetEphemerides=null,planetLoad=null,animatePlanets=false;
 let exportingPdf=false;
 let pdfObjectUrl=null;
 let currentInferiors=new Map();
-let destination = 'All', smallBodyTarget = 'All', selected = null, requestVersion = 0, playing = false, lastTick = 0, fraction = 0;
+let destination = 'Jupiter', smallBodyTarget = 'All', selected = null, requestVersion = 0, playing = false, lastTick = 0, fraction = 0;
 const selectedSequences=new Set();
 let yaw = -.35, pitch = .65, zoom = 1, view = '3d', framePending = false;
 const canvas = $('orbit'), ctx = canvas.getContext('2d');
+let observatory=null;try{observatory=new ObservatoryScene(canvas.parentElement,body=>document.querySelector(`[data-target="${body}"]`)?.click());}catch(error){console.warn('3D view unavailable:',error);canvas.style.display='block';for(const id of ['focus-mission','focus-system','planet-size'])$(id).disabled=true;document.querySelector('.scene-note').textContent='2D view · 3D rendering unavailable in this browser';}
+globalThis.rolamgasObservatory=observatory;
 const bodyColors = {Earth:'#6ea9ff', Venus:'#e3c387', Mercury:'#a7a4a0', Mars:'#e7997e', Jupiter:'#dcc3a6', Saturn:'#f0d28d', Uranus:'#87dfed', Neptune:'#729bff'};
 
 async function fetchJson(path) {
@@ -62,8 +65,9 @@ function makeDestinations() {
   $('small-body-options').innerHTML = grouped?smallBodyCards(bodyRows,smallBodyTarget,destination,bodyPhysical,$('body-sort').value):'';
   $('body-sort-control').hidden=!grouped;
   const planet=planetPanel(destination,bodyRows.length,globalThis.MissionMetrics.bodies[destination]?.[0]);
-  const briefing=$('world-briefing');briefing.hidden=!(planet||grouped);briefing.className='world-panel'+(planet?' planet-panel':'');
-  briefing.innerHTML=planet||(grouped?smallBodyBriefing(smallBodyTarget,destination,bodyPhysical,bodyRows):'');
+  const selectedBodyBriefing=grouped&&smallBodyTarget!=='All'?smallBodyBriefing(smallBodyTarget,destination,bodyPhysical,bodyRows):'';
+  const briefing=$('world-briefing');briefing.hidden=!(planet||selectedBodyBriefing);briefing.className='world-panel'+(planet?' planet-panel':'');
+  briefing.innerHTML=planet||selectedBodyBriefing;
   $('body-size-note').hidden=!grouped;
   $('body-size-note').textContent=destination==='Dwarf planets & TNOs'?'Relative diameters, not orbital distances. Small discs can be tiny; dashed outlines indicate unknown sizes. Select a world to filter its trajectories.':'Illustrative shapes, not to scale. Select a body to filter its trajectories.';
 }
@@ -74,7 +78,6 @@ function maximum(id) {
   const value = $(id).value.trim();
   return value === '' ? Infinity : Math.max(0, Number(value));
 }
-function syncGraphYears(){for(const suffix of ['min','max'])$('chart-launch-year-'+suffix).value=$('launch-year-'+suffix).value;}
 function minimumYear(){return $('launch-year-min').value.trim()===''?-Infinity:Number($('launch-year-min').value)}
 function maximumYear(){return $('launch-year-max').value.trim()===''?Infinity:Number($('launch-year-max').value)}
 function targetRows(){return catalog.filter(c=>targetMatches(c)&&(!CATEGORIES.includes(destination)||smallBodyTarget==='All'||c.target===smallBodyTarget))}
@@ -111,7 +114,7 @@ function launchGroupMarkup(group){
   </button>`).join('')}</div></details>`;
 }
 function renderList(revealId=null) {
-  const {all,rows,hidden}=gallerySelection(),sort=$('sort').value;const energyNotice=LaunchEnergyReview.notice(all,launchEnergyReference);$('launch-energy-notice').hidden=!energyNotice.show;$('launch-energy-notice-text').textContent=LaunchEnergyReview.warning+' On the website, use “Use in desktop app” to run refinement.';
+  const {all,rows,hidden}=gallerySelection(),sort=$('sort').value;
   currentInferiors=hidden;
   rows.sort((a,b) => sort === 'recommended' ? featuredOrder(a,b) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
   const groups=groupLaunches(rows);
@@ -359,6 +362,7 @@ async function selectCandidate(id) {
   }
 }
 function setView(mode) {
+  observatory?.setView(mode);
   view = mode;
   if (mode === '3d') { yaw = -.35; pitch = .65; }
   if (mode === 'xy') { yaw = 0; pitch = 0; }
@@ -390,6 +394,7 @@ function drawSoon() {
   if (!framePending) { framePending = true; requestAnimationFrame(() => { framePending = false; draw(); }); }
 }
 function draw(target=canvas,size=null) {
+  if(observatory&&target===canvas){observatory.update({mission:selected,jd:currentJd(),position:planetPosition,ephemerides:planetEphemerides,interpolate,visible:bodyVisible});return;}
   const box = size||target.getBoundingClientRect(), dpr = size?2:Math.min(2, window.devicePixelRatio || 1), w = box.width, h = box.height;
   const ctx=target.getContext('2d');
   if (!w || !h) return;
@@ -465,7 +470,7 @@ $('small-body-options').addEventListener('click',e=>{const b=e.target.closest('[
 $('body-sort').addEventListener('change',makeDestinations);
 $('candidate-list').addEventListener('click', e => { const b=e.target.closest('[data-id]'); if (b) selectCandidate(b.dataset.id); });
 $('candidate-list').addEventListener('toggle',e=>{const group=e.target;if(group.matches?.('[data-launch-group]')&&group.isConnected){if(group.open)openLaunchGroups.add(group.dataset.launchGroup);else openLaunchGroups.delete(group.dataset.launchGroup);}},true);
-for (const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{syncGraphYears();visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
+for (const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
 $('sort').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('mission-kind').addEventListener('change',()=>{selectedSequences.clear();visibleCount=48;renderList()});
 function toggleSequenceFilter(sequence){
@@ -480,13 +485,12 @@ $('include-yellow').addEventListener('change',()=>{visibleCount=48;renderList()}
 $('show-trimmed').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('candidate-more').onclick=()=>{const top=$('candidate-list').scrollTop;visibleCount+=48;renderList();$('candidate-list').scrollTop=top};
 $('community-refresh').onclick=()=>syncShared();
-for(const suffix of ['min','max'])$('chart-launch-year-'+suffix).addEventListener('input',()=>{$('launch-year-'+suffix).value=$('chart-launch-year-'+suffix).value;$('launch-year-'+suffix).dispatchEvent(new Event('input'))});
 for(const id of ['chart-x','chart-y','chart-color'])$(id).onchange=()=>{drawTradeoff();if(selected)updateLocation(selected.id)};
 $('chart-porkchop').onclick=()=>setWebChart({x:'departure',y:'arrival',color:'c3'});
 $('chart-default').onclick=()=>setWebChart({x:'years',y:'c3',color:'sequence'});
 function selectPoint(e){const point=e.target.closest('[data-candidate]');if(!point)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();selectCandidate(point.dataset.candidate);$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
 $('tradeoff-svg').addEventListener('click',selectPoint);$('tradeoff-svg').addEventListener('keydown',selectPoint);
-function resetDestinationFilters(){for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('show-trimmed').checked=false;$('sort').value='recommended';$('mission-kind').value='both';selectedSequences.clear();visibleCount=48;syncGraphYears();}
+function resetDestinationFilters(){for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('show-trimmed').checked=false;$('sort').value='recommended';$('mission-kind').value='both';selectedSequences.clear();visibleCount=48;}
 $('clear-filters').addEventListener('click',()=>{resetDestinationFilters();renderList();if(selected)updateLocation(selected.id);});
 document.querySelector('.projection').addEventListener('click', e => { if (e.target.dataset.view) setView(e.target.dataset.view); });
 $('reset-view').addEventListener('click', () => { zoom=1; setView('3d'); });
@@ -535,7 +539,7 @@ async function exportDesktopCandidate(){
  }catch(error){$('trajectory-download-note').textContent='Could not prepare desktop transfer: '+error.message;}
 }
 $('download-json').addEventListener('click',exportDesktopCandidate);
-$('save-plot').addEventListener('click',()=>{ if(selected) { draw(); canvas.toBlob(blob=>{if(blob)downloadBlob(blob,`rolamgas-${selected.id}.png`);}); } });
+$('save-plot').addEventListener('click',()=>{if(selected){const plot=document.createElement('canvas');draw(plot,{width:1280,height:720});plot.toBlob(blob=>{if(blob)downloadBlob(blob,`rolamgas-${selected.id}.png`);});}});
 async function exportPdf(){
  if(!selected||exportingPdf)return;
  const candidate=selected,title=missionName(candidate)||candidate.title,plot=document.createElement('canvas'),status=$('pdf-export-status');
@@ -627,8 +631,9 @@ try {
  liveCache=await openLibraryCache(archive.received_through||'initial');
  if(liveCache)try{const saved=await liveCache.load();if(saved.records.length){addShared(saved.records);updateCounts();}if(saved.watermark)sharedSince=saved.watermark;if(saved.checkpoint)sharedCheckpoint=saved.checkpoint;}catch{liveCache=null;}
 
+ planetEphemerides=await fetchJson('data/planet_playback.json?v=20261111c').catch(()=>null);animatePlanets=Boolean(planetEphemerides);$('animate-planets').disabled=true;
  const filters=filterStateFromHash(location.hash),initial=canonicalId(filters.mission||'4d76acaf1f6f');
- $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;syncGraphYears();const missionFilters=missionFiltersFromHash(location.hash);const chartSettings=chartSettingsFromHash(location.hash);for(const [id,key]of [['chart-x','x'],['chart-y','y'],['chart-color','color']])$(id).value=chartSettings[key];for(const [id,key]of [['max-years','maxYears'],['max-c3','maxC3'],['max-vinf','maxVinf'],['max-burns','maxBurns']])$(id).value=missionFilters[key];
+ $('launch-year-min').value=filters.launchMin;$('launch-year-max').value=filters.launchMax;const missionFilters=missionFiltersFromHash(location.hash);const chartSettings=chartSettingsFromHash(location.hash);for(const [id,key]of [['chart-x','x'],['chart-y','y'],['chart-color','color']])$(id).value=chartSettings[key];for(const [id,key]of [['max-years','maxYears'],['max-c3','maxC3'],['max-vinf','maxVinf'],['max-burns','maxBurns']])$(id).value=missionFilters[key];
  if(filters.target){pendingHashTarget=filters.target;if(applyTargetHash(filters.target))pendingHashTarget=null;makeDestinations()}
  if(filters.mission&&!catalog.some(c=>c.id===initial)&&!sharedRecords.has(initial))syncShared();
  if(pendingHashTarget&&applyTargetHash(pendingHashTarget)){pendingHashTarget=null;makeDestinations()}
