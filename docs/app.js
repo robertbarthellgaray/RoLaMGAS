@@ -1,3 +1,4 @@
+import {appendMissionAddons} from './mission_addons.js?v=20261120addons';
 import {combinedMismatch} from './mismatch_screen.js?v=20261119motion';
 import {sharedExportDownloads,appendSharedExports} from './export_downloads.js?v=20261119r2';
 import {targetMotion,targetPosition,loadTargetMotion} from './target_motion.js?v=20261119motion';
@@ -354,7 +355,7 @@ async function selectCandidate(id) {
     if(files) $('trajectory-download-note').textContent=`${files.rows.toLocaleString()} saved position/velocity states · ${files.units} · ${files.coordinates}. ${files.note}`;
     else if(c.download) { $('download-xyzv').href=c.download; $('download-xyzv').hidden=false; }
     if(c.atmospheric_variant?.banner)$('trajectory-download-note').textContent+=' '+c.atmospheric_variant.banner;
-    const extras=$('download-extras');extras.replaceChildren();
+    const extras=$('download-extras');extras.replaceChildren();appendMissionAddons(extras,c,canonicalId);
     const extra=(label,href,download=true)=>{const a=document.createElement('a');a.className='text-link small';a.textContent=label;a.href=href;if(download)a.setAttribute('download','');extras.append(a);return a;};
     if(files?.encounters)extra('Exported encounter dates ↓',files.encounters);
     if(files?.targeting)extra('Targeting changes ↓',files.targeting);
@@ -651,7 +652,7 @@ async function syncShared(){
 }
 
 try {
- const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical,energyReference]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261119earth').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261119earth').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),fetchJson('data/body_physical.json?v=20261116live').catch(()=>({bodies:{}})),fetchJson('data/launch_energy_reference.json?v=20261118energy2').catch(()=>null)]);
+ const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical,energyReference]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261119earth').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261120addons').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),fetchJson('data/body_physical.json?v=20261116live').catch(()=>({bodies:{}})),fetchJson('data/launch_energy_reference.json?v=20261118energy2').catch(()=>null)]);
  launchEnergyReference=energyReference;bodyPhysical=physical;registerBodyPhysical(physical);registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  libraryRemovals=removals.removed||{};libraryWarnings=removals.review_warnings||{};Object.assign(archive.duplicate_aliases||={},removals.duplicate_aliases||{});
  catalog.push(...data.cases.filter(c=>c.c3<=250&&!libraryRemovals[c.id]).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
