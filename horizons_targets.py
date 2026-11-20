@@ -7,12 +7,27 @@ from network import request_json
 
 TARGETS = {}
 
+def canonical_target(descriptor):
+    """Pluto's numbered designation aliases its physical center, never barycenter 9."""
+    result=dict(descriptor)
+    if str(result.get('id')) in ('20134340','134340') or (str(result.get('designation'))=='134340'):
+        result.update(id='999',command='999',kind='horizons_object',
+            original_horizons_id=descriptor.get('original_horizons_id',str(descriptor.get('id','20134340'))),
+            identity_note='134340 Pluto is the physical Pluto center (Horizons 999); barycenter 9 remains distinct.')
+    return result
+
+def pluto_identity(query='Pluto'):
+    return dict(name='Pluto',id='999',command='999',kind='horizons_object',query=str(query),
+                source='https://ssd.jpl.nasa.gov/horizons/',effective_radius_km=1188.3)
+
 
 def satellite_parent(descriptor):
     """Planetary-satellite SPK families; do not confuse asteroid numbers with IDs."""
     if not descriptor or descriptor.get('kind') == 'small_body':
         return None
     value = int(descriptor.get('id',0))
+    if value>=100000000:
+        return {20136199:'Eris',20136108:'Haumea',20136472:'Makemake'}.get(value%100000000)
     family, member = divmod(value,100)
     return {3:'Earth',4:'Mars',5:'Jupiter',6:'Saturn',7:'Uranus',8:'Neptune',9:'Pluto'}.get(family) if 0 < member < 99 else None
 
@@ -45,7 +60,7 @@ def register_target(descriptor):
         raise ValueError('A resolved Horizons target with name, numeric ID and command is required')
     if len(descriptor['name']) > 160 or len(descriptor['command']) > 160:
         raise ValueError('Horizons target identifier is too long')
-    descriptor=dict(descriptor)
+    descriptor=canonical_target(descriptor)
     if descriptor.get('kind')=='small_body' and str(descriptor.get('designation','')).isdigit():
         descriptor['command']=str(int(descriptor['designation']))+';'
     TARGETS[descriptor['name']] = descriptor
@@ -122,6 +137,8 @@ def resolve(query,epoch='2030-01-01'):
     for name in BODIES:
         if query.lower() == name.lower() or query==str(BODIES[name][0]):
             return identity(name)
+    if re.fullmatch(r'(?:134340(?:\s+Pluto)?(?:\s*\(1930\s*BM\))?|Pluto|(?:SPK=)?(?:999|20134340))',query,re.I):
+        descriptor=pluto_identity(query);register_target(descriptor);return descriptor
     # Search BOTH Horizons indexes first. SBDB-only HTTP errors used to prevent
     # the major-body fallback from running at all (e.g. Titan).
     # '(SVI)' is a display label, rather than a literal Horizons query string.
@@ -173,6 +190,7 @@ def resolve(query,epoch='2030-01-01'):
             descriptor['effective_radius_km'] = float(diameter['value'])/2
             descriptor['radius_source'] = diameter.get('ref')
             descriptor['radius_note'] = 'Half the SBDB effective diameter; not a shape or surface-clearance model.'
+        descriptor=canonical_target(descriptor)
         register_target(descriptor)
         if descriptor['is_comet']:
             command_for_epoch(descriptor['name'], jd(epoch))

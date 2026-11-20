@@ -66,14 +66,21 @@ def catalog_from_ssc(text,include_major=False):
     return result
 
 def read_catalog(source):
-    source=Path(source);raw=source.read_bytes();text=raw.decode('utf-8-sig').replace('\r\n','\n')
+    source=Path(source);raw=source.read_bytes();text,encoding=decode_catalog(raw)
     rows=catalog_from_ssc(text)
     attribution=[line for line in text.splitlines() if 'SPDX-FileCopyrightText:' in line]
     license_match=re.search(r'SPDX-License-Identifier:\s*([^\r\n]+)',text)
     for row in rows:
         row.update(catalog_source=str(source),source_sha256=hashlib.sha256(raw).hexdigest(),
-                   attribution=attribution,license=license_match[1].strip() if license_match else 'not specified in source catalog')
+                   catalog_encoding=encoding,attribution=attribution,license=license_match[1].strip() if license_match else 'not specified in source catalog')
     return rows
+
+
+def decode_catalog(raw):
+    """Old Windows SSCs often contain a CP1252 degree sign in their comments."""
+    if raw.startswith((b'\xff\xfe',b'\xfe\xff')):return raw.decode('utf-16').replace('\r\n','\n'),'utf-16'
+    try:return raw.decode('utf-8-sig').replace('\r\n','\n'),'utf-8'
+    except UnicodeDecodeError:return raw.decode('cp1252').replace('\r\n','\n'),'windows-1252'
 
 
 def load_catalog(path=None):
@@ -149,26 +156,31 @@ def patch_info(config,catalog_path=None):
               'Avoid overlapping ephemeris patches from multiple addons; remove the optional patch SSC to undo it. '
               'Switching back to the old orbit at the year boundaries may produce a position jump away from the flyby.'))
 
-def create_patch(root,candidate,config,report,catalog_path=None):
+def create_patch(root,candidate,config,report,catalog_path=None,patch_days=None,patch_step_days=None):
     root=Path(root);objects,source=load_catalog(catalog_path);row,name,descriptor=select_template(config,objects)
     if row is None or not descriptor.get('command'):raise ValueError('No original Celestia small-body orbit matched this resolved target; select its original .ssc file')
+    from horizons_targets import canonical_target
+    descriptor=canonical_target(descriptor)
     register_target(descriptor)
     dates=[d for b,d in zip(candidate['bodies'],candidate['dates_jd_tdb']) if b==name]
     if not dates:raise ValueError('No encounter epoch found for the resolved small body')
-    years=[datetime.fromisoformat(calendar(d).split(' TDB')[0]).year for d in dates]
-    first,last=min(years),max(years)+1;start,end=jd(f'{first:04d}-01-01'),jd(f'{last:04d}-01-01')
+    from planet_moon_patch import validate_patch_days,validate_patch_step
+    duration=365.25 if patch_days is None else validate_patch_days(patch_days)
+    encounter=float(report.get('target_epoch_jd_tdb',report.get('final_encounter_jd_tdb',dates[-1])))
+    start,end=encounter-duration/2,encounter+duration/2
     # Physical Pluto has 6.4-day binary motion, unlike its slowly moving barycenter.
     from horizons_targets import is_comet
-    step=1/24 if is_comet(descriptor) or row.get('classification')=='comet' else (.125 if row['name']=='Pluto' or 0<float(descriptor.get('perihelion_au',1.) or 1.)<.5 else 1.)
+    automatic=1/24 if is_comet(descriptor) or row.get('classification')=='comet' else (.125 if row['name']=='Pluto' or 0<float(descriptor.get('perihelion_au',1.) or 1.)<.5 else 1.)
+    step=max(1/1440,min(validate_patch_step(patch_step_days) or automatic,duration/3))
     cache=Path(config.get('cache') or DATA_ROOT/'cache')
     try:ep=Ephemerides(cache,[name],start,end,step,mercury_fine=False)
     except ValueError:
         fetch(cache,name,start,end,step);ep=Ephemerides(cache,[name],start,end,step,mercury_fine=False)
-    stem='jpl_'+re.sub(r'[^a-z0-9]+','_',row['name'].casefold()).strip('_')+f'_{first}_{last}'
+    stem='jpl_'+re.sub(r'[^a-z0-9]+','_',row['name'].casefold()).strip('_')+'_encounter'
     (root/'data').mkdir(parents=True,exist_ok=True)
     (root/'reports').mkdir(parents=True,exist_ok=True)
     xyzv=root/'data'/(stem+'.xyzv')
-    times=np.unique(np.r_[np.arange(start,end,step),dates,end])
+    times=np.unique(np.r_[np.arange(start,end,step),encounter,end])
     with xyzv.open('w',encoding='utf-8') as stream:
         for t in times:
             state=ep.state(name,t)
@@ -193,7 +205,8 @@ def create_patch(root,candidate,config,report,catalog_path=None):
     metadata=dict(target_identity=descriptor,celestia_object='Sol/'+row['name'],catalog_source=row.get('catalog_source',source),
         source_catalog_sha256=row.get('source_sha256'),object_class=row.get('classification'),report_file=report_file,
         license='GPL-3.0-or-later (generated RoLaMGAS patch code)',source_license=row.get('license','not specified in source catalog'),attribution=attribution,
-        start_jd_tdb=start,end_jd_tdb=end,start_date=f'{first}-01-01',end_date=f'{last}-01-01',
+        start_jd_tdb=start,end_jd_tdb=end,start_date=calendar(start),end_date=calendar(end),
+        encounter_jd_tdb=encounter,requested_duration_days=duration,requested_step_days=patch_step_days,
         step_days=step,rows=len(times),frame='Sun-centered Ecliptic J2000, JD TDB, km, km/s',
         barycenter=row['item_type']=='ReferencePoint',original_properties=props,
         ephemeris_sources=ep.manifest,trajectory_sha256=hashlib.sha256(xyzv.read_bytes()).hexdigest(),

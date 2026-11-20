@@ -8,7 +8,7 @@ from scipy.interpolate import CubicHermiteSpline
 from ephemeris import BODIES,DAY,JD0,MU_SUN,Ephemerides,atomic_json,calendar,fetch
 from horizons_targets import register_target
 from app_paths import worker_command,worker_environment
-from moon_targets import validate_options,titan_target_normal
+from moon_targets import validate_options,titan_target_normal,parent_parameters,canonical_parent,register_parent,target_options
 from moon_arrival import MoonSystem,target_arrival,target_upstream,solar_state,soi_entry
 
 class BodyVectors:
@@ -32,9 +32,10 @@ def finite_source(xyzv,report):
     if rows.ndim!=2 or rows.shape[1]!=7 or len(rows)<3 or not np.isfinite(rows).all() or np.any(np.diff(rows[:,0])<=0):
         raise ValueError('Source XYZV must contain finite, strictly increasing seven-column states')
     if not report.get('numerical_validation_passed'):raise ValueError('Source finite-radius export has not passed numerical checks')
-    spans=[s for s in report['force_segments'] if s['center']=='Sun']
+    arrival=float(report['final_encounter_jd_tdb'])
+    spans=[s for s in report['force_segments'] if s['center']=='Sun' and s['start_jd_tdb']<arrival]
     if not spans:raise ValueError('No Sun-only final coast exists in this export')
-    span=spans[-1];start,end=span['start_jd_tdb'],span['end_jd_tdb']
+    span=spans[-1];start,end=span['start_jd_tdb'],min(span['end_jd_tdb'],arrival)
     indices=np.flatnonzero((rows[:,0]>start+2/DAY)&(rows[:,0]<end-2/DAY))
     if not len(indices):raise ValueError('No source samples inside final solar coast')
     row=rows[indices[0]];arrival=float(report['final_encounter_jd_tdb'])
@@ -130,7 +131,7 @@ def optimize_correction_timing(segment,arrival,parent,satellite,base,options,sys
 
 def run(request,output,progress,cancel):
     options=validate_options(**request['options']);q=json.loads(Path(request['candidate_file']).read_text(encoding='utf-8'))
-    if q['bodies'][-1]!=options['parent']:raise ValueError('Moon parent differs from the selected final planet')
+    if canonical_parent(q['bodies'][-1])!=options['parent']:raise ValueError('Moon parent differs from the selected final body')
     baseline=Path(request.get('baseline_folder') or output/'source_export')
     if not (baseline/'integration_report.json').is_file():
         progress('Preparing a finite-radius interplanetary export before moon targeting...')
@@ -147,8 +148,10 @@ def run(request,output,progress,cancel):
         origin=baseline/filename;destination=archive/filename
         if origin.is_file() and origin.resolve()!=destination.resolve():shutil.copy2(origin,destination)
     arrival=selected_arrival_epoch(q,source_report);cache=Path(request['cache']);parent_name=options['parent'];moon=options['moon']
+    register_parent(parent_name)
     register_target(dict(name=moon['name'],id=moon['id'],command=moon['id'],kind='natural_satellite',parent_body=parent_name))
-    system=MoonSystem(parent_name,moon['name'],BODIES[parent_name][1],BODIES[parent_name][2],moon['gm'],moon['radius_km'],cancel)
+    physical=parent_parameters(parent_name)
+    system=MoonSystem(parent_name,moon['name'],physical[1],physical[2],moon['gm'],moon['radius_km'],cancel)
     coarse=cached(cache,parent_name,segment['start_jd']-2,arrival+2,1.,progress);entry,_=soi_entry(segment,arrival,BodyVectors(coarse,parent_name),system)
     fine_start=entry-32;fine_end=arrival+2
     ep_parent=cached(cache,parent_name,fine_start,fine_end,1/24,progress)
@@ -161,6 +164,14 @@ def run(request,output,progress,cancel):
             t=epoch+seconds/DAY
             return (fine if fine_start<=t<=fine_end else coarse_view).position_at_elapsed(epoch,seconds)
     parent=Parent();satellite=BodyVectors(ep_moon,moon['name'])
+    extra_sources={}
+    if parent_name=='Pluto' and moon['name']!='Charon':
+        from dataclasses import replace
+        charon=target_options('Pluto')[0]
+        register_target(dict(name='Charon',id='901',command='901',kind='natural_satellite',parent_body='Pluto'))
+        extra=cached(cache,'Charon',fine_start,fine_end,charon['step_days'],progress)
+        system=replace(system,perturbers=((charon,BodyVectors(extra,'Charon')),))
+        extra_sources['Charon']=extra.manifest['Charon']
     progress('Constructing '+moon['name']+' '+options['mode']+' arrival at the selected date...')
     point=options['target_point'];normal=None if point is None else titan_target_normal(arrival,point['latitude_deg'],point['longitude_east_deg'])
     base,_,_=target_arrival(segment,arrival,parent,satellite,options['altitude_km'],system=system,mode=options['mode'],target_normal=normal)
@@ -175,18 +186,21 @@ def run(request,output,progress,cancel):
         source_candidate_id=q['id'],source_sequence=q['sequence'],exported_launch_c3_km2_s2=source_report['exported_launch_c3_km2_s2'],
         minimum_found_note='Lowest validated burn found in the cruise timing scan'+(' and local timing refinement' if options['effort']=='standard' else '')+'; not a global minimum.',attempts=attempts,
         added_burn_limit_mps=options['max_added_mps'],passes_added_burn_limit=bool(delta*1000<=options['max_added_mps']),
-        ephemeris_sources={parent_name:ep_parent.manifest[parent_name],moon['name']:ep_moon.manifest[moon['name']]},
+        ephemeris_sources={parent_name:ep_parent.manifest[parent_name],moon['name']:ep_moon.manifest[moon['name']],**extra_sources},
         source_parent_report='source_export/integration_report.json',
         force_model=f'Sun outside {parent_name} SOI; {parent_name} and differential {moon["name"]} point-mass gravity inside. No atmosphere, landing, rings, J2 or other moons.')
     report.update(achieved_altitude_km=report['titan_entry_altitude_km'],moon_relative_state_km_kms=report['titan_relative_entry_state_km_kms'],
         moon_relative_speed_kms=report['titan_relative_inertial_entry_speed_kms'],numerical_validation_passed=True,
         budget_note='Onboard budget excludes launcher injection and source burns replaced by the new terminal arc.')
+    if extra_sources:report['force_model']=report['force_model'].replace('or other moons','or unlisted moons')+' Charon point-mass gravity and collision checks are included.'
+    report['additional_gravity_bodies']=list(extra_sources)
+    report['target_gravity_note']=moon.get('gm_note')
     report['model']=report['force_model']
     report['requested_limits']=source_report.get('requested_limits',{})
     limit=report['requested_limits'].get('max_dsm_kms')
     report['passes_original_onboard_budget']=None if limit is None else report['total_onboard_delta_v_kms']<=limit
     report['force_segments']=[dict(s,end_jd_tdb=min(s['end_jd_tdb'],report['upstream_burn_jd_tdb'])) for s in source_report['force_segments'] if s['start_jd_tdb']<report['upstream_burn_jd_tdb']]
-    report['force_segments']+=[dict(center='Sun',start_jd_tdb=report['upstream_burn_jd_tdb'],end_jd_tdb=report['entry_jd_tdb']),dict(center=parent_name,perturbers=[moon['name']],start_jd_tdb=report['entry_jd_tdb'],end_jd_tdb=arrival)]
+    report['force_segments']+=[dict(center='Sun',start_jd_tdb=report['upstream_burn_jd_tdb'],end_jd_tdb=report['entry_jd_tdb']),dict(center=parent_name,perturbers=[moon['name']]+list(extra_sources),start_jd_tdb=report['entry_jd_tdb'],end_jd_tdb=arrival)]
     full=stitch_source(source,report,dates,states,parent)
     write_states(output/'trajectory.xyzv',full);write_states(output/'trajectory.csv',full,True)
     write_states(output/'moon_approach_parent_relative.xyzv',np.c_[dates,states])

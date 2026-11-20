@@ -41,7 +41,7 @@ class DwarfPatchTests(unittest.TestCase):
             q.update(bodies=['Earth','1 Ceres'],dates_jd_tdb=[jd('2033-01-01'),jd('2034-02-07T12:34:56')])
             with patch.object(dwarf,'Ephemerides',CachedVectors),patch.object(dwarf,'fetch',side_effect=AssertionError('Cached data must stay offline')):
                 result=build_package(folder,q,self.config(),patch_dwarf_planet=True)
-            p=result['dwarf_planet_patch'];self.assertEqual(p['start_date'],'2034-01-01');self.assertEqual(p['end_date'],'2035-01-01')
+            p=result['dwarf_planet_patch'];self.assertAlmostEqual(p['end_jd_tdb']-p['start_jd_tdb'],365.25);self.assertAlmostEqual((p['start_jd_tdb']+p['end_jd_tdb'])/2,q['dates_jd_tdb'][-1])
             with zipfile.ZipFile(Path(folder)/result['filename']) as z:
                 ssc=z.read(next(n for n in z.namelist() if n.endswith('/jpl_dwarf_planet_patch.ssc'))).decode()
                 self.assertIn('Modify "Ceres" "Sol"',ssc)

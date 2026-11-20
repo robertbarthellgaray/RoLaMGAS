@@ -160,8 +160,9 @@ class Ephemerides:
     def state(self, body, date):
         t = (float(date) - JD0) * DAY
         ep = self.splines[body]
-        if not ep.x[0] <= t <= ep.x[-1]:
-            raise ValueError('Ephemeris extrapolation prohibited')
+        if not ep.x[0]-.001 <= t <= ep.x[-1]+.001:
+            raise ValueError(f'Ephemeris extrapolation prohibited for {body}: requested {calendar(date)} (JD {date:.12f}); cached coverage {calendar(JD0+ep.x[0]/DAY)} through {calendar(JD0+ep.x[-1]/DAY)}. Download coverage for this interval before retrying.')
+        t=float(np.clip(t,ep.x[0],ep.x[-1]))
         return np.r_[ep(t), ep(t, 1)]
 
 

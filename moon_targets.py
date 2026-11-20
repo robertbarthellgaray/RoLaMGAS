@@ -16,6 +16,13 @@ SATURN_MOONS=[
 ]
 
 MOON_SYSTEMS={
+    'Pluto':('JPL PLU060',[
+        dict(id='901',name='Charon',gm=106.1,radius_km=606.,step_days=1/288),
+        dict(id='902',name='Nix',gm=.0015,radius_km=18.,step_days=1/288),
+        dict(id='903',name='Hydra',gm=.0020,radius_km=18.5,step_days=1/288),
+        dict(id='904',name='Kerberos',gm=0.,radius_km=6.,step_days=1/288,gm_note='Massless target approximation; JPL gives only GM <0.0002 km3/s2.'),
+        dict(id='905',name='Styx',gm=0.,radius_km=5.2,step_days=1/288,gm_note='Massless target approximation; JPL gives only GM <0.0003 km3/s2.'),
+    ]),
     'Mars':('JPL MAR097',[
         dict(id='401',name='Phobos',gm=.0007087,radius_km=11.08,step_days=1/1440),
         dict(id='402',name='Deimos',gm=.0000962,radius_km=6.2,step_days=1/288),
@@ -39,18 +46,34 @@ MOON_SYSTEMS={
     ]),
 }
 
+def canonical_parent(parent):
+    import re
+    return 'Pluto' if re.fullmatch(r'(?:134340\s+)?Pluto(?:\s*\(1930\s*BM\))?',str(parent),re.I) else parent
+
+def parent_parameters(parent):
+    from ephemeris import BODIES
+    parent=canonical_parent(parent)
+    if parent=='Pluto':return 999,869.3,1188.3,100.
+    if parent not in BODIES:raise ValueError('No validated parent gravity/radius model is available for '+str(parent))
+    return BODIES[parent]
+
+def register_parent(parent):
+    from horizons_targets import register_target,pluto_identity
+    if canonical_parent(parent)=='Pluto':register_target(pluto_identity())
+
 def target_options(parent):
+    parent=canonical_parent(parent)
     source,moons=MOON_SYSTEMS.get(parent,('',[]))
     return [dict(m,parent_body=parent,source=source) for m in moons]
 
 def moon_intent(value,parent):
     """Canonical, portable moon selection; no untrusted physical constants."""
     if value is None:return None
-    if not isinstance(value,dict) or value.get('parent')!=parent:
+    if not isinstance(value,dict) or canonical_parent(value.get('parent'))!=canonical_parent(parent):
         raise ValueError('Moon selection must match the destination planet')
     moon=next((m for m in target_options(parent) if m['id']==str(value.get('moon_id'))),None)
     if moon is None:raise ValueError('This moon has no supported parent-centered targeting model')
-    return dict(parent=parent,moon_id=moon['id'],moon_name=moon['name'])
+    return dict(parent=canonical_parent(parent),moon_id=moon['id'],moon_name=moon['name'])
 
 def named_moon(query):
     """Known JPL identities also resolve offline; other Horizons names still use JPL."""
@@ -66,6 +89,7 @@ def named_moon(query):
 
 def validate_options(parent,moon_id,mode,altitude,max_added_mps=700.,effort='standard',inclination_deg=None,target_latitude_deg=None,target_longitude_deg=None):
     import math
+    parent=canonical_parent(parent)
     moon=next((m for m in target_options(parent) if m['id']==str(moon_id)),None)
     if moon is None:raise ValueError('Select a supported moon of the final target planet')
     if mode not in ('impact','approach','entry'):raise ValueError('Select impact, closest approach or entry interface')

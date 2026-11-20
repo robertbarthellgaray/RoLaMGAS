@@ -28,6 +28,7 @@ class MoonSystem:
     moon_mu: float=TITAN_GM
     moon_radius: float=TITAN_RADIUS_KM
     cancelled: object=None
+    perturbers: tuple=()
 
 DEFAULT_SYSTEM=MoonSystem()
 
@@ -38,6 +39,11 @@ def elapsed_position(callback,epoch,seconds):
     """Preserve continuous local ODE time when the ephemeris supports it."""
     if hasattr(callback,'position_at_elapsed'):return callback.position_at_elapsed(epoch,seconds)
     return position(callback,epoch+seconds/DAY)
+
+def local_moon(satellite,parent,epoch,system):
+    def moon(t):return elapsed_position(satellite,epoch,t)-elapsed_position(parent,epoch,t)
+    moon.perturbers=tuple((body,lambda t,callback=callback:elapsed_position(callback,epoch,t)-elapsed_position(parent,epoch,t)) for body,callback in system.perturbers)
+    return moon
 
 
 def unit(vector):
@@ -98,8 +104,11 @@ def propagate(initial,seconds,moon_position,*,variational=False,rtol=2e-11,atol_
     def rhs(t,y):
         if system.cancelled and system.cancelled():raise InterruptedError('Moon targeting stopped')
         r=y[:3];m=moon_position(t);acc=relative_acceleration(r,m,system.parent_mu,system.moon_mu)
+        extra=[(body,callback(t)) for body,callback in getattr(moon_position,'perturbers',())]
+        for body,p in extra:acc+=body['gm']*((p-r)/np.linalg.norm(p-r)**3-p/np.linalg.norm(p)**3)
         if not variational:return np.r_[y[3:6],acc]
         phi=y[6:].reshape(6,3);gradient=point_mass_gradient(r,system.parent_mu)+point_mass_gradient(r-m,system.moon_mu)
+        for body,p in extra:gradient+=point_mass_gradient(r-p,body['gm'])
         return np.r_[y[3:6],acc,np.vstack([phi[3:],gradient@phi[:3]]).ravel()]
     def saturn_impact(t,y):return np.linalg.norm(y[:3])-system.parent_radius
     def titan_impact(t,y):return np.linalg.norm(y[:3]-moon_position(t))-system.moon_radius
@@ -108,7 +117,11 @@ def propagate(initial,seconds,moon_position,*,variational=False,rtol=2e-11,atol_
     saturn_impact.direction=titan_impact.direction=-1
     if variational:initial=np.r_[initial,np.vstack([np.zeros((3,3)),np.eye(3)]).ravel()]
     atol=np.r_[np.full(3,atol_position),np.full(3,1e-11),np.full(18,1e-8)] if variational else np.r_[np.full(3,atol_position),np.full(3,1e-11)]
-    fit=solve_ivp(rhs,(0,float(seconds)),initial,method='DOP853',rtol=rtol,atol=atol,dense_output=True,events=[saturn_impact,titan_impact],max_step=2*DAY)
+    events=[saturn_impact,titan_impact]
+    for body,callback in getattr(moon_position,'perturbers',()):
+        def impact(t,y,body=body,callback=callback):return np.linalg.norm(y[:3]-callback(t))-body['radius_km']
+        impact.terminal=True;impact.direction=-1;events.append(impact)
+    fit=solve_ivp(rhs,(0,float(seconds)),initial,method='DOP853',rtol=rtol,atol=atol,dense_output=True,events=events,max_step=2*DAY)
     if not fit.success or fit.status==1:raise ValueError(f'Arrival trial intersects {system.parent}/{system.moon} or integration failed')
     return fit
 
@@ -151,7 +164,7 @@ def target_arrival(segment,arrival_jd,saturn_state,titan_state,entry_altitude_km
     if target_normal is not None and mode=='approach':raise ValueError('A fixed surface point and tangent-periapsis mode cannot be combined')
     normal=unit(target_normal) if target_normal is not None else illustrative_entry_normal(nominal[3:],titan[:3],gamma_deg,clock_deg)
     target=titan[:3]+normal*(system.moon_radius+entry_altitude_km)
-    moon=lambda t:elapsed_position(titan_state,entry_jd,t)-elapsed_position(saturn_state,entry_jd,t)
+    moon=local_moon(titan_state,saturn_state,entry_jd,system)
     velocity,solution,convergence=local_velocity(incoming,seconds,target,moon,system,mode!='impact')
     if mode=='approach':
         # Rotate the target point within the chosen encounter plane until the
@@ -227,7 +240,7 @@ def target_upstream(segment,arrival_jd,saturn_state,titan_state,base_report,burn
             epoch=entry0+z[2];sat=saturn_state(epoch);soi=np.linalg.norm(sat[:3])*(system.parent_mu/MU_SUN)**.4
             r=soi*unit(n+z[0]*e1+z[1]*e2)
             departure,vin=izzo2015(MU_SUN,burn_state[:3],sat[:3]+r,(epoch-burn_jd)*DAY,M=0,prograde=True,low_path=True)
-            moon=lambda t:elapsed_position(titan_state,epoch,t)-elapsed_position(saturn_state,epoch,t)
+            moon=local_moon(titan_state,saturn_state,epoch,system)
             aim=titan[:3]+target_radius*unit(target_normal*np.cos(z[3])+target_tangent*np.sin(z[3])) if mode=='approach' else target
             if inclination_deg is not None:
                 normal=unit(aim-titan[:3]);clock=z[-1]
@@ -248,7 +261,11 @@ def target_upstream(segment,arrival_jd,saturn_state,titan_state,base_report,burn
         for i,h in enumerate(steps):
             d=np.zeros(len(z));d[i]=h;columns.append((residual(z+d)-base)/h)
         return np.column_stack(columns)
-    lower=[-.15,-.15,-14.]+([-1.3] if mode=='approach' else [])+([-np.pi-.01] if pole is not None else []);upper=[.15,.15,14.]+([1.3] if mode=='approach' else [])+([np.pi+.01] if pole is not None else [])
+    # Dwarf-planet SOI passages may last only hours; a fixed +14-day trial can
+    # place the SOI entry after arrival and query moon vectors out of coverage.
+    lower_shift=max(-14.,burn_jd-entry0+.001);upper_shift=min(14.,arrival_jd-entry0-.001)
+    if lower_shift>=0 or upper_shift<=0:raise ValueError('No positive-duration SOI arrival remains after the correction burn')
+    lower=[-.15,-.15,lower_shift]+([-1.3] if mode=='approach' else [])+([-np.pi-.01] if pole is not None else []);upper=[.15,.15,upper_shift]+([1.3] if mode=='approach' else [])+([np.pi+.01] if pole is not None else [])
     guess=np.zeros(len(lower))
     if pole is not None:guess[-1]=initial_clock
     fit=least_squares(residual,guess,jac=jacobian,bounds=(lower,upper),x_scale=[.02,.02,1.]+([.2] if mode=='approach' else [])+([.5] if pole is not None else []),max_nfev=20,gtol=1e-11,ftol=1e-12,xtol=1e-12)
@@ -287,7 +304,7 @@ def verify_upstream_coasts(report,saturn_state,titan_state,system=DEFAULT_SYSTEM
     if not solar.success:raise ValueError('Independent solar propagation failed')
     at_entry=solar.y[:,-1]-saturn_state(entry)
     target=np.array(report.get('target_entry_position_saturn_relative_km',np.array(report['titan_relative_entry_state_km_kms'][:3])+(titan_state(arrival)-saturn_state(arrival))[:3]))
-    moon=lambda t:elapsed_position(titan_state,entry,t)-elapsed_position(saturn_state,entry,t)
+    moon=local_moon(titan_state,saturn_state,entry,system)
     seconds=(arrival-entry)*DAY
     local=propagate(at_entry,seconds,moon,rtol=3e-13,atol_position=1e-7,system=system,moon_surface_stop=mode!='impact')
     if len(local.t_events[1]) and local.t_events[1][0]<seconds-.1:raise ValueError('Moon surface intersects the path before the target epoch')

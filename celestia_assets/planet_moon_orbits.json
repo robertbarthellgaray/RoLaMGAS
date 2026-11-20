@@ -436,6 +436,189 @@
         "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
         "CustomRotation": "CustomRotation\t\"iau-triton\""
       }
+    },
+    {
+      "name": "Pluto",
+      "aliases": [
+        "Pluto",
+        "134340 Pluto"
+      ],
+      "parent": "Sol",
+      "item_type": "Body",
+      "classification": "dwarfplanet",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Pluto-Charon\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tPeriod\t6.387221  # mean\n\t\tSemiMajorAxis\t2130.734  # separation = 19595.764 km, mass ratio = 0.1220\n\t\tEccentricity\t0.000161  # mean\n\t\tInclination\t112.888628\n\t\tAscendingNode\t227.392167\n\t\tArgOfPericenter\t352.410172\n\t\tMeanAnomaly\t213.475686\n\t}",
+        "BodyFrame": "BodyFrame\t{ EclipticJ2000 {} }",
+        "UniformRotation": "UniformRotation  # to match orbit\n\t{\n    Period 153.293304\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tInclination\t112.888628\n\t\tAscendingNode\t227.392167\n\t\tMeridianAngle\t25.885858\n\t}"
+      },
+      "catalog_source": "Celestia data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "license": "GPL-2.0-or-later",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ]
+    },
+    {
+      "name": "Charon",
+      "aliases": [
+        "Charon",
+        "Pluto I",
+        "134340 Pluto I",
+        "S 1978 P 1",
+        "P1"
+      ],
+      "parent": "Sol/Pluto",
+      "item_type": "Body",
+      "classification": "moon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Pluto-Charon\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tPeriod\t6.387221  # mean\n\t\tSemiMajorAxis\t17465.030  # separation = 19595.764 km, mass ratio = 0.1220\n\t\tEccentricity\t0.000161  # mean\n\t\tInclination\t112.888628\n\t\tAscendingNode\t227.392167\n\t\tArgOfPericenter\t172.410172\n\t\tMeanAnomaly\t213.475686\n\t}",
+        "BodyFrame": "BodyFrame\t{ EclipticJ2000 {} }",
+        "UniformRotation": "UniformRotation  # to match orbit\n\t{\n    Period 153.293304\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tInclination\t112.888628\n\t\tAscendingNode\t227.392167\n\t\tMeridianAngle\t205.885858\n\t}"
+      },
+      "catalog_source": "Celestia data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "license": "GPL-2.0-or-later",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ]
+    },
+    {
+      "name": "Styx",
+      "aliases": [
+        "Styx",
+        "Pluto V",
+        "134340 Pluto V",
+        "S 2012 (134340) 1",
+        "P5"
+      ],
+      "parent": "Sol/Pluto",
+      "item_type": "Body",
+      "classification": "minormoon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Pluto-Charon\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tPeriod\t20.89  # mean\n\t\tSemiMajorAxis\t43163  # mean\n\t\tEccentricity\t0.025  # mean\n\t\tInclination\t112.885556\n\t\tAscendingNode\t227.339963\n\t\tArgOfPericenter\t32.651282\n\t\tMeanAnomaly\t311.500838\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t77.76\n\t\tInclination\t29\n\t\tAscendingNode\t286\n\t}"
+      },
+      "catalog_source": "Celestia data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "license": "GPL-2.0-or-later",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ]
+    },
+    {
+      "name": "Nix",
+      "aliases": [
+        "Nix",
+        "Pluto II",
+        "134340 Pluto II",
+        "S 2005 P 2",
+        "P2"
+      ],
+      "parent": "Sol/Pluto",
+      "item_type": "Body",
+      "classification": "minormoon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Pluto-Charon\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tPeriod\t25.51  # mean\n\t\tSemiMajorAxis\t49340  # mean\n\t\tEccentricity\t0.015  # mean\n\t\tInclination\t112.909674\n\t\tAscendingNode\t227.385476\n\t\tArgOfPericenter\t197.568847\n\t\tMeanAnomaly\t0.483986\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t43.854353\n\t\tInclination\t127.7\n\t\tAscendingNode\t79.1\n\t\tMeridianAngle\t243.5722888\n\t}"
+      },
+      "catalog_source": "Celestia data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "license": "GPL-2.0-or-later",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ]
+    },
+    {
+      "name": "Kerberos",
+      "aliases": [
+        "Kerberos",
+        "Pluto IV",
+        "134340 Pluto IV",
+        "S 2011 (134340) 1",
+        "P4"
+      ],
+      "parent": "Sol/Pluto",
+      "item_type": "Body",
+      "classification": "minormoon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Pluto-Charon\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tPeriod\t32.75  # mean\n\t\tSemiMajorAxis\t58272  # mean\n\t\tEccentricity\t0.010  # mean\n\t\tInclination\t113.007202\n\t\tAscendingNode\t227.835605\n\t\tArgOfPericenter\t8.718216\n\t\tMeanAnomaly\t43.929906\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t127.44\n\t\tInclination\t18\n\t\tAscendingNode\t312\n\t}"
+      },
+      "catalog_source": "Celestia data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "license": "GPL-2.0-or-later",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ]
+    },
+    {
+      "name": "Hydra",
+      "aliases": [
+        "Hydra",
+        "Pluto III",
+        "134340 Pluto III",
+        "S 2005 P 1",
+        "P3"
+      ],
+      "parent": "Sol/Pluto",
+      "item_type": "Body",
+      "classification": "minormoon",
+      "properties": {
+        "OrbitFrame": "OrbitFrame\n\t{\n\t\tEclipticJ2000\t{ Center \"Sol/Pluto-Charon\" }\n\t}",
+        "EllipticalOrbit": "EllipticalOrbit\n\t{\n\t\tEpoch\t2457218.0  # 2015 Jul 14 12:00\n\t\tPeriod\t38.74  # mean\n\t\tSemiMajorAxis\t65175  # mean\n\t\tEccentricity\t0.009  # mean\n\t\tInclination\t112.882038\n\t\tAscendingNode\t227.697392\n\t\tArgOfPericenter\t11.296494\n\t\tMeanAnomaly\t58.567710\n\t}",
+        "BodyFrame": "BodyFrame\t{ EquatorJ2000 {} }",
+        "UniformRotation": "UniformRotation\n\t{\n\t\tPeriod\t10.313208\n\t\tInclination\t85.3\n\t\tAscendingNode\t158.9\n\t\tMeridianAngle\t57.0724592\n\t}"
+      },
+      "catalog_source": "Celestia data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "license": "GPL-2.0-or-later",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ]
     }
   ],
   "source": "Celestia data/solarsys.ssc snapshot",
@@ -455,5 +638,21 @@
     "# SPDX-FileCopyrightText: 2023-2026 AstroChara",
     "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
     "# SPDX-FileCopyrightText: 2026 LunaTheSilly"
+  ],
+  "additional_catalogs": [
+    {
+      "source": "Celestia data/dwarfplanets.ssc",
+      "source_sha256": "175aa75a506287385df8cf32640e03093b9c150a2c19c8da69744da886235637",
+      "license": "GPL-2.0-or-later",
+      "attribution": [
+        "# SPDX-FileCopyrightText: 2019 Hleb Valoshka <375gnu@gmail.com>",
+        "# SPDX-FileCopyrightText: 2019 Askaniy Anpilogov",
+        "# SPDX-FileCopyrightText: 2019, 2021 SevenSpheres",
+        "# SPDX-FileCopyrightText: 2023 Andrew Tribick",
+        "# SPDX-FileCopyrightText: 2023-2025 AstroChara",
+        "# SPDX-FileCopyrightText: 2024-2026 Pedro J. Garcia",
+        "# SPDX-FileCopyrightText: 2025-2026 LunaTheSilly"
+      ]
+    }
   ]
 }

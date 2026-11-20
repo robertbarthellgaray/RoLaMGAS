@@ -2,28 +2,52 @@
 from pathlib import Path
 import hashlib,json,math,os,re,shutil
 import numpy as np
-from app_paths import RESOURCE_ROOT
+from app_paths import RESOURCE_ROOT,DATA_ROOT
 from ephemeris import Ephemerides,DAY,JD0,atomic_json,calendar,fetch
 from horizons_targets import register_target
-from moon_targets import target_options
-from dwarf_planet_patch import catalog_from_ssc
+from moon_targets import target_options,parent_parameters,canonical_parent,register_parent
+from dwarf_planet_patch import catalog_from_ssc,decode_catalog
 
 
 def templates():
-    source=Path(os.environ.get('ProgramFiles','C:/Program Files'))/'Celestia/data/solarsys.ssc'
-    if source.is_file():
-        text=source.read_text(encoding='utf-8-sig')
-        return dict(objects=catalog_from_ssc(text,include_major=True),source=str(source),
-            source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
-            license=(re.search(r'SPDX-License-Identifier:\s*([^\r\n]+)',text)[1]),
-            attribution=[s for s in text.splitlines() if 'SPDX-FileCopyrightText:' in s])
+    folder=Path(os.environ.get('ProgramFiles','C:/Program Files'))/'Celestia/data'
+    objects=[];catalogs=[]
+    for name in ('solarsys.ssc','outersys.ssc','dwarfplanets.ssc'):
+        source=folder/name
+        if not source.is_file():continue
+        text,encoding=decode_catalog(source.read_bytes())
+        license_match=re.search(r'SPDX-License-Identifier:\s*([^\r\n]+)',text)
+        try:rows=catalog_from_ssc(text,include_major=True)
+        except ValueError as exc:
+            if str(exc).startswith('No supported'):continue
+            raise
+        objects.extend(rows);catalogs.append(dict(source=str(source),source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
+            encoding=encoding,license=license_match[1].strip() if license_match else 'not specified in source catalog',
+            attribution=[s for s in text.splitlines() if 'SPDX-FileCopyrightText:' in s]))
+    if objects:return dict(objects=objects,catalogs=catalogs)
     return json.loads((RESOURCE_ROOT/'celestia_assets/planet_moon_orbits.json').read_text(encoding='utf-8'))
+
+def source_tables(provenance):
+    """Original tables precede later extensions when their time ranges overlap."""
+    if isinstance(provenance,list):
+        return [row for value in provenance for row in source_tables(value)]
+    if not isinstance(provenance,dict):raise ValueError('Invalid saved JPL table provenance; restore the original targeting cache')
+    if 'raw_file' in provenance:return [provenance]
+    if 'original_tables' in provenance and 'extension_tables' in provenance:
+        return source_tables(provenance['original_tables'])+source_tables(provenance['extension_tables'])
+    raise ValueError('Saved JPL source has no vector table; restore the original targeting cache')
 
 
 def validate_patch_days(value):
     if value is None:return 14.
     value=float(value)
     if not math.isfinite(value) or not 0<value<=3652.5:raise ValueError('JPL patch duration must be positive and at most 3652.5 days')
+    return value
+
+def validate_patch_step(value):
+    if value is None or value=='':return None
+    value=float(value)
+    if not math.isfinite(value) or not 1/1440<=value<=30:raise ValueError('JPL patch sample step must be between one minute and 30 days')
     return value
 
 
@@ -73,7 +97,7 @@ def compact_vectors(dates,values,encounter,position_tolerance_km=.05,velocity_to
         method='Cubic Hermite checked at original source knots and quarter points; encounter and endpoints retained. Solver ephemerides unchanged.')
 
 
-def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_days=None):
+def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_days=None,patch_step_days=None):
     """Use the solver's exact source table for a moon branch; never extrapolate.
 
     The parent is Sun-relative; the satellite is parent-relative, with BOTH
@@ -82,14 +106,15 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
     """
     from ephemeris import BODIES
     if not isinstance(patch_planet,bool) or not isinstance(patch_moon,bool):raise ValueError('JPL patch options must be boolean')
-    parent=report.get('parent_body') or config.get('target')
-    if parent not in BODIES:raise ValueError('Select a major-planet arrival for the planet/moon JPL patches')
+    parent=canonical_parent(report.get('parent_body') or config.get('target'))
+    physical=parent_parameters(parent);register_parent(parent)
     moon=next((m for m in target_options(parent) if m['id']==str(report.get('moon_id'))),None)
     if patch_moon and moon is None:raise ValueError('Select a completed moon-targeting branch before patching its moon')
     if moon:register_target(dict(name=moon['name'],id=moon['id'],command=moon['id'],kind='natural_satellite',parent_body=parent))
     epoch=float(report.get('target_epoch_jd_tdb',report.get('final_encounter_jd_tdb',report['end_jd_tdb'])))
     requested_days=validate_patch_days(patch_days)
-    start=epoch-requested_days/2;end=epoch+requested_days/2;cache=Path(config['cache']);sources=report.get('ephemeris_sources',{})
+    requested_step=validate_patch_step(patch_step_days)
+    start=epoch-requested_days/2;end=epoch+requested_days/2;cache=Path(config.get('cache') or DATA_ROOT/'cache');sources=report.get('ephemeris_sources') or {}
     stock=templates();root=Path(root);patches=[];loaded={}
 
     def vectors(body,step):
@@ -100,7 +125,7 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
             # prevents a newer, slightly different JPL solution being chosen.
             from scipy.interpolate import CubicHermiteSpline
             chunks=[]
-            for source in provenance if isinstance(provenance,list) else [provenance]:
+            for source in source_tables(provenance):
                 name=Path(source['raw_file']).with_suffix('.npz').name;table=cache/name
                 if not table.is_file():raise ValueError('Original moon-targeting JPL table is missing: '+name+'. Restore the cache before patching.')
                 if source.get('npz_sha256')!=hashlib.sha256(table.read_bytes()).hexdigest():raise ValueError('Original JPL table checksum differs: '+body)
@@ -120,7 +145,12 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
     period=None
     if patch_moon:
         moon_spline,moon_source=vectors(moon['name'],moon['step_days'])
-        period=orbital_period_days(spline_states(parent_spline,(epoch-JD0)*DAY),spline_states(moon_spline,(epoch-JD0)*DAY),BODIES[parent][1],moon['gm'])
+        if parent=='Pluto' and moon['id']!='901':
+            # These moons orbit the Pluto/Charon pair, not Pluto alone. Their
+            # documented barycentric periods give a safer minimum patch window.
+            period={'902':24.8546,'903':38.2018,'904':32.1676,'905':20.1616}[moon['id']]
+        else:
+            period=orbital_period_days(spline_states(parent_spline,(epoch-JD0)*DAY),spline_states(moon_spline,(epoch-JD0)*DAY),physical[1],moon['gm'])
     effective_days=max(requested_days,period or 0.)
     start=epoch-effective_days/2;end=epoch+effective_days/2
     start_seconds=(start-JD0)*DAY;end_seconds=(end-JD0)*DAY
@@ -146,13 +176,15 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
     # Five-minute or finer output; retain source knots so cubic Hermite
     # interpolation is exactly the same interpolant as the arrival solver.
     cadence=min(1/288,moon['step_days']) if patch_moon else 1/288
+    if requested_step:cadence=min(cadence,requested_step)
     knots=np.r_[np.arange(start_seconds,end_seconds,cadence*DAY),start_seconds,(epoch-JD0)*DAY,end_seconds,*[s.x[(s.x>=start_seconds)&(s.x<=end_seconds)] for s in used]]
     dates=np.unique(JD0+knots/DAY)
     seconds=(dates-JD0)*DAY
     def states(spline):return spline_states(spline,seconds)
     parent_states=states(parent_spline)
     for name,center,values,manifest in ([(parent,'Sol',parent_states,{parent:parent_source})] if patch_planet else [])+([(moon['name'],'Sol/'+parent,states(moon_spline)-parent_states,{parent:parent_source,moon['name']:moon_source})] if patch_moon else []):
-        output_dates,values,compression=compact_vectors(dates,values,epoch,max_step_days=min(.25,(period or 8)/32) if name!=parent else .25)
+        maximum_step=min(.25,(period or 8)/32) if name!=parent else .25
+        output_dates,values,compression=compact_vectors(dates,values,epoch,max_step_days=requested_step or maximum_step)
         row=next((r for r in stock['objects'] if r['name']==name and r['parent']==center),None)
         if row is None:raise ValueError('No original Celestia orbital definition available for '+name)
         props=row['properties'];old='\n'.join(props.values());spin='\n'.join(v for k,v in props.items() if k not in ('OrbitFrame','EllipticalOrbit','CustomOrbit'))
@@ -173,12 +205,12 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
         (root/ssc_name).write_text(ssc,encoding='utf-8')
         patches.append(dict(body=name,celestia_object=center+'/'+name,center=center,files=[ssc_name,'data/'+filename],
             start_jd_tdb=start,end_jd_tdb=end,start_date=calendar(start),end_date=calendar(end),rows=len(output_dates),compression=compression,
-            requested_duration_days=requested_days,effective_duration_days=effective_days,moon_orbital_period_days=period,
+            requested_duration_days=requested_days,requested_step_days=requested_step,effective_duration_days=effective_days,moon_orbital_period_days=period,
             trajectory_sha256=hashlib.sha256((root/'data'/filename).read_bytes()).hexdigest(),
             ephemeris_sources=manifest,original_properties=props))
     metadata=dict(patches=patches,source_catalog={k:v for k,v in stock.items() if k!='objects'},
         encounter_jd_tdb=epoch,requested_duration_days=requested_days,effective_duration_days=effective_days,
-        moon_orbital_period_days=period,period_method='Two-body osculating period from the original JPL parent-relative state at encounter; parent GM + moon GM.',
+        moon_orbital_period_days=period,period_method=('PLU060 mean barycentric orbital period: small moons orbit the Pluto–Charon pair.' if parent=='Pluto' and moon and moon['id']!='901' else 'Two-body osculating period from the original JPL parent-relative state at encounter; parent GM + moon GM.'),
         frame='Ecliptic J2000; JD TDB, km, km/s',
         limitations='Position and velocity override only; existing shapes and rotations retained. Original orbits restored outside the window. Disable other addons that override the same bodies during this encounter.')
     atomic_json(root/'reports/planet_moon_patches.json',metadata)

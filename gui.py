@@ -118,8 +118,9 @@ class App:
         for p in (RESOURCE_ROOT/'examples').glob('*.json'):
             c = read_json(p,{})
             presets.append(dict(id=p.stem,target=c.get('target'),name=p.stem.replace('_',' ').title()))
-        from moon_targets import target_options
-        return dict(version=APP_VERSION,moon_targets={body:target_options(body) for body in BODIES if target_options(body)},community=community_settings(),minimum_c3_floor=HARD_MIN_C3,token=self.token,planets=list(BODIES),
+        from moon_targets import target_options,MOON_SYSTEMS
+        from horizons_targets import pluto_identity
+        return dict(version=APP_VERSION,moon_parents={'Pluto':pluto_identity()},moon_targets={body:target_options(body) for body in MOON_SYSTEMS},community=community_settings(),minimum_c3_floor=HARD_MIN_C3,token=self.token,planets=list(BODIES),
                     routes=[dict(id=r['id'],target=r['target'],bodies=r['bodies'],dsm_legs=r['dsm_legs']) for r in db['sequences']],
                     custom_routes=['EX','EdvEX','EVX','EVEX','EVEEX','EJX','EdvEJX','EVEEJX','ESX','EJSX'],
                     presets=presets,runs=self.catalog(),cpu_count=os.cpu_count() or 2,active=self.active)
@@ -133,9 +134,17 @@ class App:
                 from horizons_targets import moon_model_notice
                 moon['model_limitation']=moon_model_notice(moon)
                 register_target(moon)
+                if moon['parent_body']=='Pluto':
+                    from horizons_targets import pluto_identity
+                    parent=pluto_identity();self.targets['pluto']=parent;register_target(parent)
+                    atomic_json(self.targets_path,self.targets)
                 return moon
             if not refresh and key in self.targets:
-                return dict(self.targets[key],cached_lookup=True)
+                from horizons_targets import canonical_target
+                normalized=canonical_target(self.targets[key])
+                if normalized!=self.targets[key]:
+                    self.targets[key]=normalized;atomic_json(self.targets_path,self.targets)
+                return dict(normalized,cached_lookup=True)
             if self.active and read_json(self.folder(self.active)/'gui_status.json',{}).get('state')=='preparing':
                 raise ValueError('Ephemerides are downloading. Resolve another target after preparation completes.')
             result = resolve(query,epoch)
@@ -810,11 +819,11 @@ class App:
             if process.poll() is None:
                 (self.folder(name)/'moon_targets'/identifier/branch/'stop.request').touch()
 
-    def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,patch_dwarf_planet=False,dwarf_catalog_path=None,refine_patches=True,patch_epoch_shift_days=2.,patch_planet=False,patch_moon=False,patch_days=None):
+    def package(self,name,identifier,model='auto',arrival_altitude_km=None,powered_flybys=None,post_flyby_months=0.,arrival_inclination_deg=None,patch_dwarf_planet=False,dwarf_catalog_path=None,refine_patches=True,patch_epoch_shift_days=2.,patch_planet=False,patch_moon=False,patch_days=None,patch_step_days=None):
         if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
         if patch_planet or patch_moon:
             from planet_moon_patch import validate_patch_days
-            patch_days=validate_patch_days(patch_days)
+            if patch_days is not None:patch_days=validate_patch_days(patch_days)
         from celestia_package import build_package
         root=self.folder(name)
         candidate=read_json(root/'candidates'/(identifier+'.json'))
@@ -829,7 +838,7 @@ class App:
             if status['state']!='finished' or status['report'].get('post_flyby_months',0.)!=post_flyby_months:
                 self.integrate_moon_continuation(name,identifier,selected,post_flyby_months)
                 return dict(state='integrating',message='Preparing the selected moon trajectory with the requested post-flyby duration.')
-            result=build_package(output,candidate,config,model,moon_branch=selected[0].name,patch_planet=patch_planet,patch_moon=patch_moon,patch_days=patch_days)
+            result=build_package(output,candidate,config,model,moon_branch=selected[0].name,patch_planet=patch_planet,patch_moon=patch_moon,patch_days=patch_days,patch_step_days=patch_step_days)
             return dict(result,file_base=output.relative_to(root).as_posix())
         if patch_moon:raise ValueError('Use a completed moon-targeting branch before enabling its JPL moon patch')
         from integrate_export import validate_post_flyby_months,validate_patch_epoch_shift
@@ -854,7 +863,7 @@ class App:
             if status['state']!='running':
                 self.integrate(name,identifier,arrival_altitude_km,powered_flybys,post_flyby_months,arrival_inclination_deg,refine_patches,patch_epoch_shift_days)
             return dict(state='integrating',message='Integrating the trajectory before packaging.')
-        result=build_package(root/'exports'/identifier,candidate,config,model,patch_dwarf_planet,dwarf_catalog_path,patch_planet=patch_planet,patch_days=patch_days)
+        result=build_package(root/'exports'/identifier,candidate,config,model,patch_dwarf_planet,dwarf_catalog_path,patch_planet=patch_planet,patch_days=patch_days,patch_step_days=patch_step_days)
         return dict(result,file_base='exports/'+identifier)
 
     def open_package_folder(self,name,identifier):
@@ -1005,7 +1014,7 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/api/select-moon-export':
                 return self.json(self.app.select_moon_export(value['run'],value['candidate'],value.get('branch')))
             if self.path=='/api/package':
-                return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('patch_dwarf_planet',False),value.get('dwarf_catalog_path'),value.get('refine_patches',True),value.get('patch_epoch_shift_days',2.),value.get('patch_planet',False),value.get('patch_moon',False),value.get('patch_days')))
+                return self.json(self.app.package(value['run'],value['candidate'],value.get('model','auto'),value.get('arrival_altitude_km'),value.get('powered_flybys'),value.get('post_flyby_months',0.),value.get('arrival_inclination_deg'),value.get('patch_dwarf_planet',False),value.get('dwarf_catalog_path'),value.get('refine_patches',True),value.get('patch_epoch_shift_days',2.),value.get('patch_target',value.get('patch_planet',False)),value.get('patch_moon',False),value.get('patch_days'),value.get('patch_step_days')))
             if self.path=='/api/dwarf-patch-info':
                 from dwarf_planet_patch import patch_info
                 root=self.app.folder(value['run'])

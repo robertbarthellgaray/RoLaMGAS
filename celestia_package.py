@@ -76,7 +76,7 @@ def export_report(output,moon_branch=None):
         clearance_note='Source interplanetary clearance screen retained; new leg checks the parent and targeted moon. Other moons, rings, atmosphere and surface topography are not modeled. Intentional impact is allowed only at the selected moon endpoint.')
 
 
-def build_package(output,candidate,config,override='auto',patch_dwarf_planet=False,dwarf_catalog_path=None,moon_branch=None,patch_planet=False,patch_moon=False,patch_days=None):
+def build_package(output,candidate,config,override='auto',patch_dwarf_planet=False,dwarf_catalog_path=None,moon_branch=None,patch_planet=False,patch_moon=False,patch_days=None,patch_step_days=None):
     if moon_branch is not None and not re.fullmatch(r'[a-f0-9]{12}',str(moon_branch)):raise ValueError('Invalid moon branch ID')
     if not isinstance(patch_dwarf_planet,bool):raise ValueError('Patch small body must be a boolean')
     output=Path(output)
@@ -148,13 +148,15 @@ def build_package(output,candidate,config,override='auto',patch_dwarf_planet=Fal
         shutil.copytree(output/'source_export',root/'reports/source_export',dirs_exist_ok=True)
         atomic_json(root/'reports/export_report.json',report)
     patch=None
-    if patch_dwarf_planet:
+    from ephemeris import BODIES
+    patch_small=patch_dwarf_planet or (patch_planet and not moon_branch and config.get('target') not in BODIES)
+    if patch_small:
         from dwarf_planet_patch import create_patch
-        patch=create_patch(root,candidate,config,report,dwarf_catalog_path)
+        patch=create_patch(root,candidate,config,report,dwarf_catalog_path,patch_days,patch_step_days)
     planet_moon_patches=None
-    if patch_planet or patch_moon:
+    if (patch_planet and not patch_small) or patch_moon:
         from planet_moon_patch import create_patches
-        planet_moon_patches=create_patches(root,config,report,patch_planet,patch_moon,patch_days)
+        planet_moon_patches=create_patches(root,config,report,patch_planet,patch_moon,patch_days,patch_step_days)
     from app_paths import APP_VERSION
     manifest=dict(engine_version=APP_VERSION,candidate_id=identifier,model=selected,model_filename=filename,model_selection_reason=reason,
                   source_model_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
