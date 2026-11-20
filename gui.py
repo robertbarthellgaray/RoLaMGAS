@@ -197,10 +197,10 @@ class App:
                 from mission_search import prepare
                 from live_gallery import LiveGallery
                 from trajectory_transfer import materialize
-                obj=config.get('target_object')
+                obj=config.get('target_object');recovery=None
                 if obj:
-                    confirmed=self.lookup('SPK='+str(obj['id']),config['launch_start'])
-                    if confirmed.get('ambiguous') or str(confirmed.get('id'))!=str(record['body_ids'][-1]):raise ValueError('JPL target identity does not match the imported candidate')
+                    from trajectory_transfer import confirm_record_target
+                    confirmed,recovery=confirm_record_target(obj,record,self.lookup,config['launch_start'])
                     from horizons_targets import target_for_epoch,moon_model_notice
                     notice=moon_model_notice(confirmed)
                     if notice:raise ValueError(notice)
@@ -212,6 +212,7 @@ class App:
                 atomic_json(output/'run_manifest.json',dict(config=c,routes=routes,source='Website selected-candidate import'))
                 prepare(c,routes);ep=get_ephemerides(c,routes)
                 q=materialize(record,c,routes[0],ep);q['source_candidate_id']=source
+                if recovery:q['import_verification']['target_solution_recovery']=recovery
                 accepted=q['status'].startswith('passes')
                 summary=dict(candidates=[q] if accepted else [],near_misses=[] if accepted else [q],distinct_accepted=int(accepted),raw_accepted=int(accepted),completed_jobs=0,model='Saved website trajectory, recomputed with local JPL ephemerides',nbody_validated=False)
                 atomic_json(output/'results.json',summary)

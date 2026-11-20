@@ -122,6 +122,12 @@ class Ephemerides:
             available = []
             for p in Path(cache).glob(cache_stem(body) + '_*.json'):
                 m = json.loads(p.read_text(encoding='utf-8'))
+                if body not in BODIES:
+                    saved=m.get('target_identity') or {};current=identity(body)
+                    # Precomputed and currently integrated asteroid barycenters
+                    # can share an SPK ID. Their cache tables are not interchangeable.
+                    if str(saved.get('id'))!=str(current['id']) or (saved.get('kind')=='small_body')!=(current.get('kind')=='small_body'):
+                        continue
                 if m['max_step_days'] <= body_step:
                     available.append((p,m))
                 if m['start_jd'] <= start and m['end_jd'] >= end and m['max_step_days'] <= body_step:

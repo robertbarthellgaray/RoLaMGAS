@@ -1,0 +1,44 @@
+{
+  "result": [
+    {
+      "alias": [],
+      "pdes": null,
+      "name": "Eris (system barycenter)",
+      "spkid": "20136199",
+      "type": "asteroid barycenter"
+    },
+    {
+      "type": "asteroidal system primary",
+      "spkid": "920136199",
+      "pdes": null,
+      "name": "Eris (primary body)",
+      "alias": []
+    },
+    {
+      "type": "asteroidal system satellite",
+      "spkid": "120136199",
+      "name": "Dysnomia",
+      "pdes": null,
+      "alias": [
+        "Eris I"
+      ]
+    },
+    {
+      "pdes": "2003 UB313",
+      "name": "136199 Eris",
+      "alias": [
+        "50285204",
+        "3285181",
+        "2136199",
+        "K03UV3B"
+      ],
+      "type": "asteroid (integrated barycenter)",
+      "spkid": "20136199"
+    }
+  ],
+  "count": 4,
+  "signature": {
+    "version": "1.1",
+    "source": "NASA/JPL Horizons Lookup API"
+  }
+}

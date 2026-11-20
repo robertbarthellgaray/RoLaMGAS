@@ -33,7 +33,8 @@ def _target(value):
     if not isinstance(value,dict):raise ValueError('Target identity must be an object')
     clean={key:deepcopy(value[key]) for key in TARGET_FIELDS if key in value}
     # Store the explicit selection, rather than a private/path-like original query.
-    clean['query']='SPK='+str(clean.get('id',''))
+    from horizons_targets import resolution_query
+    clean['query']=resolution_query(clean)
     return clean
 
 

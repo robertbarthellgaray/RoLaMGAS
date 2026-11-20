@@ -5,6 +5,35 @@ import json,math,hashlib,time
 import numpy as np
 from ephemeris import BODIES
 
+def confirm_record_target(descriptor,record,lookup,epoch):
+    """Recover legacy website descriptors only through the later numeric audit.
+
+    Older website downloads synthesized command=SPK-ID without preserving MB/SB
+    solution choice. Some TNO precomputed solutions expire decades before the
+    saved encounter. A current integrated solution is a recovery *trial*, never
+    an accepted substitute: materialize still verifies every saved coast/cost.
+    """
+    import re
+    from ephemeris import calendar
+    from horizons_targets import resolution_query
+    query=resolution_query(descriptor);recovery=None
+    legacy=(descriptor.get('kind')=='horizons_object'
+            and re.fullmatch(r'2\d{7}',str(descriptor.get('id','')))
+            and descriptor.get('command')==str(descriptor['id']))
+    check_epoch=calendar(record['dates_jd_tdb'][-1]).removesuffix(' TDB') if legacy else epoch
+    try:confirmed=lookup(query,check_epoch,refresh=True)
+    except ValueError as exc:
+        if not legacy or 'No ephemeris' not in str(exc):raise
+        alternate='SB='+str(descriptor['id'])
+        confirmed=lookup(alternate,epoch,refresh=True)
+        recovery=dict(original_query=query,resolved_query=alternate,
+            reason='Legacy website descriptor omitted its ephemeris solution; the precomputed table does not cover arrival.',
+            acceptance='All saved coast states and costs must pass the unchanged numerical import checks.')
+    if confirmed.get('ambiguous') or str(confirmed.get('id'))!=str(record['body_ids'][-1]):
+        raise ValueError('JPL target identity does not match the imported candidate')
+    return confirmed,recovery
+
+
 def checked_record(record):
     if not isinstance(record,dict):raise ValueError('Missing selected trajectory record')
     r=deepcopy(record);ids=r.get('body_ids');dates=r.get('dates_jd_tdb');branches=r.get('branches');controls=r.get('dsm_controls');segments=r.get('segments')

@@ -14,7 +14,18 @@ def canonical_target(descriptor):
         result.update(id='999',command='999',kind='horizons_object',
             original_horizons_id=descriptor.get('original_horizons_id',str(descriptor.get('id','20134340'))),
             identity_note='134340 Pluto is the physical Pluto center (Horizons 999); barycenter 9 remains distinct.')
+    # Asteroid-system primaries prefix their eight-digit barycenter ID with 9.
+    # Older clients incorrectly classified these as satellites of themselves.
+    if re.fullmatch(r'9\d{8}',str(result.get('id',''))) and result.get('kind')=='natural_satellite':
+        result['kind']='horizons_object'
+        result.pop('parent_body',None);result.pop('model_limitation',None)
     return result
+
+
+def resolution_query(descriptor):
+    """Preserve integrated vs precomputed solutions even when they share an SPK ID."""
+    descriptor=canonical_target(descriptor)
+    return ('SB=' if descriptor.get('kind')=='small_body' else 'SPK=')+str(descriptor['id'])
 
 def pluto_identity(query='Pluto'):
     return dict(name='Pluto',id='999',command='999',kind='horizons_object',query=str(query),
@@ -27,12 +38,13 @@ def satellite_parent(descriptor):
         return None
     value = int(descriptor.get('id',0))
     if value>=100000000:
-        return {20136199:'Eris',20136108:'Haumea',20136472:'Makemake'}.get(value%100000000)
+        return {20136199:'Eris',20136108:'Haumea',20136472:'Makemake'}.get(value%100000000) if 1<=value//100000000<=8 else None
     family, member = divmod(value,100)
     return {3:'Earth',4:'Mars',5:'Jupiter',6:'Saturn',7:'Uranus',8:'Neptune',9:'Pluto'}.get(family) if 0 < member < 99 else None
 
 
 def moon_model_notice(descriptor):
+    descriptor=canonical_target(descriptor or {})
     parent = satellite_parent(descriptor)
     if not parent and (descriptor or {}).get('kind') != 'natural_satellite':
         return None
@@ -143,18 +155,26 @@ def resolve(query,epoch='2030-01-01'):
     # the major-body fallback from running at all (e.g. Titan).
     # '(SVI)' is a display label, rather than a literal Horizons query string.
     search = re.sub(r'\s*\([EMJSUN][IVXLCDM]+\)\s*$','',query,flags=re.I).strip()
-    explicit_id = re.fullmatch(r'SPK=(-?\d+)',search,re.I)
+    explicit_id = re.fullmatch(r'(SPK|SB)=(-?\d+)',search,re.I)
+    lookup_params={'sstr':search}
     if explicit_id:
-        search = explicit_id[1]
-    lookup_url = 'https://ssd.jpl.nasa.gov/api/horizons_lookup.api?'+urllib.parse.urlencode({'sstr':search})
+        search = explicit_id[2]
+        lookup_params={'sstr':search}
+        if explicit_id[1].upper()=='SB':lookup_params['group']='sb'
+    lookup_url = 'https://ssd.jpl.nasa.gov/api/horizons_lookup.api?'+urllib.parse.urlencode(lookup_params)
     lookup = request_json(lookup_url)
     if lookup.get('signature',{}).get('version') not in ('1.0','1.1'):
         raise ValueError('Unrecognized Horizons Lookup API version; no target was selected')
     matches = lookup.get('result',[])
+    integrated=lambda x:str(x.get('type','')).lower().startswith(('asteroid (integrated','comet (integrated'))
     if explicit_id:
         matches = [x for x in matches if str(x.get('spkid')) == search]
+        if explicit_id[1].upper()=='SB':matches=[x for x in matches if integrated(x)]
+        else:
+            precomputed=[x for x in matches if not integrated(x)]
+            if precomputed:matches=precomputed
     if len(matches)>1:
-        choices = [{'name':x['name'], 'designation':'SPK='+str(x['spkid']),
+        choices = [{'name':x['name'], 'designation':('SB=' if integrated(x) else 'SPK=')+str(x['spkid']),
                     'id':str(x['spkid']),'type':x.get('type')} for x in matches[:30]]
         return dict(ambiguous=True,query=query,choices=choices,message='Choose a specific designation and resolve it again.')
     if not matches:
