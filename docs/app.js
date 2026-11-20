@@ -1,3 +1,4 @@
+import {libraryProgress} from './library_progress.js?v=20261120loading';
 import {appendMissionAddons} from './mission_addons.js?v=20261120addons';
 import {combinedMismatch} from './mismatch_screen.js?v=20261119motion';
 import {sharedExportDownloads,appendSharedExports} from './export_downloads.js?v=20261119r2';
@@ -17,6 +18,7 @@ import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,seque
 import {trimAlternatives,groupLaunches,launchTimestamp,clearlyDominates} from './library_curation.js?v=20261113a';
 import {storedMismatch,estimateFlybys,FLYBY_BODIES} from './flyby_diagnostics.js?v=20261112d';
 const $ = (id) => document.getElementById(id);
+const loading=libraryProgress($('library-loading'));
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
 const colors = ['#79d8f1', '#ffd08a', '#8ae3bd', '#b4aeff', '#ff9f9a', '#9ed2ff'];
@@ -626,13 +628,14 @@ function addShared(records){let added=0;for(const record of records)try{
 }catch{}return added}
 function updateCounts(){if(pendingHashTarget&&applyTargetHash(pendingHashTarget))pendingHashTarget=null;$('total-count').textContent=catalog.length.toLocaleString('en-US');$('destination-count').textContent=new Set(catalog.map(c=>c.target)).size;makeDestinations()}
 async function syncShared(){
- if(sharedBusy||!sharedEndpoint)return;sharedBusy=true;$('community-refresh').disabled=true;
+ if(sharedBusy||!sharedEndpoint)return;sharedBusy=true;$('community-refresh').disabled=true;loading.live();
  let changed=false,lastPaint=0;
  try{
   $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · checking live library…`;
   const result=await fetchUpdates(sharedEndpoint,sharedSince,fetch,{
    checkpoint:sharedCheckpoint,
    onPage:async(records,progress)=>{
+    loading.live(progress);
     const added=addShared(records);changed=changed||added>0;
     if(changed&&performance.now()-lastPaint>1500){updateCounts();renderList();changed=false;lastPaint=performance.now();}
     $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · loading live library · ${progress.count.toLocaleString('en-US')} records downloaded in ${progress.pages} pages`;
@@ -640,11 +643,11 @@ async function syncShared(){
     await new Promise(resolve=>setTimeout(resolve,0));
    }
   });
-  sharedSince=result.watermark;sharedCheckpoint={};
+  sharedSince=result.watermark;sharedCheckpoint={};loading.complete(catalog.length);
   if(liveCache)try{await liveCache.save([],null,sharedSince);}catch{liveCache=null;}
   $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · live shared library up to date · checked ${new Date().toLocaleTimeString()}`;
  }catch{
-  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · live download interrupted; completed pages retained. Retrying from the last page.`;
+  $('community-status').textContent=`${catalog.length.toLocaleString('en-US')} interactive trajectories · live download interrupted; completed pages retained. Retrying from the last page.`;loading.interrupted(catalog.length);
  }finally{
   if(changed){updateCounts();renderList();}renderSequenceComparison();
   sharedBusy=false;$('community-refresh').disabled=false;
@@ -652,7 +655,11 @@ async function syncShared(){
 }
 
 try {
- const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical,energyReference]=await Promise.all([fetchJson('data/index.json?v=20261113c'),fetchJson('data/community_seed_catalog.json?v=20261119earth').catch(()=>({candidates:[]})),fetchJson('community_config.json').catch(()=>({})),fetchJson('data/body_names.json?v=20261114names').catch(()=>({})),fetchJson('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),fetchJson('data/mission_annotations.json?v=20261120addons').catch(()=>({missions:{}})),fetchJson('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),fetchJson('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),fetchJson('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),fetchJson('data/body_physical.json?v=20261116live').catch(()=>({bodies:{}})),fetchJson('data/launch_energy_reference.json?v=20261118energy2').catch(()=>null)]);
+ loading.start(11);
+ const loadSaved=path=>loading.file(fetchJson(path));
+ const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical,energyReference]=await Promise.all([loadSaved('data/index.json?v=20261113c'),loadSaved('data/community_seed_catalog.json?v=20261119earth').catch(()=>({candidates:[]})),loadSaved('community_config.json').catch(()=>({})),loadSaved('data/body_names.json?v=20261114names').catch(()=>({})),loadSaved('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),loadSaved('data/mission_annotations.json?v=20261120addons').catch(()=>({missions:{}})),loadSaved('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),loadSaved('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),loadSaved('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),loadSaved('data/body_physical.json?v=20261116live').catch(()=>({bodies:{}})),loadSaved('data/launch_energy_reference.json?v=20261118energy2').catch(()=>null)]);
+ loading.preparing();
+ await new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,0)));
  launchEnergyReference=energyReference;bodyPhysical=physical;registerBodyPhysical(physical);registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};
  libraryRemovals=removals.removed||{};libraryWarnings=removals.review_warnings||{};Object.assign(archive.duplicate_aliases||={},removals.duplicate_aliases||{});
  catalog.push(...data.cases.filter(c=>c.c3<=250&&!libraryRemovals[c.id]).map(c=>annotateMission(c)));curatedAliases=archive.curated_aliases||{};duplicateAliases=archive.duplicate_aliases||{};sharedSince=archive.received_through||sharedSince;sharedEndpoint=settings.endpoint||'';addShared(archive.candidates);updateCounts();
@@ -671,7 +678,7 @@ try {
  if(filters.mission&&!filters.target){const referenced=catalog.find(c=>c.id===resolved);if(referenced&&applyTargetHash(referenced.target))makeDestinations();}
  if(catalog.some(c=>c.id===resolved)||sharedRecords.has(resolved))await selectCandidate(resolved);
  else if(filters.mission&&sharedEndpoint){try{const found=await fetchJson(sharedEndpoint+'/v1/candidates?resolve_id='+encodeURIComponent(filters.mission));if(found.candidate){displayAliases[filters.mission]=found.candidate.id;addShared([found.candidate]);updateCounts();await selectCandidate(canonicalId(found.candidate.id));}else if(libraryRemovals[filters.mission])$('plot-message').textContent='This trajectory was removed: '+libraryRemovals[filters.mission].reason;}catch{}}
- renderList();syncShared();setInterval(()=>{if(!document.hidden)syncShared()},30000);
+ renderList();if(!sharedEndpoint)loading.complete(catalog.length);syncShared();setInterval(()=>{if(!document.hidden)syncShared()},30000);
 } catch(e) {
- $('result-count').textContent='Catalog unavailable';$('candidate-list').innerHTML=`<p class="empty">${escapeHtml(e.message)} Reload the page to retry.</p>`;$('mission-view').setAttribute('aria-busy','false');
+ loading.failed();$('result-count').textContent='Catalog unavailable';$('candidate-list').innerHTML=`<p class="empty">${escapeHtml(e.message)} Reload the page to retry.</p>`;$('mission-view').setAttribute('aria-busy','false');
 }

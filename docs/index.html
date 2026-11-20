@@ -15,10 +15,10 @@
   <meta property="og:url" content="https://robertbarthellgaray.github.io/RoLaMGAS/">
   <link rel="icon" type="image/png" sizes="64x64" href="images/rolamgas-icon-64.png">
   <link rel="apple-touch-icon" sizes="180x180" href="images/rolamgas-touch-180.png">
-  <link rel="stylesheet" href="style.css?v=20261118energy2">
+  <link rel="stylesheet" href="style.css?v=20261120loading">
   <link rel="stylesheet" href="observatory.css?v=20261119motion">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
-  <script type="module" src="app.js?v=20261120addons"></script>
+  <script type="module" src="app.js?v=20261120loading"></script>
 </head>
 <body>
   <a class="skip-link" href="#explorer">Skip to trajectory explorer</a>
@@ -26,6 +26,10 @@
     <a class="brand" href="./" aria-label="RoLaMGAS home"><img src="images/rolamgas-square-256.webp" width="48" height="48" alt=""><span>RoLaMGAS<small>Robert’s Lambert Multi Gravity Assist Solver</small></span></a>
     <nav aria-label="Main navigation"><a href="#explorer">Shared flight library</a><a href="celestia.html">Celestia addons</a><a href="https://robertbarthellgaray.github.io/">Robert’s portfolio <span aria-hidden="true">↗</span></a><a href="https://github.com/robertbarthellgaray/RoLaMGAS">Source code <span aria-hidden="true">↗</span></a><a class="button compact" href="#download">Get the solver <span aria-hidden="true">↓</span></a></nav>
   </header>
+  <section id="library-loading" class="library-loading" aria-label="Trajectory library loading progress" aria-busy="true" data-state="files">
+    <div><strong data-load-label role="status">Loading trajectory library…</strong><span data-load-detail>Downloading saved trajectories and mission data</span></div>
+    <progress aria-label="Trajectory library loading"></progress>
+  </section>
   <main>
     <section class="intro" aria-labelledby="intro-title">
       <div><p class="eyebrow"><span class="live-dot"></span> MISSION DESIGN / PUBLIC PREVIEW</p><h1 id="intro-title">A little gravity.<br>A lot of <em>possibility.</em></h1><p class="lede">One destination. Many ways to get there. Explore real saved trajectory candidates, follow their planetary flybys, and find a route worth taking further.</p><div class="intro-links"><a class="text-link" href="#explorer">Explore the trajectories <span aria-hidden="true">↘</span></a><a class="text-link" href="celestia.html">Celestia spacecraft addons <span aria-hidden="true">↗</span></a></div></div>
