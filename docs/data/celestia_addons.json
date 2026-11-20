@@ -1,7 +1,7 @@
 {
   "author_page": "https://celestia.mobi/resources/author/MartianBuilder",
-  "retrieved_at": "2026-11-15T22:08:35.947808+00:00",
-  "spacecraft_count": 4,
+  "retrieved_at": "2026-11-20T19:36:37.433147+00:00",
+  "spacecraft_count": 5,
   "assets": [
     {
       "id": "1955C443-C52C-419B-9736-6703F37ADE65",
@@ -21,6 +21,9 @@
       ],
       "dependencies": [
         "0F34A456-C3A1-2D02-D599-06AB5EABFD79"
+      ],
+      "mission_ids": [
+        "d62eda751aba894c5777c532e8c2267b2ff3a3999bc185e3849ffdad50bb9bbf"
       ]
     },
     {
@@ -70,6 +73,9 @@
       ],
       "dependencies": [
         "937503C9-83DB-78C0-4E7C-827899BC5CD1"
+      ],
+      "mission_ids": [
+        "tianwen4-concept"
       ]
     },
     {
@@ -85,7 +91,31 @@
       "authors": [
         "MartianBuilder"
       ],
-      "dependencies": []
+      "dependencies": [],
+      "mission_ids": [
+        "claudius-uop-2045",
+        "61a83e8f369c"
+      ]
+    },
+    {
+      "id": "BB56D66D-38AC-4712-ACB5-492916136ED3",
+      "slug": "infinity",
+      "title": "INFINITY",
+      "source_url": "https://celestia.mobi/resources/item/BB56D66D-38AC-4712-ACB5-492916136ED3",
+      "image_source_url": "https://celestia.mobi/resources/item/BB56D66D-38AC-4712-ACB5-492916136ED3/cover.jpg",
+      "image": "images/celestia/infinity.jpg",
+      "image_width": 1920,
+      "image_height": 1080,
+      "image_sha256": "944026fb7201ee167b2d5a9bf341a3e05c7cf2c8f9440ed9a60ddc601c69c9e4",
+      "authors": [
+        "MartianBuilder"
+      ],
+      "trajectory_credit": "ReachStar on Bilibili",
+      "trajectory_source_url": "https://www.youtube.com/watch?v=7BDxZV7UD9I",
+      "dependencies": [],
+      "mission_ids": [
+        "c16155480c4d"
+      ]
     }
   ]
 }

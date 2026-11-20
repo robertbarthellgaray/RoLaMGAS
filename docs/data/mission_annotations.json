@@ -764,6 +764,11 @@
       "label": "Earth-only Uranus \u00b7 2040-10-14 \u00b7 EdvEdvEU",
       "note": "No Venus or Jupiter. 14.05 years, C3 27.92, two aphelion DSMs totaling 1400.0 m/s. Lambert/patched-conic candidate; finite-SOI export remains to be checked.",
       "mission_kind": "original"
+    },
+    "d62eda751aba894c5777c532e8c2267b2ff3a3999bc185e3849ffdad50bb9bbf": {
+      "label": "Eris Explorer",
+      "mission_kind": "original",
+      "note": "RoLaMGAS recreation of the fictional Orbiter-simulator mission concept. Its Celestia addon is linked with the trajectory downloads."
     }
   }
 }
