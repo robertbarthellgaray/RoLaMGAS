@@ -1,4 +1,4 @@
-import {libraryProgress} from './library_progress.js?v=20261120loading';
+import {libraryProgress,selectionLoading} from './library_progress.js?v=20261120local-loading';
 import {appendMissionAddons} from './mission_addons.js?v=20261120addons';
 import {combinedMismatch} from './mismatch_screen.js?v=20261119motion';
 import {sharedExportDownloads,appendSharedExports} from './export_downloads.js?v=20261119r2';
@@ -18,7 +18,8 @@ import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,seque
 import {trimAlternatives,groupLaunches,launchTimestamp,clearlyDominates} from './library_curation.js?v=20261113a';
 import {storedMismatch,estimateFlybys,FLYBY_BODIES} from './flyby_diagnostics.js?v=20261112d';
 const $ = (id) => document.getElementById(id);
-const loading=libraryProgress($('library-loading'));
+const loading=libraryProgress($('library-loading'),[$('comparison-loading')]);
+const trajectoryLoading=selectionLoading($('trajectory-loading'));
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt = (n, digits = 2) => Number(n).toLocaleString('en-US', {minimumFractionDigits: digits, maximumFractionDigits: digits});
 const colors = ['#79d8f1', '#ffd08a', '#8ae3bd', '#b4aeff', '#ff9f9a', '#9ed2ff'];
@@ -297,7 +298,7 @@ function tick(now) {
 }
 async function selectCandidate(id) {
   id=canonicalId(id);
-  const token = ++requestVersion;
+  const token = ++requestVersion,loadingToken=trajectoryLoading.start();
   setPlaying(false);
   $('mission-view').setAttribute('aria-busy', 'true');
   $('download-pdf').disabled=true;
@@ -306,6 +307,8 @@ async function selectCandidate(id) {
   $('trajectory-download-note').textContent='';
   $('plot-message').hidden = false; $('plot-message').textContent = 'Loading saved flight…';
   try {
+    await new Promise(resolve=>requestAnimationFrame(resolve));
+    if(token!==requestVersion)return;
     let c = cache.get(id);
     if (!c) { c = sharedRecords.has(id) ? caseFor(sharedRecords.get(id)) : await fetchJson(`data/cases/${encodeURIComponent(id)}.json?v=20261113c`); cache.set(id, c); }
     if (token !== requestVersion) return;
@@ -383,6 +386,7 @@ async function selectCandidate(id) {
     if (token !== requestVersion) return;
     $('plot-message').textContent = e.message;
   } finally {
+    trajectoryLoading.finish(loadingToken);
     if (token === requestVersion) {$('mission-view').setAttribute('aria-busy', 'false');$('download-pdf').disabled=exportingPdf||!selected||selected.id!==id;}
   }
 }
@@ -680,5 +684,5 @@ try {
  else if(filters.mission&&sharedEndpoint){try{const found=await fetchJson(sharedEndpoint+'/v1/candidates?resolve_id='+encodeURIComponent(filters.mission));if(found.candidate){displayAliases[filters.mission]=found.candidate.id;addShared([found.candidate]);updateCounts();await selectCandidate(canonicalId(found.candidate.id));}else if(libraryRemovals[filters.mission])$('plot-message').textContent='This trajectory was removed: '+libraryRemovals[filters.mission].reason;}catch{}}
  renderList();if(!sharedEndpoint)loading.complete(catalog.length);syncShared();setInterval(()=>{if(!document.hidden)syncShared()},30000);
 } catch(e) {
- loading.failed();$('result-count').textContent='Catalog unavailable';$('candidate-list').innerHTML=`<p class="empty">${escapeHtml(e.message)} Reload the page to retry.</p>`;$('mission-view').setAttribute('aria-busy','false');
+ loading.failed();$('trajectory-loading').hidden=true;$('result-count').textContent='Catalog unavailable';$('candidate-list').innerHTML=`<p class="empty">${escapeHtml(e.message)} Reload the page to retry.</p>`;$('mission-view').setAttribute('aria-busy','false');
 }
