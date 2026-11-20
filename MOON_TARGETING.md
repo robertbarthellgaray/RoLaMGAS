@@ -119,3 +119,5 @@ range. This does not replace a spacecraft-grade mass/orbit uncertainty analysis.
 Catalog and reference data sources: https://ssd.jpl.nasa.gov/sats/elem/ ,
 https://ssd.jpl.nasa.gov/sats/phys_par/ , https://ssd-api.jpl.nasa.gov/doc/sb_sat.html ,
 https://ssd.jpl.nasa.gov/horizons/ .
+
+The default correction search now uses one upstream timing (35% of the final coast). The optional scan still tries several timings and refines the best. A completed moon branch can be selected directly by checking **Patch targeted moon**; the separate selection button remains available. Numbered small-body names and their catalog aliases are compared as the same parent during export, with candidate and trajectory checksums still enforced.

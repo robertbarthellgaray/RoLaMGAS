@@ -126,7 +126,7 @@ def named_moon(query):
                     source='https://ssd.jpl.nasa.gov/sats/phys_par/',query=str(query),identity_note='Known JPL satellite ID; encounter vectors are fetched when targeting.')
     return None
 
-def validate_options(parent,moon_id,mode,altitude,max_added_mps=700.,effort='standard',inclination_deg=None,target_latitude_deg=None,target_longitude_deg=None,allow_projection=False):
+def validate_options(parent,moon_id,mode,altitude,max_added_mps=700.,effort='quick',inclination_deg=None,target_latitude_deg=None,target_longitude_deg=None,allow_projection=False):
     import math
     if not isinstance(allow_projection,bool):raise ValueError('Moon projection option must be a boolean')
     parent=canonical_parent(parent)

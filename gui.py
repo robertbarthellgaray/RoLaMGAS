@@ -572,7 +572,10 @@ class App:
         report=export_report(output,branch)
         candidate=root/'candidates'/(identifier+'.json');q=read_json(candidate,{})
         source_hash=report.get('source_candidate_sha256') or read_json(output/'source_export/integration_report.json',{}).get('source_candidate_sha256')
-        if report.get('source_candidate_id')!=identifier or q.get('bodies',[])[-1:]!=[report.get('parent_body')] or source_hash!=hashlib.sha256(candidate.read_bytes()).hexdigest():
+        from moon_targets import canonical_parent
+        final=q.get('bodies',[])[-1:]
+        same_parent=bool(final) and canonical_parent(final[0])==canonical_parent(report.get('parent_body'))
+        if report.get('source_candidate_id')!=identifier or not same_parent or source_hash!=hashlib.sha256(candidate.read_bytes()).hexdigest():
             raise ValueError('Moon branch belongs to a different candidate revision. Recalculate moon targeting.')
         digest=hashlib.sha256((output/'trajectory.xyzv').read_bytes()).hexdigest()
         if report.get('trajectory_sha256') and report['trajectory_sha256']!=digest:raise ValueError('Moon trajectory checksum changed; recalculate moon targeting')
@@ -773,7 +776,7 @@ class App:
             status['sharing']=self.share_export(name,identifier,output)
         return dict(status,active_integration=active)
 
-    def target_moon(self,name,identifier,moon_id,mode='approach',altitude_km=1000.,max_added_mps=700.,effort='standard',inclination_deg=None,target_latitude_deg=None,target_longitude_deg=None,allow_projection=False):
+    def target_moon(self,name,identifier,moon_id,mode='approach',altitude_km=1000.,max_added_mps=700.,effort='quick',inclination_deg=None,target_latitude_deg=None,target_longitude_deg=None,allow_projection=False):
         from moon_targets import validate_options
         if not re.fullmatch(r'[a-f0-9]{12}',identifier):raise ValueError('Invalid candidate ID')
         root=self.folder(name);candidate=root/'candidates'/(identifier+'.json');q=read_json(candidate)
@@ -1009,7 +1012,7 @@ class Handler(BaseHTTPRequestHandler):
             if self.path=='/api/integration/cancel':
                 return self.json(self.app.cancel_integration(value['run'],value['candidate']))
             if self.path=='/api/target-moon':
-                return self.json(self.app.target_moon(value['run'],value['candidate'],value.get('moon_id'),value.get('mode','approach'),value.get('altitude_km',1000.),value.get('max_added_mps',700.),value.get('effort','standard'),value.get('inclination_deg'),value.get('target_latitude_deg'),value.get('target_longitude_deg'),value.get('allow_projection',False)))
+                return self.json(self.app.target_moon(value['run'],value['candidate'],value.get('moon_id'),value.get('mode','approach'),value.get('altitude_km',1000.),value.get('max_added_mps',700.),value.get('effort','quick'),value.get('inclination_deg'),value.get('target_latitude_deg'),value.get('target_longitude_deg'),value.get('allow_projection',False)))
             if self.path=='/api/stop-moon-target':
                 return self.json(self.app.stop_moon_target(value['run'],value['candidate'],value['branch']))
             if self.path=='/api/select-moon-export':

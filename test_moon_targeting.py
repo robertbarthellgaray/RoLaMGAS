@@ -53,7 +53,7 @@ class MoonTargetingTests(unittest.TestCase):
         self.assertIsNone(named_moon('20000502'))
 
     def test_timing_refinement_improves_scan_and_stays_before_soi(self):
-        options=validate_options('Jupiter','502','impact',0)
+        options=validate_options('Jupiter','502','impact',0,effort='standard')
         seeds=[]
         def solve(segment,arrival,parent,moon,base,fraction,system,progress,inclination_deg=None):
             seeds.append(dict(base))

@@ -118,3 +118,38 @@ test('atmospheric downloads disclose assumptions and carry a continuous full-pat
  assert.equal(report.outcome,'illustrative_lander_release');assert.match(report.assumptions.join(' '),/8.25 m/);
  assert.equal(report.reference_load_check.exceeds_reference_limit,report.reference_load_check.predicted_peak_g0>12);
 });
+
+test('a completed Vanth branch enables the patch checkbox before selection and checking selects it',async()=>{
+ const report={moon_body:'Vanth',target_mode:'approach',target_altitude_km:99,target_date:'2064-10-12 TDB',added_correction_delta_v_kms:.00003985,passes_added_burn_limit:true};
+ const branch='abcdef012345',calls=[];let chosen=null;
+ const {ctx,node}=context(async(path,data)=>{calls.push([path,data]);if(path==='/api/select-moon-export'){chosen=data.branch;return {state:'finished',export_kind:'moon',branch,report}}return {state:'finished',branch,selected_branch:chosen,report}});
+ ctx.checkExport=async()=>{};node('patchTargetMoon').disabled=true;
+ await vm.runInContext('checkMoonTarget()',ctx);
+ assert.equal(node('patchTargetMoon').disabled,false);assert.equal(ctx.state.moonExport,undefined);
+ node('patchTargetMoon').checked=true;await vm.runInContext('selectMoonPatch()',ctx);
+ assert.equal(ctx.state.moonExport.branch,branch);assert.equal(calls.filter(([path])=>path==='/api/select-moon-export').length,1);
+ // Later status refreshes retain the user's deliberate unchecked preference.
+ node('patchTargetMoon').checked=false;vm.runInContext('exportSource('+JSON.stringify({export_kind:'moon',branch,report})+')',ctx);
+ assert.equal(node('patchTargetMoon').checked,false);
+});
+
+test('failed branch selection does not leave a misleading checked moon patch',async()=>{
+ const {ctx,node}=context(async()=>{throw Error('Candidate revision changed')});ctx.state.moonPatchReady={run:'test',candidate:'0123456789ab',branch:'abcdef012345'};
+ node('patchTargetMoon').checked=true;await vm.runInContext('selectMoonPatch()',ctx);
+ assert.equal(node('patchTargetMoon').checked,false);assert.match(node('moonTargetStatus').textContent,/revision changed/);
+});
+
+test('default moon effort is one correction in the HTML and API',()=>{
+ const html=fs.readFileSync(new URL('../gui.html',import.meta.url),'utf8');
+ assert.match(html,/<option value="quick" selected>One correction timing/);
+ const api=fs.readFileSync(new URL('../gui.py',import.meta.url),'utf8');
+ assert.match(api,/effort='quick'/);assert.match(api,/value.get\('effort','quick'\)/);
+});
+
+test('an older export poll cannot disable the patch checkbox after a new selection',async()=>{
+ let resolve;const {ctx,node}=context(()=>new Promise(r=>resolve=r));node('detail').open=true;
+ vm.runInContext(gui.split('\n').find(line=>line.startsWith('async function checkExport(')),ctx);
+ let changes=0;ctx.exportSource=()=>changes++;
+ const pending=vm.runInContext('checkExport()',ctx);ctx.state.exportSelectionVersion=1;
+ resolve({state:'none'});await pending;assert.equal(changes,0);
+});

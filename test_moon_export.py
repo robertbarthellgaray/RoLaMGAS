@@ -99,6 +99,36 @@ class MoonExportTests(unittest.TestCase):
             self.assertFalse((root/'exports'/ident).exists())
             self.assertEqual(app.select_moon_export('saved',ident)['state'],'none')
 
+    def test_numbered_small_body_alias_selects_its_own_branch_without_rewriting_candidate(self):
+        for full_name,parent in [('90482 Orcus (2004 DW)','Orcus'),('Orcus (primary body)','Orcus'),('136199 Eris (2003 UB313)','Eris'),('136199 Eris','Eris'),('134340 Pluto (1930 BM)','Pluto'),('134340 Pluto','Pluto'),('Pluto','Pluto')]:
+            with self.subTest(parent=parent),tempfile.TemporaryDirectory() as folder,patch('gui.HERE',Path(folder)):
+                app,run,out,ident,branch=self.fixture(folder)
+                candidate=run/'candidates'/f'{ident}.json'
+                q=json.loads(candidate.read_text());q['bodies'][-1]=full_name;atomic_json(candidate,q)
+                digest=hashlib.sha256(candidate.read_bytes()).hexdigest()
+                baseline=out/'source_export/integration_report.json';b=json.loads(baseline.read_text());b['source_candidate_sha256']=digest;atomic_json(baseline,b)
+                report=out/'moon_report.json';r=json.loads(report.read_text());r['parent_body']=parent;atomic_json(report,r)
+                selected=app.select_moon_export('saved',ident,branch)
+                self.assertEqual(selected['export_kind'],'moon');self.assertEqual(selected['branch'],branch)
+                self.assertEqual(hashlib.sha256(candidate.read_bytes()).hexdigest(),digest)
+                # A stale candidate stays invalid even when its alias resolves.
+                q['launch_date']='2030-01-02';atomic_json(candidate,q)
+                with self.assertRaisesRegex(ValueError,'different candidate'):app.selected_moon_export('saved',ident)
+
+    def test_every_catalogued_parent_full_name_can_select_its_own_branch(self):
+        from moon_targets import CATALOG_SYSTEMS
+        with tempfile.TemporaryDirectory() as folder,patch('gui.HERE',Path(folder)):
+            app,run,out,ident,branch=self.fixture(folder)
+            candidate=run/'candidates'/f'{ident}.json'
+            baseline=out/'source_export/integration_report.json';b=json.loads(baseline.read_text())
+            report=out/'moon_report.json';r=json.loads(report.read_text());q=json.loads(candidate.read_text())
+            for parent,system in CATALOG_SYSTEMS.items():
+                with self.subTest(parent=parent):
+                    q['bodies'][-1]=system.get('fullname') or parent;atomic_json(candidate,q)
+                    b['source_candidate_sha256']=hashlib.sha256(candidate.read_bytes()).hexdigest();atomic_json(baseline,b)
+                    r['parent_body']=parent;atomic_json(report,r)
+                    self.assertEqual(app.select_moon_export('saved',ident,branch)['export_kind'],'moon')
+
     def test_reject_unfinished_stale_or_changed_branch(self):
         with tempfile.TemporaryDirectory() as folder,patch('gui.HERE',Path(folder)):
             app,root,out,ident,branch=self.fixture(folder)
