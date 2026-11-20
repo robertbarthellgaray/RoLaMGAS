@@ -31,3 +31,10 @@ test('graph loading stays visible for a newer request until that request finishe
  const region={hidden:true},loading=selectionLoading(region),old=loading.start(),current=loading.start();
  loading.finish(old);assert.equal(region.hidden,false);loading.finish(current);assert.equal(region.hidden,true);
 });
+
+test('planetarium uses a centered wheel; the candidate column uses a bar without a second wheel',()=>{
+ const html=fs.readFileSync(new URL('../docs/index.html',import.meta.url),'utf8');
+ const list=html.slice(html.indexOf('id="library-loading"'),html.indexOf('id="candidate-list"'));
+ const scene=html.slice(html.indexOf('id="trajectory-loading"'),html.indexOf('<canvas id="orbit"'));
+ assert.ok(list.includes('<progress'));assert.ok(!list.includes('loading-spinner'));assert.ok(scene.includes('loading-spinner'));
+});

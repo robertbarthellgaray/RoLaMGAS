@@ -15,10 +15,10 @@
   <meta property="og:url" content="https://robertbarthellgaray.github.io/RoLaMGAS/">
   <link rel="icon" type="image/png" sizes="64x64" href="images/rolamgas-icon-64.png">
   <link rel="apple-touch-icon" sizes="180x180" href="images/rolamgas-touch-180.png">
-  <link rel="stylesheet" href="style.css?v=20261120local-loading">
+  <link rel="stylesheet" href="style.css?v=20261120planetarium-loading">
   <link rel="stylesheet" href="observatory.css?v=20261119motion">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
-  <script type="module" src="app.js?v=20261120local-loading"></script>
+  <script type="module" src="app.js?v=20261120planetarium-loading"></script>
 </head>
 <body>
   <a class="skip-link" href="#explorer">Skip to trajectory explorer</a>
@@ -59,7 +59,7 @@
           </div>
           <div class="candidate-list-wrap">
             <div id="library-loading" class="area-loading" aria-label="Trajectory list loading" aria-busy="true" data-state="files">
-              <i class="loading-spinner" aria-hidden="true"></i><strong data-load-label role="status">Loading trajectory list…</strong><span data-load-detail>Loading saved routes and shared candidates</span><progress aria-label="Trajectory list loading progress"></progress>
+              <strong data-load-label role="status">Loading trajectory list…</strong><span data-load-detail>Loading saved routes and shared candidates</span><progress aria-label="Trajectory list loading progress"></progress>
             </div>
           <div id="candidate-list" class="candidate-list"><p class="empty">Loading saved trajectories…</p></div></div><button id="candidate-more" type="button" class="subtle-button" hidden>Show more trajectories</button>
         </aside>
