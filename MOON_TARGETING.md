@@ -84,3 +84,38 @@ Physical parameters: https://ssd.jpl.nasa.gov/sats/phys_par/sep.html (PLU060). T
 Celestia exports now have Patch target (major planet or small body) and Patch targeted moon. Small-body patches default to a total 365.25 days, centered on the final encounter; duration can be entered in years or days, up to ten years. The optional maximum playback interval is entered in hours. Small-body automatic intervals are 3 hours for physical Pluto, 1 hour for comets/very small perihelia, and 1 day for slowly moving small bodies. A user-selected coarser small-body interval sacrifices playback fidelity. Planet/moon outputs are checked for interpolation error and may retain additional points. Original orbital definitions resume outside the window.
 
 Legacy Windows-1252 Celestia catalogs and catalogs without SPDX headers are accepted without inventing a source license. Actual out-of-range ephemeris requests remain prohibited; errors identify the body and available dates. Sub-millisecond Julian-date conversion roundoff is clamped to the endpoint.
+
+
+## Expanded moon catalog (0.2.9 preview)
+
+The offline catalog, dated 2026-11-20, combines JPL's planetary satellite elements,
+physical-parameter table and Small-Body Satellites API. After duplicate Pluto
+entries are merged, it lists 992 moons/reported satellites across 523 parent
+systems. See `celestia_assets/moon_catalog.csv` for every entry and its data status.
+The catalog includes unconfirmed reports, identified as unavailable for targeting.
+
+Target a moon is shown for any catalogued parent, including Eris aliases and
+numbered small-body names. Current data supports 464 moon targets. A measured
+radius permits surface-altitude approaches and vacuum geometric impact. Where a
+planetary moon has an ephemeris but no measured radius, the field explicitly
+changes to distance from its center and surface impact is disabled. Unknown moon
+mass is treated as zero with a massless-target note; it does not provide a
+predicted gravity assist. Systems without a usable orbit/identity or parent
+physical model remain listed with an explanation instead of inventing parameters.
+
+Eris's current integrated heliocentric orbit and the Eris/Dysnomia precomputed
+satellite solution are separate datasets. The former can extend to 2500; the
+Dysnomia satellite table currently ends in 2030. The default uses only published
+JPL coverage. An unchecked **Allow approximate moon orbit projection outside JPL
+coverage** control enables a two-body reference-orbit model for supported small
+body systems. It adds the projected relative orbit to the current integrated
+system-barycenter motion, retaining the primary's barycentric displacement.
+Future moon phase is uncertain. Reports, UI and generated patch comments mark
+these outputs approximate. Projected cache tables are excluded from normal
+JPL-only queries. Continuation retains the chosen model and provenance.
+
+GMs quoted as a range use its nominal midpoint, explicitly recorded with the JPL
+range. This does not replace a spacecraft-grade mass/orbit uncertainty analysis.
+Catalog and reference data sources: https://ssd.jpl.nasa.gov/sats/elem/ ,
+https://ssd.jpl.nasa.gov/sats/phys_par/ , https://ssd-api.jpl.nasa.gov/doc/sb_sat.html ,
+https://ssd.jpl.nasa.gov/horizons/ .

@@ -122,6 +122,7 @@ class Ephemerides:
             available = []
             for p in Path(cache).glob(cache_stem(body) + '_*.json'):
                 m = json.loads(p.read_text(encoding='utf-8'))
+                if m.get('ephemeris_model') and not identity(body).get('allow_projected_ephemeris',False):continue
                 if body not in BODIES:
                     saved=m.get('target_identity') or {};current=identity(body)
                     # Precomputed and currently integrated asteroid barycenters

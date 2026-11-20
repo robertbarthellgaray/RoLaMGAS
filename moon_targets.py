@@ -46,20 +46,59 @@ MOON_SYSTEMS={
     ]),
 }
 
+# The bundled catalog lists every system in JPL's planetary/small-body tables,
+# including reported systems whose orbit or radius is not sufficient for targeting.
+import json,re
+from app_paths import RESOURCE_ROOT
+CATALOG=json.loads((RESOURCE_ROOT/'celestia_assets/satellite_catalog.json').read_text(encoding='utf-8'))
+CATALOG_SYSTEMS={s['name']:s for s in CATALOG['systems']}
+PARENT_ALIASES={}
+for name,system in CATALOG_SYSTEMS.items():
+    for alias in (name,system.get('fullname'),system.get('designation'),system.get('physical_id'),system.get('barycenter_id'),name+' (primary body)',name+' (system barycenter)'):
+        if alias:PARENT_ALIASES[str(alias).strip().casefold()]=name
+    if system.get('designation') and not name.startswith('('):PARENT_ALIASES[(system['designation']+' '+name).casefold()]=name
+    source,known=MOON_SYSTEMS.get(name,('JPL satellite catalog',[]))
+    known=[dict(m,targeting_available=True) for m in known]
+    ids={m['id'] for m in known}
+    names={m['name'].casefold() for m in known}
+    additions=[m for m in system['moons'] if m['id'] not in ids and m['name'].casefold() not in names]
+    MOON_SYSTEMS[name]=(source,known+sorted(additions,key=lambda m:(not m.get('targeting_available',False),m['name'])))
+
+def parent_aliases():return dict(PARENT_ALIASES)
+
+def parent_search_identity(parent):
+    parent=canonical_parent(parent)
+    from ephemeris import BODIES
+    from horizons_targets import pluto_identity
+    if parent=='Pluto':return pluto_identity()
+    if parent in BODIES:return None
+    system=CATALOG_SYSTEMS.get(parent,{})
+    des=str(system.get('designation',''))
+    if not des.isdigit():return None
+    ident=system.get('barycenter_id') or str(20000000+int(des))
+    return dict(name=system['fullname'],id=ident,command=des+';',kind='small_body',designation=des,
+        query='SB='+ident,source='https://ssd-api.jpl.nasa.gov/sb_sat.api',effective_radius_km=system.get('radius_km') or 0.)
+
 def canonical_parent(parent):
     import re
+    parent=PARENT_ALIASES.get(str(parent).strip().casefold(),parent)
     return 'Pluto' if re.fullmatch(r'(?:134340\s+)?Pluto(?:\s*\(1930\s*BM\))?',str(parent),re.I) else parent
 
 def parent_parameters(parent):
     from ephemeris import BODIES
     parent=canonical_parent(parent)
     if parent=='Pluto':return 999,869.3,1188.3,100.
-    if parent not in BODIES:raise ValueError('No validated parent gravity/radius model is available for '+str(parent))
+    system=CATALOG_SYSTEMS.get(parent,{})
+    if system.get('gm') and system.get('radius_km'):return int(system['physical_id']),system['gm'],system['radius_km'],0.
+    if parent not in BODIES:raise ValueError('No measured parent gravity/radius model is available for '+str(parent))
     return BODIES[parent]
 
 def register_parent(parent):
     from horizons_targets import register_target,pluto_identity
-    if canonical_parent(parent)=='Pluto':register_target(pluto_identity())
+    parent=canonical_parent(parent)
+    if parent=='Pluto':register_target(pluto_identity())
+    elif parent in CATALOG_SYSTEMS and CATALOG_SYSTEMS[parent].get('physical_id'):
+        system=CATALOG_SYSTEMS[parent];register_target(dict(name=parent,id=system['physical_id'],command=system['physical_id'],kind='horizons_object',source='JPL Horizons satellite-system primary'))
 
 def target_options(parent):
     parent=canonical_parent(parent)
@@ -82,16 +121,20 @@ def named_moon(query):
     text=re.sub(r'^spk\s*=\s*','',text)
     for parent in MOON_SYSTEMS:
         for moon in target_options(parent):
-            if text in (moon['name'].casefold(),moon['id']):
+            if str(moon['id']).isdigit() and text in (moon['name'].casefold(),moon['id']):
                 return dict(name=moon['name'],id=moon['id'],command=moon['id'],kind='natural_satellite',parent_body=parent,
                     source='https://ssd.jpl.nasa.gov/sats/phys_par/',query=str(query),identity_note='Known JPL satellite ID; encounter vectors are fetched when targeting.')
     return None
 
-def validate_options(parent,moon_id,mode,altitude,max_added_mps=700.,effort='standard',inclination_deg=None,target_latitude_deg=None,target_longitude_deg=None):
+def validate_options(parent,moon_id,mode,altitude,max_added_mps=700.,effort='standard',inclination_deg=None,target_latitude_deg=None,target_longitude_deg=None,allow_projection=False):
     import math
+    if not isinstance(allow_projection,bool):raise ValueError('Moon projection option must be a boolean')
     parent=canonical_parent(parent)
     moon=next((m for m in target_options(parent) if m['id']==str(moon_id)),None)
-    if moon is None:raise ValueError('Select a supported moon of the final target planet')
+    if moon is None:raise ValueError('Select a moon of the final target body')
+    if not moon.get('targeting_available',True):raise ValueError(moon.get('unavailable_reason','This catalogued moon is missing data required for targeting.'))
+    parent_parameters(parent)
+    if moon.get('radius_unknown') and mode!='approach':raise ValueError('This moon has no measured radius: use closest-approach distance from its center, not surface impact or altitude.')
     if mode not in ('impact','approach','entry'):raise ValueError('Select impact, closest approach or entry interface')
     if mode=='entry' and moon['name']!='Titan':raise ValueError('Atmospheric entry interface is supported for Titan only')
     altitude=0. if mode=='impact' else float(altitude)
@@ -112,7 +155,7 @@ def validate_options(parent,moon_id,mode,altitude,max_added_mps=700.,effort='sta
         if inclination_deg is not None:raise ValueError('Choose a body-fixed target point or an inclination constraint, not both')
         point=dict(latitude_deg=latitude,longitude_east_deg=longitude%360.)
     return dict(parent=parent,moon=moon,mode=mode,altitude_km=altitude,max_added_mps=cap,effort=effort,
-                burn_fractions=[.35] if effort=='quick' else [.1,.3,.5,.7,.85],inclination_deg=inclination_deg,target_point=point)
+                allow_projection=allow_projection,burn_fractions=[.35] if effort=='quick' else [.1,.3,.5,.7,.85],inclination_deg=inclination_deg,target_point=point)
 
 def titan_body_axes(epoch_jd_tdb):
     """ICRF->IAU_TITAN matrix, expressed against Ecliptic J2000 vectors.

@@ -46,7 +46,7 @@ jobs:
       - name: Test source and packaging contracts
         run: python -m unittest discover -p "test_*.py"
       - name: Test community API and browser contracts
-        run: node --test tools/test_gui_min_c3.mjs community_backend/worker.test.mjs community_backend/preview.test.mjs community_backend/library_analysis.test.mjs tools/test_preview_controls.mjs tools/test_results_chart.mjs tools/test_custom_charts.mjs tools/test_mission_metrics.mjs tools/test_desktop_transfer.mjs tools/test_publication_dates.mjs tools/test_dwarf_patch_gui.mjs tools/test_moon_target_gui.mjs tools/test_moon_destination_gui.mjs tools/test_target_patch_gui_028.mjs
+        run: node --test tools/test_gui_min_c3.mjs community_backend/worker.test.mjs community_backend/preview.test.mjs community_backend/library_analysis.test.mjs tools/test_preview_controls.mjs tools/test_results_chart.mjs tools/test_custom_charts.mjs tools/test_mission_metrics.mjs tools/test_desktop_transfer.mjs tools/test_publication_dates.mjs tools/test_dwarf_patch_gui.mjs tools/test_moon_target_gui.mjs tools/test_moon_destination_gui.mjs tools/test_all_moons_gui.mjs tools/test_target_patch_gui_028.mjs
       - name: Build source and native download
         env:
           MANUAL_VERSION: ${{ inputs.version }}

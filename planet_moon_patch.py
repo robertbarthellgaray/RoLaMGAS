@@ -160,9 +160,13 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
         # Obtain guarded coverage for the FULL requested interval. Preserve all
         # original knots and derivatives inside its domain, even if a new JPL
         # table or a different cadence is needed outside that interval.
-        try:ep=Ephemerides(cache,[body],start-1,end+1,step,mercury_fine=False)
-        except ValueError:
-            fetch(cache,body,start-1,end+1,step);ep=Ephemerides(cache,[body],start-1,end+1,step,mercury_fine=False)
+        if any(m.get('ephemeris_model') for m in source_tables(manifest)):
+            from moon_targeting import cached
+            ep=cached(cache,body,start-1,end+1,step,lambda message:None,allow_projection=True)
+        else:
+            try:ep=Ephemerides(cache,[body],start-1,end+1,step,mercury_fine=False)
+            except ValueError:
+                fetch(cache,body,start-1,end+1,step);ep=Ephemerides(cache,[body],start-1,end+1,step,mercury_fine=False)
         other=ep.splines[body];outside=other.x[(other.x<spline.x[0])|(other.x>spline.x[-1])]
         times=np.r_[outside,spline.x];values=np.r_[spline_states(other,outside),spline_states(spline,spline.x)]
         order=np.argsort(times);times=times[order];values=values[order]
@@ -196,7 +200,7 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
         (root/'data').mkdir(parents=True,exist_ok=True);(root/'reports').mkdir(parents=True,exist_ok=True)
         if not np.all(np.isfinite(values)):raise ValueError('Nonfinite JPL patch vectors for '+name)
         np.savetxt(root/'data'/filename,np.c_[output_dates,values],fmt=['%.12f']+['%.8f']*3+['%.12f']*3)
-        ssc=(f'# JPL encounter override; original orbit/rotation attribution in reports/planet_moon_patches.json\n'
+        ssc=(('# APPROXIMATE projected moon positions; future phase is uncertain.\n' if report.get('projected_moon_ephemeris') else '')+f'# JPL encounter override; original orbit/rotation attribution in reports/planet_moon_patches.json\n'
              f'Modify "{name}" "{center}"\n{{\n Timeline [\n'
              f' {{ Ending {start:.12f}\n{old}\n }}\n'
              f' {{ Ending {end:.12f}\n OrbitFrame {{ EclipticJ2000 {{ Center "{center}" }} }}\n'
@@ -213,6 +217,8 @@ def create_patches(root,config,report,patch_planet=False,patch_moon=False,patch_
         moon_orbital_period_days=period,period_method=('PLU060 mean barycentric orbital period: small moons orbit the Pluto–Charon pair.' if parent=='Pluto' and moon and moon['id']!='901' else 'Two-body osculating period from the original JPL parent-relative state at encounter; parent GM + moon GM.'),
         frame='Ecliptic J2000; JD TDB, km, km/s',
         limitations='Position and velocity override only; existing shapes and rotations retained. Original orbits restored outside the window. Disable other addons that override the same bodies during this encounter.')
+    metadata['projected_moon_ephemeris']=bool(report.get('projected_moon_ephemeris'))
+    if metadata['projected_moon_ephemeris']:metadata['limitations']+=' APPROXIMATE projected moon ephemeris, not JPL coverage at encounter. '+report.get('moon_position_warning','')
     atomic_json(root/'reports/planet_moon_patches.json',metadata)
     shutil.copy2(RESOURCE_ROOT/'LICENSE',root/'reports/Celestia_orbit_LICENSE.txt')
     return metadata

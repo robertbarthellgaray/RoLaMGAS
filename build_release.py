@@ -7,7 +7,7 @@ from pathlib import Path
 import argparse,hashlib,json,os,platform,re,shutil,subprocess,sys,tempfile,zipfile
 
 ROOT=Path(__file__).resolve().parent
-MODULES=['export_sharing','update_check','app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search','sequence_timing','dynamics','ephemeris','trajectory_prefixes',
+MODULES=['moon_ephemerides','export_sharing','update_check','app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search','sequence_timing','dynamics','ephemeris','trajectory_prefixes',
          'horizons_targets','network','search_options','candidate_archive','community','candidate_status','earth_return_seeds','historical_seeds','launch_performance','trajectory_transfer','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
          'presentation','live_gallery','integrate_export','finite_targeting','encounter_preferences','celestia_package','dwarf_planet_patch','planet_moon_patch','moon_screen','moon_arrival','moon_targets','moon_targeting','moon_continuation','baseline_cache',
          'build_database','build_release','restore_diagnostics','trajectory_policy','resonant_shooting_seeds','titan_entry']

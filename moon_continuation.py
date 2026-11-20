@@ -33,11 +33,15 @@ def load_vectors(cache,body,sources,start,end,step,progress):
     provenance=sources
     if (start-JD0)*DAY<times[0] or (end-JD0)*DAY>times[-1]:
         # Request only the required local SOI window, never decades of moon data.
-        try:extra=Ephemerides(cache,[body],start-1,end+1,step,mercury_fine=False)
-        except ValueError:
-            progress('Downloading '+body+' vectors for the outgoing SOI arc...')
-            fetch(cache,body,start-1,end+1,step)
-            extra=Ephemerides(cache,[body],start-1,end+1,step,mercury_fine=False)
+        if any(m.get('ephemeris_model') for m in source_tables(sources)):
+            from moon_targeting import cached
+            extra=cached(cache,body,start-1,end+1,step,progress,allow_projection=True)
+        else:
+            try:extra=Ephemerides(cache,[body],start-1,end+1,step,mercury_fine=False)
+            except ValueError:
+                progress('Downloading '+body+' vectors for the outgoing SOI arc...')
+                fetch(cache,body,start-1,end+1,step)
+                extra=Ephemerides(cache,[body],start-1,end+1,step,mercury_fine=False)
         curve=extra.splines[body];outside=curve.x[(curve.x<times[0])|(curve.x>times[-1])]
         times=np.r_[times,outside];values=np.r_[values,spline_states(curve,outside)]
         order=np.argsort(times);times=times[order];values=values[order]

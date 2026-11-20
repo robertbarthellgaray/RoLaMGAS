@@ -37,6 +37,9 @@ def satellite_parent(descriptor):
     if not descriptor or descriptor.get('kind') == 'small_body':
         return None
     value = int(descriptor.get('id',0))
+    from moon_targets import MOON_SYSTEMS
+    catalog_parent=next((p for p,(_,moons) in MOON_SYSTEMS.items() if any(str(m['id'])==str(value) for m in moons)),None)
+    if catalog_parent:return catalog_parent
     if value>=100000000:
         return {20136199:'Eris',20136108:'Haumea',20136472:'Makemake'}.get(value%100000000) if 1<=value//100000000<=8 else None
     family, member = divmod(value,100)
@@ -50,7 +53,7 @@ def moon_model_notice(descriptor):
         return None
     location = parent or 'its parent body'
     from moon_targets import target_options
-    supported=any(m['id']==str(descriptor.get('id')) for m in target_options(parent))
+    supported=any(m['id']==str(descriptor.get('id')) and m.get('targeting_available',True) for m in target_options(parent))
     if supported:
         return (f"{descriptor['name']} is a moon of {location}. Search {location} arrivals, "
                 'then choose Target a moon on a candidate to solve an impact or approach at its arrival date. '

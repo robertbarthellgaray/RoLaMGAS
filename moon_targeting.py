@@ -20,11 +20,19 @@ class BodyVectors:
         # quantizes moon motion in ~40 microsecond jumps and hurts convergence.
         return self.ep.splines[self.body]((epoch-JD0)*DAY+seconds)
 
-def cached(cache,body,start,end,step,progress):
+def cached(cache,body,start,end,step,progress,allow_projection=False):
+    from horizons_targets import identity
+    register_target(dict(identity(body),allow_projected_ephemeris=allow_projection))
     try:return Ephemerides(cache,[body],start,end,step)
     except ValueError:
         progress('Downloading and caching JPL '+body+' vectors...')
-        fetch(cache,body,start-1,end+1,step);return Ephemerides(cache,[body],start,end,step)
+        try:fetch(cache,body,start-1,end+1,step)
+        except ValueError as exc:
+            if 'No ephemeris' not in str(exc):raise
+            if not allow_projection:raise ValueError(body+': '+str(exc)+' The parent body may have longer coverage than this moon. Approximate reference-orbit projection is a separate opt-in setting.') from exc
+            from moon_ephemerides import project
+            return project(cache,body,start,end,step,progress)
+        return Ephemerides(cache,[body],start,end,step)
 
 def finite_source(xyzv,report):
     """Select a state strictly inside the last Sun-only coast of the real export."""
@@ -152,10 +160,10 @@ def run(request,output,progress,cancel):
     register_target(dict(name=moon['name'],id=moon['id'],command=moon['id'],kind='natural_satellite',parent_body=parent_name))
     physical=parent_parameters(parent_name)
     system=MoonSystem(parent_name,moon['name'],physical[1],physical[2],moon['gm'],moon['radius_km'],cancel)
-    coarse=cached(cache,parent_name,segment['start_jd']-2,arrival+2,1.,progress);entry,_=soi_entry(segment,arrival,BodyVectors(coarse,parent_name),system)
+    coarse=cached(cache,parent_name,segment['start_jd']-2,arrival+2,1.,progress,options['allow_projection']);entry,_=soi_entry(segment,arrival,BodyVectors(coarse,parent_name),system)
     fine_start=entry-32;fine_end=arrival+2
-    ep_parent=cached(cache,parent_name,fine_start,fine_end,1/24,progress)
-    ep_moon=cached(cache,moon['name'],fine_start,fine_end,moon['step_days'],progress)
+    ep_parent=cached(cache,parent_name,fine_start,fine_end,1/24,progress,options['allow_projection'])
+    ep_moon=cached(cache,moon['name'],fine_start,fine_end,moon['step_days'],progress,options['allow_projection'])
     fine=BodyVectors(ep_parent,parent_name);coarse_view=BodyVectors(coarse,parent_name)
     class Parent:
         def __call__(self,t):return fine(t) if fine_start<=t<=fine_end else coarse_view(t)
@@ -194,7 +202,16 @@ def run(request,output,progress,cancel):
         budget_note='Onboard budget excludes launcher injection and source burns replaced by the new terminal arc.')
     if extra_sources:report['force_model']=report['force_model'].replace('or other moons','or unlisted moons')+' Charon point-mass gravity and collision checks are included.'
     report['additional_gravity_bodies']=list(extra_sources)
+    from moon_targets import CATALOG_SYSTEMS
+    report['parent_gravity_note']=CATALOG_SYSTEMS.get(parent_name,{}).get('gm_note')
+    report['parent_gm_km3_s2']=physical[1];report['moon_gm_km3_s2']=moon['gm']
     report['target_gravity_note']=moon.get('gm_note')
+    report['target_distance_reference']='moon center' if moon.get('radius_unknown') else 'mean surface altitude'
+    report['target_radius_note']=moon.get('radius_note')
+    report['projected_moon_ephemeris']=any(m.get('ephemeris_model') for rows in report['ephemeris_sources'].values() for m in rows)
+    if report['projected_moon_ephemeris']:
+        report['moon_position_warning']='APPROXIMATE moon positions projected from a JPL reference orbit. Numerical checks validate the trajectory in this model, not the future moon ephemeris.'
+        report['force_model']+=' APPROXIMATE projected satellite ephemeris; future moon phase is uncertain.'
     report['model']=report['force_model']
     report['requested_limits']=source_report.get('requested_limits',{})
     limit=report['requested_limits'].get('max_dsm_kms')

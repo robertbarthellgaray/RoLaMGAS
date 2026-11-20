@@ -108,7 +108,7 @@ def normalize(config, config_dir=HERE):
         raise ValueError(f'Unknown configuration keys: {sorted(unknown)}')
     c.update(config)
     from moon_targets import moon_intent
-    c['moon_target']=moon_intent(c.get('moon_target'),c['target'])
+    c['moon_target']=moon_intent(c.get('moon_target'),c['target_object'].get('name',c['target']) if isinstance(c.get('target_object'),dict) else c['target'])
     if 'c3_seed_boundary' not in config:c['c3_seed_boundary']='maximum' if c['mission_profile']=='flyby' else 'minimum'
     if not isinstance(c['powered_flybys'],bool):raise ValueError('powered_flybys must be boolean')
     if not isinstance(c['mercury_resonant_seeds'],bool):raise ValueError('mercury_resonant_seeds must be boolean')
