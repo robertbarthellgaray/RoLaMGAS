@@ -4,7 +4,7 @@
 
 ![RoLaMGAS orbital artwork](docs/images/RoLaMGAS.png)
 
-[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.8) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
+[Explore the live trajectory gallery](https://robertbarthellgaray.github.io/RoLaMGAS/) · [Desktop downloads & source](https://github.com/robertbarthellgaray/RoLaMGAS/releases/tag/rolamgas-v0.2.9) · [Robert’s portfolio](https://robertbarthellgaray.github.io/)
 
 ## Browse before downloading
 
@@ -24,7 +24,7 @@ API key or subscription is required.
 
 ## Desktop app
 
-Download the v0.2.8 package for your platform: Windows ZIP, Apple Silicon or
+Download the v0.2.9 package for your platform: Windows ZIP, Apple Silicon or
 Intel Mac DMG, or Debian/Ubuntu x64 DEB. They open the same local browser GUI.
 On Windows, extract the ZIP and open RoLaMGAS.exe inside the folder.
 The Mac preview is unsigned/not notarized. See [platform instructions](SHARING.md).
@@ -36,6 +36,14 @@ Searches, exports and extra Horizons downloads are stored in
 `%LOCALAPPDATA%/RoLaMGAS`, separate from the executable. Updating the executable
 preserves your work. An internet connection is needed for targets or epochs not
 already cached. `ROLAMGAS_DATA_DIR` can select another data directory.
+
+## New in v0.2.9
+
+Eris selection/import and numbered parent-name moon exports are fixed. The
+expanded JPL moon catalog exposes data availability, the default targeter tries
+one cruise correction timing, and a completed branch can be selected with the
+moon-patch checkbox. Optional future satellite projections require explicit
+opt-in and remain labeled approximate. See [the release notes](RELEASE_NOTES_0.2.9.md).
 
 ## New in v0.2.8
 
@@ -177,7 +185,7 @@ See `GUI_GUIDE.md`, `SHARING.md` and the original JPL response metadata for deta
 `python -m unittest discover -p "test_*.py"`
 
 Install `requirements-build.txt` and run
-`python build_release.py --native --version 0.2.8` on the target OS to build
+`python build_release.py --native --version 0.2.9` on the target OS to build
 the native EXE, DMG or DEB plus matching GPL source. GitHub Actions can build all
 three platforms; see [SHARING.md](SHARING.md).
 
