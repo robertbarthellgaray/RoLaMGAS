@@ -151,7 +151,7 @@ function updateParkingEstimate(){
  const estimate=globalThis.MissionMetrics.parkingInjection(q.launch_c3_km2_s2,Number($('parkingAltitude').value),q.bodies[0]);
  out.textContent=estimate?`Ideal departure Δv: ${fmt(estimate.deltaVKms,4)} km/s from a ${fmt(estimate.altitudeKm,1)} km circular ${estimate.body} orbit. C3 ${fmt(q.launch_c3_km2_s2,3)} km²/s².`:'Enter a positive altitude above a supported departure planet.';
 }
-let launchPerformanceData=null,launchPerformanceLoading=null,launchLookupVersion=0;
+let launchPerformanceData=null,launchPerformanceLoading=null,launchLookupVersion=0,launchExactResponse=null;
 async function renderLaunchPerformance(exact=null){
  const q=state.card;if(!q)return;renderEnergyDetail(q);
  const selected=q.id;
@@ -160,10 +160,16 @@ async function renderLaunchPerformance(exact=null){
   catch(e){$('launchPerformanceStatus').textContent=e.message;return;}
  }
  if(state.card?.id!==selected)return;
- const rows=globalThis.MissionMetrics.launchCapacities(launchPerformanceData,q.launch_c3_km2_s2,exact);
+ if(exact)launchExactResponse={id:selected,response:exact};
+ exact=launchExactResponse?.id===selected?launchExactResponse.response:null;
+ const selector=$('launchCountry'),previous=selector.value,countries=MissionMetrics.launchCountryOptions(launchPerformanceData);
+ selector.replaceChildren(new Option('All countries / regions','all'),...countries.map(c=>new Option(c==='Europe'?'Europe (EU / ESA)':c,c)));
+ selector.value=countries.includes(previous)?previous:'all';
+ const rows=MissionMetrics.filterLaunchCountry(MissionMetrics.launchCapacities(launchPerformanceData,q.launch_c3_km2_s2,exact),selector.value);
  $('launchPerformanceStatus').textContent=(exact?'NASA response for C3 '+fmt(exact.c3_km2_s2,3)+' · retrieved '+exact.retrieved_at+' · '+(exact.from_cache?'saved exact query':'fresh query'):'Published/cached capacities at C3 '+fmt(q.launch_c3_km2_s2,3))+' · “Not tabulated” means missing data here, not zero payload or an impossible launch. ≈ marks approximate values. Unlisted kick stages can change capability.';
  if(exact?.availability==='no_vehicles_listed')$('launchPerformanceStatus').textContent='NASA returned no vehicle capacities at C3 '+fmt(exact.c3_km2_s2,3)+'. Showing cached values and explicitly labeled engineering estimates instead.';
- $('launchPerformanceStatus').textContent+=' Extrapolated models extend through C3 200. “0 (model)” predicts no positive payload under the stated assumptions; it is not a provider rating. Kick-stage combinations are concepts, not qualified services.';
+ $('launchPerformanceStatus').textContent+=' SilverBird samples retrieved '+(launchPerformanceData.silverbird_retrieved_at||'unavailable').slice(0,10)+'. SilverBird rows use neighboring samples only, without extrapolation.';
+ $('launchPerformanceStatus').textContent+=' Other extrapolated models extend through C3 200. “0 (model)” predicts no positive payload under the stated assumptions; it is not a provider rating. Kick-stage combinations are concepts, not qualified services.';
  const table=element('table'),head=element('tr');for(const label of ['Vehicle / configuration','Capacity at selected C3 · kg','Available data','Site','Source / uncertainty'])head.append(element('th',label));table.append(head);
  for(const row of rows){const tr=element('tr');for(const text of [row.vehicle,globalThis.MissionMetrics.launchCapacityValue(row),globalThis.MissionMetrics.launchCapacityCoverage(row),row.launch_site,globalThis.MissionMetrics.launchCapacitySource(row)])tr.append(element('td',text));table.append(tr);}
  const rules=element('details');rules.append(element('summary','Vehicle ground rules and model assumptions'));for(const row of rows)rules.append(element('p',row.vehicle+': '+row.ground_rules+(row.extrapolated?' '+row.extrapolation.assumptions+' '+row.extrapolation.note:'')+' Source: '+(row.source_url||'https://elvperf.ksc.nasa.gov/Pages/Query.aspx'),'hint'));
@@ -293,6 +299,7 @@ $('useDatabase').onclick=()=>chooseDatabaseSearch(false);$('searchLocal').onclic
 
 for(const id of ['chartYearFrom','chartYearTo'])$(id).addEventListener('input',render);$('resetChartYears').onclick=()=>{$('chartYearFrom').value='';$('chartYearTo').value='';render()};
 
+$('launchCountry').addEventListener('change',()=>renderLaunchPerformance());
 $('queryLaunchPerformance').addEventListener('click',async()=>{
  const card=state.card;if(!card)return;const version=++launchLookupVersion,button=$('queryLaunchPerformance');button.disabled=true;$('launchPerformanceStatus').textContent='Querying NASA’s public high-energy performance form…';
  try{const result=await api('/api/launch-performance',{c3:card.launch_c3_km2_s2});if(version===launchLookupVersion&&state.card?.id===card.id)await renderLaunchPerformance(result);}

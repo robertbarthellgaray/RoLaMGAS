@@ -8,7 +8,7 @@ import argparse,hashlib,json,os,platform,re,shutil,subprocess,sys,tempfile,zipfi
 
 ROOT=Path(__file__).resolve().parent
 MODULES=['moon_ephemerides','export_sharing','update_check','app_paths','bootstrap','rolamgas','gui','gui_worker','mission_search','sequence_timing','dynamics','ephemeris','trajectory_prefixes',
-         'horizons_targets','network','search_options','candidate_archive','community','candidate_status','earth_return_seeds','historical_seeds','launch_performance','trajectory_transfer','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
+         'horizons_targets','network','search_options','candidate_archive','community','candidate_status','earth_return_seeds','historical_seeds','silverbird_performance','launch_performance','trajectory_transfer','arrival_geometry','cost_refinement','powered_flyby','mercury_returns','candidate_refinement','append_flyby',
          'presentation','live_gallery','integrate_export','finite_targeting','encounter_preferences','celestia_package','dwarf_planet_patch','planet_moon_patch','moon_screen','moon_arrival','moon_targets','moon_targeting','moon_continuation','baseline_cache',
          'build_database','build_release','restore_diagnostics','trajectory_policy','resonant_shooting_seeds','titan_entry']
 DOCS=['MISSION_STUDIES.md','RESONANT_TRANSFERS.md','LAUNCH_PERFORMANCE.md','WEBSITE_HANDOFF.md','GUI_GUIDE.md','ARRIVAL_AND_MOON_SCREENING.md','TITAN_ARRIVAL.md','POWERED_FLYBYS.md','SHARING.md','COMMUNITY.md','LAB_COMPUTER_REVIEW.md','ARRIVAL_INCLINATION.md','JUICE_DEPARTURE_SEEDS.md','PREVIEW_AND_RESULTS.md','HISTORICAL_SEEDS.md','CELESTIA_DWARF_PATCH.md']
@@ -56,7 +56,7 @@ def source_release(baseline):
     files += [p for p in (ROOT/'model_assets').rglob('*') if p.is_file() and '__pycache__' not in p.parts]
     # Reproducible international capacity samples, without redistributing source
     # papers, provider HTML or third-party calculator Javascript.
-    files += [p for name in ('README.md','capacity_samples.csv','international_launch_performance.png')
+    files += [p for name in ('README.md','capacity_samples.csv','international_launch_performance.png','silverbird_scenarios.json')
               if (p:=ROOT/'studies/international_launch_performance'/name).is_file()]
     files += [p for p in (ROOT/'.github').rglob('*') if p.is_file()]
     files += [p for folder in ('docs','tools','gui_assets','departure_seeds','celestia_assets','third_party_licenses','mission_comparison','test_fixtures') for p in (ROOT/folder).rglob('*') if p.is_file() and '__pycache__' not in p.parts]

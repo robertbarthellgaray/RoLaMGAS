@@ -79,11 +79,12 @@ test('international launchers use independent grids, never extrapolate a study p
  assert.equal(m.launchCapacities(d,30)[0].capacity_kg,null);assert.equal(m.launchCapacities(d,29.99)[1].capacity_kg,null);assert.equal(m.launchCapacities(d,30)[1].capacity_kg,3000);
 });
 
-test('published app and website capacity datasets withhold unapproved model outputs',()=>{
+test('capacity datasets retain authorized model outputs separately from published references',()=>{
  for(const path of ['../docs/data/launch_performance_curves.json','../gui_assets/launch_performance_curves.json','../docs/data/international_launch_performance.json','../gui_assets/international_launch_performance.json']){
   const data=JSON.parse(fs.readFileSync(new URL(path,import.meta.url),'utf8'));
   assert.ok(data.vehicles.length>=4);
-  assert.ok(!data.vehicles.some(v=>v.data_kind==='third_party_model'||/silverbird/i.test(JSON.stringify(v))));
+  assert.ok(!data.vehicles.some(v=>v.data_kind==='third_party_model'));
+  assert.equal(data.vehicles.filter(v=>v.silverbird_id).length,path.includes('international_launch_performance.json')?0:17);
  }
 });
 
@@ -135,4 +136,37 @@ test('historical missions have continuous playback coverage for every visited pl
    assert.ok(m.ephemerisPosition(segment,lo));assert.ok(m.ephemerisPosition(segment,hi));
   }
  }
+});
+
+
+test('country selector filters the same capacity estimates and preserves multinational launchers',()=>{
+ const data=JSON.parse(fs.readFileSync(new URL('../gui_assets/launch_performance_curves.json',import.meta.url)));
+ const rows=m.launchCapacities(data,12);
+ assert.deepEqual(m.launchCountryOptions(data),['USA','China','India','Europe','Russia','Japan','New Zealand']);
+ for(const country of m.launchCountryOptions(data)){
+  const selected=m.filterLaunchCountry(rows,country);assert.ok(selected.length);
+  assert.ok(selected.every(v=>m.launchVehicleCountries(v).includes(country)));
+ }
+ assert.deepEqual(m.filterLaunchCountry(rows,'all'),rows);
+ assert.ok(m.filterLaunchCountry(rows,'India').some(v=>v.silverbird_id==='lvm3'));
+ assert.equal(m.filterLaunchCountry(rows,'New Zealand').length,1);
+ assert.equal(m.filterLaunchCountry(rows,'unknown').length,0);
+ const electron=m.filterLaunchCountry(rows,'New Zealand')[0];assert.ok(m.filterLaunchCountry(rows,'USA').includes(electron));
+ assert.deepEqual(m.launchVehicleCountries({vehicle:'Falcon Heavy + STAR 48BV',parent_vehicle:'Falcon Heavy'}),['USA']);
+});
+
+test('SilverBird samples retain model intervals, interpolate only adjacent samples and never extrapolate',()=>{
+ const data=JSON.parse(fs.readFileSync(new URL('../gui_assets/launch_performance_curves.json',import.meta.url)));
+ const reference=data.vehicles.find(v=>v.silverbird_id==='lvm3');
+ const table={vehicles:[reference]};
+ const exact=m.launchCapacities(table,10)[0],between=m.launchCapacities(table,12.5)[0];
+ assert.equal(exact.capacity_kg,new Map(reference.points).get(10));assert.equal(exact.interpolated,false);
+ assert.equal(between.capacity_kg,(new Map(reference.points).get(10)+new Map(reference.points).get(15))/2);
+ assert.match(m.launchCapacitySource(exact),/95% model interval/);
+ assert.match(m.launchCapacitySource(between),/bracket samples/);
+ assert.equal(m.launchCapacities(table,201)[0].capacity_kg,null);
+ const gap={...reference,points:reference.points.filter(p=>p[0]!==10)};
+ assert.equal(m.launchCapacities({vehicles:[gap]},12)[0].capacity_kg,null);
+ const zero=m.launchCapacities(table,200)[0];assert.equal(m.launchCapacityValue(zero),'0 (model)');
+ assert.equal(fs.readFileSync(new URL('../mission_metrics.js',import.meta.url),'utf8'),fs.readFileSync(new URL('../docs/mission_metrics.js',import.meta.url),'utf8'));
 });

@@ -33,13 +33,23 @@ class InternationalCapacityTests(unittest.TestCase):
         self.assertEqual(row['points'][0][0],0)
         self.assertEqual(row['points'][-1][0],30)
 
-    def test_unapproved_silverbird_numbers_remain_withheld(self):
-        for filename in ('gui_assets/launch_performance_curves.json','gui_assets/international_launch_performance.json','docs/data/launch_performance_curves.json'):
-            data=json.loads((ROOT/filename).read_text(encoding='utf-8'))
-            for row in data['vehicles']:
-                self.assertNotIn('silverbird',str(row.get('international_id','')).lower())
-                self.assertNotIn('silverbirdastronautics.com',row.get('source_url',''))
-        self.assertFalse((ROOT/'studies/international_launch_performance/silverbird_samples.json').exists())
+    def test_permitted_silverbird_samples_have_provenance_and_no_extrapolation(self):
+        app=json.loads((ROOT/'gui_assets/launch_performance_curves.json').read_text(encoding='utf-8'))
+        rows=[r for r in app['vehicles'] if r.get('silverbird_id')]
+        self.assertEqual(len(rows),17)
+        for row in rows:
+            self.assertEqual(row['source_url'],'https://silverbirdastronautics.com/LVperform.html')
+            self.assertTrue(row['countries']);self.assertTrue(row['retrieved_at'])
+            self.assertNotIn('extrapolation',row);self.assertNotIn('kickstage_id',row)
+            self.assertEqual(len(row['points']),len(row['queries']))
+            self.assertEqual(row['points'],sorted(row['points']))
+            for q in row['queries']:
+                self.assertEqual(q['fields']['peri'],'200')
+                self.assertEqual(q['fields']['inc'],'0')
+                self.assertEqual(len(q['source_html_sha256']),64)
+            for c3,lo,hi in row['confidence95_points']:
+                mass=dict(row['points'])[c3]
+                self.assertLessEqual(lo,mass);self.assertGreaterEqual(hi,mass)
 
 
 if __name__=='__main__':unittest.main()

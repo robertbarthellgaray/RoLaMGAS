@@ -1,6 +1,6 @@
 # NASA launch performance and addon audits
 
-The local source and website datasets include independently published international references: three historical Long March polynomial fits and one LM-5 study point. A separate, explicitly labeled LVM3 estimate extrapolates the November 2025 NSIL elliptical-orbit curves to C3 0–30; it is not a provider rating. Permission to run the hosted [SilverBird Astronautics calculator](https://silverbirdastronautics.com/LVperform.html), by John Schilling, was confirmed by the project owner on 2026-11-21. Its underlying engineering database is not redistributed; the existing capacity datasets are unchanged by this attribution update. The 2012 Indian planetary mission mass ranges remain research because their C3 values are unspecified. See [international launch performance research](studies/international_launch_performance/README.md). Reattach the supported capacity rows after a NASA refresh with `python tools/build_international_launch_performance.py --plot`.
+The local source and website datasets include independently published international references: three historical Long March polynomial fits and one LM-5 study point. A separate, explicitly labeled LVM3 estimate extrapolates the November 2025 NSIL elliptical-orbit curves to C3 0–30; it is not a provider rating. Permission to run the hosted [SilverBird Astronautics calculator](https://silverbirdastronautics.com/LVperform.html), by John Schilling, was confirmed by the project owner on 2026-11-21. Its underlying engineering database is not redistributed. The country selector now includes separately credited SilverBird scenario outputs collected with that permission. The 2012 Indian planetary mission mass ranges remain research because their C3 values are unspecified. See [international launch performance research](studies/international_launch_performance/README.md). Reattach the supported capacity rows after a NASA refresh with `python tools/build_international_launch_performance.py --plot`.
 
 The website and desktop inspector show cached NASA LSP high-energy capacity
 samples at the candidate's C3. Values between adjacent samples are linear
@@ -44,3 +44,45 @@ later planetary encounters are outside this extrapolation.
 
 The original user-supplied ZIP was not modified, and its contents were not
 published to the shared trajectory library.
+
+
+## SilverBird country selector and repeatable collection
+
+The website and desktop candidate inspector include **Country / region** above
+the launch-capacity table. All is the default; selecting a country filters both
+the capacity rows and their ground rules. Electron is listed for USA and
+New Zealand. Country refers to the launcher, not the launch-site location.
+NASA rows, published references and SilverBird models retain separate sources.
+
+`silverbird_performance.py` submits public calculator scenarios to
+[John Schilling’s hosted calculator](https://silverbirdastronautics.com/LVperform.html).
+The table works offline from cached curves; browsing the website does not submit
+calculator requests. To refresh these output samples from the source folder:
+
+```text
+python silverbird_performance.py
+python silverbird_performance.py --countries India China --refresh
+python silverbird_performance.py --countries Europe --grid 0 5 10 15 20 30 40 60 100 158 200
+```
+
+The initial collection covers 17 explicit launcher configurations from USA,
+China, India, Europe, Russia, Japan and New Zealand. Every scenario uses escape
+C3, a 200 km Earth perigee, 0-degree departure declination, mixed calibration,
+GCS shutdown and no end-of-life disposal burn. Trajectory mode follows the
+source form's supported optimal/direct/two-burn options. Configuration choices,
+launch site, timestamps and response hashes are recorded per sample in
+`studies/international_launch_performance/silverbird_scenarios.json`.
+
+The calculator's payload includes adapters/attachment fittings. These generic
+declination-zero models are not mission-specific capacities or provider
+guarantees. The table retains source 95% model intervals; an interpolated mass
+shows the intervals at its bracketing samples, not a fabricated interpolated
+confidence interval. Positive results are linearly interpolated only between
+adjacent successful samples. Missing samples remain unavailable; SilverBird
+curves are never extrapolated or used to synthesize kick-stage combinations.
+
+Requests are sequential, at least one second apart. Per-scenario responses are
+cached locally; `--refresh` refreshes the public form catalog and selected
+outputs. The form catalog otherwise expires after 30 days. No engineering
+database, third-party JavaScript or saved source HTML is published or bundled.
+The two app/site data files are updated together after collection succeeds.

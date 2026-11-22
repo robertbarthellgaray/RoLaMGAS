@@ -70,7 +70,7 @@ def kickstage_rows(vehicles):
  wet,dry,ve,adapter,loss=2171.,157.,292.1*9.80665/1000,100.,.1
  rows=[]
  for parent in vehicles:
-  if parent.get('international_id') or parent.get('published_id'):continue
+  if parent.get('international_id') or parent.get('published_id') or parent.get('silverbird_id'):continue
   points=np.array(parent['points'],dtype=float)
   samples=[];choices=[]
   for target in range(100,201):
@@ -102,7 +102,8 @@ def kickstage_rows(vehicles):
 def extend(document):
  doc=json.loads(json.dumps(document));base=[v for v in doc['vehicles'] if not v.get('kickstage_id')]
  for row in base:
-  row['extrapolation']=model_for(row)
+  if row.get('silverbird_id'):row.pop('extrapolation',None)
+  else:row['extrapolation']=model_for(row)
  doc['vehicles']=base+kickstage_rows(base)
  doc['extrapolation_policy']='Explicit engineering estimates to C3=200; native source samples take precedence. No claim of validated extrapolation or offered kick-stage combinations.'
  return doc
@@ -120,7 +121,7 @@ def main():
    points=row['points'];exact=next((m for x,m in points if x==c),None)
    if exact is not None:m=exact;kind=row.get('data_kind','NASA sample')
    elif points[0][0]<=c<=points[-1][0]:m=float(np.interp(c,np.array(points)[:,0],np.array(points)[:,1]));kind='interpolation'
-   else:m=evaluate(row['extrapolation'],c);kind='extrapolated estimate'
+   else:m=evaluate(row.get('extrapolation'),c) if row.get('extrapolation') else None;kind='extrapolated estimate'
    out.append([row['vehicle'],c,int(round(m/100)*100) if m is not None else '',kind])
  with (study/'extended_capacity_estimates.csv').open('w',newline='',encoding='utf-8') as f:
   w=csv.writer(f);w.writerow(['vehicle','c3_km2_s2','payload_kg_rounded_100kg','basis']);w.writerows(out)

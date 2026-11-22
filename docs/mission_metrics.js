@@ -48,6 +48,26 @@
     const name=String(vehicle?.vehicle||'').trim();
     return !/^Vulcan\s*\(VC0\)$/i.test(name)&&!/^Falcon 9\s*\(Full Thrust,\s*RTLS\s*\)$/i.test(name);
   }
+  function launchVehicleCountries(row) {
+    const explicit=Array.isArray(row.countries)?row.countries:typeof row.country==='string'?row.country.split(' / '):[];
+    if(explicit.length)return explicit;
+    const name=String(row.parent_vehicle||row.vehicle||'');
+    if(/Long March|\bCZ-?\d|\bLM-?\d/i.test(name))return ['China'];
+    if(/LVM3|GSLV|PSLV/i.test(name))return ['India'];
+    if(/Ariane|Vega/i.test(name))return ['Europe'];
+    if(/Proton|Soyuz|Angara/i.test(name))return ['Russia'];
+    if(/\bH-?II|\bH3\b|Epsilon/i.test(name))return ['Japan'];
+    if(/Electron/i.test(name))return ['USA','New Zealand'];
+    if(/Falcon|Vulcan|Atlas|Delta|SLS|Starship|New Glenn/i.test(name))return ['USA'];
+    return ['Other'];
+  }
+  function launchCountryOptions(document) {
+    const present=new Set((document?.vehicles||[]).filter(visibleLaunchVehicle).flatMap(launchVehicleCountries));
+    return ['USA','China','India','Europe','Russia','Japan','New Zealand','Other'].filter(c=>present.has(c));
+  }
+  function filterLaunchCountry(rows,country) {
+    return !country||country==='all'?rows:rows.filter(row=>launchVehicleCountries(row).includes(country));
+  }
   function launchCapacities(document,c3,exactResponse=null) {
     if(!document?.vehicles||!Number.isFinite(c3)||c3<0)return [];
     const defaultGrid=(document.queries||[]).map(q=>q.c3);
@@ -89,7 +109,7 @@
     if(!Number.isFinite(row.capacity_kg))return 'Not tabulated';
     const step=row.display_rounding_kg||1,mass=Math.round(row.capacity_kg/step)*step;
     if(row.capacity_kg>0&&mass===0)return '<'+step.toLocaleString('en-US')+' (estimate)';
-    if(row.capacity_kg===0&&(row.extrapolated||row.data_kind==='modeled_kickstage_combination'))return '0 (model)';
+    if(row.capacity_kg===0&&(row.extrapolated||row.data_kind==='modeled_kickstage_combination'||row.silverbird_id))return '0 (model)';
     return (row.interpolated||row.extrapolated||row.data_kind?'≈ ':'')+mass.toLocaleString('en-US',{maximumFractionDigits:0});
   }
   function launchCapacityCoverage(row) {
@@ -183,6 +203,6 @@
     const range=model.colorDomain,span=range[1]-range[0];
     return `<span class="chart-color-title">Color: ${chartMetrics[model.color].label}</span><span class="chart-color-scale"><span>${chartTick(range[0],model.color,span)}</span><i class="chart-color-ramp" aria-hidden="true"></i><span>${chartTick(range[1],model.color,span)}</span></span>`;
   }
-  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,visibleLaunchVehicle,launchCapacities,launchCapacitySource,launchCapacityValue,launchCapacityCoverage,
+  root.MissionMetrics=Object.freeze({bodies,parkingInjection,summary,normalized,compare,ephemerisPosition,visibleManeuver,visibleLaunchVehicle,launchVehicleCountries,launchCountryOptions,filterLaunchCountry,launchCapacities,launchCapacitySource,launchCapacityValue,launchCapacityCoverage,
     chartMetrics,chartEpoch,chartValue,chartOptions,chartDomain,chartTick,chartColor,chartModel,chartGrid,chartPosition,chartColorLegend});
 })(globalThis);

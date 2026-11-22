@@ -11,7 +11,7 @@ import {historicalMatch} from './historical_labels.js?v=20261108b';
 import {matchesGallery,featuredOrder} from './gallery_filters.js?v=20261113a';
 import {publicationDate} from './publication_dates.js?v=20261110b';
 import {transferDocument,finiteRadiusDownload} from './desktop_transfer.js?v=20261112e';
-import './mission_metrics.js?v=20261116capacity200';
+import './mission_metrics.js?v=20261122silverbird';
 import {planetPanel,smallBodyCards,smallBodyBriefing} from './world_guide.js?v=20261116live';
 import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames,matchesBodyLabel} from './community.js?v=20261116live';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,registerBodyPhysical,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters,chartSettingsFromHash,withChartSettings} from './library_analysis.js?v=20261116live';
@@ -222,8 +222,12 @@ function updateParkingEstimate(){
 }
 function renderLaunchPerformance(){
  if(!selected||!$('launch-performance-table'))return;
- const rows=globalThis.MissionMetrics.launchCapacities(launchPerformance,selected.c3);
- $('launch-performance-status').textContent=rows.length?'C3 '+fmt(selected.c3,3)+' km²/s² · '+(rows.some(r=>Number.isFinite(r.capacity_kg))?'Available published/cached estimates below.':'No tabulated capacity at this C3.')+' “Not tabulated” means missing data here, not zero payload or an impossible launch. ≈ marks approximate values. Unlisted kick stages can change capability. NASA samples retrieved '+launchPerformance.retrieved_at.slice(0,10)+'.':'Launch capacity data is unavailable for this selection.';
+ const selector=$('launch-country'),previous=selector.value;
+ const countries=MissionMetrics.launchCountryOptions(launchPerformance);
+ selector.innerHTML='<option value="all">All countries / regions</option>'+countries.map(c=>'<option value="'+escapeHtml(c)+'">'+escapeHtml(c==='Europe'?'Europe (EU / ESA)':c)+'</option>').join('');
+ selector.value=countries.includes(previous)?previous:'all';
+ const rows=MissionMetrics.filterLaunchCountry(MissionMetrics.launchCapacities(launchPerformance,selected.c3),selector.value);
+ $('launch-performance-status').textContent=rows.length?'C3 '+fmt(selected.c3,3)+' km²/s² · '+(rows.some(r=>Number.isFinite(r.capacity_kg))?'Available published/cached estimates below.':'No tabulated capacity at this C3.')+' “Not tabulated” means missing data here, not zero payload. ≈ marks estimates; “0 (model)” is a model result. NASA samples: '+(launchPerformance?.retrieved_at||'unknown').slice(0,10)+'. SilverBird model samples: '+(launchPerformance?.silverbird_retrieved_at||'unavailable').slice(0,10)+'. Source and launch assumptions differ by row.':'Launch capacity data is unavailable for this selection.';
  const body=rows.map(r=>'<tr><td>'+escapeHtml(r.vehicle)+'</td><td>'+escapeHtml(MissionMetrics.launchCapacityValue(r))+'</td><td>'+escapeHtml(MissionMetrics.launchCapacityCoverage(r))+'</td><td>'+escapeHtml(r.launch_site)+'</td><td>'+escapeHtml(MissionMetrics.launchCapacitySource(r))+'</td></tr>').join('');
  const rules=rows.map(r=>'<p><strong>'+escapeHtml(r.vehicle)+'</strong> · '+escapeHtml(r.ground_rules+(r.extrapolated?' '+r.extrapolation.assumptions+' '+r.extrapolation.note:''))+' <a href="'+escapeHtml(r.source_url||'https://elvperf.ksc.nasa.gov/Pages/Query.aspx')+'" target="_blank" rel="noopener">Source ↗</a></p>').join('');
  $('launch-performance-table').innerHTML=rows.length?'<div class="table-scroll"><table><thead><tr><th>Vehicle / configuration</th><th>Capacity at selected C3 · kg</th><th>Available data</th><th>Launch site</th><th>Source / uncertainty</th></tr></thead><tbody>'+body+'</tbody></table></div><details><summary>Vehicle ground rules</summary>'+rules+'</details>':'';
@@ -506,6 +510,7 @@ $('body-sort').addEventListener('change',makeDestinations);
 $('candidate-list').addEventListener('click', async e => { const b=e.target.closest('[data-id]'); if (b) {await selectCandidate(b.dataset.id);if(matchMedia('(max-width:760px)').matches)$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});} });
 $('candidate-list').addEventListener('toggle',e=>{const group=e.target;if(group.matches?.('[data-launch-group]')&&group.isConnected){if(group.open)openLaunchGroups.add(group.dataset.launchGroup);else openLaunchGroups.delete(group.dataset.launchGroup);}},true);
 for (const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max']) $(id).addEventListener('input', ()=>{visibleCount=48;renderList();if(selected)updateLocation(selected.id)});
+$('launch-country').addEventListener('change',renderLaunchPerformance);
 $('sort').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('mission-kind').addEventListener('change',()=>{selectedSequences.clear();visibleCount=48;renderList()});
 function toggleSequenceFilter(sequence){
@@ -661,7 +666,7 @@ async function syncShared(){
 try {
  loading.start(11);
  const loadSaved=path=>loading.file(fetchJson(path));
- const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical,energyReference]=await Promise.all([loadSaved('data/index.json?v=20261113c'),loadSaved('data/community_seed_catalog.json?v=20261119earth').catch(()=>({candidates:[]})),loadSaved('community_config.json').catch(()=>({})),loadSaved('data/body_names.json?v=20261114names').catch(()=>({})),loadSaved('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),loadSaved('data/mission_annotations.json?v=20261120addons').catch(()=>({missions:{}})),loadSaved('data/launch_performance_curves.json?v=20261116capacity200').catch(()=>null),loadSaved('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),loadSaved('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),loadSaved('data/body_physical.json?v=20261116live').catch(()=>({bodies:{}})),loadSaved('data/launch_energy_reference.json?v=20261118energy2').catch(()=>null)]);
+ const [data,archive,settings,names,historical,annotations,performance,publications,removals,physical,energyReference]=await Promise.all([loadSaved('data/index.json?v=20261113c'),loadSaved('data/community_seed_catalog.json?v=20261119earth').catch(()=>({candidates:[]})),loadSaved('community_config.json').catch(()=>({})),loadSaved('data/body_names.json?v=20261114names').catch(()=>({})),loadSaved('data/historical_labels.json?v=20261108b').catch(()=>({missions:[]})),loadSaved('data/mission_annotations.json?v=20261120addons').catch(()=>({missions:{}})),loadSaved('data/launch_performance_curves.json?v=20261122silverbird').catch(()=>null),loadSaved('data/publication_dates.json?v=20261113c').catch(()=>({candidates:{}})),loadSaved('data/library_removals.json?v=20261115pdf').catch(()=>({removed:{}})),loadSaved('data/body_physical.json?v=20261116live').catch(()=>({bodies:{}})),loadSaved('data/launch_energy_reference.json?v=20261118energy2').catch(()=>null)]);
  loading.preparing();
  await new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,0)));
  launchEnergyReference=energyReference;bodyPhysical=physical;registerBodyPhysical(physical);registerBodyNames(names);registerBodyCategories(names);historicalProfiles=historical.missions||[];ownerMissions=annotations.missions||{};launchPerformance=performance;publicationHistory=publications.candidates||{};

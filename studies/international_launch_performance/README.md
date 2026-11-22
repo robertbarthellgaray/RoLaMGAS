@@ -11,9 +11,11 @@ The active dataset distinguishes published examples from modeled estimates:
 
 The project owner confirmed permission on 2026-11-21 to run scenarios with
 [John Schilling’s SilverBird Astronautics calculator](https://silverbirdastronautics.com/LVperform.html).
-The underlying engineering database is not redistributed. This attribution update
-does not change the existing capacity data or restore previous model outputs;
-the rebuild script still uses the independently sourced inputs described here.
+The underlying engineering database is not redistributed. With the project owner’s
+explicit scraping permission, `silverbird_scenarios.json` now records computed
+outputs for 17 configurations. See [collection instructions](../../LAUNCH_PERFORMANCE.md#silverbird-country-selector-and-repeatable-collection). The public form choices are
+validated before each query; third-party JavaScript and source HTML stay local.
+The historical references below remain separately labeled.
 
 The [2012 ISRO/PLANEX source review](indian_lv_planex_2012.md) records historical
 PSLV, GSLV and LVM3 planetary mission mass ranges. The source does not specify
