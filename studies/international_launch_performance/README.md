@@ -9,9 +9,11 @@ The active dataset distinguishes published examples from modeled estimates:
   at C3=30 for LM-5, kept as one mission-study point without inventing a curve.
   Source: https://www.mdpi.com/2226-4310/12/4/271
 
-SilverBird-derived outputs are withheld pending permission. They are absent
-from the active app/site JSON, charts, numerical downloads and source packages.
-The rebuild script does not read or restore those model outputs.
+The project owner confirmed permission on 2026-11-21 to run scenarios with
+[John Schilling’s SilverBird Astronautics calculator](https://silverbirdastronautics.com/LVperform.html).
+The underlying engineering database is not redistributed. This attribution update
+does not change the existing capacity data or restore previous model outputs;
+the rebuild script still uses the independently sourced inputs described here.
 
 The [2012 ISRO/PLANEX source review](indian_lv_planex_2012.md) records historical
 PSLV, GSLV and LVM3 planetary mission mass ranges. The source does not specify

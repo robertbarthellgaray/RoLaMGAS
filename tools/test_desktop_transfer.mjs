@@ -88,12 +88,12 @@ test('identified mission labels are explicit recreations and selected shared mis
 
 test('destination switches reset restrictive limits and the authoritative launch-year inputs',()=>{
  const app=fs.readFileSync(new URL('../docs/app.js',import.meta.url),'utf8'),start=app.indexOf('function resetDestinationFilters(){'),end=app.indexOf("$('clear-filters')",start),source=app.slice(start,end);
- const ids=['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max','include-yellow','include-red','sort','show-trimmed','mission-kind'];
+ const ids=['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max','include-yellow','sort','show-trimmed','mission-kind'];
  const elements=Object.fromEntries(ids.map(id=>[id,{value:'restrictive',checked:false}]));
  const ctx=vm.createContext({$:(id)=>elements[id]});
  vm.runInContext("let encounterBody='Jupiter';let visibleCount=999;const selectedSequences=new Set(['EVEEJ']);"+source+'resetDestinationFilters()',ctx);
  for(const id of ids.slice(0,7))assert.equal(elements[id].value,'');
- assert.equal(elements['include-yellow'].checked,true);assert.equal(elements['include-red'].checked,false);assert.equal(vm.runInContext('encounterBody',ctx),null);assert.equal(elements['show-trimmed'].checked,false);assert.equal(elements.sort.value,'recommended');
+ assert.equal(elements['include-yellow'].checked,true);assert.equal(vm.runInContext('encounterBody',ctx),null);assert.equal(elements['show-trimmed'].checked,false);assert.equal(elements.sort.value,'recommended');
  assert.equal(elements['mission-kind'].value,'both');assert.equal(vm.runInContext('selectedSequences.size',ctx),0);
  assert.match(app,/destination!==b.dataset.target.*resetDestinationFilters/);assert.match(app,/smallBodyTarget!==b.dataset.smallBody.*resetDestinationFilters/);
 });

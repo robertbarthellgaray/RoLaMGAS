@@ -91,7 +91,7 @@ function targetRows(){return catalog.filter(c=>(!encounterBody||c.bodies.include
 function matchingRows(ignoreSequence=false){
  const search=$('search').value.trim().toLowerCase().replace(/\s+/g,'');
  return targetRows().filter(c=>matchesGallery(c,$('mission-kind').value)&&(ignoreSequence||!selectedSequences.size||selectedSequences.has(c.sequence))&&`${missionName(c)} ${c.id} ${c.title} ${c.sequence} ${c.bodies.join(' ')} ${c.launch_date} ${c.arrival_date}`.toLowerCase().replace(/\s+/g,'').includes(search)
-  &&(c.classification!=='red'||$('include-red').checked)&&(c.classification!=='yellow'||$('include-yellow').checked)&&c.c3<=maximum('max-c3')&&c.vinf<=maximum('max-vinf')&&c.burns_mps<=maximum('max-burns')&&c.years<=maximum('max-years')&&launchYear(c)>=minimumYear()&&launchYear(c)<=maximumYear());
+  &&c.classification!=='red'&&(c.classification!=='yellow'||$('include-yellow').checked)&&c.c3<=maximum('max-c3')&&c.vinf<=maximum('max-vinf')&&c.burns_mps<=maximum('max-burns')&&c.years<=maximum('max-years')&&launchYear(c)>=minimumYear()&&launchYear(c)<=maximumYear());
 }
 function screenMismatch(c,record=c.community_record||c.desktop_record||sharedRecords.get(c.id)){
  const result=combinedMismatch(c,record,planetEphemerides);c.mismatch_screen=result;
@@ -516,7 +516,7 @@ function toggleSequenceFilter(sequence){
  [...$('tradeoff-legend').querySelectorAll('[data-sequence]')].find(b=>b.dataset.sequence===sequence)?.focus({preventScroll:true});
 }
 $('tradeoff-legend').addEventListener('click',e=>{const b=e.target.closest('[data-sequence]');if(b)toggleSequenceFilter(b.dataset.sequence)});
-$('include-yellow').addEventListener('change',()=>{visibleCount=48;renderList()});$('include-red').addEventListener('change',()=>{visibleCount=48;renderList()});
+$('include-yellow').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('show-trimmed').addEventListener('change',()=>{visibleCount=48;renderList()});
 $('candidate-more').onclick=()=>{const top=$('candidate-list').scrollTop;visibleCount+=48;renderList();$('candidate-list').scrollTop=top};
 $('community-refresh').onclick=()=>syncShared();
@@ -525,7 +525,7 @@ $('chart-porkchop').onclick=()=>setWebChart({x:'departure',y:'arrival',color:'c3
 $('chart-default').onclick=()=>setWebChart({x:'years',y:'c3',color:'sequence'});
 function selectPoint(e){const point=e.target.closest('[data-candidate]');if(!point)return;if(e.type==='keydown'&&!['Enter',' '].includes(e.key))return;e.preventDefault();selectCandidate(point.dataset.candidate);$('mission-view').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})}
 $('tradeoff-svg').addEventListener('click',selectPoint);$('tradeoff-svg').addEventListener('keydown',selectPoint);
-function resetDestinationFilters(){encounterBody=null;for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('include-red').checked=false;$('show-trimmed').checked=false;$('sort').value='recommended';$('mission-kind').value='both';selectedSequences.clear();visibleCount=48;}
+function resetDestinationFilters(){encounterBody=null;for(const id of ['search','max-c3','max-vinf','max-burns','max-years','launch-year-min','launch-year-max'])$(id).value='';$('include-yellow').checked=true;$('show-trimmed').checked=false;$('sort').value='recommended';$('mission-kind').value='both';selectedSequences.clear();visibleCount=48;}
 $('clear-filters').addEventListener('click',()=>{resetDestinationFilters();renderList();if(selected)updateLocation(selected.id);});
 document.querySelector('.projection').addEventListener('click', e => { if (e.target.dataset.view) setView(e.target.dataset.view); });
 $('reset-view').addEventListener('click', () => { zoom=1; setView('3d'); });
