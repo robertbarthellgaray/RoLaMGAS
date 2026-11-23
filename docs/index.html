@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="observatory.css?v=20261121sidebar">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
   <script type="module" src="app.js?v=20261123fonts"></script>
-<link rel="stylesheet" href="interface_theme.css?v=20261123fonts"></head>
+<link rel="stylesheet" href="interface_theme.css?v=20261123header"></head>
 <body>
   <a class="skip-link" href="#explorer">Skip to trajectory explorer</a>
   <header class="site-header">
@@ -63,9 +63,8 @@
           <div id="candidate-list" class="candidate-list"><p class="empty">Loading saved trajectories…</p></div></div><div class="library-footer"><button id="candidate-more" type="button" class="subtle-button" hidden>Show more trajectories</button><button id="community-refresh" type="button" class="subtle-button">Refresh shared library</button><a class="text-link small" href="data/community_seed_catalog.json?v=20261108b" download="rolamgas-passing-history.json">Full archive JSON ↓</a><a class="text-link small" href="data/community_history_index.csv?v=20261108b" download>Dates & metrics CSV ↓</a></div>
         </aside>
         <div class="mission-view" id="mission-view" aria-busy="true">
-          <div class="mission-heading"><div><p class="eyebrow" id="model-label">SAVED TRAJECTORY</p><h3 id="mission-title">Preparing the flight deck…</h3><p id="mission-dates" class="quiet">Select a candidate to inspect its route.</p><p id="mission-added" class="quiet"></p></div><span class="mission-id" id="mission-id"></span></div>
+          <div class="mission-heading"><div class="mission-heading-content"><p class="eyebrow" id="model-label">SAVED TRAJECTORY</p><div class="mission-title-row"><h3 id="mission-title">Preparing the flight deck…</h3><p id="mission-dates" class="quiet">Select a candidate to inspect its route.</p></div><div class="mission-meta-row"><p id="mission-added" class="quiet"></p><p id="mission-energy-advisory" class="energy-advisory mission-energy-advisory" hidden></p></div></div><span class="mission-id" id="mission-id"></span></div>
           <p id="mission-review" class="inferior-note" role="status" hidden></p>
-          <p id="mission-energy-advisory" class="energy-advisory mission-energy-advisory" hidden></p>
             <p id="mission-inferior" class="inferior-note" role="status" hidden></p>
             <div class="plot-area">
             <div id="trajectory-loading" class="area-loading" role="status"><i class="loading-spinner" aria-hidden="true"></i><span>Loading trajectory…</span></div>
