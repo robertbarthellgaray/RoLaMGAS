@@ -871,6 +871,42 @@
       "orbit_class_code": "APO",
       "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20025143",
       "resolved_at": "2026-11-23T07:42:44Z"
+    },
+    "20003122": {
+      "name": "3122 Florence",
+      "full_name": "3122 Florence (1981 ET3)",
+      "horizons_id": "20003122",
+      "designation": "3122",
+      "object_type": "asteroid",
+      "lookup_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20003122",
+      "orbit_class": "Amor",
+      "orbit_class_code": "AMO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20003122",
+      "resolved_at": "2026-11-23T23:56:17Z"
+    },
+    "20152830": {
+      "name": "152830 Dinkinesh",
+      "full_name": "152830 Dinkinesh (1999 VD57)",
+      "horizons_id": "20152830",
+      "designation": "152830",
+      "object_type": "asteroid",
+      "lookup_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20152830",
+      "orbit_class": "Main-belt Asteroid",
+      "orbit_class_code": "MBA",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20152830",
+      "resolved_at": "2026-11-23T23:56:17Z"
+    },
+    "20153591": {
+      "name": "153591 (2001 SN263)",
+      "full_name": "153591 (2001 SN263)",
+      "horizons_id": "20153591",
+      "designation": "153591",
+      "object_type": "asteroid",
+      "lookup_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20153591",
+      "orbit_class": "Amor",
+      "orbit_class_code": "AMO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20153591",
+      "resolved_at": "2026-11-23T23:56:17Z"
     }
   },
   "live_checked_through": "2026-11-18T18:32:35.802Z"
