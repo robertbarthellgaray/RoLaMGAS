@@ -55,6 +55,11 @@ test('live pages are delivered before completion and retry resumes after a faile
  assert.equal(result.watermark,'2026-01-03T00:00:00.000Z');
 });
 
-test('interactive library excludes candidates above the public C3 ceiling',()=>{const r=JSON.parse(readFileSync(new URL('../docs/data/community_seed_catalog.json',import.meta.url),'utf8')).candidates[0];assert.doesNotThrow(()=>summaryFor({...r,metrics:{...r.metrics,launch_c3_km2_s2:250}}));assert.throws(()=>summaryFor({...r,metrics:{...r.metrics,launch_c3_km2_s2:250.000001}}))});
+test('interactive library excludes candidates above the public C3 ceiling',()=>{
+ // Keep this boundary independent of archive ordering and Venus-specific limits.
+ const r={id:'c3-ceiling',sequence:'EJ',body_ids:['399','599'],dates_jd_tdb:[2460000,2461000],classification:'pass',metrics:{launch_c3_km2_s2:250,total_dsm_kms:0,arrival_vinf_kms:7}};
+ assert.doesNotThrow(()=>summaryFor(r));
+ assert.throws(()=>summaryFor({...r,metrics:{...r.metrics,launch_c3_km2_s2:250.000001}}),/250/);
+});
 
 test('small-body preview admission rejects 40 years even if stored duration says less',()=>{const r=JSON.parse(readFileSync(new URL('../docs/data/community_seed_catalog.json',import.meta.url),'utf8')).candidates[0],a=r.dates_jd_tdb[0],long={...r,metrics:{...r.metrics,launch_c3_km2_s2:30},body_ids:['399','999'],dates_jd_tdb:[a,a+40*365.25]};assert.throws(()=>summaryFor(long));assert.doesNotThrow(()=>summaryFor({...long,dates_jd_tdb:[a,a+40*365.25-.001]}));assert.doesNotThrow(()=>summaryFor({...long,body_ids:['399','599']}))});
