@@ -459,14 +459,14 @@ function draw(target=canvas,size=null) {
   selected.paths.forEach((p,i) => line(p.points, colors[i%colors.length], 1.6));
   const dot = (p, color, size) => { const [x,y] = project(p); ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill(); return [x,y]; };
   const sun = dot([0,0,0], '#ffd08a', 4);
-  ctx.fillStyle = '#d1b98a'; ctx.font = '10px "Greyscale Basic", sans-serif'; ctx.fillText('Sun', sun[0]+5, sun[1]+4);
+  ctx.fillStyle = '#d1b98a'; ctx.font = '10px "Exo 2", sans-serif'; ctx.fillText('Sun', sun[0]+5, sun[1]+4);
   const used = [];
   for (const e of selected.events) {
     if(!bodyVisible(e.body,'markers'))continue;
     const [x,y] = dot(e.position_au, bodyColors[e.body] || '#e7eff6', 3.5);
     let dy = -5;
     while (used.some(p => Math.abs(p[0]-x)<55 && Math.abs(p[1]-(y+dy))<13)) dy += 14;
-    used.push([x,y+dy]); ctx.fillStyle = '#c5d6e4'; ctx.font = '10px "Greyscale Basic", sans-serif';
+    used.push([x,y+dy]); ctx.fillStyle = '#c5d6e4'; ctx.font = '10px "Exo 2", sans-serif';
     ctx.fillText(animatePlanets?`${e.body} encounter`:e.body, x+5, y+dy);
   }
   if(animatePlanets&&planetEphemerides){
@@ -491,7 +491,7 @@ function draw(target=canvas,size=null) {
   const raw = 65 / scale, pow = 10 ** Math.floor(Math.log10(raw)), nice = [1,2,5,10].find(n => n*pow >= raw) * pow;
   const length = nice * scale;
   ctx.strokeStyle = '#6f8ca3'; ctx.beginPath(); ctx.moveTo(22,h-54); ctx.lineTo(22+length,h-54); ctx.stroke();
-  ctx.fillStyle = '#93adc1'; ctx.font = '9px "Greyscale Basic", sans-serif'; ctx.fillText(`${Number(nice.toPrecision(3))} AU`,22,h-62);
+  ctx.fillStyle = '#93adc1'; ctx.font = '9px "Exo 2", sans-serif'; ctx.fillText(`${Number(nice.toPrecision(3))} AU`,22,h-62);
 }
 
 document.addEventListener('rolamgas-planet-choice',event=>{
