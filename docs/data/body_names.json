@@ -859,6 +859,18 @@
       "orbit_class_code": "APO",
       "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=50445628",
       "resolved_at": "2026-11-20T07:20:36Z"
+    },
+    "20025143": {
+      "name": "25143 Itokawa",
+      "full_name": "25143 Itokawa (1998 SF36)",
+      "horizons_id": "20025143",
+      "designation": "25143",
+      "object_type": "asteroid",
+      "lookup_url": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20025143",
+      "orbit_class": "Apollo",
+      "orbit_class_code": "APO",
+      "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20025143",
+      "resolved_at": "2026-11-23T07:42:44Z"
     }
   },
   "live_checked_through": "2026-11-18T18:32:35.802Z"
