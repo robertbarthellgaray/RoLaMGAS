@@ -15,7 +15,7 @@ import './mission_metrics.js?v=20261122silverbird';
 import {planetPanel,smallBodyCards,smallBodyBriefing} from './world_guide.js?v=20261116live';
 import {summaryFor,caseFor,thumbnailFor,trajectoryText,fetchUpdates,bodyName,registerBodyNames,matchesBodyLabel} from './community.js?v=20261116live';
 import {CATEGORIES,bodyCategory,encounterDayKey,betterDuplicate,launchYear,sequenceColors,registerBodyCategories,registerBodyPhysical,resolveAlias,filterStateFromHash,filterHash,missionFiltersFromHash,withMissionFilters,chartSettingsFromHash,withChartSettings} from './library_analysis.js?v=20261116live';
-import {trimAlternatives,groupLaunches,launchTimestamp,clearlyDominates} from './library_curation.js?v=20261113a';
+import {trimAlternatives,groupLaunches,launchTimestamp,clearlyDominates,monthlyDirectUranus} from './library_curation.js?v=20261123monthly';
 import {storedMismatch,estimateFlybys,FLYBY_BODIES} from './flyby_diagnostics.js?v=20261112d';
 const $ = (id) => document.getElementById(id);
 const loading=libraryProgress($('library-loading'),[$('comparison-loading')]);
@@ -106,8 +106,10 @@ function renderPlanetContext(){
 }
 function gallerySelection(){
  const all=matchingRows(),protectedIds=new Set(all.filter(c=>missionName(c)||c.featured_priority||c.spotlight).map(c=>c.id));
- const trimmed=trimAlternatives(all,protectedIds);
- return {all,rows:$('show-trimmed').checked?all:trimmed.rows,hidden:trimmed.hidden};
+ const monthly=monthlyDirectUranus(all,protectedIds);
+ const keepMonths=new Set([...protectedIds,...monthly.rows.filter(c=>c.sequence==='EU').map(c=>c.id)]);
+ const trimmed=trimAlternatives(monthly.rows,keepMonths);
+ return {all,rows:$('show-trimmed').checked?all:trimmed.rows,hidden:new Map([...trimmed.hidden,...monthly.hidden]),inferiors:trimmed.hidden,monthly:monthly.hidden};
 }
 function visibleRows(){return gallerySelection().rows;}
 function energyAdvisoryMarkup(c){const e=c.energy_review||LaunchEnergyReview.review(c,launchEnergyReference);return `<span class="energy-advisory energy-${e.energy_level}" title="${escapeHtml(e.energy_explanation)}">${escapeHtml(e.energy_label)}</span>`;}
@@ -134,13 +136,13 @@ function launchGroupMarkup(group){
 }
 function renderList(revealId=null) {
   renderPlanetContext();
-  const {all,rows,hidden}=gallerySelection(),sort=$('sort').value;
-  currentInferiors=hidden;
+  const {all,rows,hidden,inferiors,monthly}=gallerySelection(),sort=$('sort').value;
+  currentInferiors=inferiors;
   rows.sort((a,b) => sort === 'recommended' ? featuredOrder(a,b) : sort==='received'?(b.received||0)-(a.received||0):a[sort]-b[sort]);
   const groups=groupLaunches(rows);
   if(revealId){const index=groups.findIndex(g=>g.rows.some(c=>c.id===revealId));if(index>=0)visibleCount=Math.max(visibleCount,Math.ceil((index+1)/48)*48);}
   $('result-count').textContent = `${rows.length} trajectories · ${groups.length} launch groups`;
-  $('curation-status').textContent=hidden.size?`${hidden.size} clearly inferior alternatives ${$('show-trimmed').checked?'included':'trimmed'}. Original files and direct links remain available.`:'No clearly inferior alternatives in this selection.';
+  $('curation-status').textContent=hidden.size?`${hidden.size} alternatives ${$('show-trimmed').checked?'included':'trimmed'} (${monthly.size} extra EU entries; one per launch month). Original files and direct links remain available.`:'No clearly inferior alternatives in this selection.';
   $('candidate-more').hidden=visibleCount>=groups.length;
   $('candidate-more').textContent=`Show ${Math.min(48,Math.max(0,groups.length-visibleCount))} more launch groups (${Math.min(visibleCount,groups.length)} of ${groups.length})`;
   $('candidate-list').innerHTML = rows.length ? groups.slice(0,visibleCount).map(launchGroupMarkup).join('')

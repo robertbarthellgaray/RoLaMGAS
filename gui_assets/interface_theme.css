@@ -1,35 +1,28 @@
 @font-face {
-  font-family: "Greyscale Basic";
-  src: url("fonts/Greyscale_Basic_Regular.ttf") format("truetype");
+  font-family: "Orbitron";
+  src: url("fonts/Orbitron-Variable.ttf") format("truetype");
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 900;
   font-display: swap;
 }
 @font-face {
-  font-family: "Greyscale Basic";
-  src: url("fonts/Greyscale_Basic_Bold.ttf") format("truetype");
+  font-family: "Exo 2";
+  src: url("fonts/Exo2-Variable.ttf") format("truetype");
   font-style: normal;
-  font-weight: 700;
+  font-weight: 100 900;
   font-display: swap;
 }
 @font-face {
-  font-family: "Greyscale Basic";
-  src: url("fonts/Greyscale_Basic_Regular_Italic.ttf") format("truetype");
+  font-family: "Exo 2";
+  src: url("fonts/Exo2-Italic-Variable.ttf") format("truetype");
   font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Greyscale Basic";
-  src: url("fonts/Greyscale_Basic_Bold_Italic.ttf") format("truetype");
-  font-style: italic;
-  font-weight: 700;
+  font-weight: 100 900;
   font-display: swap;
 }
 
 :root {
-  --bg: #222222;
-  --panel: #292929;
+  --bg: #161616;
+  --panel: #1d1d1d;
   --ink: #eeeeee;
   --text: #eeeeee;
   --muted: #b6b6b6;
@@ -39,13 +32,15 @@
   --accent: #f0b6b7;
   --interactive-border: #76272d;
   --interactive-hover: #f0444e;
-  --mono: "Greyscale Basic", sans-serif;
-  font-family: "Greyscale Basic", sans-serif;
+  --mono: "Exo 2", sans-serif;
+  font-family: "Exo 2", sans-serif;
   background: var(--bg);
 }
 /* Canvas labels use the same face explicitly in their drawing code. */
-body, body * { font-family: "Greyscale Basic", sans-serif !important; }
-html, body, body.observatory { background: #222222 !important; }
+body, body * { font-family: "Exo 2", sans-serif !important; }
+/* Navigation uses Orbitron; content, controls and plot labels use Exo 2. */
+.site-header, .site-header *, body > header, body > header * { font-family: "Orbitron", sans-serif !important; }
+html, body, body.observatory { background: #161616 !important; }
 body { color: var(--ink); }
 
 header, .site-header, .world-toolbar, .world-picker, aside, .library,
@@ -54,13 +49,13 @@ header, .site-header, .world-toolbar, .world-picker, aside, .library,
 .metrics, .observatory-chart, .observatory-info, .tradeoff, .catalog-note,
 .status-panel, .candidate, .launch-group, .gallery-welcome, .scene-planet-menu,
 .results-chart, .target-info, .info-box, .export-bar, .download-card, dialog {
-  background: #292929 !important;
+  background: #1d1d1d !important;
   border-color: #454545;
 }
-.workbench, .candidate-list, .candidate-list-wrap, .layout, main { background-color: #222222; }
+.workbench, .candidate-list, .candidate-list-wrap, .layout, main { background-color: #161616; }
 .search-label, input:not([type=checkbox]):not([type=radio]):not([type=range]),
 select, textarea, .card-preview, .candidate img, .image-placeholder {
-  background: #1d1d1d !important;
+  background: #111111 !important;
   color: #eeeeee;
 }
 .scene-viewport, .scene-viewport:fullscreen, .scene-viewport.is-expanded,
@@ -69,15 +64,15 @@ select, textarea, .card-preview, .candidate img, .image-placeholder {
 }
 .projection, .projection button, .scene-focus button, .planet-size-control,
 .plot-message, .scene-status, .update-notice {
-  background: #242424eb !important;
+  background: #191919eb !important;
 }
-.candidate-card:hover, .variant-card:hover, tbody tr:hover { background: #333333 !important; }
+.candidate-card:hover, .variant-card:hover, tbody tr:hover { background: #272727 !important; }
 .candidate-card[aria-pressed=true], .variant-card[aria-pressed=true],
 button[aria-pressed=true], .scene-focus button[aria-pressed=true] {
   background: #3c2527 !important;
 }
-.candidate-list { scrollbar-color: #8c5155 #222222 !important; }
-.candidate-list::-webkit-scrollbar-track { background: #222222 !important; }
+.candidate-list { scrollbar-color: #8c5155 #161616 !important; }
+.candidate-list::-webkit-scrollbar-track { background: #161616 !important; }
 .candidate-list::-webkit-scrollbar-thumb { background: #8c5155 !important; }
 dialog::backdrop { background: #000000ba !important; }
 .scene-label { transform: translate(6px, -50%); color: #d1d1d1; }
@@ -93,7 +88,7 @@ a[href] { padding: 2px 5px; box-decoration-break: clone; -webkit-box-decoration-
 summary { padding: 5px 8px !important; cursor: pointer; }
 label:has(> input[type=checkbox]), label:has(> input[type=radio]) { padding: 3px 6px; }
 button, body a.button, body button.primary, .gallery-welcome #close-welcome {
-  background: #2a2a2a !important;
+  background: #242424 !important;
   color: #eeeeee !important;
 }
 body a.button { padding: 14px 20px; }
@@ -122,7 +117,7 @@ body.observatory #download {
   padding: 64px 48px;
   min-height: 450px;
 }
-body.observatory #download .download-card { background: #222222d9 !important; }
+body.observatory #download .download-card { background: #161616d9 !important; }
 body.observatory #download p { color: #e0e0e0; }
 @media (max-width: 760px) {
   body.observatory #download { padding: 36px 20px; background-position: 40% center; }

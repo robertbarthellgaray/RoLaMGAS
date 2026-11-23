@@ -50,3 +50,17 @@ export function trimAlternatives(rows,protectedIds=new Set()){
  }
  return {rows:rows.filter(c=>!hidden.has(c.id)),hidden};
 }
+
+// Keep direct Earth-Uranus browsing manageable without deleting any records.
+export function monthlyDirectUranus(rows,protectedIds=new Set()) {
+ const groups=new Map(),hidden=new Map();
+ for(const c of rows)if(c.sequence==='EU'&&!protectedIds.has(c.id)){
+  const key=familyKey(c)+'@'+launchMonth(c);
+  if(!groups.has(key))groups.set(key,[]);groups.get(key).push(c);
+ }
+ for(const group of groups.values()){
+  group.sort((a,b)=>a.c3-b.c3||a.years-b.years||a.id.localeCompare(b.id));
+  for(const c of group.slice(1))hidden.set(c.id,group[0].id);
+ }
+ return {rows:rows.filter(c=>!hidden.has(c.id)),hidden};
+}
