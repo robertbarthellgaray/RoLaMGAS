@@ -19,7 +19,7 @@ function texture(body){
 function glowTexture(){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),r=g.createRadialGradient(64,64,0,64,64,64);r.addColorStop(0,'#ffe8b1');r.addColorStop(.12,'#ffd980a0');r.addColorStop(.4,'#dba84b20');r.addColorStop(1,'#ffbd3500');g.fillStyle=r;g.fillRect(0,0,128,128);return new THREE.CanvasTexture(c);}
 export class ObservatoryScene{
  constructor(stage,onSelect){
-  this.stage=stage;this.planetScale=.45;this.scene=new THREE.Scene();this.scene.background=new THREE.Color('#050b14');this.camera=new THREE.PerspectiveCamera(42,1,.003,1500);this.camera.position.set(8,10,14);
+  this.stage=stage;this.planetScale=.45;this.scene=new THREE.Scene();this.scene.background=new THREE.Color('#000000');this.camera=new THREE.PerspectiveCamera(42,1,.003,1500);this.camera.position.set(8,10,14);
   this.renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true,powerPreference:'low-power'});this.renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.75));this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.1;
   const el=this.renderer.domElement;el.className='observatory-canvas';el.tabIndex=0;el.setAttribute('aria-label','3D solar system: drag to orbit, scroll or pinch to zoom, click a planet to follow it or show routes visiting it. Arrow keys pan the view.');stage.prepend(el);
   this.controls=new OrbitControls(this.camera,el);this.controls.enableDamping=true;this.controls.dampingFactor=.09;this.controls.minDistance=.4;this.controls.maxDistance=200;this.controls.maxPolarAngle=Math.PI*.96;this.controls.listenToKeyEvents(el);
@@ -68,6 +68,6 @@ export class ObservatoryScene{
   const h=this.stage.clientHeight,w=this.stage.clientWidth,pixel=mesh=>2*this.camera.position.distanceTo(mesh.position)*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2))/h;
   this.ship.scale.setScalar(pixel(this.ship)*2.5);
   const objects={Sun:this.sun,...this.meshes,Target:this.targetBody,Spacecraft:this.ship};const priority=['Target','Spacecraft','Sun',...Object.keys(this.meshes).reverse()];
-  for(const name of priority){const mesh=objects[name],el=this.labels[name],p=mesh.position.clone().project(this.camera),x=(p.x+1)*w/2,y=(1-p.y)*h/2;let hidden=!mesh.visible||p.z< -1||p.z>1||x<0||x>w-40||y<0||y>h;const labelY=y+(name==='Spacecraft'?14:-10);el.hidden=hidden;if(!hidden){el.style.left=x+'px';el.style.top=labelY+'px';}}
+  for(const name of priority){const mesh=objects[name],el=this.labels[name],p=mesh.position.clone().project(this.camera),x=(p.x+1)*w/2,y=(1-p.y)*h/2;let hidden=!mesh.visible||p.z< -1||p.z>1||x<0||x>w-40||y<0||y>h;const labelY=y+(name==='Spacecraft'?8:-4);el.hidden=hidden;if(!hidden){el.style.left=x+'px';el.style.top=labelY+'px';}}
  }
 }

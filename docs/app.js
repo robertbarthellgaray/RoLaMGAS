@@ -4,7 +4,7 @@ import {combinedMismatch} from './mismatch_screen.js?v=20261119motion';
 import {sharedExportDownloads,appendSharedExports} from './export_downloads.js?v=20261119r2';
 import {targetMotion,targetPosition,loadTargetMotion} from './target_motion.js?v=20261119motion';
 import './launch_energy_review.js?v=20261118energy2';
-import {ObservatoryScene} from './observatory_scene.js?v=20261119motion';
+import {ObservatoryScene} from './observatory_scene.js?v=20261122grey';
 import {openLibraryCache} from './library_cache.js?v=20261116live';
 import {launchVariantKey,nearDuplicate} from './near_duplicates.js?v=20261115pdf';
 import {historicalMatch} from './historical_labels.js?v=20261108b';
@@ -432,7 +432,7 @@ function draw(target=canvas,size=null) {
   const ctx=target.getContext('2d');
   if (!w || !h) return;
   if (target.width !== Math.round(w*dpr) || target.height !== Math.round(h*dpr)) { target.width = Math.round(w*dpr); target.height = Math.round(h*dpr); }
-  ctx.setTransform(dpr,0,0,dpr,0,0); ctx.fillStyle = '#08121e'; ctx.fillRect(0,0,w,h);
+  ctx.setTransform(dpr,0,0,dpr,0,0); ctx.fillStyle = '#000000'; ctx.fillRect(0,0,w,h);
   // A fixed background keeps the scientific curve readable while dragging.
   for (let i=0; i<65; i++) { ctx.fillStyle = i%3 ? '#96abc12c' : '#96abc155'; ctx.fillRect((i*179+23)%w, (i*i*37+19)%h, 1, 1); }
   if (!selected) return;
@@ -459,23 +459,23 @@ function draw(target=canvas,size=null) {
   selected.paths.forEach((p,i) => line(p.points, colors[i%colors.length], 1.6));
   const dot = (p, color, size) => { const [x,y] = project(p); ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill(); return [x,y]; };
   const sun = dot([0,0,0], '#ffd08a', 4);
-  ctx.fillStyle = '#d1b98a'; ctx.font = '10px Segoe UI, sans-serif'; ctx.fillText('Sun', sun[0]+9, sun[1]+4);
+  ctx.fillStyle = '#d1b98a'; ctx.font = '10px "Greyscale Basic", sans-serif'; ctx.fillText('Sun', sun[0]+5, sun[1]+4);
   const used = [];
   for (const e of selected.events) {
     if(!bodyVisible(e.body,'markers'))continue;
     const [x,y] = dot(e.position_au, bodyColors[e.body] || '#e7eff6', 3.5);
-    let dy = -10;
+    let dy = -5;
     while (used.some(p => Math.abs(p[0]-x)<55 && Math.abs(p[1]-(y+dy))<13)) dy += 14;
-    used.push([x,y+dy]); ctx.fillStyle = '#c5d6e4'; ctx.font = '10px Segoe UI, sans-serif';
-    ctx.fillText(animatePlanets?`${e.body} encounter`:e.body, x+7, y+dy);
+    used.push([x,y+dy]); ctx.fillStyle = '#c5d6e4'; ctx.font = '10px "Greyscale Basic", sans-serif';
+    ctx.fillText(animatePlanets?`${e.body} encounter`:e.body, x+5, y+dy);
   }
   if(animatePlanets&&planetEphemerides){
     for(const body of movingBodyNames(selected)){
       if(!bodyVisible(body,'markers'))continue;
       const position=planetPosition(body,currentJd());if(!position)continue;
       const [x,y]=dot(position,bodyColors[body]||'#e7eff6',5);
-      ctx.strokeStyle='#08121e';ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,6,0,2*Math.PI);ctx.stroke();
-      ctx.fillStyle=bodyColors[body]||'#e7eff6';ctx.fillText(body+' now',x+8,y+15);
+      ctx.strokeStyle='#000000';ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,6,0,2*Math.PI);ctx.stroke();
+      ctx.fillStyle=bodyColors[body]||'#e7eff6';ctx.fillText(body+' now',x+5,y+10);
     }
   }
   for (const b of selected.burns.filter(globalThis.MissionMetrics.visibleManeuver)) {
@@ -491,7 +491,7 @@ function draw(target=canvas,size=null) {
   const raw = 65 / scale, pow = 10 ** Math.floor(Math.log10(raw)), nice = [1,2,5,10].find(n => n*pow >= raw) * pow;
   const length = nice * scale;
   ctx.strokeStyle = '#6f8ca3'; ctx.beginPath(); ctx.moveTo(22,h-54); ctx.lineTo(22+length,h-54); ctx.stroke();
-  ctx.fillStyle = '#93adc1'; ctx.font = '9px Consolas, monospace'; ctx.fillText(`${Number(nice.toPrecision(3))} AU`,22,h-62);
+  ctx.fillStyle = '#93adc1'; ctx.font = '9px "Greyscale Basic", sans-serif'; ctx.fillText(`${Number(nice.toPrecision(3))} AU`,22,h-62);
 }
 
 document.addEventListener('rolamgas-planet-choice',event=>{
@@ -691,3 +691,5 @@ try {
 } catch(e) {
  loading.failed();$('trajectory-loading').hidden=true;$('result-count').textContent='Catalog unavailable';$('candidate-list').innerHTML=`<p class="empty">${escapeHtml(e.message)} Reload the page to retry.</p>`;$('mission-view').setAttribute('aria-busy','false');
 }
+
+document.fonts?.ready.then(() => requestAnimationFrame(drawSoon));

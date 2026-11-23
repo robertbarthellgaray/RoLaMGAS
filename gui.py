@@ -937,8 +937,10 @@ class Handler(BaseHTTPRequestHandler):
                 path = (root/parts[3]).resolve()
                 if not path.is_relative_to(root) or path.suffix.lower() not in ('.json','.png','.tsv','.html','.md','.log','.csv','.xyzv','.ssc','.txt','.zip'):
                     raise ValueError('File is outside this run')
-            elif url.path in ('/gui_assets/launch_mass_c3.png','/gui_assets/rolamgas-icon.png','/gui_assets/launch_performance_curves.json','/gui_assets/international_launch_performance.png','/gui_assets/launch_energy_reference.json'):
+            elif url.path in ('/gui_assets/launch_mass_c3.png','/gui_assets/rolamgas-icon.png','/gui_assets/launch_performance_curves.json','/gui_assets/international_launch_performance.png','/gui_assets/launch_energy_reference.json','/gui_assets/interface_theme.css'):
                 path=RESOURCE_ROOT/'gui_assets'/url.path.rsplit('/',1)[-1]
+            elif url.path in ('/gui_assets/fonts/Greyscale_Basic_Bold.ttf','/gui_assets/fonts/Greyscale_Basic_Bold_Italic.ttf','/gui_assets/fonts/Greyscale_Basic_Regular.ttf','/gui_assets/fonts/Greyscale_Basic_Regular_Italic.ttf'):
+                path=RESOURCE_ROOT/'gui_assets'/'fonts'/url.path.rsplit('/',1)[-1]
             elif url.path in ('/','/gui.html','/gui.js','/mission_metrics.js','/launch_energy_review.js','/gui.css'):
                 path = RESOURCE_ROOT/('gui.html' if url.path=='/' else url.path[1:])
             else:

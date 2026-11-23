@@ -48,3 +48,7 @@ density product to the upper pressure/temperature profile at identical altitudes
 URLs, SHA-256 checksums and the missing entry-density-column caveat are in
 `model_assets/titan/hasi_reference.json`. This is not a NASA Titan-GRAM implementation;
 no GRAM source or proprietary aerodynamic database is included.
+
+Greyscale Basic typeface: bundled regular, bold, italic and bold italic TTFs
+provided by the project owner. The original GreyscaleNet free-use notice is
+retained at `gui_assets/fonts/GreyscaleNet License.txt` and `docs/fonts/GreyscaleNet License.txt`.

@@ -1,0 +1,132 @@
+@font-face {
+  font-family: "Greyscale Basic";
+  src: url("fonts/Greyscale_Basic_Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Greyscale Basic";
+  src: url("fonts/Greyscale_Basic_Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Greyscale Basic";
+  src: url("fonts/Greyscale_Basic_Regular_Italic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Greyscale Basic";
+  src: url("fonts/Greyscale_Basic_Bold_Italic.ttf") format("truetype");
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --bg: #222222;
+  --panel: #292929;
+  --ink: #eeeeee;
+  --text: #eeeeee;
+  --muted: #b6b6b6;
+  --line: #454545;
+  --border: #454545;
+  --cyan: #f0b6b7;
+  --accent: #f0b6b7;
+  --interactive-border: #76272d;
+  --interactive-hover: #f0444e;
+  --mono: "Greyscale Basic", sans-serif;
+  font-family: "Greyscale Basic", sans-serif;
+  background: var(--bg);
+}
+/* Canvas labels use the same face explicitly in their drawing code. */
+body, body * { font-family: "Greyscale Basic", sans-serif !important; }
+html, body, body.observatory { background: #222222 !important; }
+body { color: var(--ink); }
+
+header, .site-header, .world-toolbar, .world-picker, aside, .library,
+.library-controls, .library-footer, .mission-view, .mission-heading,
+.mission-energy-advisory, .mission-view > .gallery-curation, .playback,
+.metrics, .observatory-chart, .observatory-info, .tradeoff, .catalog-note,
+.status-panel, .candidate, .launch-group, .gallery-welcome, .scene-planet-menu,
+.results-chart, .target-info, .info-box, .export-bar, .download-card, dialog {
+  background: #292929 !important;
+  border-color: #454545;
+}
+.workbench, .candidate-list, .candidate-list-wrap, .layout, main { background-color: #222222; }
+.search-label, input:not([type=checkbox]):not([type=radio]):not([type=range]),
+select, textarea, .card-preview, .candidate img, .image-placeholder {
+  background: #1d1d1d !important;
+  color: #eeeeee;
+}
+.scene-viewport, .scene-viewport:fullscreen, .scene-viewport.is-expanded,
+.observatory .plot-area, .plot-area, #orbit, #detailPlot, .observatory-canvas {
+  background: #000000 !important;
+}
+.projection, .projection button, .scene-focus button, .planet-size-control,
+.plot-message, .scene-status, .update-notice {
+  background: #242424eb !important;
+}
+.candidate-card:hover, .variant-card:hover, tbody tr:hover { background: #333333 !important; }
+.candidate-card[aria-pressed=true], .variant-card[aria-pressed=true],
+button[aria-pressed=true], .scene-focus button[aria-pressed=true] {
+  background: #3c2527 !important;
+}
+.candidate-list { scrollbar-color: #8c5155 #222222 !important; }
+.candidate-list::-webkit-scrollbar-track { background: #222222 !important; }
+.candidate-list::-webkit-scrollbar-thumb { background: #8c5155 !important; }
+dialog::backdrop { background: #000000ba !important; }
+.scene-label { transform: translate(6px, -50%); color: #d1d1d1; }
+
+/* A consistent border marks text that can be activated. */
+a[href], button, summary, [role=button], select,
+label:has(> input[type=checkbox]), label:has(> input[type=radio]) {
+  border: 1px solid var(--interactive-border) !important;
+  border-radius: 3px;
+  transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+}
+a[href] { padding: 2px 5px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+summary { padding: 5px 8px !important; cursor: pointer; }
+label:has(> input[type=checkbox]), label:has(> input[type=radio]) { padding: 3px 6px; }
+button, body a.button, body button.primary, .gallery-welcome #close-welcome {
+  background: #2a2a2a !important;
+  color: #eeeeee !important;
+}
+body a.button { padding: 14px 20px; }
+body a.button.compact { padding: 10px 15px; }
+button:disabled { border-color: #494949 !important; }
+a[href]:hover, button:enabled:hover, summary:hover, select:hover,
+[role=button]:not([aria-disabled=true]):hover,
+label:has(> input[type=checkbox]):hover, label:has(> input[type=radio]):hover {
+  border-color: var(--interactive-hover) !important;
+  box-shadow: 0 0 10px #dc35454d, inset 0 0 5px #dc354515;
+  text-decoration: none;
+}
+a[href]:focus-visible, button:focus-visible, summary:focus-visible,
+select:focus-visible, [role=button]:focus-visible {
+  border-color: var(--interactive-hover) !important;
+  outline: 2px solid #f6979c;
+  outline-offset: 3px;
+}
+
+/* The local stylesheet points to the same photo only on the public website. */
+body.observatory #download {
+  background-image: linear-gradient(90deg, #141414d9, #14141466), url("images/download-mission.jpg");
+  background-position: center;
+  background-size: cover;
+  border-block: 1px solid #454545;
+  padding: 64px 48px;
+  min-height: 450px;
+}
+body.observatory #download .download-card { background: #222222d9 !important; }
+body.observatory #download p { color: #e0e0e0; }
+@media (max-width: 760px) {
+  body.observatory #download { padding: 36px 20px; background-position: 40% center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  a[href], button, summary, [role=button], select { transition: none; }
+}
