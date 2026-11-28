@@ -907,6 +907,14 @@
       "orbit_class_code": "AMO",
       "classification_source": "https://ssd-api.jpl.nasa.gov/sbdb.api?spk=20153591",
       "resolved_at": "2026-11-23T23:56:17Z"
+    },
+    "1000012": {
+      "name": "67P/Churyumov-Gerasimenko",
+      "horizons_id": "1000012",
+      "designation": "67P",
+      "object_type": "comet",
+      "lookup_url": "https://ssd.jpl.nasa.gov/api/horizons_lookup.api?sstr=1000012",
+      "resolved_at": "2026-11-28T02:50:36Z"
     }
   },
   "live_checked_through": "2026-11-18T18:32:35.802Z"
